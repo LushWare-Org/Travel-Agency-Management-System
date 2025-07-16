@@ -124,7 +124,7 @@ const Contact = ({ sidebarOpen }) => {
           sidebarOpen ? 'md:ml-64' : 'md:ml-16'
         } ml-0`}
       >
-        <Header isAuthenticated={true} isAdmin={false} />
+        <Header />
         
         <main className="px-4 md:px-8 py-6 md:py-10 max-w-3xl md:max-w-7xl mx-auto">
           {/* Header */}

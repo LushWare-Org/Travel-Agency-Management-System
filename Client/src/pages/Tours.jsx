@@ -44,8 +44,6 @@ const Tours = ({ sidebarOpen }) => {
       <div className={`transition-all duration-300 ${sidebarOpen ? 'sm:pl-64' : 'sm:pl-16'} pl-0`}>
         {/* Navigation */}
         <Navigation 
-          isAuthenticated={true} 
-          isAdmin={false} 
           onLogout={() => navigate('/login')} 
         />
 

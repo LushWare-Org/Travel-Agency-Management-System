@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,6 +24,8 @@ const Home = () => {
       subtitle: "Maximize your profits with our competitive rates"
     }
   ];
+
+  const { user, loading } = useContext(AuthContext);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -61,9 +64,11 @@ const Home = () => {
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="text-white font-medium hover:text-blue-200 transition-colors" onClick={scrollToTop}>
-                Home
-              </Link>
+              {/* Show Dashboard if logged in, else Home */}
+              
+                <Link to="/search" className="text-white font-medium hover:text-blue-200 transition-colors" onClick={scrollToTop}>
+                  Dashboard
+                </Link>
               <Link to="/login" className="text-blue-100 font-medium hover:text-blue-200 transition-colors" onClick={scrollToTop}>
                 Login
               </Link>
@@ -93,9 +98,12 @@ const Home = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-indigo-900 bg-opacity-95 backdrop-blur-sm">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <Link to="/" className="text-white block px-3 py-2 rounded-md font-medium" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
-                Home
-              </Link>
+              {/* Show Dashboard if logged in, else Home */}
+              
+                <Link to="/search" className="text-white block px-3 py-2 rounded-md font-medium" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
+                  Dashboard
+                </Link>
+              
               <Link to="/login" className="text-blue-100 block px-3 py-2 rounded-md font-medium hover:text-white hover:bg-indigo-600" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
                 Login
               </Link>

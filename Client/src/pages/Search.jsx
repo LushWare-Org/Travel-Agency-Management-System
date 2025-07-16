@@ -507,7 +507,7 @@ const Search = ({ sidebarOpen }) => {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className={`transition-all duration-300 ${sidebarOpen ? 'sm:pl-64' : 'sm:pl-16'} pl-0`}>
-        <Header isAuthenticated={true} isAdmin={false} />
+        <Header />
         <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
           {/* Banner */}
           <header

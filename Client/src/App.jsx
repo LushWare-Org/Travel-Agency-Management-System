@@ -23,7 +23,7 @@ const Tours = lazy(() => import('./pages/Tours'));
 const TourDetails = lazy(() => import('./pages/TourDetails'));
 
 // point axios at your API & send cookies by default
-axios.defaults.baseURL = 'https://api.yomaldives.live/api';
+axios.defaults.baseURL = 'http://localhost:5001/api';
 axios.defaults.withCredentials = true;
 
 export default function App() {
@@ -62,25 +62,13 @@ export default function App() {
 
         {/* hotel/room profiles */}
         <Route path="/hotels/:hotelId" element={<SidebarLayout><HotelProfile/></SidebarLayout>} />
-        <Route path="/hotels/:hotelId/rooms/:roomId" element={
-          <ProtectedRoute>
-            <SidebarLayout><RoomProfile/></SidebarLayout>
-          </ProtectedRoute>
-        }/>
+        <Route path="/hotels/:hotelId/rooms/:roomId" element={<SidebarLayout><RoomProfile/></SidebarLayout>} />
 
         {/* tour search */}
-        <Route path="/tours" element={
-          <ProtectedRoute>
-            <SidebarLayout><Tours/></SidebarLayout>
-          </ProtectedRoute>
-        }/>
+        <Route path="/tours" element={<SidebarLayout><Tours/></SidebarLayout>} />
 
         {/* tour packages */}
-        <Route path="/tours/:tourId" element={
-          <ProtectedRoute>
-            <SidebarLayout><TourDetails/></SidebarLayout>
-          </ProtectedRoute>
-        } />
+        <Route path="/tours/:tourId" element={<SidebarLayout><TourDetails/></SidebarLayout>} />
 
         {/* user profile */}
         <Route path="/profile" element={

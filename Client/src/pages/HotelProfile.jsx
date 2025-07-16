@@ -297,7 +297,7 @@ function HotelProfile({ sidebarOpen }) {
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 font-sans">
       <div className={`flex-1 overflow-y-auto transition-all duration-300 ${sidebarOpen ? "md:ml-64" : "md:ml-16"} ml-0`}>
-        <Header isAuthenticated={true} isAdmin={false} />
+        <Header />
 
         <section className="relative h-80 sm:h-[400px] md:h-[600px] overflow-hidden">
           <img src={gallery[0] || "/placeholder.svg"} alt={name} className="w-full h-full object-cover" />

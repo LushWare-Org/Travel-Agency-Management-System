@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
 const HotelIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -26,7 +27,7 @@ const AccountCircleIcon = () => (
   </svg>
 );
 
-const Header = ({ isAuthenticated, isAdmin, onLogout }) => {
+const Header = ({ onLogout }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -36,6 +37,9 @@ const Header = ({ isAuthenticated, isAdmin, onLogout }) => {
   const [hotels, setHotels] = useState([]);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState(null);
+  const { user, loading: authLoading } = useContext(AuthContext);
+  const isAuthenticated = !!user;
+  const isAdmin = user?.role === 'admin';
 
   // Hotels dropdown
   useEffect(() => {
@@ -43,6 +47,7 @@ const Header = ({ isAuthenticated, isAdmin, onLogout }) => {
       .then(response => {
         const validHotels = (response?.data || []).filter(h => h && h._id && h.name);
         console.log('Fetched hotels:', validHotels); // Debug: Verify hotels
+        console.log(isAuthenticated, isAdmin); // Debug: Check auth state
         setHotels(validHotels);
       })
       .catch(error => {
@@ -244,30 +249,39 @@ const Header = ({ isAuthenticated, isAdmin, onLogout }) => {
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
-            <div className="relative">
+            {isAuthenticated ? (
+              <div className="relative">
+                <button
+                  onClick={() => setProfileOpen(!profileOpen)}
+                  className="p-2 bg-indigo-50 rounded-full hover:bg-indigo-100 focus:outline-none text-indigo-600"
+                >
+                  <AccountCircleIcon />
+                </button>
+                {profileOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-200 z-10">
+                    <button
+                      onClick={() => handleNavigation('/settings')}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
+                    >
+                      Settings
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
               <button
-                onClick={() => setProfileOpen(!profileOpen)}
-                className="p-2 bg-indigo-50 rounded-full hover:bg-indigo-100 focus:outline-none text-indigo-600"
+                onClick={() => handleNavigation('/login')}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
               >
-                <AccountCircleIcon />
+                Login
               </button>
-              {profileOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-200 z-10">
-                  <button
-                    onClick={() => handleNavigation('/settings')}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
-                  >
-                    Settings
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -385,24 +399,35 @@ const Header = ({ isAuthenticated, isAdmin, onLogout }) => {
                   {item.text}
                 </button>
               ))}
-              <button
-                onClick={() => handleNavigation('/profile')}
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors"
-              >
-                My Profile
-              </button>
-              <button
-                onClick={() => handleNavigation('/dashboard')}
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors"
-              >
-                My Bookings
-              </button>
-              <button
-                onClick={handleLogout}
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors"
-              >
-                Logout
-              </button>
+              {isAuthenticated ? (
+                <>
+                  <button
+                    onClick={() => handleNavigation('/profile')}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors"
+                  >
+                    My Profile
+                  </button>
+                  <button
+                    onClick={() => handleNavigation('/dashboard')}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors"
+                  >
+                    My Bookings
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-colors"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => handleNavigation('/login')}
+                  className="block w-full text-left px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg transition-colors"
+                >
+                  Login
+                </button>
+              )}
             </div>
           </div>
         </div>

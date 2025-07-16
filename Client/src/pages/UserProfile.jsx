@@ -124,7 +124,7 @@ export default function UserProfile({ sidebarOpen }) {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-16'} ml-0`}>
-        <Header isAuthenticated onLogout={() => navigate('/login')} />
+        <Header onLogout={() => navigate('/login')} />
         <div className="max-w-3xl md:max-w-5xl mx-auto px-4 md:p-6 space-y-4 md:space-y-6">
           {/* Alerts */}
           {successAlert && <div className="p-3 md:p-4 bg-green-100 text-green-800 rounded text-xs md:text-sm">{successAlert}</div>}
