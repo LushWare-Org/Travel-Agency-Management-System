@@ -14,30 +14,10 @@ const palette = {
 const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
-    agencyName: '',
-    corporateName: '',
-    taxRegistrationNo: '',
-    contactPerson: '',
+    name: '',
     email: '',
-    address: '',
-    city: '',
-    zipCode: '',
-    stateProvince: '',
     country: '',
     phoneNumber: '',
-    phoneNumber2: '',
-    mobilePhone: '',
-    fax: '',
-    invoicingContact: '',
-    billingAgencyName: '',
-    billingEmail: '',
-    billingAddress: '',
-    billingCity: '',
-    billingZipCode: '',
-    billingStateProvince: '',
-    billingCountry: '',
-    billingPhoneNumber: '',
-    remarks: '',
     password: '',
     repeatPassword: '',
   });
@@ -57,10 +37,7 @@ const Register = () => {
   const validateForm = () => {
     const newErrors = {};
     const requiredFields = [
-      'username', 'agencyName', 'taxRegistrationNo',
-      'contactPerson', 'email', 'address', 'city',
-      'zipCode', 'country', 'phoneNumber',
-      'password', 'repeatPassword'
+      'username', 'name', 'email', 'country', 'phoneNumber', 'password', 'repeatPassword'
     ];
 
     requiredFields.forEach(field => {
@@ -72,9 +49,6 @@ const Register = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.email && !emailRegex.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
-    }
-    if (formData.billingEmail && !emailRegex.test(formData.billingEmail)) {
-      newErrors.billingEmail = 'Please enter a valid email address';
     }
 
     if (formData.password && formData.password.length < 8) {
@@ -117,30 +91,10 @@ const Register = () => {
       Swal.fire('Success', 'Registration submitted successfully!', 'success');
       setFormData({
         username: '',
-        agencyName: '',
-        corporateName: '',
-        taxRegistrationNo: '',
-        contactPerson: '',
+        name: '',
         email: '',
-        address: '',
-        city: '',
-        zipCode: '',
-        stateProvince: '',
         country: '',
         phoneNumber: '',
-        phoneNumber2: '',
-        mobilePhone: '',
-        fax: '',
-        invoicingContact: '',
-        billingAgencyName: '',
-        billingEmail: '',
-        billingAddress: '',
-        billingCity: '',
-        billingZipCode: '',
-        billingStateProvince: '',
-        billingCountry: '',
-        billingPhoneNumber: '',
-        remarks: '',
         password: '',
         repeatPassword: '',
       });
@@ -232,17 +186,17 @@ const Register = () => {
         )}
       </nav>
 
-      <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 pt-28">
+      <div className="max-w-xl mx-auto py-12 px-4 sm:px-6 lg:px-8 pt-28">
         <div className="bg-white rounded-xl shadow-xl overflow-hidden" style={{ backgroundColor: palette.platinum }}>
           <div className="bg-gradient-to-r from-[#0A435C]/80 to-[#B7C5C7]/50 py-6 px-6">
-            <h1 className="text-2xl font-bold" style={{ color: palette.platinum }}>Travel Agency Registration</h1>
-            <p className="text-base" style={{ color: palette.ash_gray }}>Please be kind enough to complete registration details in English</p>
+            <h1 className="text-2xl font-bold" style={{ color: palette.platinum }}>Customer Registration</h1>
+            <p className="text-base" style={{ color: palette.ash_gray }}>Please fill in your details to create an account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="p-6">
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-gray-800 mb-2 mt-4 pb-2 border-b border-gray-200">General Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <h2 className="text-xl font-semibold text-gray-800 mb-2 mt-4 pb-2 border-b border-gray-200">Personal Information</h2>
+              <div className="grid grid-cols-1 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Username <span className="text-red-500">*</span>
@@ -256,7 +210,19 @@ const Register = () => {
                   />
                   {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
                 </div>
-
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={`w-full px-3 py-2 border rounded-md ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+                  />
+                  {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     E-mail Address <span className="text-red-500">*</span>
@@ -270,122 +236,6 @@ const Register = () => {
                   />
                   {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                 </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Agency Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="agencyName"
-                    value={formData.agencyName}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.agencyName ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  />
-                  {errors.agencyName && <p className="text-red-500 text-xs mt-1">{errors.agencyName}</p>}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Corporate Name
-                  </label>
-                  <input
-                    type="text"
-                    name="corporateName"
-                    value={formData.corporateName}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Tax Registration No. <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="taxRegistrationNo"
-                    value={formData.taxRegistrationNo}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.taxRegistrationNo ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  />
-                  {errors.taxRegistrationNo && <p className="text-red-500 text-xs mt-1">{errors.taxRegistrationNo}</p>}
-                </div>
-              </div>
-            </div>
-
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Contact Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Contact Person <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="contactPerson"
-                    value={formData.contactPerson}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.contactPerson ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  />
-                  {errors.contactPerson && <p className="text-red-500 text-xs mt-1">{errors.contactPerson}</p>}
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Address <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.address ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  />
-                  {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    City <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  />
-                  {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    ZIP Code <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="zipCode"
-                    value={formData.zipCode}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.zipCode ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  />
-                  {errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    State / Province
-                  </label>
-                  <input
-                    type="text"
-                    name="stateProvince"
-                    value={formData.stateProvince}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Country <span className="text-red-500">*</span>
@@ -399,7 +249,6 @@ const Register = () => {
                   />
                   {errors.country && <p className="text-red-500 text-xs mt-1">{errors.country}</p>}
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Phone Number <span className="text-red-500">*</span>
@@ -413,184 +262,6 @@ const Register = () => {
                   />
                   {errors.phoneNumber && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>}
                 </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone Number 2
-                  </label>
-                  <input
-                    type="tel"
-                    name="phoneNumber2"
-                    value={formData.phoneNumber2}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Mobile Phone
-                  </label>
-                  <input
-                    type="tel"
-                    name="mobilePhone"
-                    value={formData.mobilePhone}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Fax
-                  </label>
-                  <input
-                    type="tel"
-                    name="fax"
-                    value={formData.fax}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Billing Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Invoicing Contact
-                  </label>
-                  <input
-                    type="text"
-                    name="invoicingContact"
-                    value={formData.invoicingContact}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Agency Name
-                  </label>
-                  <input
-                    type="text"
-                    name="billingAgencyName"
-                    value={formData.billingAgencyName}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    E-mail Address
-                  </label>
-                  <input
-                    type="email"
-                    name="billingEmail"
-                    value={formData.billingEmail}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.billingEmail ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  />
-                  {errors.billingEmail && <p className="text-red-500 text-xs mt-1">{errors.billingEmail}</p>}
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Billing Address
-                  </label>
-                  <input
-                    type="text"
-                    name="billingAddress"
-                    value={formData.billingAddress}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    City
-                  </label>
-                  <input
-                    type="text"
-                    name="billingCity"
-                    value={formData.billingCity}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    ZIP Code
-                  </label>
-                  <input
-                    type="text"
-                    name="billingZipCode"
-                    value={formData.billingZipCode}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    State / Province
-                  </label>
-                  <input
-                    type="text"
-                    name="billingStateProvince"
-                    value={formData.billingStateProvince}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Country
-                  </label>
-                  <input
-                    type="text"
-                    name="billingCountry"
-                    value={formData.billingCountry}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    name="billingPhoneNumber"
-                    value={formData.billingPhoneNumber}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Additional Information</h2>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Remarks
-                </label>
-                <textarea
-                  name="remarks"
-                  value={formData.remarks}
-                  onChange={handleChange}
-                  rows="4"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
               </div>
             </div>
 
@@ -611,7 +282,6 @@ const Register = () => {
                   {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
                   <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters long</p>
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Repeat Password <span className="text-red-500">*</span>
@@ -633,7 +303,7 @@ const Register = () => {
                 type="submit"
                 className="px-6 py-3 bg-gradient-to-r from-[#005E84] to-[#0A435C] text-white font-semibold rounded-lg hover:from-[#075375] hover:to-[#005E84] focus:outline-none focus:ring-2 focus:ring-[#005E84] focus:ring-offset-2 transition-all shadow-md"
               >
-                Register Agency
+                Register
               </button>
             </div>
           </form>
