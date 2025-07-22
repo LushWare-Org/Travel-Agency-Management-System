@@ -514,7 +514,7 @@ const Search = () => {
             className="bg-cover bg-center h-32 sm:h-40 lg:h-60 shadow-lg rounded-2xl overflow-hidden"
             style={{
               backgroundImage:
-                "linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1920')"
+                "linear-gradient(to bottom, rgba(10,67,92,0.5), rgba(10,67,92,0.5)), url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1920')"
             }}
           >
             <div className="flex flex-col items-center justify-center h-full text-white text-center px-4">
@@ -535,8 +535,8 @@ const Search = () => {
             <Card elevation={5} sx={{
               borderRadius: 3,
               overflow: 'hidden',
-              border: '1px solid rgba(255,255,255,0.2)',
-              backgroundColor: 'rgba(255,255,255,0.98)'
+              border: '1px solid rgba(183,197,199,0.2)',
+              backgroundColor: '#E7E9E5'
             }}>
               <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
                 <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
@@ -546,7 +546,7 @@ const Search = () => {
                     <div className="relative destination-dropdown">
                       <input
                         type="text"
-                        className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
                         placeholder="Enter hotel or resort name"
                         value={destinationSearch}
                         onChange={e => {
@@ -581,7 +581,7 @@ const Search = () => {
                             .map(h => (
                               <div
                                 key={h._id}
-                                className="px-4 py-2 hover:bg-blue-50 cursor-pointer text-sm sm:text-base"
+                                className="px-4 py-2 hover:bg-ash_gray cursor-pointer text-sm sm:text-base"
                                 onClick={() => {
                                   setSelectedDestination(h);
                                   setDestinationSearch(h.name);
