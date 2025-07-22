@@ -2,7 +2,8 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 
-import ProtectedRoute from './Components/ProtectedRoute';
+// AUTHENTICATION DISABLED - ProtectedRoute import commented out
+// import ProtectedRoute from './Components/ProtectedRoute';
 import SidebarLayout from './Components/SidebarLayout'; // if you abstracted it
 import Footer from './Components/Footer';
 
@@ -40,23 +41,10 @@ export default function App() {
         <Route path="/search"         element={<SidebarLayout><Search/></SidebarLayout>} />
         <Route path="/special-offers" element={<SidebarLayout><SpecialOffers/></SidebarLayout>} />
 
-        {/* protected */}
-        <Route path="/settings" element={
-          <ProtectedRoute>
-            <SidebarLayout><Settings/></SidebarLayout>
-          </ProtectedRoute>
-        } />
-        <Route path="/bookings" element={
-          <ProtectedRoute>
-            <SidebarLayout><Bookings/></SidebarLayout>
-          </ProtectedRoute>
-        }/>
-
-        <Route path="/bookingRequest" element={
-          <ProtectedRoute>
-            <SidebarLayout><BookingRequest/></SidebarLayout>
-          </ProtectedRoute>
-        }/>
+        {/* protected - AUTHENTICATION DISABLED, all routes now accessible */}
+        <Route path="/settings" element={<SidebarLayout><Settings/></SidebarLayout>} />
+        <Route path="/bookings" element={<SidebarLayout><Bookings/></SidebarLayout>} />
+        <Route path="/bookingRequest" element={<SidebarLayout><BookingRequest/></SidebarLayout>} />
 
         {/* hotel search */}
 
@@ -70,19 +58,11 @@ export default function App() {
         {/* tour packages */}
         <Route path="/tours/:tourId" element={<SidebarLayout><TourDetails/></SidebarLayout>} />
 
-        {/* user profile */}
-        <Route path="/profile" element={
-          <ProtectedRoute>
-            <SidebarLayout><UserProfile/></SidebarLayout>
-          </ProtectedRoute>
-        }/>
+        {/* user profile - AUTHENTICATION DISABLED */}
+        <Route path="/profile" element={<SidebarLayout><UserProfile/></SidebarLayout>} />
 
-        {/* admin only */}
-        <Route path="/admin" element={
-          <ProtectedRoute requireAdmin>
-            <AdminPanel/>
-          </ProtectedRoute>
-        }/>
+        {/* admin only - AUTHENTICATION DISABLED, now accessible to all */}
+        <Route path="/admin" element={<AdminPanel/>} />
 
         {/* catch‑all */}
         <Route path="*" element={<Home/>} />
