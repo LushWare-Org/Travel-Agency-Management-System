@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Footer from '../Components/Footer';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ImageGallery from '../Components/ImageGallery';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Search, MapPin, Calendar, Users, Filter } from 'lucide-react';
 
 function useDeviceType() {
   const [deviceType, setDeviceType] = useState({
@@ -66,8 +64,6 @@ const Tours = () => {
             <ImageGallery searchQuery={searchTerm} passedCountry={titlePassed} />
           </div>
         </main>
-
-        <Footer />
       </div>
     </div>
   );
