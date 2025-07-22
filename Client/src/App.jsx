@@ -22,6 +22,7 @@ const Settings      = lazy(() => import('./pages/Settings'));
 const AdminPanel    = lazy(() => import('./pages/AdminPanel'));
 const Tours = lazy(() => import('./pages/Tours'));
 const TourDetails = lazy(() => import('./pages/TourDetails'));
+const Activities = lazy(() => import('./pages/Activities'));
 
 // point axios at your API & send cookies by default
 axios.defaults.baseURL = 'http://localhost:5001/api';
@@ -59,6 +60,9 @@ export default function App() {
 
           {/* tour packages */}
           <Route path="/tours/:tourId" element={<><TourDetails/><Footer/></>} />
+
+          {/* activities booking */}
+          <Route path="/activities" element={<><Activities/><Footer/></>} />
 
           {/* user profile - AUTHENTICATION DISABLED */}
           <Route path="/profile" element={<><UserProfile/><Footer/></>} />
