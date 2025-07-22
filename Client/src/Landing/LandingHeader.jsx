@@ -2,6 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
+const palette = {
+  platinum: "#E7E9E5",
+  ash_gray: "#B7C5C7",
+  lapis_lazuli: "#005E84",
+  indigo_dye: "#075375",
+  indigo_dye2: "#0A435C"
+};
+
 const LandingHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -20,7 +28,11 @@ const LandingHeader = () => {
   };
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-blue-900 shadow-lg" : "bg-gradient-to-r indigo-1000 backdrop-blur-md"}`}>
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      scrolled
+        ? "bg-[#B7C5C7] shadow-lg"
+        : "bg-gradient-to-r from-[#E7E9E5]/80 via-[#B7C5C7]/60 to-[#E7E9E5]/80 backdrop-blur-md"
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
@@ -32,28 +44,30 @@ const LandingHeader = () => {
               />
             </div>
             <div className="ml-4">
-              <h1 className="text-2xl font-bold text-white">IsleKey Holidays</h1>
+              <h1 className="text-2xl font-bold" style={{ color: palette.lapis_lazuli }}>IsleKey Holidays</h1>
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-8">
             {/* Updated links */}
-            <Link to="/search" className="text-white font-medium hover:text-blue-200 transition-colors" onClick={scrollToTop}>
+            <Link to="/search" className="font-medium hover:text-[#005E84] transition-colors" style={{ color: palette.indigo_dye2 }} onClick={scrollToTop}>
               Resorts
             </Link>
-            <Link to="/tours" className="text-white font-medium hover:text-blue-200 transition-colors" onClick={scrollToTop}>
+            <Link to="/tours" className="font-medium hover:text-[#005E84] transition-colors" style={{ color: palette.indigo_dye2 }} onClick={scrollToTop}>
               Tours
             </Link>
-            <span className="text-white font-medium cursor-default">Activities</span>
-            <Link to="/contact" className="text-white font-medium hover:text-blue-200 transition-colors" onClick={scrollToTop}>
+            <span className="font-medium cursor-default" style={{ color: palette.indigo_dye2 }}>Activities</span>
+            <Link to="/contact" className="font-medium hover:text-[#005E84] transition-colors" style={{ color: palette.indigo_dye2 }} onClick={scrollToTop}>
               Contact Us
             </Link>
-            <Link to="/login" className="text-blue-100 font-medium hover:text-blue-200 transition-colors" onClick={scrollToTop}>
+            <Link to="/login" className="font-medium hover:text-[#005E84] transition-colors" style={{ color: palette.lapis_lazuli }} onClick={scrollToTop}>
               Login
             </Link>
             <Link 
               to="/register" 
               className={`px-6 py-2 rounded-full font-medium shadow-md transition-all duration-300 ${
-                scrolled ? "bg-blue-500 hover:bg-blue-600 text-white" : "bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30"
+                scrolled
+                  ? "bg-[#E7E9E5] hover:bg-[#B7C5C7] text-[#005E84]"
+                  : "bg-white/30 backdrop-blur-sm hover:bg-white/50 text-[#005E84] border border-white/30"
               }`}
               onClick={scrollToTop}
             >
@@ -74,25 +88,25 @@ const LandingHeader = () => {
         </div>
       </div>
       {isMenuOpen && (
-        <div className="md:hidden bg-indigo-900 bg-opacity-95 backdrop-blur-sm">
+        <div className="md:hidden bg-[#B7C5C7] bg-opacity-95 backdrop-blur-sm">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {/* Updated mobile links */}
-            <Link to="/search" className="text-white block px-3 py-2 rounded-md font-medium" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
+            <Link to="/search" className="block px-3 py-2 rounded-md font-medium" style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
               Resorts
             </Link>
-            <Link to="/tours" className="text-white block px-3 py-2 rounded-md font-medium" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
+            <Link to="/tours" className="block px-3 py-2 rounded-md font-medium" style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
               Tours
             </Link>
-            <span className="text-white block px-3 py-2 rounded-md font-medium cursor-default">
+            <span className="block px-3 py-2 rounded-md font-medium cursor-default" style={{ color: palette.indigo_dye2 }}>
               Activities
             </span>
-            <Link to="/contact" className="text-white block px-3 py-2 rounded-md font-medium hover:text-blue-200" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
+            <Link to="/contact" className="block px-3 py-2 rounded-md font-medium hover:text-[#005E84]" style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
               Contact Us
             </Link>
-            <Link to="/login" className="text-blue-100 block px-3 py-2 rounded-md font-medium hover:text-white hover:bg-indigo-600" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
+            <Link to="/login" className="block px-3 py-2 rounded-md font-medium hover:text-[#005E84] hover:bg-[#E7E9E5]" style={{ color: palette.lapis_lazuli }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
               Login
             </Link>
-            <Link to="/register" className="bg-blue-500 text-white block px-3 py-2 rounded-md font-medium hover:bg-blue-600 mt-4" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
+            <Link to="/register" className="bg-[#E7E9E5] text-[#005E84] block px-3 py-2 rounded-md font-medium hover:bg-[#B7C5C7] mt-4" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
               Register
             </Link>
           </div>
