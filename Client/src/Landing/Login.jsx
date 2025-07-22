@@ -210,7 +210,7 @@ const Login = ({ setIsAuthenticated }) => {
         )}
       </nav>
 
-      <div className="flex-grow flex pt-20">
+      <div className="flex-grow flex">
         <div className="hidden md:block w-1/2 relative overflow-hidden">
           {backgroundImages.map((image, index) => (
             <div
