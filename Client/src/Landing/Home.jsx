@@ -54,13 +54,13 @@ const Home = () => {
               <div className="flex-shrink-0">
                 <img 
               className="h-16 w-auto mb-1" 
-              src="./Logo.png" 
+              src="./IsleKey Logo.jpg" 
               alt="Logo" 
             />
               </div>
               <div className="ml-4">
-                <h1 className="text-2xl font-bold text-white">Yomaldives</h1>
-                <p className="text-indigo-200 text-sm">Maldives Wholesale Experts</p>
+                <h1 className="text-2xl font-bold text-white">IsleKey Holidays</h1>
+                {/* <p className="text-indigo-200 text-sm">Maldives Wholesale Experts</p> */}
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-8">
