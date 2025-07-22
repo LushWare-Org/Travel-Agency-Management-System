@@ -44,7 +44,9 @@ const LandingHeader = () => {
               Tours
             </Link>
             <span className="text-white font-medium cursor-default">Activities</span>
-            <span className="text-white font-medium cursor-default">Contact Us</span>
+            <Link to="/contact" className="text-white font-medium hover:text-blue-200 transition-colors" onClick={scrollToTop}>
+              Contact Us
+            </Link>
             <Link to="/login" className="text-blue-100 font-medium hover:text-blue-200 transition-colors" onClick={scrollToTop}>
               Login
             </Link>
@@ -84,9 +86,9 @@ const LandingHeader = () => {
             <span className="text-white block px-3 py-2 rounded-md font-medium cursor-default">
               Activities
             </span>
-            <span className="text-white block px-3 py-2 rounded-md font-medium cursor-default">
+            <Link to="/contact" className="text-white block px-3 py-2 rounded-md font-medium hover:text-blue-200" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
               Contact Us
-            </span>
+            </Link>
             <Link to="/login" className="text-blue-100 block px-3 py-2 rounded-md font-medium hover:text-white hover:bg-indigo-600" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>
               Login
             </Link>
