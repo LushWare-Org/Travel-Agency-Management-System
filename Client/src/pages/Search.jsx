@@ -11,7 +11,6 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-import Header from '../Components/Header';
 import HotelCard from '../Components/HotelCard';
 import Footer from '../Components/Footer';
 import { countries } from '../assets/nationalities';
@@ -45,7 +44,7 @@ const getRoomPrice = (room, nationality) => {
   return Number(room.basePrice || 0) + surcharge;
 };
 
-const Search = ({ sidebarOpen }) => {
+const Search = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -496,9 +495,11 @@ const Search = ({ sidebarOpen }) => {
     return hotel ? hotel.rooms : [];
   };
 
-  const toggleFavorite = id => setFavorites(f => ({ ...f, [id]: !f[id] }));  if (loading) {
+  const toggleFavorite = id => setFavorites(f => ({ ...f, [id]: !f[id] }));
+
+  if (loading) {
     return (
-      <div className={`flex justify-center items-center h-screen bg-gray-50 transition-all duration-300 ${sidebarOpen ? 'sm:pl-64' : 'sm:pl-16'} pl-0`}>
+      <div className="flex justify-center items-center h-screen bg-gray-50">
         <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
@@ -506,8 +507,7 @@ const Search = ({ sidebarOpen }) => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className={`transition-all duration-300 ${sidebarOpen ? 'sm:pl-64' : 'sm:pl-16'} pl-0`}>
-        <Header />
+      <div>
         <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
           {/* Banner */}
           <header
@@ -1127,7 +1127,6 @@ const Search = ({ sidebarOpen }) => {
             </Card>
           </Box>
         </main>
-        <Footer />
       </div>
     </div>
   );

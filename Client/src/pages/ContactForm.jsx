@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Header from '../Components/Header';  
 import Footer from '../Components/Footer';
 
-const Contact = ({ sidebarOpen }) => {
+const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -118,15 +117,8 @@ const Contact = ({ sidebarOpen }) => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <div 
-        className={`flex-1 overflow-y-auto bg-gray-100 transition-all duration-300 ${
-          sidebarOpen ? 'md:ml-64' : 'md:ml-16'
-        } ml-0`}
-      >
-        <Header />
-        
-        <main className="px-4 md:px-8 py-6 md:py-10 max-w-3xl md:max-w-7xl mx-auto">
+    <div className="bg-gray-100 min-h-screen">
+      <main className="px-4 md:px-8 py-6 md:py-10 max-w-3xl md:max-w-7xl mx-auto">
           {/* Header */}
           <header
             id="contact-header"
@@ -313,9 +305,7 @@ const Contact = ({ sidebarOpen }) => {
           </div>
         </main>
         
-        {/* Footer */}
         <Footer />
-      </div>
     </div>
   );
 };

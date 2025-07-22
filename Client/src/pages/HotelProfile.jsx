@@ -5,13 +5,12 @@ import axios from "axios"
 import { FaBed, FaPhone, FaGlobe, FaEnvelope } from "react-icons/fa"
 import { MdLocationOn } from "react-icons/md"
 import { AiFillStar } from "react-icons/ai"
-import Header from "../Components/Header"
 import Footer from "../Components/Footer"
 import RoomCard from "../Components/RoomCard"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
-function HotelProfile({ sidebarOpen }) {
+function HotelProfile() {
   const { hotelId } = useParams()
   const navigate = useNavigate()
   const locationState = useLocation()
@@ -295,11 +294,8 @@ function HotelProfile({ sidebarOpen }) {
   } = hotelData
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 font-sans">
-      <div className={`flex-1 overflow-y-auto transition-all duration-300 ${sidebarOpen ? "md:ml-64" : "md:ml-16"} ml-0`}>
-        <Header />
-
-        <section className="relative h-80 sm:h-[400px] md:h-[600px] overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 font-sans">
+      <section className="relative h-80 sm:h-[400px] md:h-[600px] overflow-hidden">
           <img src={gallery[0] || "/placeholder.svg"} alt={name} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
             <div className="container mx-auto px-4 sm:px-6 pb-6 sm:pb-8 md:pb-16">

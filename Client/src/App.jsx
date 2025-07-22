@@ -5,7 +5,6 @@ import LandingHeader from './Landing/LandingHeader';
 
 // AUTHENTICATION DISABLED - ProtectedRoute import commented out
 // import ProtectedRoute from './Components/ProtectedRoute';
-import SidebarLayout from './Components/SidebarLayout'; // if you abstracted it
 import Footer from './Components/Footer';
 
 const Home          = lazy(() => import('./Landing/Home'));
@@ -39,30 +38,30 @@ export default function App() {
           <Route path="/login"  element={<><Login/><Footer/></>} />
           <Route path="/register" element={<><Register/><Footer/></>} />
 
-          {/* sidebar pages (public) */}
-          <Route path="/contact"        element={<SidebarLayout><ContactForm/></SidebarLayout>} />
-          <Route path="/search"         element={<SidebarLayout><Search/></SidebarLayout>} />
-          <Route path="/special-offers" element={<SidebarLayout><SpecialOffers/></SidebarLayout>} />
+          {/* pages without sidebar */}
+          <Route path="/contact"        element={<><ContactForm/><Footer/></>} />
+          <Route path="/search"         element={<><Search/><Footer/></>} />
+          <Route path="/special-offers" element={<><SpecialOffers/><Footer/></>} />
 
           {/* protected - AUTHENTICATION DISABLED, all routes now accessible */}
-          <Route path="/settings" element={<SidebarLayout><Settings/></SidebarLayout>} />
-          <Route path="/bookings" element={<SidebarLayout><Bookings/></SidebarLayout>} />
-          <Route path="/bookingRequest" element={<SidebarLayout><BookingRequest/></SidebarLayout>} />
+          <Route path="/settings" element={<><Settings/><Footer/></>} />
+          <Route path="/bookings" element={<><Bookings/><Footer/></>} />
+          <Route path="/bookingRequest" element={<><BookingRequest/><Footer/></>} />
 
           {/* hotel search */}
 
           {/* hotel/room profiles */}
-          <Route path="/hotels/:hotelId" element={<SidebarLayout><HotelProfile/></SidebarLayout>} />
-          <Route path="/hotels/:hotelId/rooms/:roomId" element={<SidebarLayout><RoomProfile/></SidebarLayout>} />
+          <Route path="/hotels/:hotelId" element={<><HotelProfile/><Footer/></>} />
+          <Route path="/hotels/:hotelId/rooms/:roomId" element={<><RoomProfile/><Footer/></>} />
 
           {/* tour search */}
-          <Route path="/tours" element={<SidebarLayout><Tours/></SidebarLayout>} />
+          <Route path="/tours" element={<><Tours/><Footer/></>} />
 
           {/* tour packages */}
-          <Route path="/tours/:tourId" element={<SidebarLayout><TourDetails/></SidebarLayout>} />
+          <Route path="/tours/:tourId" element={<><TourDetails/><Footer/></>} />
 
           {/* user profile - AUTHENTICATION DISABLED */}
-          <Route path="/profile" element={<SidebarLayout><UserProfile/></SidebarLayout>} />
+          <Route path="/profile" element={<><UserProfile/><Footer/></>} />
 
           {/* admin only - AUTHENTICATION DISABLED, now accessible to all */}
           <Route path="/admin" element={<AdminPanel/>} />
