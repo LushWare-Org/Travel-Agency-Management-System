@@ -294,8 +294,9 @@ function HotelProfile() {
   } = hotelData
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 font-sans">
-      <section className="relative h-80 sm:h-[400px] md:h-[600px] overflow-hidden">
+    <>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 font-sans">
+        <section className="relative h-80 sm:h-[400px] md:h-[600px] overflow-hidden">
           <img src={gallery[0] || "/placeholder.svg"} alt={name} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
             <div className="container mx-auto px-4 sm:px-6 pb-6 sm:pb-8 md:pb-16">
@@ -1058,7 +1059,7 @@ function HotelProfile() {
           scrollbar-width: none;
         }
       `}</style>
-    </div>
+    </>
   )
 }
 
