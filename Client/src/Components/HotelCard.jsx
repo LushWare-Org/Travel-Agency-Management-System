@@ -15,7 +15,7 @@ const HotelCard = ({ hotel, onClick, isFavorite, onFavoriteToggle, availbleNoOfR
         className="w-full h-full object-cover"
       />
       {hotel.limited && (
-        <div className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-indigo-600 text-white px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded-full z-20">
+        <div className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-[#005E84] text-white px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded-full z-20">
           Limited
         </div>
       )}
@@ -47,8 +47,8 @@ const HotelCard = ({ hotel, onClick, isFavorite, onFavoriteToggle, availbleNoOfR
           ))}
           <span className="text-xs sm:text-sm text-gray-500 ml-1">({hotel.starRating || 0})</span>
         </div>
-        <div className="bg-indigo-100 hover:bg-indigo-200 rounded-full px-3 sm:px-4 py-1 transition-colors duration-300 min-h-[36px] flex items-center">
-          <span className="text-indigo-600 font-medium text-xs sm:text-sm">View</span>
+        <div className="bg-[#B7C5C7] hover:bg-[#c6d1d2] rounded-full px-3 sm:px-4 py-1 transition-colors duration-300 min-h-[36px] flex items-center">
+          <span className="text-[#005E84] font-medium text-xs sm:text-sm">View</span>
         </div>
       </div>
     </div>
