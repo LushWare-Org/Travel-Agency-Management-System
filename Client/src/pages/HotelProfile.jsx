@@ -355,7 +355,7 @@ function HotelProfile() {
 
                 <div className="lg:sticky lg:top-20">
                   <div className="bg-white border border-gray-100 rounded-2xl shadow-lg overflow-hidden">
-                    <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
+                    <div className="bg-gradient-to-r from-lapis_lazuli to-indigo_dye text-white p-6">
                       <div className="flex items-center">
                         <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl mr-4">
                           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -364,14 +364,14 @@ function HotelProfile() {
                         </div>
                         <div>
                           <h3 className="text-xl font-bold">Meal Plans</h3>
-                          <p className="text-blue-100 text-sm mt-1">Select your perfect meal experience</p>
+                          <p className="text-ash_gray text-sm mt-1">Select your perfect meal experience</p>
                         </div>
                       </div>
                     </div>
                     
-                    <div className="p-6 space-y-4 bg-gray-50/50">
+                    <div className="p-6 space-y-4 bg-platinum/50">
                       {mealPlans.map((plan, i) => (
-                        <div key={i} className="bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-200 group">
+                        <div key={i} className="bg-white border border-platinum rounded-xl p-5 shadow-sm hover:shadow-md hover:border-lapis_lazuli transition-all duration-200 group">
                           <div className="flex justify-between items-start mb-3">
                             <h4 className="font-semibold text-base text-gray-800 group-hover:text-blue-700 transition-colors">
                               {plan.planName}
