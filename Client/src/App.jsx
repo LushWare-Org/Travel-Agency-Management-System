@@ -2,10 +2,11 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import LandingHeader from './Landing/LandingHeader';
+import Footer from './Components/Footer';
+import WhatsappIcon from './Components/WhatsappIcon';
 
 // AUTHENTICATION DISABLED - ProtectedRoute import commented out
 // import ProtectedRoute from './Components/ProtectedRoute';
-import Footer from './Components/Footer';
 
 const Home          = lazy(() => import('./Landing/Home'));
 const Login         = lazy(() => import('./Landing/Login'));
@@ -74,6 +75,7 @@ export default function App() {
           <Route path="*" element={<Home/>} />
         </Routes>
       </div>
+      <WhatsappIcon />
     </Suspense>
   );
 }
