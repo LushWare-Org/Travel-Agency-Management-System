@@ -37,7 +37,6 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-import AgencyManagement from './AgencyManagement';
 import HotelManagement from './HotelManagement';
 import RoomManagement from './RoomManagement';
 import BookingManagement from './BookingManagement';
@@ -98,7 +97,6 @@ export default function AdminPanel() {
 
   const menuItems = [
     { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon /> },
-    { id: 'agencies', text: 'Agency Management', icon: <PeopleIcon /> },
     { id: 'hotels', text: 'Hotel Management', icon: <HotelIcon /> },
     { id: 'rooms', text: 'Room Management', icon: <RoomIcon /> },
     { id: 'bookings', text: 'Booking Oversight', icon: <BookingIcon /> },
@@ -176,7 +174,6 @@ export default function AdminPanel() {
   const renderSection = () => {
     switch (section) {
       case 'dashboard': return <Dashboard />;
-      case 'agencies': return <AgencyManagement />;
       case 'hotels': return <HotelManagement />;
       case 'rooms': return <RoomManagement />;
       case 'bookings': return <BookingManagement />;
