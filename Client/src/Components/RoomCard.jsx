@@ -65,7 +65,7 @@ const RoomCard = ({ room, onSelect }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl overflow-hidden border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 h-auto">
+    <div className="bg-platinum-500 rounded-xl overflow-hidden border border-platinum-400 shadow-lg hover:shadow-xl transition-all duration-300 h-auto">
       <div className="flex flex-col md:flex-row">
         <div className="md:w-60 md:h-auto overflow-hidden">
           <img
@@ -76,29 +76,29 @@ const RoomCard = ({ room, onSelect }) => {
         </div>
         <div className="flex-1 p-4 sm:p-6 md:p-8 flex flex-col justify-between">
           <div>
-            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-2 sm:mb-3">{roomName}</h3>
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-platinum-100 mb-2 sm:mb-3">{roomName}</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-3 sm:mb-4">
-              <div className="bg-gray-50 p-2 sm:p-3 rounded-lg text-center">
-                <p className="text-gray-500 text-xs sm:text-sm mb-1">Size</p>
+              <div className="bg-platinum-400 p-2 sm:p-3 rounded-lg text-center">
+                <p className="text-platinum-200 text-xs sm:text-sm mb-1">Size</p>
                 <p className="font-semibold text-xs sm:text-sm">{size} m²</p>
               </div>
-              <div className="bg-gray-50 p-2 sm:p-3 rounded-lg text-center">
-                <p className="text-gray-500 text-xs sm:text-sm mb-1">Bed</p>
+              <div className="bg-platinum-400 p-2 sm:p-3 rounded-lg text-center">
+                <p className="text-platinum-200 text-xs sm:text-sm mb-1">Bed</p>
                 <p className="font-semibold text-xs sm:text-sm">{bedType}</p>
               </div>
-              <div className="bg-gray-50 p-2 sm:p-3 rounded-lg text-center">
-                <p className="text-gray-500 text-xs sm:text-sm mb-1">Adults</p>
+              <div className="bg-platinum-400 p-2 sm:p-3 rounded-lg text-center">
+                <p className="text-platinum-200 text-xs sm:text-sm mb-1">Adults</p>
                 <p className="font-semibold text-xs sm:text-sm">{adults}</p>
               </div>
-              <div className="bg-gray-50 p-2 sm:p-3 rounded-lg text-center">
-                <p className="text-gray-500 text-xs sm:text-sm mb-1">Children</p>
+              <div className="bg-platinum-400 p-2 sm:p-3 rounded-lg text-center">
+                <p className="text-platinum-200 text-xs sm:text-sm mb-1">Children</p>
                 <p className="font-semibold text-xs sm:text-sm">{children}</p>
               </div>
             </div>
             {transportations && transportations.length > 0 && (
               <div className="mb-2 sm:mb-3">
                 {transportations.map((t, idx) => (
-                  <div key={idx} className="flex items-center gap-2 bg-ash_gray-100 text-indigo_dye px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm w-fit mb-1">
+                  <div key={idx} className="flex items-center gap-2 bg-ash_gray-500 text-indigo_dye-500 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm w-fit mb-1">
                     {getTransportIcon(t.method)}
                     <span>
                       {getTransportType(t.type)}: {t.method}
@@ -111,23 +111,23 @@ const RoomCard = ({ room, onSelect }) => {
               {amenities.map((amenity, idx) => (
                 <span
                   key={idx}
-                  className="bg-ash_gray-100 text-indigo_dye px-2 sm:px-3 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm"
+                  className="bg-ash_gray-500 text-indigo_dye-500 px-2 sm:px-3 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm"
                 >
                   {amenity}
                 </span>
               ))}
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t border-gray-100 pt-3 sm:pt-4 mt-3 sm:mt-0">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t border-platinum-400 pt-3 sm:pt-4 mt-3 sm:mt-0">
             <div className="mb-6 sm:mb-0">
-              <p className="text-gray-500 text-xs sm:text-sm">${currentPrice} × {nights} {nights === 1 ? 'night' : 'nights'}</p>
-              <p className="text-sm sm:text-xl md:text-2xl font-bold text-lapis_lazuli">
+              <p className="text-platinum-200 text-xs sm:text-sm">${currentPrice} × {nights} {nights === 1 ? 'night' : 'nights'}</p>
+              <p className="text-sm sm:text-xl md:text-2xl font-bold text-lapis_lazuli-500">
                 Total: ${totalPrice}
               </p>
             </div>
             <button
               onClick={() => onSelect(_id)}
-              className="bg-lapis_lazuli hover:bg-indigo_dye text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg flex items-center gap-2 transition-colors shadow-md hover:shadow-lg w-full sm:w-auto text-xs sm:text-sm min-h-[44px]"
+              className="bg-lapis_lazuli-500 hover:bg-indigo_dye-500 text-platinum-900 px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg flex items-center gap-2 transition-colors shadow-md hover:shadow-lg w-full sm:w-auto text-xs sm:text-sm min-h-[44px]"
             >
               <FaBed className="w-4 sm:w-5 h-4 sm:h-5" />
               Book This Room
