@@ -152,7 +152,7 @@ const Itinerary = ({selectedNightsKey}) => {
               transition-all duration-300 transform border-2 rounded-lg cursor-pointer w-full 
               ${
                 activeTab === tab
-                  ? "bg-blue-600 text-white shadow-md border-blue-600"
+                  ? "bg-lapis_lazuli text-white shadow-md border-lapis_lazuli"
                   : "bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-300"
               }`}
             onClick={() => setActiveTab(tab)}
@@ -172,10 +172,10 @@ const Itinerary = ({selectedNightsKey}) => {
               >
                 <div className="itinerary-desc-wrap flex flex-col gap-4 p-2 flex-1">
                   <div className="flex items-center flex-wrap gap-2">
-                    <div className="itinerary-day-box px-4 py-2 bg-blue-500 text-white font-semibold text-xl md:text-2xl">
+                    <div className="itinerary-day-box px-4 py-2 bg-lapis_lazuli text-white font-semibold text-xl md:text-2xl">
                       Day {dayItem.day}
                     </div>
-                    <div className="itinerary-title bg-gray-200 px-4 py-2 w-full md:w-auto text-lg md:text-2xl font-semibold text-blue-800">
+                    <div className="itinerary-title bg-ash_gray px-4 py-2 w-full md:w-auto text-lg md:text-2xl font-semibold text-lapis_lazuli">
                       {dayItem.title}
                     </div>
                   </div>
@@ -272,12 +272,12 @@ const Itinerary = ({selectedNightsKey}) => {
               )}
             </div>
 
-            <h2 className="text-4xl font-semibold mb-6 mt-6 text-center text-blue-900">
+            <h2 className="text-4xl font-semibold mb-6 mt-6 text-center text-lapis_lazuli">
               What&apos;s Inside the Package?
             </h2>
             <div className="flex flex-col md:flex-row gap-4">
-              <div className="inclusions w-full md:w-1/2 border p-4 bg-gray-100/50">
-                <h3 className="text-xl font-bold mb-4 text-gray-700">Inclusions</h3>
+              <div className="inclusions w-full md:w-1/2 border p-4 bg-ash_gray/50">
+                <h3 className="text-xl font-bold mb-4 text-indigo_dye">Inclusions</h3>
                 <Divider/>
                 {Array.isArray(tourData.inclusions) && tourData.inclusions.length > 0 ? (
                   <ul className="list-none gap-y-4 text-lg mt-4">
@@ -292,8 +292,8 @@ const Itinerary = ({selectedNightsKey}) => {
                   <p className="text-gray-700 text-lg">No inclusions available.</p>
                 )}
               </div>
-              <div className="exclusions w-full md:w-1/2 border p-4 bg-gray-100/50">
-                <h3 className="text-xl font-bold mb-4 text-gray-700">Exclusions</h3>
+              <div className="exclusions w-full md:w-1/2 border p-4 bg-ash_gray/50">
+                <h3 className="text-xl font-bold mb-4 text-indigo_dye">Exclusions</h3>
                 <Divider />
                 {Array.isArray(tourData.exclusions) && tourData.exclusions.length > 0 ? (
                   <ul className="list-none gap-y-4 text-lg mt-4">
@@ -312,7 +312,7 @@ const Itinerary = ({selectedNightsKey}) => {
 
             <div className="mt-12 space-y-12 lg:p-0 p-6">
               <div>
-                <h3 className="text-3xl font-semibold text-blue-900 mb-6">Refund Policies</h3>
+                <h3 className="text-3xl font-semibold text-lapis_lazuli mb-6">Refund Policies</h3>
                 <p className="text-gray-700 text-lg mb-6 text-justify">
                   Refund policies are designed to uphold fairness and transparency, ensuring peace of mind for our valued travelers.
                 </p>
@@ -324,7 +324,7 @@ const Itinerary = ({selectedNightsKey}) => {
               </div>
 
               <div>
-                <h3 className="text-3xl font-semibold text-blue-900 mb-6">Payment Methods</h3>
+                <h3 className="text-3xl font-semibold text-lapis_lazuli mb-6">Payment Methods</h3>
                 <p className="text-gray-700 text-lg mb-6 text-justify">
                   We provide a variety of secure and convenient payment options.
                 </p>
@@ -336,7 +336,7 @@ const Itinerary = ({selectedNightsKey}) => {
               </div>
 
               <div>
-                <h3 className="text-3xl font-semibold text-blue-900 mb-6">Payment Policies</h3>
+                <h3 className="text-3xl font-semibold text-lapis_lazuli mb-6">Payment Policies</h3>
                 <p className="text-gray-700 text-lg mb-6 text-justify">
                   To secure your booking, we require either full payment or a partial deposit.
                 </p>
