@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import axios from "axios"
 import Footer from "../Components/Footer"
-import Header from "../Components/Header"
 import { FaCheckCircle, FaBed, FaRulerCombined, FaUsers, FaShip, FaPlane, FaCar, FaPlaneDeparture } from "react-icons/fa"
 import { countries } from "../assets/nationalities"
 
@@ -521,7 +520,6 @@ const handleChange = (e) => {
   // --- DESKTOP LAYOUT ---
   const renderDesktopLayout = () => (
     <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-indigo-100 flex flex-col">
-      <Header />
       <div className="flex flex-1">
         <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? "md:ml-64" : "md:ml-20"} ml-0`}>
           <div className="container mx-auto px-6 py-8 max-w-7xl overflow-x-hidden">
@@ -1564,7 +1562,7 @@ const handleChange = (e) => {
           </div>
         </div>
       </div>
-      <Footer />
+      
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
