@@ -270,7 +270,7 @@ const TourDetails = ({ sidebarOpen }) => {
           />
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#005E84] mx-auto"></div>
               <p className="mt-4 text-gray-600">Loading tour details...</p>
             </div>
           </div>
@@ -293,7 +293,7 @@ const TourDetails = ({ sidebarOpen }) => {
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Tour not found</h2>
               <Button
                 onClick={() => navigate('/tours')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
+                className="bg-[#005E84] hover:bg-[#075375] text-white px-6 py-2 rounded-lg"
               >
                 Back to Tours
               </Button>
@@ -324,8 +324,8 @@ const TourDetails = ({ sidebarOpen }) => {
             className="bg-cover bg-center h-32 sm:h-40 lg:h-60 shadow-lg rounded-2xl overflow-hidden mb-4 sm:mb-6 lg:mb-8"
             style={{
               backgroundImage: tour.tour_image 
-                ? `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${tour.tour_image})`
-                : "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920')"
+                ? `linear-gradient(to bottom, rgba(10, 67, 92, 0.5), rgba(10, 67, 92, 0.5)), url(${tour.tour_image})`
+                : "linear-gradient(to bottom, rgba(10, 67, 92, 0.5), rgba(10, 67, 92, 0.5)), url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920')"
             }}
           >
             <div className="flex flex-col items-center justify-center h-full text-white text-center px-4">
@@ -333,12 +333,12 @@ const TourDetails = ({ sidebarOpen }) => {
                 {tour.title}
               </h1>
               <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-xs sm:text-sm">
-                <div className="flex items-center bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
-                  <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                <div className="flex items-center bg-[#005E84]/20 backdrop-blur-sm rounded-full px-3 py-1">
+                  <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-[#005E84]" />
                   {daysCount} Days / {nightsCount} Nights
                 </div>
-                <div className="flex items-center bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
-                  <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                <div className="flex items-center bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full px-3 py-1">
+                  <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-[#B7C5C7]" />
                   For {personCount} Person(s)
                 </div>
               </div>
@@ -352,7 +352,7 @@ const TourDetails = ({ sidebarOpen }) => {
               {/* Package Selection Cards */}
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                  <Star className="w-6 h-6 mr-2 text-yellow-500" />
+                  <Star className="w-6 h-6 mr-2 text-[#005E84]" />
                   Customize Your Package
                 </h2>
 
@@ -370,7 +370,7 @@ const TourDetails = ({ sidebarOpen }) => {
                           }}
                           className={`p-4 rounded-lg border-2 transition-all duration-200 ${
                             selectedNightsKey === key
-                              ? 'border-blue-500 bg-blue-50 text-blue-700'
+                              ? 'border-[#005E84] bg-[#B7C5C7]/20 text-[#005E84]'
                               : 'border-gray-200 hover:border-gray-300 bg-white'
                           }`}
                         >
@@ -393,7 +393,7 @@ const TourDetails = ({ sidebarOpen }) => {
                           onClick={() => setSelectedNightsOption(optKey)}
                           className={`w-full p-4 rounded-lg border-2 transition-all duration-200 text-left ${
                             selectedNightsOption === optKey
-                              ? 'border-blue-500 bg-blue-50 text-blue-700'
+                              ? 'border-[#005E84] bg-[#B7C5C7]/20 text-[#005E84]'
                               : 'border-gray-200 hover:border-gray-300 bg-white'
                           }`}
                         >
@@ -419,7 +419,7 @@ const TourDetails = ({ sidebarOpen }) => {
                             onClick={() => setSelectedFoodCategory(key)}
                             className={`p-4 rounded-lg border-2 transition-all duration-200 ${
                               selectedFoodCategory === key
-                                ? 'border-green-500 bg-green-50 text-green-700'
+                                ? 'border-[#075375] bg-[#B7C5C7]/20 text-[#075375]'
                                 : 'border-gray-200 hover:border-gray-300 bg-white'
                             }`}
                           >
@@ -452,7 +452,7 @@ const TourDetails = ({ sidebarOpen }) => {
               {/* Image Gallery Section */}
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                  <MapPin className="w-6 h-6 mr-2 text-red-500" />
+                  <MapPin className="w-6 h-6 mr-2 text-[#0A435C]" />
                   Tour Gallery
                 </h2>
 
@@ -544,7 +544,7 @@ const TourDetails = ({ sidebarOpen }) => {
               {/* Itinerary Section */}
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                  <Calendar className="w-6 h-6 mr-2 text-blue-500" />
+                  <Calendar className="w-6 h-6 mr-2 text-[#005E84]" />
                   Tour Itinerary
                 </h2>
                 <Itinerary selectedNightsKey={selectedNightsKey} />
@@ -555,7 +555,7 @@ const TourDetails = ({ sidebarOpen }) => {
             <div className="xl:col-span-1">
               <div className="sticky top-8 space-y-6">
                 {/* Price Card */}
-                <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl shadow-xl p-6 text-white">
+                <div className="bg-gradient-to-br from-[#005E84] to-[#075375] rounded-xl shadow-xl p-6 text-white">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-bold">Total Price</h3>
                     <DollarSign className="w-6 h-6" />
@@ -564,11 +564,11 @@ const TourDetails = ({ sidebarOpen }) => {
                     {selectedCurrency} {convertPrice(totalPrice)}
                   </div>
                   {finalOldPrice > totalPrice && (
-                    <div className="text-blue-200 line-through text-lg mb-2">
+                    <div className="text-[#B7C5C7] line-through text-lg mb-2">
                       {selectedCurrency} {convertPrice(finalOldPrice)}
                     </div>
                   )}
-                  <div className="text-blue-200 text-sm">
+                  <div className="text-[#B7C5C7] text-sm">
                     For {personCount} Person(s)
                   </div>
                 </div>
@@ -576,9 +576,9 @@ const TourDetails = ({ sidebarOpen }) => {
                 {/* Tour Details Cards */}
                 <div className="space-y-4">
                   {/* Duration Card */}
-                  <div className="bg-white rounded-xl shadow-lg p-4 border-l-4 border-blue-500">
+                  <div className="bg-white rounded-xl shadow-lg p-4 border-l-4 border-[#005E84]">
                     <div className="flex items-center">
-                      <Clock className="w-5 h-5 text-blue-600 mr-3" />
+                      <Clock className="w-5 h-5 text-[#005E84] mr-3" />
                       <div>
                         <div className="font-semibold text-gray-800">Duration</div>
                         <div className="text-gray-600">{daysCount} Days / {nightsCount} Nights</div>
@@ -587,9 +587,9 @@ const TourDetails = ({ sidebarOpen }) => {
                   </div>
 
                   {/* Valid Period Card */}
-                  <div className="bg-white rounded-xl shadow-lg p-4 border-l-4 border-green-500">
+                  <div className="bg-white rounded-xl shadow-lg p-4 border-l-4 border-[#B7C5C7]">
                     <div className="flex items-center">
-                      <Calendar className="w-5 h-5 text-green-600 mr-3" />
+                      <Calendar className="w-5 h-5 text-[#B7C5C7] mr-3" />
                       <div>
                         <div className="font-semibold text-gray-800">Valid Period</div>
                         <div className="text-gray-600 text-sm">
@@ -608,9 +608,9 @@ const TourDetails = ({ sidebarOpen }) => {
                   </div>
 
                   {/* Expiry Card */}
-                  <div className="bg-white rounded-xl shadow-lg p-4 border-l-4 border-red-500">
+                  <div className="bg-white rounded-xl shadow-lg p-4 border-l-4 border-[#0A435C]">
                     <div className="flex items-center">
-                      <CalendarMonthIcon className="w-5 h-5 text-red-600 mr-3" />
+                      <CalendarMonthIcon className="w-5 h-5 text-[#0A435C] mr-3" />
                       <div>
                         <div className="font-semibold text-gray-800">Expires On</div>
                         <div className="text-gray-600">
@@ -629,7 +629,7 @@ const TourDetails = ({ sidebarOpen }) => {
                 <div className="space-y-3">
                   <button
                     onClick={handleOpenDialog}
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
+                    className="w-full bg-gradient-to-r from-[#005E84] to-[#075375] hover:from-[#075375] hover:to-[#0A435C] text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
                   >
                     <SendIcon className="w-5 h-5 mr-2" />
                     Inquire Now
@@ -637,7 +637,7 @@ const TourDetails = ({ sidebarOpen }) => {
                   
                   <button
                     onClick={() => navigate('/tours')}
-                    className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-xl transition-all duration-200"
+                    className="w-full bg-[#B7C5C7] hover:bg-[#0A435C] text-gray-800 font-semibold py-3 px-6 rounded-xl transition-all duration-200"
                 >
                   Back to Tours
                 </button>
@@ -651,7 +651,7 @@ const TourDetails = ({ sidebarOpen }) => {
       {/* WhatsApp Floating Button */}
       <button
         onClick={handleWhatsAppClick}
-        className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 z-50"
+        className="fixed bottom-6 right-6 bg-[#075375] hover:bg-[#0A435C] text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 z-50"
       >
         <WhatsAppIcon className="w-6 h-6" />
       </button>
