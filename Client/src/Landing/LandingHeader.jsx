@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const palette = {
@@ -15,6 +15,7 @@ const LandingHeader = () => {
   const [scrolled, setScrolled] = useState(false);
   const [servicesDropdown, setServicesDropdown] = useState(false);
   const { user, loading } = useContext(AuthContext);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +28,9 @@ const LandingHeader = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Helper to check active tab
+  const isActive = (path) => location.pathname === path;
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -52,7 +56,7 @@ const LandingHeader = () => {
             {/* New navigation items */}
             <Link
               to="/"
-              className="font-medium transition-colors hover:underline hover:brightness-125"
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
               style={{ color: palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
@@ -60,7 +64,7 @@ const LandingHeader = () => {
             </Link>
             <Link
               to="/about"
-              className="font-medium transition-colors hover:underline hover:brightness-125"
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/about') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
               style={{ color: palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
@@ -72,7 +76,7 @@ const LandingHeader = () => {
               onMouseLeave={() => setServicesDropdown(false)}
             >
               <button
-                className="font-medium transition-colors hover:underline hover:brightness-125 flex items-center"
+                className={`font-medium transition-colors hover:underline hover:brightness-125 flex items-center ${location.pathname.startsWith('/services') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
                 style={{ color: palette.indigo_dye2 }}
               >
                 Our Services
@@ -90,7 +94,7 @@ const LandingHeader = () => {
             </div>
             <Link
               to="/search"
-              className="font-medium transition-colors hover:underline hover:brightness-125"
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/search') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
               style={{ color: palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
@@ -98,7 +102,7 @@ const LandingHeader = () => {
             </Link>
             <Link
               to="/tours"
-              className="font-medium transition-colors hover:underline hover:brightness-125"
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/tours') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
               style={{ color: palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
@@ -106,7 +110,7 @@ const LandingHeader = () => {
             </Link>
             <Link
               to="/activities"
-              className="font-medium transition-colors hover:underline hover:brightness-125"
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/activities') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
               style={{ color: palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
@@ -114,7 +118,7 @@ const LandingHeader = () => {
             </Link>
             <Link
               to="/contact"
-              className="font-medium transition-colors hover:underline hover:brightness-125"
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/contact') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
               style={{ color: palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
@@ -125,7 +129,7 @@ const LandingHeader = () => {
               <>
                 <Link
                   to="/login"
-                  className="font-medium transition-colors hover:underline hover:brightness-125"
+                  className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/login') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
                   style={{ color: palette.lapis_lazuli }}
                   onClick={scrollToTop}
                 >
@@ -137,7 +141,7 @@ const LandingHeader = () => {
                     scrolled
                       ? "bg-[#E7E9E5] hover:bg-[#B7C5C7] text-[#005E84]"
                       : "bg-white/30 backdrop-blur-sm hover:bg-white/50 text-[#005E84] border border-white/30"
-                  } hover:brightness-110`}
+                  } hover:brightness-110 ${isActive('/register') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
                   onClick={scrollToTop}
                 >
                   Register
@@ -146,7 +150,7 @@ const LandingHeader = () => {
             ) : (
               <Link
                 to="/account"
-                className="font-medium transition-colors hover:underline hover:brightness-125"
+                className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/account') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
                 style={{ color: palette.lapis_lazuli }}
                 onClick={scrollToTop}
               >
@@ -171,12 +175,12 @@ const LandingHeader = () => {
         <div className="md:hidden bg-[#B7C5C7] bg-opacity-95 backdrop-blur-sm">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {/* Mobile menu items */}
-            <Link to="/" className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Home</Link>
-            <Link to="/about" className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>About</Link>
+            <Link to="/" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Home</Link>
+            <Link to="/about" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/about') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>About</Link>
             {/* Services dropdown for mobile */}
             <div>
               <button
-                className="block w-full text-left px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 flex items-center"
+                className={`block w-full text-left px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 flex items-center ${location.pathname.startsWith('/services') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
                 style={{ color: palette.indigo_dye2 }}
                 onClick={() => setServicesDropdown(!servicesDropdown)}
               >
@@ -187,24 +191,24 @@ const LandingHeader = () => {
               </button>
               {servicesDropdown && (
                 <div className="ml-4">
-                  <Link to="/services/service1" className="block px-3 py-2 text-sm hover:bg-gray-100" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Service 1</Link>
-                  <Link to="/services/service2" className="block px-3 py-2 text-sm hover:bg-gray-100" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Service 2</Link>
-                  <Link to="/services/service3" className="block px-3 py-2 text-sm hover:bg-gray-100" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Service 3</Link>
+                  <Link to="/services/service1" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/services/service1') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Service 1</Link>
+                  <Link to="/services/service2" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/services/service2') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Service 2</Link>
+                  <Link to="/services/service3" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/services/service3') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Service 3</Link>
                 </div>
               )}
             </div>
-            <Link to="/search" className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Resorts</Link>
-            <Link to="/tours" className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Tours</Link>
-            <Link to="/activities" className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Activities</Link>
-            <Link to="/contact" className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Contact</Link>
+            <Link to="/search" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/search') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Resorts</Link>
+            <Link to="/tours" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/tours') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Tours</Link>
+            <Link to="/activities" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/activities') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Activities</Link>
+            <Link to="/contact" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/contact') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Contact</Link>
             {/* Auth links for mobile */}
             {!user ? (
               <>
-                <Link to="/login" className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 hover:bg-[#E7E9E5]" style={{ color: palette.lapis_lazuli }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Login</Link>
-                <Link to="/register" className="bg-[#E7E9E5] text-[#005E84] block px-3 py-2 rounded-md font-medium hover:bg-[#B7C5C7] mt-4 hover:brightness-110" onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Register</Link>
+                <Link to="/login" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 hover:bg-[#E7E9E5] ${isActive('/login') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.lapis_lazuli }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Login</Link>
+                <Link to="/register" className={`bg-[#E7E9E5] text-[#005E84] block px-3 py-2 rounded-md font-medium hover:bg-[#B7C5C7] mt-4 hover:brightness-110 ${isActive('/register') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Register</Link>
               </>
             ) : (
-              <Link to="/account" className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 hover:bg-[#E7E9E5]" style={{ color: palette.lapis_lazuli }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>My Account</Link>
+              <Link to="/account" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 hover:bg-[#E7E9E5] ${isActive('/account') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.lapis_lazuli }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>My Account</Link>
             )}
           </div>
         </div>
