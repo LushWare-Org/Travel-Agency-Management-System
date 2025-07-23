@@ -267,7 +267,7 @@ function HotelProfile() {
   if (loading)
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 sm:h-16 w-12 sm:w-16 border-t-4 border-b-4 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 sm:h-16 w-12 sm:w-16 border-t-4 border-b-4 border-lapis_lazuli"></div>
       </div>
     )
   if (error || !hotelData)
@@ -295,7 +295,7 @@ function HotelProfile() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 font-sans">
+      <div className="min-h-screen bg-gradient-to-br from-platinum to-ash_gray font-sans">
         <section className="relative h-80 sm:h-[400px] md:h-[600px] overflow-hidden">
           <img src={gallery[0] || "/placeholder.svg"} alt={name} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
@@ -303,7 +303,7 @@ function HotelProfile() {
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-2">{name}</h1>
               <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-white mb-2 sm:mb-4 text-xs sm:text-base">
                 <div className="flex items-center">
-                  <MdLocationOn className="text-blue-400 mr-1 w-4 sm:w-5 h-4 sm:h-5" />
+                  <MdLocationOn className="text-lapis_lazuli mr-1 w-4 sm:w-5 h-4 sm:h-5" />
                   {location}
                 </div>
                 <div className="flex items-center">
@@ -336,7 +336,7 @@ function HotelProfile() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6">
+          <div className="bg-platinum rounded-2xl shadow-xl p-4 sm:p-6">
             {activeTab === 0 && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-10">
                 <div className="lg:col-span-2">
@@ -429,7 +429,10 @@ function HotelProfile() {
                         href={hotelData.liveAvailability}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 border border-transparent rounded-xl shadow-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 hover:shadow-xl"
+                        className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold text-platinum 
+                                   bg-gradient-to-r from-lapis_lazuli to-indigo_dye border-transparent rounded-xl shadow-lg 
+                                   hover:from-indigo_dye hover:to-indigo_dye focus:outline-none focus:ring-2 focus:ring-offset-2 
+                                   focus:ring-indigo_dye transition-all duration-200 hover:shadow-xl"
                       >
                         <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -445,10 +448,10 @@ function HotelProfile() {
               <div className="w-full overflow-x-hidden">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Find Your Perfect Room</h2>
 
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-lg overflow-visible mb-6 sm:mb-10 relative z-10">
-                  <div className="bg-blue-800 text-white p-3 sm:p-4">
+                <div className="bg-gradient-to-r from-platinum to-ash_gray rounded-2xl shadow-lg overflow-visible mb-6 sm:mb-10 relative z-10">
+                  <div className="bg-indigo_dye text-platinum p-3 sm:p-4">
                     <h3 className="text-base sm:text-lg md:text-xl font-bold">Check Room Availability</h3>
-                    <p className="text-blue-100 text-xs sm:text-sm">Select your dates to find available rooms</p>
+                    <p className="text-ash_gray text-xs sm:text-sm">Select your dates to find available rooms</p>
                   </div>
                   <div className="p-4 sm:p-6">
                     <div className="grid grid-cols-12 gap-2 sm:gap-3 items-center">
@@ -458,7 +461,7 @@ function HotelProfile() {
                           className="relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer"
                           onClick={() => datePickerRef.current?.setOpen(true)}
                         >
-                          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500">
+                          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-lapis_lazuli">
                             <svg className="h-4 sm:h-5 w-4 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path
                                 strokeLinecap="round"
@@ -481,7 +484,7 @@ function HotelProfile() {
                             }
                             readOnly
                             placeholder="Select check-in date"
-                            className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg cursor-pointer text-xs sm:text-base"
+                            className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs sm:text-base"
                           />
                         </div>
                         <DatePicker
@@ -533,7 +536,7 @@ function HotelProfile() {
                       </div>
 
                       <div className="col-span-2 flex justify-center items-center">
-                        <div className="w-6 sm:w-8 h-6 sm:h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
+                        <div className="w-6 sm:w-8 h-6 sm:h-8 rounded-full bg-platinum flex items-center justify-center text-lapis_lazuli">
                           <svg className="h-4 sm:h-5 w-4 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
                               strokeLinecap="round"
@@ -551,7 +554,7 @@ function HotelProfile() {
                           className="relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer"
                           onClick={() => datePickerRef.current?.setOpen(true)}
                         >
-                          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500">
+                          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-lapis_lazuli">
                             <svg className="h-4 sm:h-5 w-4 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path
                                 strokeLinecap="round"
@@ -574,15 +577,15 @@ function HotelProfile() {
                             }
                             readOnly
                             placeholder="Select check-out date"
-                            className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg cursor-pointer text-xs sm:text-base"
+                            className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs sm:text-base"
                           />
                         </div>
                       </div>
                     </div>
 
                     <div className="mt-3 sm:mt-4">
-                      <button
-                        onClick={async () => {
+                    <button
+                      onClick={async () => {
                           if (!bookingData.checkIn || !bookingData.checkOut) {
                             alert("Please select both check-in and check-out dates")
                             console.log("Availability check aborted: Missing dates", bookingData)
@@ -641,7 +644,7 @@ function HotelProfile() {
                             alert(errorMessage)
                           }
                         }}
-                        className="w-full bg-blue-800 hover:bg-blue-700 text-white py-2 sm:py-3 rounded-lg shadow-lg flex items-center justify-center gap-1 sm:gap-2 transition-all transform hover:scale-[1.01] active:scale-[0.99] text-xs sm:text-base min-h-[44px]"
+                        className="w-full bg-lapis_lazuli hover:bg-indigo_dye text-platinum py-2 sm:py-3 rounded-lg shadow-lg flex items-center justify-center gap-1 sm:gap-2 transition-all transform hover:scale-[1.01] active:scale-[0.99] text-xs sm:text-base min-h-[44px]"
                       >
                         <svg className="h-4 sm:h-5 w-4 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path
@@ -656,12 +659,12 @@ function HotelProfile() {
                     </div>
 
                     {(bookingData.checkIn || bookingData.checkOut) && (
-                      <div className="mt-3 sm:mt-4 bg-blue-50 rounded-lg p-2 sm:p-3 border border-blue-100">
+                      <div className="mt-3 sm:mt-4 bg-platinum rounded-lg p-2 sm:p-3 border border-ash_gray">
                         <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm">
                           {bookingData.checkIn && (
                             <div className="flex items-center">
                               <span className="font-semibold">Check-in:</span>
-                              <span className="ml-1 text-blue-800">
+                              <span className="ml-1 text-indigo_dye">
                                 {bookingData.checkIn.toLocaleDateString("en-US", {
                                   weekday: "short",
                                   month: "short",
@@ -674,7 +677,7 @@ function HotelProfile() {
                           {bookingData.checkOut && (
                             <div className="flex items-center">
                               <span className="font-semibold">Check-out:</span>
-                              <span className="ml-1 text-blue-800">
+                              <span className="ml-1 text-indigo_dye">
                                 {bookingData.checkOut.toLocaleDateString("en-US", {
                                   weekday: "short",
                                   month: "short",
@@ -687,7 +690,7 @@ function HotelProfile() {
                           {bookingData.checkIn && bookingData.checkOut && (
                             <div className="flex items-center">
                               <span className="font-semibold">Duration:</span>
-                              <span className="ml-1 text-blue-800">
+                              <span className="ml-1 text-indigo_dye">
                                 {Math.ceil((bookingData.checkOut - bookingData.checkIn) / (1000 * 60 * 60 * 24))} nights
                               </span>
                             </div>
@@ -738,8 +741,8 @@ function HotelProfile() {
                     ))
                   ) : (
                     <div className="text-center py-8 sm:py-12 bg-white rounded-xl shadow-lg border border-gray-100">
-                      <div className="bg-blue-50 rounded-full w-12 sm:w-20 h-12 sm:h-20 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                        <FaBed className="h-6 sm:h-10 w-6 sm:w-10 text-blue-500" />
+                      <div className="bg-platinum rounded-full w-12 sm:w-20 h-12 sm:h-20 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                        <FaBed className="h-6 sm:h-10 w-6 sm:w-10 text-lapis_lazuli" />
                       </div>
                       <h3 className="text-base sm:text-xl font-semibold text-gray-800 mb-2">No Rooms Selected Yet</h3>
                       <p className="text-gray-500 text-sm sm:text-base max-w-md mx-auto">
@@ -790,7 +793,7 @@ function HotelProfile() {
                         alt={`Gallery ${idx + 1}`}
                         className="w-full h-40 sm:h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/20 flex items-center justify-center transition-all duration-300">
+                      <div className="absolute inset-0 bg-lapis_lazuli/0 group-hover:bg-lapis_lazuli/20 flex items-center justify-center transition-all duration-300">
                         <div className="opacity-0 group-hover:opacity-100 transform group-hover:scale-100 scale-50 transition-all duration-300">
                           <div className="bg-white/90 backdrop-blur-sm text-blue-600 rounded-full p-2 sm:p-3">
                             <svg className="h-4 sm:h-6 w-4 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -885,7 +888,8 @@ function HotelProfile() {
                   />
                   <button
                     onClick={submitReview}
-                    className="bg-blue-600 text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded-full hover:bg-blue-700 transition-colors shadow-md text-xs sm:text-base min-h-[44px]"
+                    className="bg-lapis_lazuli hover:bg-indigo_dye text-platinum px-4 sm:px-6 py-1.5 sm:py-2 
+                               rounded-full transition-colors shadow-md text-xs sm:text-base min-h-[44px]"
                   >
                     Submit Review
                   </button>
@@ -902,7 +906,7 @@ function HotelProfile() {
                       >
                         <div className="flex justify-between items-center mb-2 sm:mb-3">
                           <div className="flex items-center">
-                            <div className="bg-blue-100 text-blue-800 rounded-full w-6 sm:w-10 h-6 sm:h-10 flex items-center justify-center font-bold mr-2 sm:mr-3 text-xs sm:text-base">
+                            <div className="bg-platinum text-indigo_dye rounded-full w-6 sm:w-10 h-6 sm:h-10 flex items-center justify-center font-bold mr-2 sm:mr-3 text-xs sm:text-base">
                               {initial}
                             </div>
                             <strong className="text-xs sm:text-base">{displayName}</strong>
