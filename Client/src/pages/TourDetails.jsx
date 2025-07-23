@@ -12,7 +12,6 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import { Clock, Calendar, DollarSign, Users, Star, MapPin, Check, Eye, X, ChevronLeft, ChevronRight } from 'lucide-react';
-import Navigation from '../Components/Header';
 import Footer from '../Components/Footer';
 
 function useDeviceType() {
@@ -263,11 +262,6 @@ const TourDetails = ({ sidebarOpen }) => {
     return (
       <div className="min-h-screen bg-gray-100">
         <div className={`transition-all duration-300 ${sidebarOpen ? 'sm:pl-64' : 'sm:pl-16'} pl-0`}>
-          <Navigation 
-            isAuthenticated={true} 
-            isAdmin={false} 
-            onLogout={() => navigate('/login')} 
-          />
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#005E84] mx-auto"></div>
@@ -283,11 +277,6 @@ const TourDetails = ({ sidebarOpen }) => {
     return (
       <div className="min-h-screen bg-gray-100">
         <div className={`transition-all duration-300 ${sidebarOpen ? 'sm:pl-64' : 'sm:pl-16'} pl-0`}>
-          <Navigation 
-            isAuthenticated={true} 
-            isAdmin={false} 
-            onLogout={() => navigate('/login')} 
-          />
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Tour not found</h2>
@@ -310,12 +299,7 @@ const TourDetails = ({ sidebarOpen }) => {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className={`transition-all duration-300 ${sidebarOpen ? 'sm:pl-64' : 'sm:pl-16'} pl-0`}>
-        {/* Navigation */}
-        <Navigation 
-          isAuthenticated={true} 
-          isAdmin={false} 
-          onLogout={() => navigate('/login')} 
-        />
+        {/* Navigation removed */}
 
         {/* Main Content */}
         <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
