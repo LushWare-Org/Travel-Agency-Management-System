@@ -326,7 +326,7 @@ function HotelProfile() {
                     key={idx}
                     onClick={() => handleTabChange(idx)}
                     className={`px-3 sm:px-6 py-1.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-full transition-all duration-300 min-w-[80px] sm:min-w-[100px] whitespace-nowrap ${
-                      activeTab === idx ? "bg-blue-600 text-white shadow-md" : "text-gray-600 hover:text-blue-600"
+                      activeTab === idx ? "bg-lapis_lazuli text-white shadow-md" : "text-gray-600 hover:text-lapis_lazuli"
                     }`}
                   >
                     {tab}
@@ -383,7 +383,7 @@ function HotelProfile() {
                                 </span>
                               ) : (
                                 <div className="text-gray-800">
-                                  <span className="font-bold text-lg text-blue-600">${plan.price}</span>
+                                  <span className="font-bold text-lg text-lapis_lazuli">${plan.price}</span>
                                   <span className="text-xs text-gray-500 block mt-0.5">per person/day</span>
                                 </div>
                               )}
@@ -413,7 +413,7 @@ function HotelProfile() {
                             )}
                             {plan.planName.toLowerCase().includes('all') && (
                               <div className="flex items-center space-x-1.5">
-                                <div className="w-2.5 h-2.5 bg-blue-500 rounded-full"></div>
+                                <div className="w-2.5 h-2.5 bg-lapis_lazuli rounded-full"></div>
                                 <span className="text-xs text-gray-500 font-medium">All Meals</span>
                               </div>
                             )}
@@ -795,7 +795,7 @@ function HotelProfile() {
                       />
                       <div className="absolute inset-0 bg-lapis_lazuli/0 group-hover:bg-lapis_lazuli/20 flex items-center justify-center transition-all duration-300">
                         <div className="opacity-0 group-hover:opacity-100 transform group-hover:scale-100 scale-50 transition-all duration-300">
-                          <div className="bg-white/90 backdrop-blur-sm text-blue-600 rounded-full p-2 sm:p-3">
+                          <div className="bg-white/90 backdrop-blur-sm text-lapis_lazuli rounded-full p-2 sm:p-3">
                             <svg className="h-4 sm:h-6 w-4 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path
                                 strokeLinecap="round"
@@ -837,7 +837,7 @@ function HotelProfile() {
                                   ))}
                                 </div>
                                 <div>
-                                  <span className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-800">{avgRating.toFixed(1)}</span>
+                                  <span className="text-xl sm:text-2xl md:text-3xl font-bold text-lapis_lazuli">{avgRating.toFixed(1)}</span>
                                   <span className="text-gray-600 ml-1">/ 5</span>
                                   <p className="text-gray-600 text-xs sm:text-sm">
                                     from {reviews.length} review{reviews.length !== 1 ? "s" : ""}
@@ -851,7 +851,7 @@ function HotelProfile() {
 
                       <div className="mt-3 sm:mt-0 p-3 sm:p-4 bg-white rounded-lg shadow-sm">
                         <div className="text-center">
-                          <div className="text-lg sm:text-xl md:text-2xl font-bold text-blue-800">{reviews.length}</div>
+                          <div className="text-lg sm:text-xl md:text-2xl font-bold text-lapis_lazuli">{reviews.length}</div>
                           <div className="text-gray-600 text-xs sm:text-sm">Total Reviews</div>
                         </div>
                       </div>
@@ -968,7 +968,7 @@ function HotelProfile() {
           }
         }
         .react-datepicker__header {
-          background-color: #2563eb;
+          background-color: #005E84;
           color: white;
           border-top-left-radius: 0.5rem;
           border-top-right-radius: 0.5rem;
@@ -1018,23 +1018,23 @@ function HotelProfile() {
           }
         }
         .react-datepicker__day:hover {
-          background-color: #dbeafe;
-          color: #2563eb;
+          background-color: #E7E9E5;
+          color: #005E84;
         }
         .react-datepicker__day--selected,
         .react-datepicker__day--in-range,
         .react-datepicker__day--in-selecting-range {
-          background-color: #dbeafe;
-          color: #2563eb;
+          background-color: #E7E9E5;
+          color: #005E84;
         }
         .react-datepicker__day--range-start,
         .react-datepicker__day--range-end {
-          background-color: #2563eb !important;
+          background-color: #005E84 !important;
           color: white !important;
         }
         .react-datepicker__day--range-start:hover,
         .react-datepicker__day--range-end:hover {
-          background-color: #1e40af !important;
+          background-color: #075375 !important;
         }
         .react-datepicker__day--outside-month {
           color: #d1d5db;

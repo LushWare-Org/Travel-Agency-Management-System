@@ -110,7 +110,7 @@ const TourManagement = () => {
       position: relative;
       padding: ${isMobile ? '12px 24px' : '14px 32px'} !important;
       margin: 0 6px !important;
-      border: 2px solid #e2e8f0 !important;
+      border: 2px solid #B7C5C7 !important;
       border-radius: 10px !important;
       background: #ffffff !important;
       transition: all 0.3s ease !important;
@@ -124,23 +124,23 @@ const TourManagement = () => {
 
     .modern-tabs .ant-tabs-tab:hover {
       background: #f8fafc !important;
-      border-color: #3b82f6 !important;
+      border-color: #005E84 !important;
       color: #1e293b !important;
       transform: translateY(-1px) !important;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15) !important;
+      box-shadow: 0 4px 12px rgba(0, 94, 132, 0.15) !important;
     }
 
     .modern-tabs .ant-tabs-tab-active {
-      background: #3b82f6 !important;
-      border-color: #3b82f6 !important;
+      background: #005E84 !important;
+      border-color: #005E84 !important;
       color: #ffffff !important;
       transform: translateY(-1px) !important;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+      box-shadow: 0 4px 12px rgba(0, 94, 132, 0.3) !important;
     }
 
     .modern-tabs .ant-tabs-tab-active:hover {
-      background: #2563eb !important;
-      border-color: #2563eb !important;
+      background: #075375 !important;
+      border-color: #075375 !important;
       color: #ffffff !important;
     }
 
@@ -153,7 +153,7 @@ const TourManagement = () => {
     }
 
     .modern-tabs .ant-tabs-content-holder {
-      border-top: 1px solid #e2e8f0;
+      border-top: 1px solid #B7C5C7;
     }
 
     .modern-tabs .ant-tabs-tabpane {

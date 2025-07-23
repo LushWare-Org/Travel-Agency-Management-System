@@ -50,10 +50,10 @@ const RoomCard = ({ room, onSelect }) => {
 
   const getTransportIcon = (method) => {
     const lowerMethod = method.toLowerCase();
-    if (lowerMethod.includes('boat') || lowerMethod.includes('ship')) return <FaShip className="text-blue-500" />;
-    if (lowerMethod.includes('plane') && !lowerMethod.includes('domestic')) return <FaPlane className="text-blue-500" />;
-    if (lowerMethod.includes('domestic flight')) return <FaPlaneDeparture className="text-blue-500" />;
-    return <FaCar className="text-blue-500" />;
+    if (lowerMethod.includes('boat') || lowerMethod.includes('ship')) return <FaShip className="text-lapis_lazuli" />;
+    if (lowerMethod.includes('plane') && !lowerMethod.includes('domestic')) return <FaPlane className="text-lapis_lazuli" />;
+    if (lowerMethod.includes('domestic flight')) return <FaPlaneDeparture className="text-lapis_lazuli" />;
+    return <FaCar className="text-lapis_lazuli" />;
   };
 
   const getTransportType = (type) => {
@@ -98,7 +98,7 @@ const RoomCard = ({ room, onSelect }) => {
             {transportations && transportations.length > 0 && (
               <div className="mb-2 sm:mb-3">
                 {transportations.map((t, idx) => (
-                  <div key={idx} className="flex items-center gap-2 bg-blue-50 text-blue-700 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm w-fit mb-1">
+                  <div key={idx} className="flex items-center gap-2 bg-ash_gray-100 text-indigo_dye px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm w-fit mb-1">
                     {getTransportIcon(t.method)}
                     <span>
                       {getTransportType(t.type)}: {t.method}
@@ -111,7 +111,7 @@ const RoomCard = ({ room, onSelect }) => {
               {amenities.map((amenity, idx) => (
                 <span
                   key={idx}
-                  className="bg-blue-50 text-blue-600 px-2 sm:px-3 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm"
+                  className="bg-ash_gray-100 text-indigo_dye px-2 sm:px-3 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm"
                 >
                   {amenity}
                 </span>
@@ -121,13 +121,13 @@ const RoomCard = ({ room, onSelect }) => {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t border-gray-100 pt-3 sm:pt-4 mt-3 sm:mt-0">
             <div className="mb-6 sm:mb-0">
               <p className="text-gray-500 text-xs sm:text-sm">${currentPrice} × {nights} {nights === 1 ? 'night' : 'nights'}</p>
-              <p className="text-sm sm:text-xl md:text-2xl font-bold text-blue-600">
+              <p className="text-sm sm:text-xl md:text-2xl font-bold text-lapis_lazuli">
                 Total: ${totalPrice}
               </p>
             </div>
             <button
               onClick={() => onSelect(_id)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg flex items-center gap-2 transition-colors shadow-md hover:shadow-lg w-full sm:w-auto text-xs sm:text-sm min-h-[44px]"
+              className="bg-lapis_lazuli hover:bg-indigo_dye text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg flex items-center gap-2 transition-colors shadow-md hover:shadow-lg w-full sm:w-auto text-xs sm:text-sm min-h-[44px]"
             >
               <FaBed className="w-4 sm:w-5 h-4 sm:h-5" />
               Book This Room
