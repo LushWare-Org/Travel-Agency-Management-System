@@ -21,7 +21,7 @@ const ActivityForm = () => {
       const fetchActivity = async () => {
         try {
           setLoading(true);
-          const response = await axios.get(`/api/activities/${id}`);
+          const response = await axios.get(`/activities/${id}`);
           
           if (response.data.success) {
             const activityData = response.data.data;
@@ -291,10 +291,10 @@ const ActivityForm = () => {
       let response;
         if (isNew) {
         // Create new activity
-        response = await axios.post('/api/activities', activityData);
+        response = await axios.post('/activities', activityData);
       } else {
         // Update existing activity
-        response = await axios.put(`/api/activities/${id}`, activityData);
+        response = await axios.put(`/activities/${id}`, activityData);
       }
       
       if (response.data.success) {
