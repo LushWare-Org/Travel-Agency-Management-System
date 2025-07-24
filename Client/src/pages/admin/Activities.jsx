@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import AdminLayout from '../../components/admin/AdminLayout';
-import { activitiesAPI } from '../../utils/api';
+import AdminLayout from '../../../Components/AdminLayout';
+import axios from 'axios';
 
 const AdminActivities = () => {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');  const [filter, setFilter] = useState('all');
-    useEffect(() => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filter, setFilter] = useState('all');
+  
+  useEffect(() => {
     const fetchActivities = async () => {
       try {
         setLoading(true);
-        const response = await activitiesAPI.getAll();
-        if (response.data.success) {
-          setActivities(response.data.data || []);
-        } else {
-          throw new Error('Failed to fetch activities');
-        }
+        const response = await axios.get('/activities');
+        setActivities(response.data.data || response.data || []);
       } catch (error) {
         console.error('Error fetching activities:', error);
         setError('Failed to load activities. Please try again later.');
@@ -45,9 +43,9 @@ const AdminActivities = () => {
     if (window.confirm('Are you sure you want to delete this activity?')) {
       try {
         setLoading(true);
-        const response = await activitiesAPI.delete(id);
+        const response = await axios.delete(`/activities/${id}`);
         
-        if (response.data.success) {
+        if (response.data.success || response.status === 200) {
           setActivities(activities.filter(activity => activity._id !== id));
           alert('Activity deleted successfully');
         } else {

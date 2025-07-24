@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
-import AdminLayout from '../../components/admin/AdminLayout';
-import API from '../../utils/api';
+import AdminLayout from '../../../Components/AdminLayout';
+import axios from 'axios';
 
 const ActivityForm = () => {
   const { id } = useParams();
@@ -18,9 +18,10 @@ const ActivityForm = () => {
   useEffect(() => {
     // Fetch activity data if editing
     if (id) {
-      const fetchActivity = async () => {        try {
+      const fetchActivity = async () => {
+        try {
           setLoading(true);
-          const response = await API.get(`/activities/${id}`);
+          const response = await axios.get(`/api/activities/${id}`);
           
           if (response.data.success) {
             const activityData = response.data.data;
@@ -91,7 +92,7 @@ const ActivityForm = () => {
       while (retries <= maxRetries) {        try {
           console.log(`Upload attempt ${retries + 1} of ${maxRetries + 1}`);
           
-          response = await API.post('/upload', formData, {
+          response = await axios.post('/api/upload', formData, {
             // Don't set Content-Type header - let browser set it with boundary for FormData
             timeout: 30000
           });
@@ -182,7 +183,7 @@ const ActivityForm = () => {
           while (retries <= maxRetries) {            try {
               console.log(`Gallery upload attempt ${retries + 1} of ${maxRetries + 1}`);
               
-              response = await API.post('/upload', formData, {
+              response = await axios.post('/api/upload', formData, {
                 // Don't set Content-Type header - let browser set it with boundary for FormData
                 timeout: 30000
               });
@@ -290,10 +291,10 @@ const ActivityForm = () => {
       let response;
         if (isNew) {
         // Create new activity
-        response = await API.post('/activities', activityData);
+        response = await axios.post('/api/activities', activityData);
       } else {
         // Update existing activity
-        response = await API.put(`/activities/${id}`, activityData);
+        response = await axios.put(`/api/activities/${id}`, activityData);
       }
       
       if (response.data.success) {

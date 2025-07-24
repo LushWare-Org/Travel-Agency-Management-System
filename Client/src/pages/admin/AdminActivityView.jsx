@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import AdminLayout from '../../components/admin/AdminLayout';
+import AdminLayout from '../../../Components/AdminLayout';
 import axios from 'axios';
 
 const AdminActivityView = () => {
@@ -10,13 +10,11 @@ const AdminActivityView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  const API_URL = 'https://maldives-activity-booking-backend.onrender.com/api/v1';
-
   useEffect(() => {
     const fetchActivity = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_URL}/activities/${id}`);
+        const response = await axios.get(`/api/activities/${id}`);
         
         if (response.data.success) {
           setActivity(response.data.data);
@@ -41,7 +39,7 @@ const AdminActivityView = () => {
     if (window.confirm('Are you sure you want to delete this activity?')) {
       try {
         setLoading(true);
-        const response = await axios.delete(`${API_URL}/activities/${id}`);
+        const response = await axios.delete(`/api/activities/${id}`);
         
         if (response.data.success) {
           navigate('/admin/activities');

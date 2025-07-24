@@ -34,11 +34,13 @@ import {
   Email as EmailIcon,
   Person as PersonIcon,
   TourOutlined,
+  LocalActivity as LocalActivityIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 import HotelManagement from './HotelManagement';
 import RoomManagement from './RoomManagement';
+import ActivityManagement from './ActivityManagement';
 import BookingManagement from './BookingManagement';
 import DiscountManagement from './DiscountManagement';
 import TourManagement from './TourManagement';
@@ -99,6 +101,7 @@ export default function AdminPanel() {
     { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon /> },
     { id: 'hotels', text: 'Hotel Management', icon: <HotelIcon /> },
     { id: 'rooms', text: 'Room Management', icon: <RoomIcon /> },
+    { id: 'activities', text: 'Activity Management', icon: <LocalActivityIcon /> },
     { id: 'bookings', text: 'Booking Oversight', icon: <BookingIcon /> },
     { id: 'discounts', text: 'Discount Management', icon: <DiscountIcon /> },
     { id: 'tours', text: 'Tour Management', icon: <TourOutlined/> },
@@ -176,6 +179,7 @@ export default function AdminPanel() {
       case 'dashboard': return <Dashboard />;
       case 'hotels': return <HotelManagement />;
       case 'rooms': return <RoomManagement />;
+      case 'activities': return <ActivityManagement />;
       case 'bookings': return <BookingManagement />;
       case 'discounts': return <DiscountManagement />;
       case 'tours': return <TourManagement />;

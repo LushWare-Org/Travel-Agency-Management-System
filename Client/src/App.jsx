@@ -21,9 +21,12 @@ const Bookings      = lazy(() => import('./pages/Bookings'));
 const SpecialOffers = lazy(() => import('./pages/SpecialOffers'));
 const Settings      = lazy(() => import('./pages/Settings'));
 const AdminPanel    = lazy(() => import('./pages/AdminPanel'));
-const Tours = lazy(() => import('./pages/Tours'));
-const TourDetails = lazy(() => import('./pages/TourDetails'));
-const Activities = lazy(() => import('./pages/Activities'));
+const Tours         = lazy(() => import('./pages/Tours'));
+const TourDetails   = lazy(() => import('./pages/TourDetails'));
+const Activities    = lazy(() => import('./pages/Activities'));
+const ActivityForm  = lazy(() => import('./pages/admin/ActivityForm'));
+const ActivityDetail = lazy(() => import('./pages/admin/ActivityDetail'));
+const AdminActivityView = lazy(() => import('./pages/admin/AdminActivityView'));
 
 // point axios at your API & send cookies by default
 axios.defaults.baseURL = 'http://localhost:5001/api';
@@ -70,6 +73,12 @@ export default function App() {
 
           {/* admin only - AUTHENTICATION DISABLED, now accessible to all */}
           <Route path="/admin" element={<AdminPanel/>} />
+
+          {/* activity management routes */}
+          <Route path="/admin/activities/new" element={<ActivityForm/>} />
+          <Route path="/admin/activities/:id/edit" element={<ActivityForm/>} />
+          <Route path="/admin/activities/:id" element={<ActivityDetail/>} />
+          <Route path="/admin/activities/:id/view" element={<AdminActivityView/>} />
 
           {/* catch‑all */}
           <Route path="*" element={<Home/>} />
