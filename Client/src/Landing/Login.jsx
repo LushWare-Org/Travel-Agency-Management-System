@@ -4,6 +4,14 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../context/AuthContext';
 
+const palette = {
+  platinum: "#E7E9E5",
+  ash_gray: "#B7C5C7",
+  lapis_lazuli: "#005E84",
+  indigo_dye: "#075375",
+  indigo_dye2: "#0A435C"
+};
+
 const Login = ({ setIsAuthenticated }) => {
   const { setUser } = useContext(AuthContext);
 
@@ -117,33 +125,41 @@ const Login = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <nav className="fixed top-0 w-full z-50 bg-blue-900 shadow-lg transition-all duration-300">
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: palette.platinum }}>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#B7C5C7] shadow-lg"
+          : "bg-gradient-to-r from-[#E7E9E5]/80 via-[#B7C5C7]/60 to-[#E7E9E5]/80 backdrop-blur-md"
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <img 
-              className="h-16 w-auto mb-1" 
-              src="./Logo.png" 
-              alt="Logo" 
-            />
+                  className="h-16 w-auto mb-1" 
+                  src="./IsleKey Logo.jpg" 
+                  alt="Logo" 
+                />
               </div>
               <div className="ml-4">
-                <h1 className="text-2xl font-bold text-white">Yomaldives</h1>
-                <p className="text-indigo-200 text-sm">Maldives Wholesale Experts</p>
+                <h1 className="text-2xl font-bold" style={{ color: palette.lapis_lazuli }}>IsleKey Holidays</h1>
+                <p className="text-[palette.ash_gray] text-sm" style={{ color: palette.ash_gray }}>Maldives Wholesale Experts</p>
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="text-white font-medium hover:text-blue-200 transition-colors">
+              <Link to="/" className="font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.indigo_dye2 }}>
                 Home
               </Link>
-              <Link to="/login" className="text-blue-100 font-medium hover:text-blue-200 transition-colors">
+              <Link to="/login" className="font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.lapis_lazuli }}>
                 Login
               </Link>
               <Link
                 to="/register"
-                className="px-6 py-2 rounded-full font-medium shadow-md transition-all duration-300 bg-blue-500 hover:bg-blue-600 text-white"
+                className={`px-6 py-2 rounded-full font-medium shadow-md transition-all duration-300 ${
+                  scrolled
+                    ? "bg-[#E7E9E5] hover:bg-[#B7C5C7] text-[#005E84]"
+                    : "bg-white/30 backdrop-blur-sm hover:bg-white/50 text-[#005E84] border border-white/30"
+                } hover:brightness-110`}
               >
                 Register
               </Link>
@@ -171,20 +187,21 @@ const Login = ({ setIsAuthenticated }) => {
           </div>
         </div>
         {isMenuOpen && (
-          <div className="md:hidden bg-indigo-900 bg-opacity-95">
+          <div className="md:hidden bg-[#B7C5C7] bg-opacity-95 backdrop-blur-sm">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <Link to="/" className="text-white block px-3 py-2 rounded-md font-medium hover:bg-indigo-800">
+              <Link to="/" className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.indigo_dye2 }}>
                 Home
               </Link>
               <Link
                 to="/login"
-                className="text-blue-100 block px-3 py-2 rounded-md font-medium hover:text-white hover:bg-indigo-800"
+                className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 hover:bg-[#E7E9E5]"
+                style={{ color: palette.lapis_lazuli }}
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="bg-blue-500 text-white block px-3 py-2 rounded-md font-medium hover:bg-blue-600 mt-4"
+                className="bg-[#E7E9E5] text-[#005E84] block px-3 py-2 rounded-md font-medium hover:bg-[#B7C5C7] mt-4 hover:brightness-110"
               >
                 Register
               </Link>
@@ -193,7 +210,7 @@ const Login = ({ setIsAuthenticated }) => {
         )}
       </nav>
 
-      <div className="flex-grow flex pt-20">
+      <div className="flex-grow flex">
         <div className="hidden md:block w-1/2 relative overflow-hidden">
           {backgroundImages.map((image, index) => (
             <div
@@ -204,9 +221,9 @@ const Login = ({ setIsAuthenticated }) => {
               style={{ backgroundImage: `url(${image})` }}
             />
           ))}
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/80 to-indigo-900/50 flex flex-col justify-center px-12">
-            <h1 className="text-4xl font-bold text-white mb-6">Welcome to Maldives Reservation Portal</h1>
-            <p className="text-xl text-blue-100 mb-8">Access exclusive properties and manage bookings for your clients</p>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A435C]/80 to-[#B7C5C7]/50 flex flex-col justify-center px-12">
+            <h1 className="text-4xl font-bold" style={{ color: palette.platinum }}>Welcome to Maldives Reservation Portal</h1>
+            <p className="text-xl mb-8" style={{ color: palette.ash_gray }}>Access exclusive properties and manage bookings for your clients</p>
             <div className="absolute bottom-8 left-12 flex space-x-3">
               {backgroundImages.map((_, index) => (
                 <button
@@ -221,11 +238,11 @@ const Login = ({ setIsAuthenticated }) => {
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-4 md:p-12">
+        <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-4 md:p-12" style={{ backgroundColor: palette.platinum }}>
           <div className="w-full max-w-md">
             <div className="text-center mb-10">
-              <h2 className="text-3xl font-extrabold text-indigo-900">Welcome back</h2>
-              <p className="mt-2 text-gray-600">Sign in to your travel agent account</p>
+              <h2 className="text-3xl font-extrabold" style={{ color: palette.indigo_dye2 }}>Welcome back</h2>
+              <p className="mt-2" style={{ color: palette.ash_gray }}>Sign in to your travel agent account</p>
             </div>
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
@@ -326,7 +343,7 @@ const Login = ({ setIsAuthenticated }) => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-800 hover:from-blue-700 hover:to-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform transition-all duration-300 hover:scale-105 ${
+                  className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#005E84] to-[#0A435C] hover:from-[#075375] hover:to-[#005E84] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#005E84] transform transition-all duration-300 hover:scale-105 ${
                     isLoading ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >
@@ -335,9 +352,9 @@ const Login = ({ setIsAuthenticated }) => {
               </div>
             </form>
             <div className="mt-8 text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm" style={{ color: palette.ash_gray }}>
                 Don't have an account?{' '}
-                <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <Link to="/register" className="font-medium" style={{ color: palette.lapis_lazuli }}>
                   Register here
                 </Link>
               </p>

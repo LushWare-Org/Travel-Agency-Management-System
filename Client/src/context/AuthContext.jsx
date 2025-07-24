@@ -6,10 +6,13 @@ import { useNavigate } from 'react-router-dom';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(undefined);
-  const [loading, setLoading] = useState(true);
+  // AUTHENTICATION DISABLED - Mock user as admin
+  const [user, setUser] = useState({ role: 'admin', email: 'mock@admin.com' });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // AUTHENTICATION DISABLED - All authentication functions commented out
+  /*
   // Add this function to handle token refreshing
   const refreshToken = async () => {
     try {
@@ -95,6 +98,7 @@ export const AuthProvider = ({ children }) => {
     const interval = setInterval(refreshToken, 45 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
+  */
 
   return (
     <AuthContext.Provider value={{ user, setUser, loading }}>

@@ -1,10 +1,12 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import axios from 'axios';
-
-import ProtectedRoute from './Components/ProtectedRoute';
-import SidebarLayout from './Components/SidebarLayout'; // if you abstracted it
+import LandingHeader from './Landing/LandingHeader';
 import Footer from './Components/Footer';
+import WhatsappIcon from './Components/WhatsappIcon';
+
+// AUTHENTICATION DISABLED - ProtectedRoute import commented out
+// import ProtectedRoute from './Components/ProtectedRoute';
 
 const Home          = lazy(() => import('./Landing/Home'));
 const Login         = lazy(() => import('./Landing/Login'));
@@ -21,6 +23,7 @@ const Settings      = lazy(() => import('./pages/Settings'));
 const AdminPanel    = lazy(() => import('./pages/AdminPanel'));
 const Tours = lazy(() => import('./pages/Tours'));
 const TourDetails = lazy(() => import('./pages/TourDetails'));
+const Activities = lazy(() => import('./pages/Activities'));
 
 // point axios at your API & send cookies by default
 axios.defaults.baseURL = 'http://localhost:5001/api';
@@ -29,64 +32,50 @@ axios.defaults.withCredentials = true;
 export default function App() {
   return (
     <Suspense fallback={<div className="text-center py-10">Loading…</div>}>
-      <Routes>
-        {/* public */}
-        <Route path="/"       element={<><Home/><Footer/></>} />
-        <Route path="/login"  element={<><Login/><Footer/></>} />
-        <Route path="/register" element={<><Register/><Footer/></>} />
+      <LandingHeader />
+      <div style={{ paddingTop: '80px' }}>
+        <Routes>
+          {/* public */}
+          <Route path="/"       element={<><Home/><Footer/></>} />
+          <Route path="/login"  element={<><Login/><Footer/></>} />
+          <Route path="/register" element={<><Register/><Footer/></>} />
 
-        {/* sidebar pages (public) */}
-        <Route path="/contact"        element={<SidebarLayout><ContactForm/></SidebarLayout>} />
-        <Route path="/search"         element={<SidebarLayout><Search/></SidebarLayout>} />
-        <Route path="/special-offers" element={<SidebarLayout><SpecialOffers/></SidebarLayout>} />
+          {/* pages without sidebar */}
+          <Route path="/contact"        element={<><ContactForm/><Footer/></>} />
+          <Route path="/search"         element={<><Search/><Footer/></>} />
+          <Route path="/special-offers" element={<><SpecialOffers/><Footer/></>} />
 
-        {/* protected */}
-        <Route path="/settings" element={
-          <ProtectedRoute>
-            <SidebarLayout><Settings/></SidebarLayout>
-          </ProtectedRoute>
-        } />
-        <Route path="/bookings" element={
-          <ProtectedRoute>
-            <SidebarLayout><Bookings/></SidebarLayout>
-          </ProtectedRoute>
-        }/>
+          {/* protected - AUTHENTICATION DISABLED, all routes now accessible */}
+          <Route path="/settings" element={<><Settings/><Footer/></>} />
+          <Route path="/bookings" element={<><Bookings/><Footer/></>} />
+          <Route path="/bookingRequest" element={<><BookingRequest/><Footer/></>} />
 
-        <Route path="/bookingRequest" element={
-          <ProtectedRoute>
-            <SidebarLayout><BookingRequest/></SidebarLayout>
-          </ProtectedRoute>
-        }/>
+          {/* hotel search */}
 
-        {/* hotel search */}
+          {/* hotel/room profiles */}
+          <Route path="/hotels/:hotelId" element={<><HotelProfile/><Footer/></>} />
+          <Route path="/hotels/:hotelId/rooms/:roomId" element={<><RoomProfile/><Footer/></>} />
 
-        {/* hotel/room profiles */}
-        <Route path="/hotels/:hotelId" element={<SidebarLayout><HotelProfile/></SidebarLayout>} />
-        <Route path="/hotels/:hotelId/rooms/:roomId" element={<SidebarLayout><RoomProfile/></SidebarLayout>} />
+          {/* tour search */}
+          <Route path="/tours" element={<><Tours/><Footer/></>} />
 
-        {/* tour search */}
-        <Route path="/tours" element={<SidebarLayout><Tours/></SidebarLayout>} />
+          {/* tour packages */}
+          <Route path="/tours/:tourId" element={<><TourDetails/><Footer/></>} />
 
-        {/* tour packages */}
-        <Route path="/tours/:tourId" element={<SidebarLayout><TourDetails/></SidebarLayout>} />
+          {/* activities booking */}
+          <Route path="/activities" element={<><Activities/><Footer/></>} />
 
-        {/* user profile */}
-        <Route path="/profile" element={
-          <ProtectedRoute>
-            <SidebarLayout><UserProfile/></SidebarLayout>
-          </ProtectedRoute>
-        }/>
+          {/* user profile - AUTHENTICATION DISABLED */}
+          <Route path="/profile" element={<><UserProfile/><Footer/></>} />
 
-        {/* admin only */}
-        <Route path="/admin" element={
-          <ProtectedRoute requireAdmin>
-            <AdminPanel/>
-          </ProtectedRoute>
-        }/>
+          {/* admin only - AUTHENTICATION DISABLED, now accessible to all */}
+          <Route path="/admin" element={<AdminPanel/>} />
 
-        {/* catch‑all */}
-        <Route path="*" element={<Home/>} />
-      </Routes>
+          {/* catch‑all */}
+          <Route path="*" element={<Home/>} />
+        </Routes>
+      </div>
+      <WhatsappIcon />
     </Suspense>
   );
 }

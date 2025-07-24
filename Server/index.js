@@ -19,7 +19,7 @@ app.use(cookieParser());
 // DB connect — only once, no reconnections
 const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI,{
-  dbName: 'b2b-property-booking',
+  dbName: 'tourism-website',
 })
 .then(() => console.log("MongoDB connected"))
 .catch((err) => console.error("MongoDB connection error:", err));

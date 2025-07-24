@@ -161,7 +161,7 @@ const Header = ({ onLogout }) => {
               className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors bg-transparent border-none"
               style={{ background: 'none', border: 'none' }}
             >
-              Properties
+              Resorts
             </button>
             <button
               onClick={() => handleNavigation('/tours')}
