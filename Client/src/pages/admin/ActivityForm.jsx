@@ -92,7 +92,7 @@ const ActivityForm = () => {
       while (retries <= maxRetries) {        try {
           console.log(`Upload attempt ${retries + 1} of ${maxRetries + 1}`);
           
-          response = await axios.post('/api/upload', formData, {
+          response = await axios.post('/upload', formData, {
             // Don't set Content-Type header - let browser set it with boundary for FormData
             timeout: 30000
           });
@@ -183,7 +183,7 @@ const ActivityForm = () => {
           while (retries <= maxRetries) {            try {
               console.log(`Gallery upload attempt ${retries + 1} of ${maxRetries + 1}`);
               
-              response = await axios.post('/api/upload', formData, {
+              response = await axios.post('/upload', formData, {
                 // Don't set Content-Type header - let browser set it with boundary for FormData
                 timeout: 30000
               });
