@@ -132,15 +132,21 @@ const Bookings = ({ sidebarOpen }) => {
   };
 
   const handleConfirmedAction = async () => {
-    const { bookingId } = confirmDialog;
+    const { bookingId, isActivity } = confirmDialog;
     try {
       setConfirmDialog(prev => ({ ...prev, open: false }));
-      await axios.put(`/bookings/${bookingId}`, { status: 'Cancelled' }, { withCredentials: true });
-      setBookings(prev => prev.map(b => b._id === bookingId ? { ...b, status: 'Cancelled' } : b));
-      setSnackbar({ open: true, message: `Booking successfully cancelled`, severity: 'success' });
+      if (isActivity) {
+        await axios.put(`/activity-bookings/${bookingId}/cancel`, {}, { withCredentials: true });
+        setActivityBookings(prev => prev.map(b => b._id === bookingId ? { ...b, status: 'Cancelled' } : b));
+        setSnackbar({ open: true, message: `Activity booking successfully cancelled`, severity: 'success' });
+      } else {
+        await axios.put(`/bookings/${bookingId}`, { status: 'Cancelled' }, { withCredentials: true });
+        setBookings(prev => prev.map(b => b._id === bookingId ? { ...b, status: 'Cancelled' } : b));
+        setSnackbar({ open: true, message: `Booking successfully cancelled`, severity: 'success' });
+      }
     } catch (err) {
       console.error(err);
-      setSnackbar({ open: true, message: `Could not cancel booking`, severity: 'error' });
+      setSnackbar({ open: true, message: `Could not cancel ${isActivity ? 'activity booking' : 'booking'}`, severity: 'error' });
     }
   };
 
@@ -289,7 +295,7 @@ const Bookings = ({ sidebarOpen }) => {
     }
   };
 
-  if (loading && inquiryLoading) {
+  if (loading && inquiryLoading && activityLoading) {
     return (
       <div className="flex justify-center items-center h-screen bg-blue-50">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -299,6 +305,7 @@ const Bookings = ({ sidebarOpen }) => {
 
   const filteredBookings = filterStatus === 'All' ? bookings : bookings.filter(b => b.status === filterStatus);
   const filteredInquiries = inquiryFilterStatus === 'All' ? tourInquiries : tourInquiries.filter(i => i.status === inquiryFilterStatus);
+  const filteredActivityBookings = activityFilterStatus === 'All' ? activityBookings : activityBookings.filter(b => b.status === activityFilterStatus);
 
   return (
     <div className={`flex-1 min-h-screen bg-gradient-to-br from-blue-50 to-white transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-16'} ml-0`}>
@@ -779,6 +786,129 @@ const Bookings = ({ sidebarOpen }) => {
                     <MapPin className="w-10 h-10 mx-auto text-green-300 mb-3" />
                     <p className="text-base font-medium">No tour inquiries found</p>
                     <p className="text-sm text-gray-500 mt-1">Try adjusting your filters</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Activity Bookings Tab Content */}
+        {activeTab === 'activities' && (
+          <div className="animate-fadeIn">
+            {/* Activity Booking Filter Controls */}
+            <div className="mb-4 md:mb-8">
+              <div className="md:hidden">
+                <button
+                  onClick={() => setIsActivityFilterOpen(o => !o)}
+                  className="flex items-center justify-between w-full px-4 py-2 bg-white rounded-lg shadow-sm border border-blue-200"
+                >
+                  <div className="flex items-center">
+                    <Filter className="w-4 h-4 mr-2 text-blue-600" />
+                    <span className="text-sm font-medium text-gray-700">Filter by Status</span>
+                  </div>
+                  {isActivityFilterOpen ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                </button>
+                {isActivityFilterOpen && (
+                  <div className="mt-2 px-4 py-3 bg-white rounded-lg shadow-sm border border-blue-200">
+                    {['All', 'Pending', 'Confirmed', 'Cancelled', 'Completed'].map(s => (
+                      <button
+                        key={s}
+                        onClick={() => { setActivityFilterStatus(s); setIsActivityFilterOpen(false); }}
+                        className={`block w-full text-left px-3 py-2 text-sm rounded-md transition-colors ${activityFilterStatus === s ? 'bg-blue-100 text-blue-800 font-medium' : 'text-gray-700 hover:bg-blue-50'}`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="hidden md:flex justify-center">
+                <div className="bg-white rounded-xl shadow-lg p-2 border border-blue-200">
+                  <div className="flex space-x-1">
+                    {['All', 'Pending', 'Confirmed', 'Cancelled', 'Completed'].map(s => (
+                      <button
+                        key={s}
+                        onClick={() => setActivityFilterStatus(s)}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${activityFilterStatus === s ? 'bg-blue-600 text-white shadow-md' : 'text-indigo-900 hover:bg-blue-50 hover:text-blue-600'}`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Activity Bookings List */}
+            <div className="space-y-4 md:space-y-6">
+              <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
+                {filteredActivityBookings.map((b) => (
+                  <div key={b._id} className="bg-white rounded-2xl shadow-lg border border-blue-100 overflow-hidden hover:shadow-xl transition-shadow duration-200">
+                    <div className="p-4 md:p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <h3 className="text-lg md:text-xl font-bold text-blue-800 mb-1">{b.activity?.title}</h3>
+                          <p className="text-sm text-gray-600">{b.activity?.location}</p>
+                          <p className="text-xs text-gray-500 mt-1">Ref: {b.bookingReference}</p>
+                        </div>
+                        <div className="ml-4">
+                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold ${statusConfig[b.status]?.bgColor} ${statusConfig[b.status]?.textColor}`}>
+                            {statusConfig[b.status]?.icon}
+                            {b.status}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2 mb-4">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Customer:</span>
+                          <span className="font-medium">{b.customerDetails?.fullName}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Date:</span>
+                          <span className="font-medium">{new Date(b.bookingDetails?.date).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Guests:</span>
+                          <span className="font-medium">{b.bookingDetails?.guests}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Duration:</span>
+                          <span className="font-medium">{b.activity?.duration} hours</span>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-lg md:text-xl font-bold text-blue-600">
+                          {b.status === 'Cancelled' ? '$0' : `$${b.pricing?.totalPrice?.toFixed(2) || '0.00'}`}
+                        </span>
+                        <div className="flex space-x-2">
+                          {statusConfig[b.status]?.canCancel && (
+                            <button 
+                              onClick={() => handleActivityAction(b._id)} 
+                              className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${actionButtonStyles.cancel}`}
+                            >
+                              Cancel
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {b.bookingDetails?.specialRequests && (
+                        <div className="mt-3 p-2 bg-gray-50 rounded-lg">
+                          <p className="text-xs text-gray-600">Special Requests:</p>
+                          <p className="text-sm">{b.bookingDetails.specialRequests}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {filteredActivityBookings.length === 0 && (
+                  <div className="col-span-2 py-12 text-center text-indigo-900">
+                    <Users className="w-10 h-10 mx-auto text-green-300 mb-3" />
+                    <p className="text-base font-medium">No activity bookings found</p>
+                    <p className="text-sm text-gray-500 mt-1">Try adjusting your filters or book an activity</p>
                   </div>
                 )}
               </div>

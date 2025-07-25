@@ -14,6 +14,9 @@ exports.createActivityBooking = async (req, res) => {
       pricing
     } = req.body;
 
+    console.log('Creating activity booking with data:', req.body);
+    console.log('User from auth:', req.user);
+
     // Validate activity exists
     const activity = await Activity.findById(activityId);
     if (!activity) {
@@ -45,9 +48,29 @@ exports.createActivityBooking = async (req, res) => {
     // Calculate total price
     const totalPrice = pricing.pricePerPerson * bookingDetails.guests;
 
+    // For mock authentication, we'll use a default user ID or create one
+    let userId = req.user.userId;
+    if (userId === 'mock-user-id') {
+      // Try to find an existing user or use the mock ID
+      const mockUser = await User.findOne({ email: 'mock@admin.com' });
+      if (mockUser) {
+        userId = mockUser._id;
+      } else {
+        // Create a mock user if it doesn't exist
+        const newMockUser = new User({
+          username: 'Mock Admin',
+          email: 'mock@admin.com',
+          password: 'mock-password',
+          role: 'admin'
+        });
+        await newMockUser.save();
+        userId = newMockUser._id;
+      }
+    }
+
     const activityBooking = new ActivityBooking({
       activity: activityId,
-      user: req.user.userId,
+      user: userId,
       bookingReference,
       customerDetails,
       bookingDetails,
@@ -72,7 +95,7 @@ exports.createActivityBooking = async (req, res) => {
     console.error('Error creating activity booking:', err);
     res.status(500).json({
       success: false,
-      error: 'Server Error'
+      error: err.message || 'Server Error'
     });
   }
 };
@@ -127,7 +150,24 @@ exports.getAllActivityBookings = async (req, res) => {
 // @access  Private
 exports.getMyActivityBookings = async (req, res) => {
   try {
-    const bookings = await ActivityBooking.find({ user: req.user.userId })
+    let userId = req.user.userId;
+    
+    // Handle mock authentication
+    if (userId === 'mock-user-id') {
+      const mockUser = await User.findOne({ email: 'mock@admin.com' });
+      if (mockUser) {
+        userId = mockUser._id;
+      } else {
+        // Return empty array if no mock user exists yet
+        return res.status(200).json({
+          success: true,
+          count: 0,
+          data: []
+        });
+      }
+    }
+
+    const bookings = await ActivityBooking.find({ user: userId })
       .populate('activity', 'title location duration price image type')
       .sort({ createdAt: -1 });
 
