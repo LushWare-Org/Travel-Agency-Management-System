@@ -251,7 +251,7 @@ const AdminActivities = () => {
                         </svg>
                       </Link>
                         <Link
-                          to={`/admin/activities/${activity._id}`}
+                          to={`/admin/activities/${activity._id}/edit`}
                           className="text-blue-600 hover:text-blue-900 mr-2"
                           title="Edit"
                         >
