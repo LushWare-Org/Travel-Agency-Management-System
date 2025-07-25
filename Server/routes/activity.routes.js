@@ -8,6 +8,27 @@ router.get('/', activityController.getAllActivities);
 // Route to get a single activity by ID
 router.get('/:id', activityController.getActivityById);
 
+// Route to get bookings for a specific activity
+router.get('/:id/bookings', async (req, res) => {
+  try {
+    const ActivityBooking = require('../models/ActivityBooking');
+    const bookings = await ActivityBooking.find({ activity: req.params.id })
+      .populate('user', 'email username')
+      .sort({ createdAt: -1 });
+    
+    res.status(200).json({
+      success: true,
+      count: bookings.length,
+      data: bookings
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+});
+
 // Route to create a new activity (admin only)
 router.post('/', activityController.createActivity);
 

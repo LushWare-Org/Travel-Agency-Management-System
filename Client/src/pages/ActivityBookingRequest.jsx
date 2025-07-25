@@ -71,27 +71,34 @@ const ActivityBookingRequest = () => {
         e.preventDefault();
         setSubmitting(true);
         setError('');
-        const reference = `BOOK-${Math.floor(100000 + Math.random() * 900000)}`;
+        
         try {
             const bookingData = {
                 activityId: id,
-                bookingReference: reference,
-                date: formData.date,
-                guests: parseInt(formData.guests),
-                fullName: formData.fullName,
-                email: formData.email,
-                phone: formData.phone,
-                specialRequests: formData.specialRequests,
-                totalPrice: activity.price * formData.guests
+                customerDetails: {
+                    fullName: formData.fullName,
+                    email: formData.email,
+                    phone: formData.phone
+                },
+                bookingDetails: {
+                    date: formData.date,
+                    guests: parseInt(formData.guests),
+                    specialRequests: formData.specialRequests
+                },
+                pricing: {
+                    pricePerPerson: activity.price
+                }
             };
-            const response = await axios.post('/bookings', bookingData);
+            
+            const response = await axios.post('/activity-bookings', bookingData);
             if (response.data.success) {
-                setBookingReference(reference);
+                setBookingReference(response.data.data.bookingReference);
                 setBookingId(response.data.data._id);
                 setIsModalOpen(true);
             }
         } catch (error) {
-            setError('Failed to create booking. Please try again.');
+            console.error('Booking error:', error);
+            setError(error.response?.data?.error || 'Failed to create booking. Please try again.');
         } finally {
             setSubmitting(false);
         }

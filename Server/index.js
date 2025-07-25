@@ -57,6 +57,7 @@ app.use('/api/payments', require('./routes/paymentRoutes'));
 app.use('/api/tours', require('./routes/tourRoutes'));
 app.use('/api/inquiries', require('./routes/inquiryRoutes'));
 app.use('/api/activities', require('./routes/activity.routes'));
+app.use('/api/activity-bookings', require('./routes/activityBookingRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 
 app.listen(process.env.PORT || 5001, () => {

@@ -22,15 +22,19 @@ import { Dialog as MuiDialog, DialogTitle as MuiDialogTitle, DialogContent as Mu
 
 const Bookings = ({ sidebarOpen }) => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('properties'); // 'properties' or 'tours'
+  const [activeTab, setActiveTab] = useState('properties'); // 'properties', 'tours', or 'activities'
   const [bookings, setBookings] = useState([]);
   const [tourInquiries, setTourInquiries] = useState([]);
+  const [activityBookings, setActivityBookings] = useState([]);
   const [filterStatus, setFilterStatus] = useState('All');
   const [inquiryFilterStatus, setInquiryFilterStatus] = useState('All');
+  const [activityFilterStatus, setActivityFilterStatus] = useState('All');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isInquiryFilterOpen, setIsInquiryFilterOpen] = useState(false);
+  const [isActivityFilterOpen, setIsActivityFilterOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [inquiryLoading, setInquiryLoading] = useState(true);
+  const [activityLoading, setActivityLoading] = useState(true);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [selectedInquiry, setSelectedInquiry] = useState(null);
   const [viewBookingDialogOpen, setViewBookingDialogOpen] = useState(false);
@@ -87,8 +91,22 @@ const Bookings = ({ sidebarOpen }) => {
       }
     };
 
+    const fetchActivityBookings = async () => {
+      try {
+        const res = await axios.get('/activity-bookings/my', { withCredentials: true });
+        if (res.data.success) {
+          setActivityBookings(res.data.data);
+        }
+      } catch (err) {
+        setSnackbar({ open: true, message: 'Failed to load activity bookings', severity: 'error' });
+      } finally {
+        setActivityLoading(false);
+      }
+    };
+
     fetchBookings();
     fetchTourInquiries();
+    fetchActivityBookings();
   }, []);
 
   const fetchBasePrice = async (id, isInquiry = false) => {
@@ -128,6 +146,29 @@ const Bookings = ({ sidebarOpen }) => {
 
   const handleCloseDialog = () => {
     setConfirmDialog(prev => ({ ...prev, open: false }));
+  };
+
+  const handleActivityAction = (bookingId) => {
+    setConfirmDialog({
+      open: true,
+      bookingId,
+      title: 'Cancel Activity Booking?',
+      message: 'Are you sure you want to cancel this activity booking? This action cannot be undone and may incur cancellation fees.',
+      isActivity: true
+    });
+  };
+
+  const handleConfirmedActivityAction = async () => {
+    const { bookingId } = confirmDialog;
+    try {
+      setConfirmDialog(prev => ({ ...prev, open: false }));
+      await axios.put(`/activity-bookings/${bookingId}/cancel`, {}, { withCredentials: true });
+      setActivityBookings(prev => prev.map(b => b._id === bookingId ? { ...b, status: 'Cancelled' } : b));
+      setSnackbar({ open: true, message: `Activity booking successfully cancelled`, severity: 'success' });
+    } catch (err) {
+      console.error(err);
+      setSnackbar({ open: true, message: `Could not cancel activity booking`, severity: 'error' });
+    }
   };
 
   const handleViewBooking = (booking) => {
@@ -308,6 +349,24 @@ const Bookings = ({ sidebarOpen }) => {
                       : 'bg-blue-100 text-blue-600'
                   }`}>
                     {tourInquiries.length}
+                  </span>
+                </button>
+                <button
+                  onClick={() => handleTabChange('activities')}
+                  className={`flex items-center px-4 md:px-6 py-2 md:py-3 rounded-lg text-sm md:text-base font-medium transition-all duration-200 ${
+                    activeTab === 'activities'
+                      ? 'bg-blue-600 text-white shadow-md transform scale-105'
+                      : 'text-indigo-900 hover:bg-blue-50 hover:text-blue-600'
+                  }`}
+                >
+                  <Users className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                  Activity Bookings
+                  <span className={`ml-2 px-2 py-1 rounded-full text-xs ${
+                    activeTab === 'activities' 
+                      ? 'bg-white/20 text-white' 
+                      : 'bg-blue-100 text-blue-600'
+                  }`}>
+                    {activityBookings.length}
                   </span>
                 </button>
               </div>
