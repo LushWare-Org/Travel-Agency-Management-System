@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import LandingHeader from './Landing/LandingHeader';
 import Footer from './Components/Footer';
@@ -34,10 +34,14 @@ axios.defaults.baseURL = 'http://localhost:5001/api';
 axios.defaults.withCredentials = true;
 
 export default function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
   return (
     <Suspense fallback={<div className="text-center py-10">Loading…</div>}>
-      <LandingHeader />
-      <div style={{ paddingTop: '80px' }}>
+      {/* Only show LandingHeader if not on admin route */}
+      {!isAdminRoute && <LandingHeader />}
+      <div style={{ paddingTop: !isAdminRoute ? '80px' : '0px' }}>
         <Routes>
           {/* public */}
           <Route path="/"       element={<><Home/><Footer/></>} />
