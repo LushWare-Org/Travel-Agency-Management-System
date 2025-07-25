@@ -24,8 +24,9 @@ const AdminPanel    = lazy(() => import('./pages/AdminPanel'));
 const Tours         = lazy(() => import('./pages/Tours'));
 const TourDetails   = lazy(() => import('./pages/TourDetails'));
 const Activities    = lazy(() => import('./pages/Activities'));
+const ActivityDetail = lazy(() => import('./pages/ActivityDetail'));
 const ActivityForm  = lazy(() => import('./pages/admin/ActivityForm'));
-const ActivityDetail = lazy(() => import('./pages/admin/ActivityDetail'));
+const AdminActivityDetail = lazy(() => import('./pages/admin/ActivityDetail'));
 const AdminActivityView = lazy(() => import('./pages/admin/AdminActivityView'));
 const AdminActivities = lazy(() => import('./pages/admin/Activities'));
 
@@ -72,6 +73,7 @@ export default function App() {
 
           {/* activities booking */}
           <Route path="/activities" element={<><Activities/><Footer/></>} />
+          <Route path="/activities/:id" element={<><ActivityDetail/><Footer/></>} />
 
           {/* user profile - AUTHENTICATION DISABLED */}
           <Route path="/profile" element={<><UserProfile/><Footer/></>} />
@@ -82,7 +84,7 @@ export default function App() {
           <Route path="/admin/activities/new" element={<ActivityForm/>} />
           <Route path="/admin/activities/:id/edit" element={<ActivityForm/>} />
           <Route path="/admin/activities/:id/view" element={<AdminActivityView/>} />
-          <Route path="/admin/activities/:id" element={<ActivityDetail/>} />
+          <Route path="/admin/activities/:id" element={<AdminActivityDetail/>} />
 
           {/* catch‑all */}
           <Route path="*" element={<Home/>} />

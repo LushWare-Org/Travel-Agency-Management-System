@@ -70,9 +70,9 @@ const Activities = () => {
     fetchActivities();
   }, [searchQuery, activityType]);
 
-  // Example: handle booking (no backend, just UI)
-  const handleBooking = () => {
-    alert('Activity booked!');
+  // Handle view details navigation
+  const handleViewDetails = (activityId) => {
+    navigate(`/activities/${activityId}`);
   };
 
   return (
@@ -131,10 +131,10 @@ const Activities = () => {
             placeholder="Guests"
           />
           <button
-            onClick={handleBooking}
+            onClick={handleViewDetails}
             className="bg-[#005E84] text-white px-6 py-2 rounded-full font-semibold shadow hover:bg-[#075375] transition"
           >
-            Book Activity
+            View Details
           </button>
         </section>
 
@@ -156,10 +156,10 @@ const Activities = () => {
                   <div className="text-xs text-gray-500 mb-2">{activity.location}</div>
                   <div className="text-sm font-semibold text-[#005E84] mb-2">${activity.price?.toFixed(2)}</div>
                   <button
-                    onClick={handleBooking}
+                    onClick={() => handleViewDetails(activity._id)}
                     className="bg-[#005E84] text-white px-4 py-2 rounded-full font-semibold shadow hover:bg-[#075375] transition"
                   >
-                    Book Now
+                    View Details
                   </button>
                 </div>
               ))}
