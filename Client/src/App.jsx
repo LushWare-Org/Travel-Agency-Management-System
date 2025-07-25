@@ -27,6 +27,7 @@ const Activities    = lazy(() => import('./pages/Activities'));
 const ActivityForm  = lazy(() => import('./pages/admin/ActivityForm'));
 const ActivityDetail = lazy(() => import('./pages/admin/ActivityDetail'));
 const AdminActivityView = lazy(() => import('./pages/admin/AdminActivityView'));
+const AdminActivities = lazy(() => import('./pages/admin/Activities'));
 
 // point axios at your API & send cookies by default
 axios.defaults.baseURL = 'http://localhost:5001/api';
@@ -73,12 +74,11 @@ export default function App() {
 
           {/* admin only - AUTHENTICATION DISABLED, now accessible to all */}
           <Route path="/admin" element={<AdminPanel/>} />
-
-          {/* activity management routes */}
+          <Route path="/admin/activities" element={<AdminActivities />} />
           <Route path="/admin/activities/new" element={<ActivityForm/>} />
           <Route path="/admin/activities/:id/edit" element={<ActivityForm/>} />
-          <Route path="/admin/activities/:id" element={<ActivityDetail/>} />
           <Route path="/admin/activities/:id/view" element={<AdminActivityView/>} />
+          <Route path="/admin/activities/:id" element={<ActivityDetail/>} />
 
           {/* catch‑all */}
           <Route path="*" element={<Home/>} />
