@@ -13,6 +13,7 @@ const Login         = lazy(() => import('./Landing/Login'));
 const Register      = lazy(() => import('./Landing/Register'));
 const Search        = lazy(() => import('./pages/Search'));
 const BookingRequest= lazy(() => import('./pages/BookingRequest'));
+const ActivityBookingRequest = lazy(() => import('./pages/ActivityBookingRequest'));
 const ContactForm   = lazy(() => import('./pages/ContactForm'));
 const HotelProfile  = lazy(() => import('./pages/HotelProfile'));
 const RoomProfile   = lazy(() => import('./pages/RoomProfile'));
@@ -74,6 +75,7 @@ export default function App() {
           {/* activities booking */}
           <Route path="/activities" element={<><Activities/><Footer/></>} />
           <Route path="/activities/:id" element={<><ActivityDetail/><Footer/></>} />
+          <Route path="/activities/:id/booking" element={<><ActivityBookingRequest/><Footer/></>} />
 
           {/* user profile - AUTHENTICATION DISABLED */}
           <Route path="/profile" element={<><UserProfile/><Footer/></>} />

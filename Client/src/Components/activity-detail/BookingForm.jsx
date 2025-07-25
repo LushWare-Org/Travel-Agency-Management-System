@@ -21,7 +21,7 @@ const BookingForm = ({ activity }) => {
             return;
         }
           // Navigate to booking page with selected information
-        navigate(`/booking/${activity._id || activity.id}`, {
+        navigate(`/activities/${activity._id || activity.id}/booking`, {
             state: {
                 selectedDate,
                 guests
