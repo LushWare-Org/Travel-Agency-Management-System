@@ -29,10 +29,46 @@ const Activities = () => {
   const searchTerm = state?.searchTerm || null;
   const titlePassed = state?.title || null;
 
+
   const [searchQuery, setSearchQuery] = useState('');
   const [activityType, setActivityType] = useState('');
   const [date, setDate] = useState('');
   const [guests, setGuests] = useState('1');
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Fetch activities from backend
+  useEffect(() => {
+    const fetchActivities = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        // Build query params
+        const params = new URLSearchParams();
+        if (searchQuery) params.append('search', searchQuery);
+        if (activityType) params.append('type', activityType);
+        // You can add more filters if needed
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/activities?${params.toString()}`,
+          {
+            credentials: 'include',
+          }
+        );
+        const data = await res.json();
+        if (data.success) {
+          setActivities(data.data);
+        } else {
+          setError(data.error || 'Failed to fetch activities');
+        }
+      } catch (err) {
+        setError('Failed to fetch activities');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchActivities();
+  }, [searchQuery, activityType]);
 
   // Example: handle booking (no backend, just UI)
   const handleBooking = () => {
@@ -104,21 +140,21 @@ const Activities = () => {
 
         {/* Activities List Section */}
         <div className="mt-4 sm:mt-6 lg:mt-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Example activities - replace with your own data or fetch from API */}
-            {[
-              { id: 1, name: 'Snorkeling Adventure', type: 'water', description: 'Explore vibrant coral reefs and marine life.', image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80' },
-              { id: 2, name: 'Island Excursion', type: 'excursion', description: 'Visit local islands and experience Maldivian culture.', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80' },
-              { id: 3, name: 'Spa & Wellness', type: 'wellness', description: 'Relax with a luxury spa treatment.', image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80' },
-              { id: 4, name: 'Sunset Dining', type: 'dining', description: 'Enjoy a romantic dinner by the beach.', image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80' },
-            ]
-              .filter(a => !activityType || a.type === activityType)
-              .filter(a => !searchQuery || a.name.toLowerCase().includes(searchQuery.toLowerCase()))
-              .map(activity => (
-                <div key={activity.id} className="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-                  <img src={activity.image} alt={activity.name} className="h-40 w-full object-cover rounded-lg mb-3" />
-                  <h2 className="text-lg font-bold mb-1 text-[#005E84]">{activity.name}</h2>
-                  <p className="text-sm text-gray-600 mb-2 text-center">{activity.description}</p>
+          {loading ? (
+            <div className="text-center py-8 text-gray-500">Loading activities...</div>
+          ) : error ? (
+            <div className="text-center py-8 text-red-500">{error}</div>
+          ) : activities.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">No activities found.</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {activities.map(activity => (
+                <div key={activity._id} className="bg-white rounded-xl shadow p-4 flex flex-col items-center">
+                  <img src={activity.image} alt={activity.title} className="h-40 w-full object-cover rounded-lg mb-3" />
+                  <h2 className="text-lg font-bold mb-1 text-[#005E84]">{activity.title}</h2>
+                  <p className="text-sm text-gray-600 mb-2 text-center">{activity.shortDescription || activity.description}</p>
+                  <div className="text-xs text-gray-500 mb-2">{activity.location}</div>
+                  <div className="text-sm font-semibold text-[#005E84] mb-2">${activity.price?.toFixed(2)}</div>
                   <button
                     onClick={handleBooking}
                     className="bg-[#005E84] text-white px-4 py-2 rounded-full font-semibold shadow hover:bg-[#075375] transition"
@@ -127,7 +163,8 @@ const Activities = () => {
                   </button>
                 </div>
               ))}
-          </div>
+            </div>
+          )}
         </div>
       </main>
     </div>
