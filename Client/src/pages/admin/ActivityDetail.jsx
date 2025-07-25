@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import AdminLayout from '../../../Components/AdminLayout';
+import AdminLayout from '../../Components/AdminLayout';
 import axios from 'axios';
 
 const AdminActivityDetail = () => {
