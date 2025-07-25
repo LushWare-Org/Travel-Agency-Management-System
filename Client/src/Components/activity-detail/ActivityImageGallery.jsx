@@ -25,15 +25,15 @@ const ActivityImageGallery = ({ activity }) => {
         <div className="bg-gray-900">
             <div className="container mx-auto">
                 {/* Main Image */}
-                <div className="h-96 md:h-[500px] overflow-hidden relative">
+                <div className="h-96 md:h-[500px] overflow-hidden relative flex items-center justify-center">
                     <img 
                         src={mainImage} 
                         alt={activity.title} 
-                        className="w-full h-full object-cover"
+                        className="max-h-full max-w-full object-contain mx-auto"
+                        style={{ display: 'block' }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900 opacity-50"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900 opacity-50 pointer-events-none"></div>
                 </div>
-                
                 {/* Thumbnail strip */}
                 <div className="bg-gray-800 p-2">
                     <div className="flex overflow-x-auto space-x-2 pb-2 hide-scrollbar">
@@ -46,7 +46,7 @@ const ActivityImageGallery = ({ activity }) => {
                                 <img 
                                     src={img} 
                                     alt={`${activity.title} view ${index + 1}`} 
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-contain"
                                     loading="lazy"
                                 />
                             </div>
