@@ -14,7 +14,7 @@ const AdminActivityDetail = () => {
     const fetchActivity = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/activities/${id}`);
+        const response = await axios.get(`/activities/${id}`);
         
         if (response.data.success) {
           setActivity(response.data.data);
@@ -38,7 +38,7 @@ const AdminActivityDetail = () => {
     if (window.confirm('Are you sure you want to delete this activity?')) {
       try {
         setLoading(true);
-        const response = await axios.delete(`${API_URL}/activities/${id}`);
+        const response = await axios.delete(`/activities/${id}`);
         
         if (response.data.success) {
           navigate('/admin/activities');
