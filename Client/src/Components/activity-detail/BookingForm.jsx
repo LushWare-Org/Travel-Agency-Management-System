@@ -49,8 +49,8 @@ const BookingForm = ({ activity }) => {
     const availableDates = generateDateOptions();
 
     return (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden sticky top-24">
-            <div className="bg-blue-600 text-white p-4">
+        <div className="bg-platinum-500 rounded-lg shadow-md overflow-hidden sticky top-24">
+            <div className="bg-lapis_lazuli-500 text-white p-4">
                 <div className="text-2xl font-bold">${activity.price}</div>
                 <div className="text-sm opacity-75">per person</div>
             </div>
@@ -58,12 +58,12 @@ const BookingForm = ({ activity }) => {
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
                 {/* Date Picker */}
                 <div>
-                    <label htmlFor="date" className="block text-gray-700 font-medium mb-2">Select Date</label>
+                    <label htmlFor="date" className="block text-lapis_lazuli-500 font-medium mb-2">Select Date</label>
                     <select
                         id="date"
                         value={selectedDate}
                         onChange={(e) => setSelectedDate(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
                     >
                         <option value="">Select a date</option>
                         {availableDates.map((date, index) => (
@@ -79,12 +79,12 @@ const BookingForm = ({ activity }) => {
                 
                 {/* Number of Guests */}
                 <div>
-                    <label htmlFor="guests" className="block text-gray-700 font-medium mb-2">Number of Guests</label>
+                    <label htmlFor="guests" className="block text-lapis_lazuli-500 font-medium mb-2">Number of Guests</label>
                     <select
                         id="guests"
                         value={guests}
                         onChange={(e) => setGuests(parseInt(e.target.value))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
                     >
                         {guestOptions.map((num) => (
                             <option key={num} value={num}>
@@ -95,12 +95,12 @@ const BookingForm = ({ activity }) => {
                 </div>
                 
                 {/* Price Calculation */}
-                <div className="border-t border-b border-gray-200 py-4 mt-4">
+                <div className="border-t border-b border-ash_gray-200 py-4 mt-4">
                     <div className="flex justify-between mb-2">
-                        <span className="text-gray-700">${activity.price} × {guests} guests</span>
+                        <span className="text-lapis_lazuli-500">${activity.price} × {guests} guests</span>
                         <span className="font-medium">${activity.price * guests}</span>
                     </div>
-                    <div className="flex justify-between text-blue-800 font-bold">
+                    <div className="flex justify-between text-indigo_dye-500 font-bold">
                         <span>Total</span>
                         <span>${totalPrice}</span>
                     </div>
@@ -109,12 +109,12 @@ const BookingForm = ({ activity }) => {
                 {/* Submit Button */}
                 <button 
                     type="submit"
-                    className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    className="w-full py-3 px-4 bg-lapis_lazuli-500 text-white rounded-lg font-medium hover:bg-indigo_dye-500 transition-colors focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500 focus:ring-offset-2"
                 >
                     Continue to Book
                 </button>
                 
-                <p className="text-gray-500 text-sm mt-4">
+                <p className="text-ash_gray-400 text-sm mt-4">
                     You won't be charged yet. Complete your booking on the next page.
                 </p>
             </form>
