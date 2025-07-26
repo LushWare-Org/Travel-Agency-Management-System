@@ -56,25 +56,26 @@ const BookingForm = ({ activity }) => {
             </div>
             
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                {/* Date Picker */}
+                {/* Date Picker (Calendar) */}
                 <div>
                     <label htmlFor="date" className="block text-lapis_lazuli-500 font-medium mb-2">Select Date</label>
-                    <select
+                    <input
+                        type="date"
                         id="date"
                         value={selectedDate}
                         onChange={(e) => setSelectedDate(e.target.value)}
+                        min={(() => {
+                            const today = new Date();
+                            today.setDate(today.getDate() + 1);
+                            return today.toISOString().split('T')[0];
+                        })()}
+                        max={(() => {
+                            const today = new Date();
+                            today.setDate(today.getDate() + 30);
+                            return today.toISOString().split('T')[0];
+                        })()}
                         className="w-full px-3 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
-                    >
-                        <option value="">Select a date</option>
-                        {availableDates.map((date, index) => (
-                            <option 
-                                key={index} 
-                                value={date.toISOString().split('T')[0]}
-                            >
-                                {date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-                            </option>
-                        ))}
-                    </select>
+                    />
                 </div>
                 
                 {/* Number of Guests */}
