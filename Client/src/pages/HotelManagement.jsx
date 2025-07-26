@@ -499,6 +499,7 @@ const HotelManagement = () => {
                   <Chip
                     key={i}
                     label={a}
+                    sx={{ backgroundColor: '#E7E9E5', color: '#0A435C' }}
                     onDelete={() =>
                       setFormData(f => ({
                         ...f,
@@ -873,7 +874,7 @@ const HotelManagement = () => {
                   <Typography variant="subtitle1" gutterBottom>Amenities</Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                     {profileHotel?.amenities.map((a, i) => (
-                      <Chip key={i} label={a} color="primary" />
+                      <Chip key={i} label={a} sx={{ backgroundColor: '#E7E9E5', color: '#0A435C' }} />
                     ))}
                   </Box>
                 </CardContent>

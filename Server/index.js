@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 const app = express();
 
 app.use(cors({
@@ -16,10 +17,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// Configure file upload middleware
+app.use(fileUpload({
+  createParentPath: true,
+  limits: { 
+    fileSize: 20 * 1024 * 1024 // 20MB max file size
+  },
+  abortOnLimit: true,
+  responseOnLimit: "File size limit has been reached",
+  uploadTimeout: 0
+}));
+
 // DB connect — only once, no reconnections
 const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI,{
-  dbName: 'b2b-property-booking',
+  dbName: 'tourism-website',
 })
 .then(() => console.log("MongoDB connected"))
 .catch((err) => console.error("MongoDB connection error:", err));
@@ -44,9 +56,12 @@ app.use('/api/contacts', require('./routes/contactRoutes'));
 app.use('/api/payments', require('./routes/paymentRoutes'));
 app.use('/api/tours', require('./routes/tourRoutes'));
 app.use('/api/inquiries', require('./routes/inquiryRoutes'));
+app.use('/api/activities', require('./routes/activity.routes'));
+app.use('/api/activity-bookings', require('./routes/activityBookingRoutes'));
+app.use('/api/upload', require('./routes/uploadRoutes'));
 
 app.listen(process.env.PORT || 5001, () => {
   console.log(`Server running on port ${process.env.PORT || 5001}`);
 });
 
-module.exports = app; 
+module.exports = app;

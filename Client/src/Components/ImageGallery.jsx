@@ -218,10 +218,10 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+      <div className="flex justify-center items-center min-h-screen bg-[#E7E9E5]">
         <div className="flex flex-col items-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"></div>
-          <p className="text-gray-600 font-medium">Loading amazing tours...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#005E84] border-t-transparent"></div>
+          <p className="text-[#B7C5C7] font-medium">Loading amazing tours...</p>
         </div>
       </div>
     );
@@ -229,11 +229,11 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-50">
-        <div className="text-center p-8 bg-white rounded-xl shadow-lg max-w-md">
+      <div className="flex justify-center items-center min-h-screen bg-[#E7E9E5]">
+        <div className="text-center p-8 bg-[#E7E9E5] rounded-xl shadow-lg max-w-md">
           <div className="text-red-500 text-5xl mb-4">⚠️</div>
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">Oops! Something went wrong</h3>
-          <p className="text-gray-600">{error}</p>
+          <h3 className="text-xl font-semibold text-[#0A435C] mb-2">Oops! Something went wrong</h3>
+          <p className="text-[#B7C5C7]">{error}</p>
         </div>
       </div>
     );
@@ -245,14 +245,14 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
   };
 
   return (
-    <Box sx={{ width: '100%', minHeight: '65vh', padding: '20px 30px', backgroundColor: '#f9f9f9' }}>
+    <Box sx={{ width: '100%', minHeight: '65vh', padding: '20px 30px', backgroundColor: '#E7E9E5' }}>
       {/* Search Section */}
-      <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-6 sm:mb-8 md:mb-10 border border-blue-100">
+      <div className="bg-[#E7E9E5] rounded-2xl shadow-xl p-6 sm:p-8 mb-6 sm:mb-8 md:mb-10 border border-[#B7C5C7]">
         <div className="mb-6">
-          <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#005E84] to-[#075375] bg-clip-text text-transparent mb-2">
             Find Your Perfect Tour
           </h2>
-          <p className="text-gray-600 text-sm">Search and filter through our amazing tour packages</p>
+          <p className="text-[#B7C5C7] text-sm">Search and filter through our amazing tour packages</p>
         </div>
 
         {/* Search Form */}
@@ -273,18 +273,18 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                   setIsDropdownOpen(true);
                 }}
                 onFocus={() => setIsDropdownOpen(true)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                className="w-full pl-10 pr-4 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors"
               />
               {isDropdownOpen && dropdownTours.length > 0 && (
                 <div
                   ref={dropdownRef}
-                  className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                  className="absolute z-10 w-full mt-1 bg-white border border-[#B7C5C7] rounded-lg shadow-lg max-h-60 overflow-y-auto"
                 >
                   <ul>
                     {dropdownTours.map((tour) => (
                       <li
                         key={tour._id}
-                        className="px-4 py-2 text-sm text-gray-800 hover:bg-indigo-50 hover:text-indigo-600 cursor-pointer transition-colors"
+                        className="px-4 py-2 text-sm hover:bg-[#E7E9E5] hover:text-[#005E84] cursor-pointer transition-colors"
                         onClick={() => handleTourSelect(tour.title)}
                       >
                         {tour.title}
@@ -305,7 +305,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                 placeholder="Nights"
                 value={searchNights}
                 onChange={(e) => setSearchNights(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                className="w-full pl-10 pr-4 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors"
               />
             </div>
 
@@ -319,7 +319,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                 placeholder="Country of Travel"
                 value={searchCountry}
                 onChange={(e) => setSearchCountry(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                className="w-full pl-10 pr-4 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors"
               />
             </div>
 
@@ -331,7 +331,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
               <select
                 value={searchMarket}
                 onChange={(e) => setSearchMarket(e.target.value)}
-                className="w-full pl-10 pr-8 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors appearance-none bg-white"
+                className="w-full pl-10 pr-8 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors appearance-none bg-white"
               >
                 <option value="">Your Region</option>
                 {Object.entries(marketMapping).map(([key, value]) => (
@@ -343,7 +343,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
             {/* Search Button */}
             <button
               type="submit"
-              className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-6 py-3 rounded-lg hover:from-indigo-700 hover:to-blue-700 transition-all duration-200 font-semibold flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+              className="bg-gradient-to-r from-[#005E84] to-[#075375] text-white px-6 py-3 rounded-lg hover:from-[#005E84] hover:to-[#0A435C] transition-all font-semibold flex items-center justify-center space-x-2"
             >
               <Search className="h-5 w-5" />
               <span>Search Tours</span>
@@ -362,7 +362,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                 placeholder="Min Price"
                 value={searchMinPrice}
                 onChange={(e) => setSearchMinPrice(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                className="w-full pl-10 pr-4 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors"
               />
             </div>
 
@@ -376,7 +376,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                 placeholder="Max Price"
                 value={searchMaxPrice}
                 onChange={(e) => setSearchMaxPrice(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                className="w-full pl-10 pr-4 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors"
               />
             </div>
 
@@ -384,7 +384,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
             <button
               type="button"
               onClick={handleReset}
-              className="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-6 py-3 rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-200 font-semibold flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+              className="bg-gradient-to-r from-[#B7C5C7] to-[#657d81] text-white px-6 py-3 rounded-lg hover:from-[#657d81] hover:to-[#657d81] transition-all font-semibold flex items-center justify-center space-x-2"
             >
               <RotateCcw className="h-5 w-5" />
               <span>Reset Filters</span>
@@ -394,11 +394,11 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
 
         {/* Quick Filters */}
         <div className="flex flex-wrap gap-2">
-          <span className="text-sm text-gray-600 mr-2">Quick filters:</span>
+          <span className="text-sm text-[#B7C5C7] mr-2">Quick filters:</span>
           {['Honeymoon', 'Family', 'Adventure', 'Luxury', 'Budget-Friendly'].map((filter) => (
             <button
               key={filter}
-              className="px-3 py-1 text-xs bg-indigo-50 text-indigo-600 rounded-full hover:bg-indigo-100 transition-colors border border-indigo-200"
+              className="px-3 py-1 text-xs bg-[#E7E9E5] text-[#005E84] rounded-full hover:bg-[#B7C5C7] transition-colors border border-[#B7C5C7]"
             >
               {filter}
             </button>
@@ -414,7 +414,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
             variant="h5" 
             sx={{ 
               fontWeight: 700,
-              color: '#1a202c',
+              color: '#0A435C',
               fontSize: '24px',
               fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
               mb: 1
@@ -425,7 +425,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
           <Typography 
             variant="body2" 
             sx={{ 
-              color: '#64748b',
+              color: '#B7C5C7',
               fontSize: '14px'
             }}
           >
@@ -502,7 +502,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                   <CardContent sx={{ 
                     backgroundColor: '#fff', 
                     padding: '24px',
-                    background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)'
+                    background: 'linear-gradient(145deg, #E7E9E5 0%, #EDEEEB 100%)'
                   }}>
                     {/* Title with Modern Typography */}
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
@@ -511,7 +511,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                         sx={{ 
                           fontWeight: 700,
                           fontSize: '20px',
-                          color: '#1a202c',
+                          color: '#0A435C',
                           lineHeight: 1.3,
                           fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif'
                         }}
@@ -525,7 +525,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                       <Typography
                         variant="body1"
                         sx={{
-                          color: '#1a202c',
+                          color: '#0A435C',
                           fontWeight: 700,
                           fontSize: '18px',
                           fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif'
@@ -535,7 +535,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                         justifyContent="space-between"
                         alignItems="center"
                       >
-                        <span style={{ color: '#2563eb' }}>
+                        <span style={{ color: '#005E84' }}>
                           {selectedCurrency} {item.price && !isNaN(item.price) ? convertPrice(item.price) : ''}
                         </span>
                         
@@ -546,7 +546,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                               variant="body2"
                               sx={{ 
                                 textDecoration: 'line-through', 
-                                color: '#64748b',
+                                color: '#B7C5C7',
                                 fontSize: '14px'
                               }}
                             >
@@ -558,14 +558,13 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                               component="span" 
                               variant="body2" 
                               sx={{
-                                color: '#ffffff',
-                                fontWeight: 600,
-                                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                color: '#fff',
+                                background: 'linear-gradient(135deg, #075375 0%, #0A435C 100%)',
                                 padding: '4px 8px',
                                 borderRadius: '6px',
                                 fontSize: '11px',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px'
+                                fontWeight: 600,
+                                textTransform: 'uppercase'
                               }}
                             >
                               SAVE {selectedCurrency} {convertPrice(item.oldPrice - item.price)}
@@ -581,20 +580,20 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                         variant="outlined"
                         startIcon={<WhatsAppIcon />}
                         sx={{
-                          borderColor: '#22c55e',
-                          color: '#22c55e',
+                          borderColor: '#005E84',
+                          color: '#005E84',
                           padding: '10px 20px',
                           borderRadius: '12px',
                           fontWeight: 600,
                           textTransform: 'none',
                           fontSize: '14px',
-                          border: '2px solid #22c55e',
+                          border: '2px solid #005E84',
                           '&:hover': {
-                            backgroundColor: '#22c55e',
-                            color: '#ffffff',
-                            borderColor: '#22c55e',
+                            backgroundColor: '#005E84',
+                            color: '#fff',
+                            borderColor: '#005E84',
                             transform: 'translateY(-2px)',
-                            boxShadow: '0 8px 16px rgba(34, 197, 94, 0.3)',
+                            boxShadow: '0 8px 16px rgba(0, 94, 132, 0.3)',
                           },
                           transition: 'all 0.2s ease'
                         }}
@@ -606,18 +605,18 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                         variant="contained"
                         fullWidth
                         sx={{
-                          background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                          background: 'linear-gradient(135deg, #005E84 0%, #075375 100%)',
                           color: '#fff',
                           padding: '10px 0',
                           borderRadius: '12px',
                           fontWeight: 600,
                           textTransform: 'none',
                           fontSize: '14px',
-                          boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+                          boxShadow: '0 4px 12px rgba(0, 94, 132, 0.3)',
                           '&:hover': {
-                            background: 'linear-gradient(135deg, #2563eb 0%, #1e40af 100%)',
+                            background: 'linear-gradient(135deg, #005E84 0%, #0A435C 100%)',
                             transform: 'translateY(-2px)',
-                            boxShadow: '0 8px 20px rgba(59, 130, 246, 0.4)',
+                            boxShadow: '0 8px 20px rgba(0, 94, 132, 0.4)',
                           },
                           transition: 'all 0.2s ease'
                         }}
@@ -653,7 +652,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
               onClick={handleReset}
               variant="contained"
               sx={{
-                background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                background: 'linear-gradient(135deg, #005E84 0%, #075375 100%)',
                 color: '#fff',
                 borderRadius: '12px',
                 fontWeight: 600,

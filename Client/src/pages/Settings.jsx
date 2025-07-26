@@ -10,10 +10,9 @@ import {
   Mail as EmailIcon,
 } from 'lucide-react';
 import axios from 'axios';
-import Navigation from '../Components/Header';
 import Footer from '../Components/Footer';
 
-export default function Settings({ sidebarOpen }) {
+export default function Settings() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
@@ -159,9 +158,7 @@ export default function Settings({ sidebarOpen }) {
     }`;
 
   return (
-    <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-16'} ml-0 bg-gray-50`}>
-      <Navigation isAuthenticated onLogout={() => navigate('/login')} />
-
+    <div className="bg-gray-50 min-h-screen">
       <header className="bg-gradient-to-r p-4 md:p-6 rounded-b-3xl text-black mb-6 md:mb-8">
         <div className="max-w-3xl md:max-w-4xl mx-auto flex items-center justify-between">
           <h1 className="text-2xl md:text-3xl font-bold flex items-center">

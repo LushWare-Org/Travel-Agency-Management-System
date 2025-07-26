@@ -23,10 +23,10 @@ const getRoomPrice = (room, market) => {
 
 const getTransportIcon = (method) => {
   const lowerMethod = method.toLowerCase();
-  if (lowerMethod.includes('boat') || lowerMethod.includes('ship')) return <FaShip className="text-blue-500" />;
-  if (lowerMethod.includes('plane') && !lowerMethod.includes('domestic')) return <FaPlane className="text-blue-500" />;
-  if (lowerMethod.includes('domestic flight')) return <FaPlaneDeparture className="text-blue-500" />;
-  return <FaCar className="text-blue-500" />;
+  if (lowerMethod.includes('boat') || lowerMethod.includes('ship')) return <FaShip className="text-lapis_lazuli" />;
+  if (lowerMethod.includes('plane') && !lowerMethod.includes('domestic')) return <FaPlane className="text-lapis_lazuli" />;
+  if (lowerMethod.includes('domestic flight')) return <FaPlaneDeparture className="text-lapis_lazuli" />;
+  return <FaCar className="text-lapis_lazuli" />;
 };
 
 export default function EnhancedRoomProfile() {
@@ -207,7 +207,7 @@ export default function EnhancedRoomProfile() {
     return (
       <div className="flex items-center justify-center h-screen bg-gradient-to-b from-gray-50 to-gray-100">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="w-16 h-16 border-4 border-lapis_lazuli border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="mt-4 text-gray-600 text-lg font-medium">Loading room details...</p>
         </div>
       </div>
@@ -227,7 +227,7 @@ export default function EnhancedRoomProfile() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <button
           onClick={handleBack}
-          className="flex items-center text-blue-600 hover:text-blue-800 mb-6 transition duration-300"
+          className="flex items-center text-indigo_dye hover:text-indigo_dye mb-6 transition duration-300"
         >
           <FaArrowLeft className="mr-2 text-lg" /> Back to {roomData.hotelName}
         </button>
@@ -239,7 +239,7 @@ export default function EnhancedRoomProfile() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white rounded-2xl overflow-hidden shadow-xl">
+            <div className="bg-white rounded-2xl overflow-hidden shadow-md">
               <div className="relative h-[500px]">
                 <img
                   src={roomData.images[activeImage]}
@@ -265,7 +265,7 @@ export default function EnhancedRoomProfile() {
                     src={img}
                     alt={`View ${idx + 1}`}
                     className={`h-24 w-36 object-cover cursor-pointer rounded-lg transition-all ${
-                      activeImage === idx ? 'ring-2 ring-blue-500' : 'hover:ring-2 hover:ring-blue-300'
+                      activeImage === idx ? 'ring-2 ring-lapis_lazuli' : 'hover:ring-2 hover:ring-lapis_lazuli/60'
                     }`}
                     onClick={() => setActiveImage(idx)}
                   />
@@ -273,7 +273,7 @@ export default function EnhancedRoomProfile() {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="bg-white rounded-2xl shadow-md p-8">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">About This Room</h2>
               <p className="text-gray-600 leading-relaxed mb-6">
                 {roomData.description}
@@ -295,25 +295,25 @@ export default function EnhancedRoomProfile() {
               )}
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="bg-white rounded-2xl shadow-md p-8">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">Room Details</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div className="flex items-center">
-                  <FaRulerCombined className="text-blue-500 mr-3 text-2xl" />
+                  <FaRulerCombined className="text-lapis_lazuli mr-3 text-2xl" />
                   <div>
                     <p className="text-sm text-gray-500">Room Size</p>
                     <p className="font-medium text-gray-800">{roomData.size} m²</p>
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <FaBed className="text-blue-500 mr-3 text-2xl" />
+                  <FaBed className="text-lapis_lazuli mr-3 text-2xl" />
                   <div>
                     <p className="text-sm text-gray-500">Bed Type</p>
                     <p className="font-medium text-gray-800">{roomData.bedType}</p>
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <FaUsers className="text-blue-500 mr-3 text-2xl" />
+                  <FaUsers className="text-lapis_lazuli mr-3 text-2xl" />
                   <div>
                     <p className="text-sm text-gray-500">Occupancy</p>
                     <p className="font-medium text-gray-800">
@@ -326,11 +326,11 @@ export default function EnhancedRoomProfile() {
             </div>
 
             {roomData.transportations && roomData.transportations.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-xl p-8">
+              <div className="bg-white rounded-2xl shadow-md p-8">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">Transportation</h2>
                 <div className="flex flex-wrap gap-2">
                   {roomData.transportations.map((t, idx) => (
-                    <div key={idx} className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm">
+                    <div key={idx} className="flex items-center gap-2 bg-[#B7C5C733] text-indigo_dye px-4 py-2 rounded-lg text-sm">
                       {getTransportIcon(t.method)}
                       <span className="font-medium">
                         {t.type.charAt(0).toUpperCase() + t.type.slice(1)}: {t.method}
@@ -341,7 +341,7 @@ export default function EnhancedRoomProfile() {
               </div>
             )}
 
-            <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="bg-white rounded-2xl shadow-md p-8">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">Amenities</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {roomData.amenities.map((amenity, idx) => (
@@ -357,17 +357,17 @@ export default function EnhancedRoomProfile() {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-xl p-6 sticky top-24">
+            <div className="bg-white rounded-2xl shadow-md p-6 sticky top-24">
               <div className="mb-6">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">Price Details</h3>
                 <div className="flex items-baseline mb-2">
-                  <span className="text-4xl font-bold text-blue-600">
+                  <span className="text-4xl font-bold text-indigo_dye">
                     ${perNightPrice}
                   </span>
                   <span className="text-gray-600 ml-2 text-lg">per night</span>
                 </div>
                 {selectedMarketObj?.name && (
-                  <div className="text-sm text-blue-600 mt-1">
+                  <div className="text-sm text-indigo_dye mt-1">
                     Price adjusted for {selectedMarketObj.name} market
                     {roomData.prices?.find(p => p.market === selectedMarketObj.name)?.price > 0 && (
                       <span className="ml-1">
@@ -408,7 +408,7 @@ export default function EnhancedRoomProfile() {
                     </button>
                   )}
                   {showDropdown && (
-                    <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                    <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md max-h-60 overflow-y-auto">
                       {availableMarkets
                         .filter(m =>
                           marketSearch === ''
@@ -418,7 +418,7 @@ export default function EnhancedRoomProfile() {
                         .map(m => (
                           <div
                             key={m.name}
-                            className="px-4 py-2 hover:bg-blue-50 cursor-pointer"
+                            className="px-4 py-2 hover:bg-[#B7C5C733] cursor-pointer"
                             onClick={() => {
                               setSelectedMarketObj(m);
                               setMarketSearch(m.name);
@@ -459,7 +459,7 @@ export default function EnhancedRoomProfile() {
 
               <button
                 onClick={handleBookNow}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform transform hover:scale-105"
+                className="w-full bg-indigo_dye hover:bg-[#0A435C] text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform transform hover:scale-105"
               >
                 <FaBook className="text-lg" /> Book Now
               </button>
@@ -467,7 +467,7 @@ export default function EnhancedRoomProfile() {
           </div>
         </div>
       </main>
-      <Footer />
+      
     </div>
   );
 }

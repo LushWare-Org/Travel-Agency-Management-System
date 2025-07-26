@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import {
   User as UserIcon,
@@ -13,7 +12,7 @@ function TabPanel({ children, value, index }) {
   return value === index ? <div className="p-4 md:p-6">{children}</div> : null;
 }
 
-export default function UserProfile({ sidebarOpen }) {
+export default function UserProfile() {
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -122,10 +121,8 @@ export default function UserProfile({ sidebarOpen }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-16'} ml-0`}>
-        <Header onLogout={() => navigate('/login')} />
-        <div className="max-w-3xl md:max-w-5xl mx-auto px-4 md:p-6 space-y-4 md:space-y-6">
+    <div className="bg-gray-50 min-h-screen">
+      <div className="max-w-3xl md:max-w-5xl mx-auto px-4 md:p-6 space-y-4 md:space-y-6">
           {/* Alerts */}
           {successAlert && <div className="p-3 md:p-4 bg-green-100 text-green-800 rounded text-xs md:text-sm">{successAlert}</div>}
           {errorAlert  && <div className="p-3 md:p-4 bg-red-100   text-red-800   rounded text-xs md:text-sm">{errorAlert}</div>}

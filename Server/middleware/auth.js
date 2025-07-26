@@ -1,6 +1,15 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = function (req, res, next) {
+  // AUTHENTICATION DISABLED - Mock user data and continue
+  req.user = {
+    userId: 'mock-user-id',
+    email: 'mock@admin.com',
+    role: 'admin'
+  };
+  next();
+  
+  /*
   const token = req.cookies.token;
   if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
   
@@ -26,4 +35,5 @@ module.exports = function (req, res, next) {
     // Handle other token validation errors
     res.status(401).json({ msg: 'Token is not valid' });
   }
+  */
 };

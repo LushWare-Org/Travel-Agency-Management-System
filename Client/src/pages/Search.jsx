@@ -11,7 +11,6 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-import Header from '../Components/Header';
 import HotelCard from '../Components/HotelCard';
 import Footer from '../Components/Footer';
 import { countries } from '../assets/nationalities';
@@ -45,7 +44,7 @@ const getRoomPrice = (room, nationality) => {
   return Number(room.basePrice || 0) + surcharge;
 };
 
-const Search = ({ sidebarOpen }) => {
+const Search = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -496,9 +495,11 @@ const Search = ({ sidebarOpen }) => {
     return hotel ? hotel.rooms : [];
   };
 
-  const toggleFavorite = id => setFavorites(f => ({ ...f, [id]: !f[id] }));  if (loading) {
+  const toggleFavorite = id => setFavorites(f => ({ ...f, [id]: !f[id] }));
+
+  if (loading) {
     return (
-      <div className={`flex justify-center items-center h-screen bg-gray-50 transition-all duration-300 ${sidebarOpen ? 'sm:pl-64' : 'sm:pl-16'} pl-0`}>
+      <div className="flex justify-center items-center h-screen bg-gray-50">
         <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
@@ -506,15 +507,14 @@ const Search = ({ sidebarOpen }) => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className={`transition-all duration-300 ${sidebarOpen ? 'sm:pl-64' : 'sm:pl-16'} pl-0`}>
-        <Header />
+      <div>
         <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
           {/* Banner */}
           <header
             className="bg-cover bg-center h-32 sm:h-40 lg:h-60 shadow-lg rounded-2xl overflow-hidden"
             style={{
               backgroundImage:
-                "linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1920')"
+                "linear-gradient(to bottom, rgba(10,67,92,0.5), rgba(10,67,92,0.5)), url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1920')"
             }}
           >
             <div className="flex flex-col items-center justify-center h-full text-white text-center px-4">
@@ -535,8 +535,8 @@ const Search = ({ sidebarOpen }) => {
             <Card elevation={5} sx={{
               borderRadius: 3,
               overflow: 'hidden',
-              border: '1px solid rgba(255,255,255,0.2)',
-              backgroundColor: 'rgba(255,255,255,0.98)'
+              border: '1px solid rgba(183,197,199,0.2)',
+              backgroundColor: '#E7E9E5'
             }}>
               <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
                 <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
@@ -546,7 +546,7 @@ const Search = ({ sidebarOpen }) => {
                     <div className="relative destination-dropdown">
                       <input
                         type="text"
-                        className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
                         placeholder="Enter hotel or resort name"
                         value={destinationSearch}
                         onChange={e => {
@@ -581,7 +581,7 @@ const Search = ({ sidebarOpen }) => {
                             .map(h => (
                               <div
                                 key={h._id}
-                                className="px-4 py-2 hover:bg-blue-50 cursor-pointer text-sm sm:text-base"
+                                className="px-4 py-2 hover:bg-ash_gray cursor-pointer text-sm sm:text-base"
                                 onClick={() => {
                                   setSelectedDestination(h);
                                   setDestinationSearch(h.name);
@@ -605,7 +605,7 @@ const Search = ({ sidebarOpen }) => {
                         className="relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer w-full"
                         onClick={() => datePickerRef.current?.setOpen(true)}
                       >
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500">
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-lapis_lazuli">
                           <svg className="h-4 sm:h-5 w-4 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
                               strokeLinecap="round"
@@ -628,7 +628,7 @@ const Search = ({ sidebarOpen }) => {
                           }
                           readOnly
                           placeholder="Select check-in date"
-                          className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg cursor-pointer text-xs sm:text-base"
+                          className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs sm:text-base"
                         />
                       </div>
                       <DatePicker
@@ -670,7 +670,7 @@ const Search = ({ sidebarOpen }) => {
                         className="relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer w-full"
                         onClick={() => datePickerRef.current?.setOpen(true)}
                       >
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500">
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-lapis_lazuli">
                           <svg className="h-4 sm:h-5 w-4 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path
                               strokeLinecap="round"
@@ -693,7 +693,7 @@ const Search = ({ sidebarOpen }) => {
                           }
                           readOnly
                           placeholder="Select check-out date"
-                          className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg cursor-pointer text-xs sm:text-base"
+                          className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs sm:text-base"
                         />
                       </div>
                     </div>
@@ -721,7 +721,7 @@ const Search = ({ sidebarOpen }) => {
                       }
                     }
                     .react-datepicker__header {
-                      background-color: #2563eb;
+                      background-color: #005E84;
                       color: white;
                       border-top-left-radius: 0.5rem;
                       border-top-right-radius: 0.5rem;
@@ -771,30 +771,23 @@ const Search = ({ sidebarOpen }) => {
                       }
                     }
                     .react-datepicker__day:hover {
-                      background-color: #dbeafe;
-                      color: #2563eb;
+                      background-color: #B7C5C7;
+                      color: #005E84;
                     }
                     .react-datepicker__day--selected,
                     .react-datepicker__day--in-range,
                     .react-datepicker__day--in-selecting-range {
-                      background-color: #dbeafe;
-                      color: #2563eb;
+                      background-color: #B7C5C7;
+                      color: #005E84;
                     }
                     .react-datepicker__day--range-start,
                     .react-datepicker__day--range-end {
-                      background-color: #2563eb !important;
+                      background-color: #005E84 !important;
                       color: white !important;
                     }
                     .react-datepicker__day--range-start:hover,
                     .react-datepicker__day--range-end:hover {
-                      background-color: #1e40af !important;
-                    }
-                    .react-datepicker__day--outside-month {
-                      color: #d1d5db;
-                    }
-                    .react-datepicker__day--disabled {
-                      color: #d1d5db;
-                      cursor: not-allowed;
+                      background-color: #075375 !important;
                     }
                     .react-datepicker__navigation-icon::before {
                       border-color: white;
@@ -823,7 +816,7 @@ const Search = ({ sidebarOpen }) => {
                     <div className="relative nationality-dropdown">
                       <input
                         type="text"
-                        className="w-full h-12 pl-3 pr-10 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full h-12 pl-3 pr-10 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
                         placeholder="Search country..."
                         value={countrySearch}
                         onChange={e => {
@@ -859,7 +852,7 @@ const Search = ({ sidebarOpen }) => {
                             .map(c => (
                               <div
                                 key={c.name}
-                                className="px-4 py-2 hover:bg-blue-50 cursor-pointer"
+                                className="px-4 py-2 hover:bg-ash_gray cursor-pointer"
                                 onClick={() => {
                                   setSelectedCountry(c);
                                   setCountrySearch(c.flag + ' ' + c.name);
@@ -879,7 +872,7 @@ const Search = ({ sidebarOpen }) => {
                   <Grid item xs={12} sm={6} lg={3}>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Meal Plan</label>
                     <select
-                      className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
                       value={searchParams.mealPlan}
                       onChange={e => handleInputChange('mealPlan', e.target.value)}
                     >
@@ -895,14 +888,14 @@ const Search = ({ sidebarOpen }) => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Rooms</label>
                     <div className="flex items-center h-10 sm:h-12 bg-gray-50 border border-gray-300 rounded-lg overflow-hidden">
                       <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100"
+                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
                         onClick={() => handleInputChange('rooms', Math.max(1, searchParams.rooms - 1))}
                       >−</button>
                       <div className="flex-1 text-center text-sm sm:text-base font-medium">
                         {searchParams.rooms}
                       </div>
                       <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100"
+                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
                         onClick={() => handleInputChange('rooms', searchParams.rooms + 1)}
                       >+</button>
                     </div>
@@ -913,14 +906,14 @@ const Search = ({ sidebarOpen }) => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Adults</label>
                     <div className="flex items-center h-10 sm:h-12 bg-gray-50 border border-gray-300 rounded-lg overflow-hidden">
                       <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100"
+                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
                         onClick={() => handleInputChange('adults', Math.max(1, searchParams.adults - 1))}
                       >−</button>
                       <div className="flex-1 text-center text-sm sm:text-base font-medium">
                         {searchParams.adults}
                       </div>
                       <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100"
+                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
                         onClick={() => handleInputChange('adults', searchParams.adults + 1)}
                       >+</button>
                     </div>
@@ -931,14 +924,14 @@ const Search = ({ sidebarOpen }) => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Children</label>
                     <div className="flex items-center h-10 sm:h-12 bg-gray-50 border border-gray-300 rounded-lg overflow-hidden">
                       <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100"
+                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
                         onClick={() => handleChildrenChange(Math.max(0, searchParams.children - 1))}
                       >−</button>
                       <div className="flex-1 text-center text-sm sm:text-base font-medium">
                         {searchParams.children}
                       </div>
                       <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100"
+                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
                         onClick={() => handleChildrenChange(searchParams.children + 1)}
                       >+</button>
                     </div>
@@ -953,7 +946,7 @@ const Search = ({ sidebarOpen }) => {
                           {searchParams.childrenAges.map((age, i) => (
                             <select
                               key={i}
-                              className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
                               value={age}
                               onChange={e => handleChildAgeChange(i, e.target.value)}
                             >
@@ -980,7 +973,7 @@ const Search = ({ sidebarOpen }) => {
 }}>
   <button
     onClick={() => setShowFilters(f => !f)}
-    className="flex items-center justify-center sm:justify-start text-blue-600 font-medium text-sm hover:text-blue-800 transition-colors"
+    className="flex items-center justify-center sm:justify-start text-lapis_lazuli font-medium text-sm hover:text-indigo_dye transition-colors"
   >
     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
       <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
@@ -996,7 +989,7 @@ const Search = ({ sidebarOpen }) => {
     </button>
     <button
       onClick={handleSearch}
-      className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-sm hover:bg-blue-700 transition-colors"
+      className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm font-medium text-white bg-lapis_lazuli rounded-lg shadow-sm hover:bg-indigo_dye transition-colors"
     >
       Search Properties
     </button>
@@ -1024,9 +1017,9 @@ const Search = ({ sidebarOpen }) => {
                         <label className="block text-sm font-medium text-gray-700 mb-2 sm:mb-3">
                           Price Range (${searchParams.priceRange[0]} – ${searchParams.priceRange[1]})
                         </label>
-                        <div className="h-2 bg-gray-200 rounded-full w-full">
+                        <div className="h-2 bg-ash_gray rounded-full w-full">
                           <div
-                            className="h-2 bg-blue-600 rounded-full"
+                            className="h-2 bg-lapis_lazuli rounded-full"
                             style={calculatePriceRangeStyles()}
                           />
                         </div>
@@ -1066,7 +1059,7 @@ const Search = ({ sidebarOpen }) => {
                       <Grid item xs={12} md={4}>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
                         <select
-                          className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
                           value={searchParams.sortBy}
                           onChange={e => handleInputChange('sortBy', e.target.value)}
                         >
@@ -1087,7 +1080,7 @@ const Search = ({ sidebarOpen }) => {
                     <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 sm:mb-0">
                       Available Properties
                     </h3>
-                    <span className="text-indigo-600 font-medium text-sm sm:text-base">
+                    <span className="text-lapis_lazuli font-medium text-sm sm:text-base">
                       {searchResults.length} properties found
                     </span>
                   </div>
@@ -1102,7 +1095,7 @@ const Search = ({ sidebarOpen }) => {
                       </p>
                       <button
                         onClick={() => setShowFilters(true)}
-                        className="bg-indigo-600 text-white px-4 sm:px-6 py-2 text-sm sm:text-base rounded-lg font-semibold hover:bg-indigo-700 transition-colors shadow-md"
+                        className="bg-lapis_lazuli text-white px-4 sm:px-6 py-2 text-sm sm:text-base rounded-lg font-semibold hover:bg-indigo_dye transition-colors shadow-md"
                       >
                         Modify Search
                       </button>
@@ -1127,7 +1120,6 @@ const Search = ({ sidebarOpen }) => {
             </Card>
           </Box>
         </main>
-        <Footer />
       </div>
     </div>
   );
