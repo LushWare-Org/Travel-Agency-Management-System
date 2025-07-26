@@ -36,6 +36,7 @@ const Activities = () => {
   const [guests, setGuests] = useState('1');
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [navigating, setNavigating] = useState(false);
   const [error, setError] = useState(null);
 
   // Fetch activities from backend
@@ -72,7 +73,11 @@ const Activities = () => {
 
   // Handle view details navigation
   const handleViewDetails = (activityId) => {
-    navigate(`/activities/${activityId}`);
+    setNavigating(true);
+    // Small delay to show spinner, then navigate
+    setTimeout(() => {
+      navigate(`/activities/${activityId}`);
+    }, 200);
   };
 
   return (
@@ -139,9 +144,20 @@ const Activities = () => {
         </section>
 
         {/* Activities List Section */}
-        <div className="mt-4 sm:mt-6 lg:mt-8">
-          {loading ? (
-            <div className="text-center py-8 text-ash_gray-400">Loading activities...</div>
+        <div className="mt-4 sm:mt-6 lg:mt-8 min-h-[300px]">
+          {(loading || navigating) ? (
+            <div className="flex justify-center items-center h-60">
+              <div
+                className="animate-spin rounded-full h-16 w-16 border-4 border-lapis_lazuli-500 border-t-indigo_dye-500 border-b-ash_gray-500 border-r-platinum-500 bg-platinum-500 shadow-lg"
+                style={{
+                  borderTopColor: '#0A435C', // indigo_dye 2
+                  borderBottomColor: '#B7C5C7', // ash_gray
+                  borderLeftColor: '#005E84', // lapis_lazuli
+                  borderRightColor: '#E7E9E5', // platinum
+                  backgroundColor: '#E7E9E5', // platinum
+                }}
+              ></div>
+            </div>
           ) : error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : activities.length === 0 ? (
