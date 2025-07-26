@@ -44,7 +44,7 @@ const LandingHeader = () => {
             <div className="flex-shrink-0">
               <img 
                 className="h-16 w-auto mb-1" 
-                src="./IsleKey Logo.jpg" 
+                src="/IsleKey Logo.jpg" 
                 alt="Logo" 
               />
             </div>

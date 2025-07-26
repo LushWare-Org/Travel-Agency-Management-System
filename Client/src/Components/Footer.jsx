@@ -33,7 +33,7 @@ const Footer = () => {
               <div className="flex flex-row items-start gap-4">
                 <img
                   className="h-20 w-auto"
-                  src=".\IsleKey Logo.jpg"
+                  src="/IsleKey Logo.jpg"
                   alt="Logo"
                 />
                 <div className="mt-4">
