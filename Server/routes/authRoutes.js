@@ -10,94 +10,29 @@ const { sendNewUserNotification } = require('../utils/emailService');
 router.post('/register', async (req, res) => {
   try {
     const {
-      username,
+      firstName,
+      lastName,
       email,
-      password,
-      agencyName,
-      corporateName,
-      taxRegistrationNo,
-      contactPerson,
-      address,
-      city,
-      zipCode,
-      stateProvince,
       country,
       phoneNumber,
-      phoneNumber2,
-      mobilePhone,
-      fax,
-      invoicingContact,
-      billingAgencyName,
-      billingEmail,
-      billingAddress,
-      billingCity,
-      billingZipCode,
-      billingStateProvince,
-      billingCountry,
-      billingPhoneNumber,
-      remarks
+      password
     } = req.body;
 
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ msg: 'User already exists' });
 
     const salt = await bcrypt.genSalt(10);
-    // 1) Create user
-    const hash = await bcrypt.hash(password, salt);    
+    const hash = await bcrypt.hash(password, salt);
     user = new User({
+      firstName,
+      lastName,
       email,
-      password: hash, 
+      country,
+      phoneNumber,
+      password: hash,
       role: 'pending'
     });
     await user.save();
-
-    // 2) Create agency profile
-    const profile = new AgencyProfile({
-      user: user._id,
-      username,
-      agencyName,
-      corporateName,
-      taxRegistrationNo,
-      contactPerson,
-      address: { street: address, city, zipCode: billingZipCode, state: stateProvince, country },
-      phoneNumber,
-      phoneNumber2,
-      mobilePhone,
-      fax,
-      invoicingContact,
-      billingAgencyName,
-      billingEmail,
-      billingAddress: { street: billingAddress, city: billingCity, zipCode: billingZipCode, state: billingStateProvince, country: billingCountry },
-      billingPhoneNumber,
-      remarks
-    });
-    
-    console.log('DEBUG - Creating agency profile:', {
-      userId: user._id,
-      agencyName,
-      taxRegistrationNo,
-      country: address?.country
-    });
-    
-    await profile.save();
-
-    // Update user with agency profile reference
-    user.agencyProfile = profile._id;
-    await user.save();
-
-    console.log('DEBUG - Updated user with agency profile:', {
-      userId: user._id,
-      agencyProfileId: profile._id
-    });
-
-    // 3) Send email notification to admin
-    try {
-      await sendNewUserNotification(user, profile);
-      console.log('Admin notification email sent successfully');
-    } catch (emailError) {
-      console.error('Failed to send admin notification email:', emailError);
-      // Continue with registration process even if email fails
-    }
 
     res.status(201).json({ msg: 'User registered successfully' });
   } catch (err) {

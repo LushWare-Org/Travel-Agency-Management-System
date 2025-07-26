@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
@@ -14,8 +14,31 @@ const LandingHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [servicesDropdown, setServicesDropdown] = useState(false);
-  const { user, loading } = useContext(AuthContext);
+  const [accountDropdown, setAccountDropdown] = useState(false);
+  const { user, loading, logout } = useContext(AuthContext);
   const location = useLocation();
+  const accountRef = useRef(null);
+  // Close account dropdown on outside click
+  useEffect(() => {
+    if (!accountDropdown) return;
+    function handleClickOutside(event) {
+      if (accountRef.current && !accountRef.current.contains(event.target)) {
+        setAccountDropdown(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [accountDropdown]);
+  const handleSignOut = () => {
+    if (logout) {
+      logout();
+    } else {
+      // fallback: reload or redirect
+      window.location.href = '/login';
+    }
+    setAccountDropdown(false);
+    setIsMenuOpen(false);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -148,14 +171,27 @@ const LandingHeader = () => {
                 </Link>
               </>
             ) : (
-              <Link
-                to="/account"
-                className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/account') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
-                style={{ color: palette.lapis_lazuli }}
-                onClick={scrollToTop}
-              >
-                My Account
-              </Link>
+              <div className="relative" ref={accountRef}>
+                <button
+                  className={`flex items-center space-x-2 font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/account') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
+                  style={{ color: palette.lapis_lazuli }}
+                  onClick={() => setAccountDropdown((v) => !v)}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-1 text-[#005E84]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                  </svg>
+                  <span>{user?.name || user?.email || 'Account'}</span>
+                  <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {accountDropdown && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white rounded shadow-lg z-20">
+                    <Link to="/account" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={() => { setAccountDropdown(false); scrollToTop(); }}>My Account</Link>
+                    <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600" onClick={handleSignOut}>Sign Out</button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
           <div className="md:hidden flex items-center">
@@ -208,7 +244,23 @@ const LandingHeader = () => {
                 <Link to="/register" className={`bg-[#E7E9E5] text-[#005E84] block px-3 py-2 rounded-md font-medium hover:bg-[#B7C5C7] mt-4 hover:brightness-110 ${isActive('/register') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Register</Link>
               </>
             ) : (
-              <Link to="/account" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 hover:bg-[#E7E9E5] ${isActive('/account') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.lapis_lazuli }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>My Account</Link>
+              <div className="relative" ref={accountRef}>
+                <button className={`flex items-center space-x-2 px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 hover:bg-[#E7E9E5] ${isActive('/account') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.lapis_lazuli }} onClick={() => setAccountDropdown((v) => !v)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-1 text-[#005E84]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                  </svg>
+                  <span>{user?.name || user?.email || 'Account'}</span>
+                  <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {accountDropdown && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white rounded shadow-lg z-20">
+                    <Link to="/account" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={() => { setAccountDropdown(false); scrollToTop(); setIsMenuOpen(false); }}>My Account</Link>
+                    <button className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600" onClick={handleSignOut}>Sign Out</button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
