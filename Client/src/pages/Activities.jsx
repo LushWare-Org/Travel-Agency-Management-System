@@ -141,23 +141,23 @@ const Activities = () => {
         {/* Activities List Section */}
         <div className="mt-4 sm:mt-6 lg:mt-8">
           {loading ? (
-            <div className="text-center py-8 text-gray-500">Loading activities...</div>
+            <div className="text-center py-8 text-ash_gray-400">Loading activities...</div>
           ) : error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : activities.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">No activities found.</div>
+            <div className="text-center py-8 text-ash_gray-400">No activities found.</div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {activities.map(activity => (
-                <div key={activity._id} className="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-                  <img src={activity.image} alt={activity.title} className="h-40 w-full object-cover rounded-lg mb-3" />
-                  <h2 className="text-lg font-bold mb-1 text-[#005E84]">{activity.title}</h2>
-                  <p className="text-sm text-gray-600 mb-2 text-center">{activity.shortDescription || activity.description}</p>
-                  <div className="text-xs text-gray-500 mb-2">{activity.location}</div>
-                  <div className="text-sm font-semibold text-[#005E84] mb-2">${activity.price?.toFixed(2)}</div>
+                <div key={activity._id} className="bg-platinum-500 rounded-xl shadow p-4 flex flex-col items-center border border-ash_gray-200 hover:shadow-lg transition">
+                  <img src={activity.image} alt={activity.title} className="h-40 w-full object-cover rounded-lg mb-3 border border-ash_gray-300" />
+                  <h2 className="text-lg font-bold mb-1 text-lapis_lazuli-500">{activity.title}</h2>
+                  <p className="text-sm text-ash_gray-300 mb-2 text-center">{activity.shortDescription || activity.description}</p>
+                  <div className="text-xs text-ash_gray-400 mb-2">{activity.location}</div>
+                  <div className="text-sm font-semibold text-lapis_lazuli-500 mb-2">${activity.price?.toFixed(2)}</div>
                   <button
                     onClick={() => handleViewDetails(activity._id)}
-                    className="bg-[#005E84] text-white px-4 py-2 rounded-full font-semibold shadow hover:bg-[#075375] transition"
+                    className="bg-lapis_lazuli-500 text-platinum-500 px-4 py-2 rounded-full font-semibold shadow hover:bg-indigo_dye-500 hover:text-white transition"
                   >
                     View Details
                   </button>
