@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import AdminLayout from '../../Components/AdminLayout';
 import axios from 'axios';
+import { FaTrash } from "react-icons/fa";
 
 const ActivityForm = () => {
   const { id } = useParams();
@@ -702,9 +703,10 @@ const ActivityForm = () => {
                         <button
                           type="button"
                           onClick={() => removeImage(image.id)}
-                          className="absolute top-1 right-1 bg-red-600 rounded-full p-1 text-white hover:bg-red-700 focus:outline-none"
+                          className="absolute top-1 right-1 bg-red-600 rounded-full p-2 text-white hover:bg-red-700 focus:outline-none"
+                          title="Remove image"
                         >
-                          <i className="fas fa-times"></i>
+                          <FaTrash size={18} />
                         </button>
                       </div>
                     ))}
@@ -755,9 +757,10 @@ const ActivityForm = () => {
                         <button
                           type="button"
                           onClick={() => removeGalleryImage(image.id)}
-                          className="absolute top-1 right-1 bg-red-600 rounded-full p-1 text-white hover:bg-red-700 focus:outline-none"
+                          className="absolute top-1 right-1 bg-red-600 rounded-full p-2 text-white hover:bg-red-700 focus:outline-none"
+                          title="Remove image"
                         >
-                          <i className="fas fa-times"></i>
+                          <FaTrash size={18} />
                         </button>
                       </div>
                     ))}
