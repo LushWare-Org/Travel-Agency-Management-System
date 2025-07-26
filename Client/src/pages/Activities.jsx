@@ -154,7 +154,7 @@ const Activities = () => {
                     <img src={activity.image} alt={activity.title} className="max-h-full max-w-full object-contain rounded-lg" />
                   </div>
                   <h2 className="text-lg font-bold mb-1 text-lapis_lazuli-500">{activity.title}</h2>
-                  <p className="text-sm text-ash_gray-300 mb-2 text-center">{activity.shortDescription || activity.description}</p>
+                  <p className="text-sm text-ash_gray-300 mb-2 text-center">{activity.shortDescription}</p>
                   <div className="text-xs text-ash_gray-400 mb-2">{activity.location}</div>
                   <div className="text-sm font-semibold text-lapis_lazuli-500 mb-2">${activity.price?.toFixed(2)}</div>
                   <button
