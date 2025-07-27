@@ -29,8 +29,8 @@ router.post('/register', async (req, res) => {
       email,
       country,
       phoneNumber,
-      password: hash,
-      role: 'pending'
+      password: hash
+      // role will default to 'user' as per schema
     });
     await user.save();
 
@@ -51,13 +51,7 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
-    // Check if user is pending
-    if (user.role === 'pending') {
-      return res.status(403).json({ 
-        msg: 'Your account is pending approval. Please wait for admin approval before logging in.',
-        status: 'pending'
-      });
-    }
+    // No longer block login for 'pending' users
 
     const payload = { userId: user.id, role: user.role, email: email };
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
@@ -65,7 +59,8 @@ router.post('/login', async (req, res) => {
     // Set token in httpOnly cookie
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production' ? true : false,
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 3600000, // 1 hour
     });
     
@@ -79,8 +74,8 @@ router.post('/login', async (req, res) => {
 router.post("/logout", (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    sameSite: "None",
-    secure: true
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: process.env.NODE_ENV === 'production' ? true : false
   });
   res.json({ message: "Logged out successfully" });
 });
@@ -115,8 +110,8 @@ router.post('/refresh-token', async (req, res) => {
     // set the fresh cookie
     res.cookie('token', newToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'none',
+      secure: process.env.NODE_ENV === 'production' ? true : false,
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 3600000,
     });
 

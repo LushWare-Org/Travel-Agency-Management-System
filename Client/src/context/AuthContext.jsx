@@ -97,8 +97,37 @@ export const AuthProvider = ({ children }) => {
     return () => clearInterval(interval);
   }, []);
 
+  // Login function for use after registration
+  const login = async (email, password) => {
+    try {
+      // Post to login endpoint
+      await axios.post('/auth/login', { email, password }, { withCredentials: true });
+      // Fetch user info
+      const { data } = await axios.get('/users/me', { withCredentials: true });
+      setUser(data);
+      return { success: true };
+    } catch (err) {
+      setUser(null);
+      return { success: false, error: err.response?.data?.msg || 'Login failed' };
+    }
+  };
+
+  // Logout function
+  const logout = async () => {
+    try {
+      await axios.post('/auth/logout', {}, { withCredentials: true });
+      setUser(null);
+      navigate('/');
+    } catch (err) {
+      console.error('Logout error:', err);
+      // Even if logout fails on server, clear user locally
+      setUser(null);
+      navigate('/');
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

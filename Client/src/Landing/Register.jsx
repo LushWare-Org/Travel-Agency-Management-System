@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -12,6 +14,8 @@ const palette = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -88,7 +92,9 @@ const Register = () => {
       console.log('📤 Posting to:', axios.defaults.baseURL + '/auth/register');
 
       await axios.post('/auth/register', formData, {headers:{ 'Content-Type': 'application/json'}});
-      Swal.fire('Success', 'Registration submitted successfully!', 'success');
+      Swal.fire('Success', 'Registration successful! Please login with your credentials.', 'success');
+      
+      // Reset form
       setFormData({
         firstName: '',
         lastName: '',
@@ -98,6 +104,9 @@ const Register = () => {
         password: '',
         repeatPassword: '',
       });
+      
+      // Redirect to login page
+      navigate('/login');
     } catch (error) {
       console.error('Registration failed:', error);
       Swal.fire(

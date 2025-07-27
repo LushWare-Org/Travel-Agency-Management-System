@@ -1,6 +1,7 @@
 // routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const Agency = require('../models/AgencyProfile');
 const auth = require('../middleware/auth');
@@ -12,18 +13,12 @@ router.get('/me', auth, async (req, res) => {
     console.log('DEBUG - Fetching user with ID:', req.user.userId);
     
     const user = await User.findById(req.user.userId)
-      .select('-password')
-      .populate('agencyProfile');
+      .select('-password');
 
     console.log('DEBUG - User data:', {
       id: user?._id,
       email: user?.email,
-      hasAgencyProfile: !!user?.agencyProfile,
-      agencyProfile: user?.agencyProfile ? {
-        id: user.agencyProfile._id,
-        agencyName: user.agencyProfile.agencyName,
-        taxRegistrationNo: user.agencyProfile.taxRegistrationNo
-      } : null
+      role: user?.role
     });
 
     if (!user) {

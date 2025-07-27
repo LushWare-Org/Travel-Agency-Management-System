@@ -9,7 +9,7 @@ const UserSchema = new Schema({
   country:      { type: String, required: true },
   phoneNumber:  { type: String, required: true },
   password:     { type: String, required: true },
-  role:         { type: String, enum: ['agent','admin','pending'], default: 'pending' },
+  role:         { type: String, enum: ['user','agent','admin','pending'], default: 'user' },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', UserSchema);
