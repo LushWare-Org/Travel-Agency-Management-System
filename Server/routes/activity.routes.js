@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const activityController = require('../controllers/activityController');
 
+// Route to get activity title suggestions (for search bar)
+router.get('/suggestions', activityController.getActivitySuggestions);
+
 // Route to get all activities
 router.get('/', activityController.getAllActivities);
 

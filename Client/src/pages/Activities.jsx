@@ -39,46 +39,95 @@ const Activities = () => {
   const [loading, setLoading] = useState(false);
   const [navigating, setNavigating] = useState(false);
   const [error, setError] = useState(null);
+  // Suggestions state
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [suggestionLoading, setSuggestionLoading] = useState(false);
+  // Debounce for suggestions
+  useEffect(() => {
+    if (!searchQuery) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    setSuggestionLoading(true);
+    const handler = setTimeout(async () => {
+      try {
+        const params = new URLSearchParams();
+        params.append('search', searchQuery);
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/activities/suggestions?${params.toString()}`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.suggestions)) {
+          setSuggestions(data.suggestions);
+          setShowSuggestions(true);
+        } else {
+          setSuggestions([]);
+          setShowSuggestions(false);
+        }
+      } catch {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      } finally {
+        setSuggestionLoading(false);
+      }
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
 
   // Fetch activities from backend
-  useEffect(() => {
-    const fetchActivities = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        // Build query params
-        const params = new URLSearchParams();
-        if (searchQuery) params.append('search', searchQuery);
-        if (activityType) params.append('type', activityType);
-        // You can add more filters if needed
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/activities?${params.toString()}`,
-          {
-            credentials: 'include',
-          }
-        );
-        const data = await res.json();
-        if (data.success) {
-          setActivities(data.data);
-        } else {
-          setError(data.error || 'Failed to fetch activities');
+  const fetchActivities = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Build query params
+      const params = new URLSearchParams();
+      if (searchQuery) params.append('search', searchQuery);
+      if (activityType) params.append('type', activityType);
+      if (date) params.append('date', date);
+      if (guests) params.append('guests', guests);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/activities?${params.toString()}`,
+        {
+          credentials: 'include',
         }
-      } catch (err) {
-        setError('Failed to fetch activities');
-      } finally {
-        setLoading(false);
+      );
+      const data = await res.json();
+      if (data.success) {
+        setActivities(data.data);
+      } else {
+        setError(data.error || 'Failed to fetch activities');
       }
-    };
+    } catch (err) {
+      setError('Failed to fetch activities');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchActivities();
-  }, [searchQuery, activityType]);
+    // eslint-disable-next-line
+  }, []);
 
   // Handle view details navigation
   const handleViewDetails = (activityId) => {
     setNavigating(true);
-    // Small delay to show spinner, then navigate
     setTimeout(() => {
       navigate(`/activities/${activityId}`);
     }, 200);
+  };
+
+  // Handle search/filter submit
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    setShowSuggestions(false);
+    fetchActivities();
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion);
+    setShowSuggestions(false);
+    fetchActivities();
   };
 
   return (
@@ -103,14 +152,35 @@ const Activities = () => {
         </header>
 
         {/* Booking Form */}
-        <section className="mt-6 mb-8 bg-white rounded-xl shadow p-6 flex flex-col sm:flex-row gap-4 items-center">
-          <input
-            type="text"
-            placeholder="Search activities..."
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            className="border rounded px-3 py-2 w-full sm:w-1/3"
-          />
+        <form onSubmit={handleSearch} className="mt-6 mb-8 bg-white rounded-xl shadow p-6 flex flex-col sm:flex-row gap-4 items-center relative">
+          <div className="w-full sm:w-1/3 relative">
+            <input
+              type="text"
+              placeholder="Search activities..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true); }}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+              className="border rounded px-3 py-2 w-full"
+              autoComplete="off"
+            />
+            {showSuggestions && suggestions.length > 0 && (
+              <ul className="absolute z-10 left-0 right-0 bg-white border border-gray-200 rounded shadow mt-1 max-h-48 overflow-y-auto">
+                {suggestionLoading && (
+                  <li className="px-3 py-2 text-gray-400">Loading...</li>
+                )}
+                {suggestions.map((s, idx) => (
+                  <li
+                    key={idx}
+                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                    onMouseDown={() => handleSuggestionClick(s)}
+                  >
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           <select
             value={activityType}
             onChange={e => setActivityType(e.target.value)}
@@ -137,12 +207,12 @@ const Activities = () => {
             placeholder="Guests"
           />
           <button
-            onClick={handleViewDetails}
+            type="submit"
             className="bg-[#005E84] text-white px-6 py-2 rounded-full font-semibold shadow hover:bg-[#075375] transition"
           >
-            View Details
+            Search
           </button>
-        </section>
+        </form>
 
         {/* Activities List Section */}
         <div className="mt-4 sm:mt-6 lg:mt-8 min-h-[300px]">
