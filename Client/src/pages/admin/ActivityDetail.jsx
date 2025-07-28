@@ -289,34 +289,6 @@ const AdminActivityDetail = () => {
                 </div>
               )}
 
-              {/* Google Map Link */}
-              {activity.googleMapLink && activity.googleMapLink.trim() !== '' && (
-                <div className="mb-6">
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">Google Map Location</h4>
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <iframe
-                      src={activity.googleMapLink}
-                      width="100%"
-                      height="300"
-                      style={{ border: 0 }}
-                      allowFullScreen=""
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title="Google Map Location"
-                    ></iframe>
-                    <div className="mt-2">
-                      <a
-                        href={activity.googleMapLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline text-sm"
-                      >
-                        Open in Google Maps
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
