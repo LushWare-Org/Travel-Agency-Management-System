@@ -85,7 +85,7 @@ const Activities = () => {
       // Only append type if not empty
       if (activityType && activityType !== '') params.append('type', activityType);
       // if (date) params.append('date', date);
-      if (guests) params.append('guests', guests);
+      if (guests && guests !== '') params.append('guests', guests);
       const res = await fetch(
         `${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/activities?${params.toString()}`,
         {
@@ -118,18 +118,28 @@ const Activities = () => {
     }, 200);
   };
 
+
   // Handle search/filter submit
   const handleSearch = (e) => {
     if (e) e.preventDefault();
     setShowSuggestions(false);
-    fetchActivities();
+    // fetchActivities(); // Remove this line, fetching is handled by useEffect
   };
 
-  // Trigger fetch when activityType changes (including clearing filter)
+  // Handle reset filters
+  const handleResetFilters = () => {
+    setSearchQuery('');
+    setActivityType('');
+    setGuests(''); // Set to empty string so it doesn't filter by guests
+    setShowSuggestions(false);
+    // fetchActivities(); // Remove this line, fetching is handled by useEffect
+  };
+
+  // Fetch activities when any filter changes
   useEffect(() => {
     fetchActivities();
     // eslint-disable-next-line
-  }, [activityType]);
+  }, [activityType, searchQuery, guests]);
 
   const handleSuggestionClick = (suggestion) => {
     setSearchQuery(suggestion);
@@ -159,20 +169,23 @@ const Activities = () => {
         </header>
 
         {/* Booking Form */}
-        <form onSubmit={handleSearch} className="mt-6 mb-8 bg-white rounded-xl shadow p-6 flex flex-col sm:flex-row gap-4 items-center relative">
-          <div className="w-full sm:w-1/3 relative">
+        <form onSubmit={handleSearch} className="mt-6 mb-8 bg-white rounded-xl shadow p-6 flex flex-col gap-4 sm:flex-row sm:gap-6 items-stretch relative">
+          {/* Search input */}
+          <div className="w-full sm:w-[38%] relative flex flex-col">
+            <label htmlFor="activity-search" className="sr-only">Search activities</label>
             <input
+              id="activity-search"
               type="text"
               placeholder="Search activities..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true); }}
               onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-              className="border rounded px-3 py-2 w-full"
+              className="border border-gray-300 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/20 rounded-lg px-3 py-2 w-full transition-all duration-150 outline-none text-sm h-11"
               autoComplete="off"
             />
             {showSuggestions && suggestions.length > 0 && (
-              <ul className="absolute z-10 left-0 right-0 bg-white border border-gray-200 rounded shadow mt-1 max-h-48 overflow-y-auto">
+              <ul className="absolute z-20 left-0 right-0 bg-white border border-gray-200 rounded shadow mt-1 max-h-48 overflow-y-auto">
                 {suggestionLoading && (
                   <li className="px-3 py-2 text-gray-400">Loading...</li>
                 )}
@@ -188,35 +201,54 @@ const Activities = () => {
               </ul>
             )}
           </div>
-          <select
-            value={activityType}
-            onChange={e => setActivityType(e.target.value)}
-            className="border rounded px-3 py-2 w-full sm:w-1/4"
-          >
-            <option value="">All Types</option>
-            <option value="cruises">Cruises</option>
-            <option value="diving">Diving</option>
-            <option value="island-tours">Island Tours</option>
-            <option value="water-sports">Water Sports</option>
-            <option value="adventure">Adventure</option>
-            <option value="cultural">Cultural</option>
-            <option value="wellness">Wellness</option>
-          </select>
-
-          <input
-            type="number"
-            min="1"
-            value={guests}
-            onChange={e => setGuests(e.target.value)}
-            className="border rounded px-3 py-2 w-full sm:w-1/6"
-            placeholder="Guests"
-          />
-          <button
-            type="submit"
-            className="bg-[#005E84] text-white px-6 py-2 rounded-full font-semibold shadow hover:bg-[#075375] transition"
-          >
-            Search
-          </button>
+          {/* Activity type select */}
+          <div className="w-full sm:w-[22%] flex flex-col">
+            <label htmlFor="activity-type" className="sr-only">Activity type</label>
+            <select
+              id="activity-type"
+              value={activityType}
+              onChange={e => setActivityType(e.target.value)}
+              className="border border-gray-300 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/20 rounded-lg px-3 py-2 w-full transition-all duration-150 outline-none text-sm h-11 bg-white"
+            >
+              <option value="">All Types</option>
+              <option value="cruises">Cruises</option>
+              <option value="diving">Diving</option>
+              <option value="island-tours">Island Tours</option>
+              <option value="water-sports">Water Sports</option>
+              <option value="adventure">Adventure</option>
+              <option value="cultural">Cultural</option>
+              <option value="wellness">Wellness</option>
+            </select>
+          </div>
+          {/* Guests input */}
+          <div className="w-full sm:w-[16%] flex flex-col">
+            <label htmlFor="guests" className="sr-only">Guests</label>
+            <input
+              id="guests"
+              type="number"
+              min="1"
+              value={guests}
+              onChange={e => setGuests(e.target.value)}
+              className="border border-gray-300 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/20 rounded-lg px-3 py-2 w-full transition-all duration-150 outline-none text-sm h-11"
+              placeholder="Guests"
+            />
+          </div>
+          {/* Search and Reset buttons */}
+          <div className="w-full sm:w-[24%] flex flex-row gap-2 items-center justify-between sm:justify-end">
+            <button
+              type="submit"
+              className="bg-[#005E84] text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-[#075375] transition-all duration-150 h-11 w-full sm:w-auto text-sm"
+            >
+              Search
+            </button>
+            <button
+              type="button"
+              onClick={handleResetFilters}
+              className="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold shadow hover:bg-gray-300 transition-all duration-150 h-11 w-full sm:w-auto text-sm border border-gray-300"
+            >
+              Reset
+            </button>
+          </div>
         </form>
 
         {/* Activities List Section */}
