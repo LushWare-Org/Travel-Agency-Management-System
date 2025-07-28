@@ -1,18 +1,11 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = function (req, res, next) {
-  // AUTHENTICATION DISABLED - Mock user data and continue
-  req.user = {
-    userId: 'mock-user-id',
-    email: 'mock@admin.com',
-    role: 'admin'
-  };
-  next();
-  
-  /*
-  const token = req.cookies.token;
-  if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
-  
+  const token = req.cookies && req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ msg: 'No token, authorization denied' });
+  }
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
     req.user = {
@@ -22,18 +15,13 @@ module.exports = function (req, res, next) {
     };
     next();
   } catch (err) {
-    // Check if error is due to token expiration
     if (err.name === 'TokenExpiredError') {
-      // Clear the expired token
       res.clearCookie('token');
-      return res.status(401).json({ 
+      return res.status(401).json({
         msg: 'Token has expired. Please log in again.',
         expired: true
       });
     }
-    
-    // Handle other token validation errors
     res.status(401).json({ msg: 'Token is not valid' });
   }
-  */
 };

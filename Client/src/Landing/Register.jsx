@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -12,9 +14,11 @@ const palette = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    username: '',
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     country: '',
     phoneNumber: '',
@@ -37,7 +41,7 @@ const Register = () => {
   const validateForm = () => {
     const newErrors = {};
     const requiredFields = [
-      'username', 'name', 'email', 'country', 'phoneNumber', 'password', 'repeatPassword'
+      'firstName', 'lastName', 'email', 'country', 'phoneNumber', 'password', 'repeatPassword'
     ];
 
     requiredFields.forEach(field => {
@@ -88,16 +92,21 @@ const Register = () => {
       console.log('📤 Posting to:', axios.defaults.baseURL + '/auth/register');
 
       await axios.post('/auth/register', formData, {headers:{ 'Content-Type': 'application/json'}});
-      Swal.fire('Success', 'Registration submitted successfully!', 'success');
+      Swal.fire('Success', 'Registration successful! Please login with your credentials.', 'success');
+      
+      // Reset form
       setFormData({
-        username: '',
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         country: '',
         phoneNumber: '',
         password: '',
         repeatPassword: '',
       });
+      
+      // Redirect to login page
+      navigate('/login');
     } catch (error) {
       console.error('Registration failed:', error);
       Swal.fire(
@@ -196,46 +205,48 @@ const Register = () => {
           <form onSubmit={handleSubmit} className="p-6">
             <div className="mb-8">
               <h2 className="text-xl font-semibold text-gray-800 mb-2 mt-4 pb-2 border-b border-gray-200">Personal Information</h2>
-              <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Username <span className="text-red-500">*</span>
+                    First Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
-                    name="username"
-                    value={formData.username}
+                    name="firstName"
+                    value={formData.firstName}
                     onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.username ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+                    className={`w-full px-3 py-2 border rounded-md ${errors.firstName ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
                   />
-                  {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
+                  {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name <span className="text-red-500">*</span>
+                    Last Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
-                    name="name"
-                    value={formData.name}
+                    name="lastName"
+                    value={formData.lastName}
                     onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+                    className={`w-full px-3 py-2 border rounded-md ${errors.lastName ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
                   />
-                  {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                  {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    E-mail Address <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  />
-                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-                </div>
+            </div>
+            <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  E-mail Address <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={`w-full px-3 py-2 border rounded-md ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+                />
+                {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Country <span className="text-red-500">*</span>
@@ -262,7 +273,7 @@ const Register = () => {
                   />
                   {errors.phoneNumber && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>}
                 </div>
-              </div>
+            </div>
             </div>
 
             <div className="mb-8">
