@@ -1,3 +1,8 @@
+// Utility to extract src from iframe string
+function extractGoogleMapSrc(iframeString) {
+  const match = iframeString.match(/src=["']([^"']+)["']/);
+  return match ? match[1] : iframeString;
+}
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
@@ -416,6 +421,7 @@ const ActivityForm = () => {
                           text-base py-3 px-4 ${
                           errors.googleMapLink && touched.googleMapLink ? 'border-red-300' : ''
                         }`}
+                        onBlur={e => setFieldValue('googleMapLink', extractGoogleMapSrc(e.target.value))}
                       />
                       <ErrorMessage name="googleMapLink" component="div" className="mt-1 text-sm text-red-600" />
                     </div>
