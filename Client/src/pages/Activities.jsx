@@ -82,7 +82,8 @@ const Activities = () => {
       // Build query params
       const params = new URLSearchParams();
       if (searchQuery) params.append('search', searchQuery);
-      if (activityType) params.append('type', activityType);
+      // Only append type if not empty
+      if (activityType && activityType !== '') params.append('type', activityType);
       if (date) params.append('date', date);
       if (guests) params.append('guests', guests);
       const res = await fetch(
@@ -123,6 +124,12 @@ const Activities = () => {
     setShowSuggestions(false);
     fetchActivities();
   };
+
+  // Trigger fetch when activityType changes (including clearing filter)
+  useEffect(() => {
+    fetchActivities();
+    // eslint-disable-next-line
+  }, [activityType]);
 
   const handleSuggestionClick = (suggestion) => {
     setSearchQuery(suggestion);
@@ -187,10 +194,13 @@ const Activities = () => {
             className="border rounded px-3 py-2 w-full sm:w-1/4"
           >
             <option value="">All Types</option>
-            <option value="water">Water Sports</option>
-            <option value="excursion">Excursions</option>
-            <option value="wellness">Wellness & Spa</option>
-            <option value="dining">Dining Experiences</option>
+            <option value="cruises">Cruises</option>
+            <option value="diving">Diving</option>
+            <option value="island-tours">Island Tours</option>
+            <option value="water-sports">Water Sports</option>
+            <option value="adventure">Adventure</option>
+            <option value="cultural">Cultural</option>
+            <option value="wellness">Wellness</option>
           </select>
           <input
             type="date"
