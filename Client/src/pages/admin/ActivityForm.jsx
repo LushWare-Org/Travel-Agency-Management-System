@@ -1,3 +1,8 @@
+// Utility to extract src from iframe string
+function extractGoogleMapSrc(iframeString) {
+  const match = iframeString.match(/src=["']([^"']+)["']/);
+  return match ? match[1] : iframeString;
+}
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
@@ -69,6 +74,7 @@ const ActivityForm = () => {
     location: Yup.string().required('Location is required'),
     type: Yup.string().required('Activity type is required'),
     maxParticipants: Yup.number().positive('Must be positive').integer('Must be a whole number'),
+    googleMapLink: Yup.string().url('Must be a valid URL').nullable(),
   });
   // Handle image upload for main image
   const handleImageUpload = async (event) => {
@@ -376,6 +382,7 @@ const ActivityForm = () => {
               requirements: activity?.requirements || [],
               featured: activity?.featured || false,
               status: activity?.status || 'active',
+              googleMapLink: activity?.googleMapLink || '',
             }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -386,7 +393,6 @@ const ActivityForm = () => {
                   {/* Basic Info */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium text-gray-900">Basic Information</h3>
-                    
                     <div>
                       <label htmlFor="title" className="block text-base font-medium text-gray-700">
                         Activity Title <span className="text-red-500">*</span>
@@ -402,7 +408,23 @@ const ActivityForm = () => {
                       />
                       <ErrorMessage name="title" component="div" className="mt-1 text-sm text-red-600" />
                     </div>
-                    
+                    <div>
+                      <label htmlFor="googleMapLink" className="block text-base font-medium text-gray-700">
+                        Google Map Link
+                      </label>
+                      <Field
+                        type="url"
+                        name="googleMapLink"
+                        id="googleMapLink"
+                        placeholder="https://www.google.com/maps/embed?..."
+                        className={`mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md 
+                          text-base py-3 px-4 ${
+                          errors.googleMapLink && touched.googleMapLink ? 'border-red-300' : ''
+                        }`}
+                        onBlur={e => setFieldValue('googleMapLink', extractGoogleMapSrc(e.target.value))}
+                      />
+                      <ErrorMessage name="googleMapLink" component="div" className="mt-1 text-sm text-red-600" />
+                    </div>
                     <div>
                       <label htmlFor="shortDescription" className="block text-base font-medium text-gray-700">
                         Short Description (for listings)
@@ -420,7 +442,6 @@ const ActivityForm = () => {
                       />
                       <ErrorMessage name="shortDescription" component="div" className="mt-1 text-sm text-red-600" />
                     </div>
-                    
                     <div>
                       <label htmlFor="description" className="block text-base font-medium text-gray-700">
                         Full Description <span className="text-red-500">*</span>
@@ -437,7 +458,6 @@ const ActivityForm = () => {
                       />
                       <ErrorMessage name="description" component="div" className="mt-1 text-sm text-red-600" />
                     </div>
-                    
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="price" className="block text-base font-medium text-gray-700">

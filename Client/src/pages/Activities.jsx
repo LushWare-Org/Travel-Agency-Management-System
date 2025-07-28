@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ActivityCard from '../Components/ActivityCard';
 // import ImageGallery from '../Components/ImageGallery';
 
 function useDeviceType() {
@@ -165,21 +166,11 @@ const Activities = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {activities.map(activity => (
-                <div key={activity._id} className="bg-platinum-500 rounded-xl shadow p-4 flex flex-col items-center border border-ash_gray-200 hover:shadow-lg transition">
-                  <div className="h-40 w-full flex items-center justify-center mb-3 bg-platinum-600 rounded-lg border border-ash_gray-300">
-                    <img src={activity.image} alt={activity.title} className="max-h-full max-w-full object-contain rounded-lg" />
-                  </div>
-                  <h2 className="text-lg font-bold mb-1 text-lapis_lazuli-500">{activity.title}</h2>
-                  <p className="text-sm text-ash_gray-300 mb-2 text-center">{activity.shortDescription}</p>
-                  <div className="text-xs text-ash_gray-400 mb-2">{activity.location}</div>
-                  <div className="text-sm font-semibold text-lapis_lazuli-500 mb-2">${activity.price?.toFixed(2)}</div>
-                  <button
-                    onClick={() => handleViewDetails(activity._id)}
-                    className="bg-lapis_lazuli-500 text-platinum-500 px-4 py-2 rounded-full font-semibold shadow hover:bg-indigo_dye-500 hover:text-white transition"
-                  >
-                    View Details
-                  </button>
-                </div>
+                <ActivityCard
+                  key={activity._id}
+                  activity={activity}
+                  onClick={() => handleViewDetails(activity._id)}
+                />
               ))}
             </div>
           )}

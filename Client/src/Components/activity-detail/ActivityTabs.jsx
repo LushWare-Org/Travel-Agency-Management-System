@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 const ActivityTabs = ({ activity }) => {
+    // Use googleMapLink from the activity prop (fetched from the database)
     const [activeTab, setActiveTab] = useState('description');
       // Use included and requirements from the database or fallback to defaults
     const inclusions = activity.included && activity.included.length > 0 ? 
@@ -24,11 +25,9 @@ const ActivityTabs = ({ activity }) => {
             "Comfortable clothing"
         ];
     
-    // Location coordinates for the map (mock data)
-    const mapCoordinates = {
-        lat: 4.1755 + (Math.random() * 0.05),
-        lng: 73.5093 + (Math.random() * 0.05)
-    };
+    // --- Check if Google Map Link is available ---
+    // Assumes a 'googleMapLink' field exists in the activity data
+    const hasGoogleMapLink = activity.googleMapLink && activity.googleMapLink.trim() !== '';
 
     return (
         <div className="bg-platinum-500 rounded-lg shadow-md overflow-hidden">
@@ -115,28 +114,32 @@ const ActivityTabs = ({ activity }) => {
                     <div className="space-y-4">
                         <h3 className="text-xl font-semibold text-lapis_lazuli-500">Activity Location</h3>
                         <p className="text-indigo_dye-400 mb-4">
-                            This activity takes place in {activity.location}, known for its stunning beaches and crystal clear waters.
+                            This activity takes place in {activity.location || 'the specified location'}, known for its stunning beaches and crystal clear waters.
                         </p>
-                        
-                        {/* Map Placeholder - In a real app, you'd use react-leaflet */}
-                        <div className="border border-ash_gray-300 rounded-lg h-96 overflow-hidden relative bg-platinum-600">
-                            <div className="absolute inset-0 flex justify-center items-center">
-                                <div className="text-center">
-                                    <p className="text-lapis_lazuli-600 font-medium mb-2">Map of {activity.location}</p>
-                                    <p className="text-ash_gray-400 text-sm">Coordinates: {mapCoordinates.lat.toFixed(4)}, {mapCoordinates.lng.toFixed(4)}</p>
-                                    <p className="text-ash_gray-300 text-xs mt-2">(In a real app, a map would be displayed here using react-leaflet)</p>
-                                </div>
+                        {/* Google Map Embed */}
+                        {hasGoogleMapLink ? (
+                            <div className="border border-ash_gray-300 rounded-lg overflow-hidden">
+                                <iframe
+                                    src={activity.googleMapLink}
+                                    width="100%"
+                                    height="400"
+                                    style={{ border: 0 }}
+                                    allowFullScreen=""
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    title={`Map of ${activity.location || 'Activity Location'}`}
+                                ></iframe>
                             </div>
-                            <div className="absolute bottom-4 right-4 bg-platinum-500 p-2 rounded-lg shadow-md">
-                                <div className="flex items-center text-lapis_lazuli-500 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-indigo_dye-500" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                                    </svg>
-                                    Activity starting point
-                                </div>
+                        ) : (
+                            <div className="border border-ash_gray-300 rounded-lg h-96 overflow-hidden relative bg-platinum-600 flex items-center justify-center">
+                                <p className="text-ash_gray-400 text-center p-4">
+                                    A Google Map link for this location has not been provided.
+                                    {activity.location && (
+                                        <span className="block mt-2">Location: {activity.location}</span>
+                                    )}
+                                </p>
                             </div>
-                        </div>
-                        
+                        )}
                         <div className="mt-4">
                             <h4 className="font-medium text-lapis_lazuli-500 mb-2">Meeting Point</h4>
                             <p className="text-indigo_dye-400">You'll meet our guide at the main lobby of your resort or a designated pickup point. Exact meeting instructions will be provided after booking.</p>

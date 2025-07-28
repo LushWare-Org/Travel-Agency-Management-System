@@ -288,6 +288,7 @@ const AdminActivityDetail = () => {
                   </ul>
                 </div>
               )}
+
             </div>
           </div>
         </div>
