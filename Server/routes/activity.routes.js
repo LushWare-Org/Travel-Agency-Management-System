@@ -6,6 +6,7 @@ const activityController = require('../controllers/activityController');
 router.get('/suggestions', activityController.getActivitySuggestions);
 
 // Route to get all activities
+// Supports query params: type, minPrice, maxPrice, minDuration, maxDuration, location, search, featured, status, sortBy, guests
 router.get('/', activityController.getAllActivities);
 
 // Route to get a single activity by ID

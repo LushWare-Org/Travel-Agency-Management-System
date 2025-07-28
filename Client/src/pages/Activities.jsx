@@ -33,7 +33,7 @@ const Activities = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activityType, setActivityType] = useState('');
-  const [date, setDate] = useState('');
+  // const [date, setDate] = useState('');
   const [guests, setGuests] = useState('1');
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -84,7 +84,7 @@ const Activities = () => {
       if (searchQuery) params.append('search', searchQuery);
       // Only append type if not empty
       if (activityType && activityType !== '') params.append('type', activityType);
-      if (date) params.append('date', date);
+      // if (date) params.append('date', date);
       if (guests) params.append('guests', guests);
       const res = await fetch(
         `${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/activities?${params.toString()}`,
@@ -202,12 +202,7 @@ const Activities = () => {
             <option value="cultural">Cultural</option>
             <option value="wellness">Wellness</option>
           </select>
-          <input
-            type="date"
-            value={date}
-            onChange={e => setDate(e.target.value)}
-            className="border rounded px-3 py-2 w-full sm:w-1/4"
-          />
+
           <input
             type="number"
             min="1"

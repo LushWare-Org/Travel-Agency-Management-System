@@ -28,6 +28,13 @@ const Activity = require('../models/Activity');
 exports.getAllActivities = async (req, res) => {
   try {
     let query = {};
+    // Filter by guests (maxParticipants)
+    if (req.query.guests) {
+      const guestsNum = Number(req.query.guests);
+      if (!isNaN(guestsNum) && guestsNum > 0) {
+        query.maxParticipants = { $gte: guestsNum };
+      }
+    }
     
     // Filter by activity type
     if (req.query.type) {
