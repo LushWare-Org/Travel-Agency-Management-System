@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
 const ActivityTabs = ({ activity }) => {
-    // Hardcoded Google Map link for testing
-    activity.googleMapLink = "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3530.138089243769!2d80.27970557856227!3d7.255699205475839!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2slk!4v1753670123668!5m2!1sen!2slk";
+    // Use googleMapLink from the activity prop (fetched from the database)
     const [activeTab, setActiveTab] = useState('description');
       // Use included and requirements from the database or fallback to defaults
     const inclusions = activity.included && activity.included.length > 0 ? 

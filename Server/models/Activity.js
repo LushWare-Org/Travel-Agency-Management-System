@@ -75,6 +75,10 @@ const ActivitySchema = new mongoose.Schema({
     enum: ['active', 'inactive'],
     default: 'active'
   },
+  googleMapLink: {
+    type: String,
+    default: ''
+  },
   createdAt: {
     type: Date,
     default: Date.now
