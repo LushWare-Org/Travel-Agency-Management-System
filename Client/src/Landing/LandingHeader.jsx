@@ -15,6 +15,7 @@ const LandingHeader = () => {
   const [scrolled, setScrolled] = useState(false);
   const [servicesDropdown, setServicesDropdown] = useState(false);
   const [accountDropdown, setAccountDropdown] = useState(false);
+  const servicesDropdownTimeout = useRef(null);
   const { user, loading, logout } = useContext(AuthContext);
   const location = useLocation();
   const accountRef = useRef(null);
@@ -95,12 +96,23 @@ const LandingHeader = () => {
             </Link>
             <div
               className="relative"
-              onMouseEnter={() => setServicesDropdown(true)}
-              onMouseLeave={() => setServicesDropdown(false)}
+              onMouseEnter={() => {
+                if (servicesDropdownTimeout.current) {
+                  clearTimeout(servicesDropdownTimeout.current);
+                  servicesDropdownTimeout.current = null;
+                }
+                setServicesDropdown(true);
+              }}
+              onMouseLeave={() => {
+                servicesDropdownTimeout.current = setTimeout(() => {
+                  setServicesDropdown(false);
+                }, 150);
+              }}
             >
               <button
                 className={`font-medium transition-colors hover:underline hover:brightness-125 flex items-center ${location.pathname.startsWith('/services') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
                 style={{ color: palette.indigo_dye2 }}
+                type="button"
               >
                 Our Services
                 <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,10 +120,23 @@ const LandingHeader = () => {
                 </svg>
               </button>
               {servicesDropdown && (
-                <div className="absolute left-0 mt-2 w-40 bg-white rounded shadow-lg z-10">
-                  <Link to="/services/service1" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Service 1</Link>
-                  <Link to="/services/service2" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Service 2</Link>
-                  <Link to="/services/service3" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Service 3</Link>
+                <div
+                  className="absolute left-0 mt-2 w-56 bg-white rounded shadow-lg z-10"
+                  onMouseEnter={() => {
+                    if (servicesDropdownTimeout.current) {
+                      clearTimeout(servicesDropdownTimeout.current);
+                      servicesDropdownTimeout.current = null;
+                    }
+                    setServicesDropdown(true);
+                  }}
+                  onMouseLeave={() => {
+                    servicesDropdownTimeout.current = setTimeout(() => {
+                      setServicesDropdown(false);
+                    }, 150);
+                  }}
+                >
+                  <Link to="/brand-representation" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Brand Representation</Link>
+                  <Link to="/investment-support" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Investment Support</Link>
                 </div>
               )}
             </div>
