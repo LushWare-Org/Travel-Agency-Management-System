@@ -319,6 +319,6 @@ export default function UserProfile() {
 
         <Footer />
       </div>
-    </div>
+    
   );
 }
