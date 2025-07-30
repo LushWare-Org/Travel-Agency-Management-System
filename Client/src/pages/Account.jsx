@@ -1,8 +1,27 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import activityBookingsAPI from '../services/activityBookingsAPI';
 
 const Account = () => {
   const { user } = useContext(AuthContext);
+  const [bookings, setBookings] = useState([]);
+  const [loadingBookings, setLoadingBookings] = useState(true);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const res = await activityBookingsAPI.getMy();
+        if (res.success) {
+          setBookings(res.data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch activity bookings', err);
+      } finally {
+        setLoadingBookings(false);
+      }
+    };
+    fetchBookings();
+  }, []);
 
   if (!user) {
     return (
@@ -72,6 +91,32 @@ const Account = () => {
                     Contact Support
                   </a>
                 </div>
+              </div>
+              {/* Activity Booking History */}
+              <div className="mt-8">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">My Activity Bookings</h3>
+                {loadingBookings ? (
+                  <p>Loading...</p>
+                ) : bookings.length === 0 ? (
+                  <p className="text-sm text-gray-500">No activity bookings found.</p>
+                ) : (
+                  <div className="space-y-4">
+                    {bookings.map(booking => (
+                      <div key={booking._id} className="bg-white shadow rounded-lg p-4">
+                        <img src={booking.activity.image} alt={booking.activity.title} className="w-full h-32 object-cover rounded mb-2" />
+                        <div className="flex justify-between">
+                          <h4 className="text-md font-medium text-gray-900">{booking.activity.title}</h4>
+                          <span className="text-sm text-gray-500">{new Date(booking.bookingDetails.date).toLocaleDateString()}</span>
+                        </div>
+                        <div className="mt-2">
+                          <p className="text-sm text-gray-700">Guests: {booking.bookingDetails.guests}</p>
+                          <p className="text-sm text-gray-700">Status: {booking.status}</p>
+                          <p className="text-sm text-gray-700">Total Price: ${booking.pricing.totalPrice}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
