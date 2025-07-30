@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthCheck } from '../../hooks/useAuthCheck';
 
 const BookingForm = ({ activity }) => {
     const navigate = useNavigate();
+    const { requireAuthForBooking } = useAuthCheck();
     const [selectedDate, setSelectedDate] = useState('');    const [guests, setGuests] = useState(2);
     const [totalPrice, setTotalPrice] = useState(activity.price * 2);
     // Use maxParticipants from the database or fallback to 10
@@ -20,7 +22,21 @@ const BookingForm = ({ activity }) => {
             alert('Please select a date');
             return;
         }
-          // Navigate to booking page with selected information
+
+        // Prepare booking data
+        const bookingData = {
+            activityId: activity._id || activity.id,
+            selectedDate,
+            guests,
+            activityTitle: activity.title
+        };
+
+        // Check authentication before proceeding to booking
+        if (!requireAuthForBooking('activity', bookingData)) {
+            return; // User will be redirected to login
+        }
+
+        // User is authenticated, proceed to booking
         navigate(`/activities/${activity._id || activity.id}/booking`, {
             state: {
                 selectedDate,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Typography, Box, Button, IconButton } from '@mui/material';
 import TourImages from '../Components/TourImages';
 import Itinerary from '../Components/Itinerary';
@@ -13,6 +13,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import { Clock, Calendar, DollarSign, Users, Star, MapPin, Check, Eye, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import Footer from '../Components/Footer';
+import { useAuthCheck } from '../hooks/useAuthCheck';
 
 function useDeviceType() {
   const [deviceType, setDeviceType] = useState({
@@ -136,6 +137,8 @@ const ImageGalleryPopup = ({ images, title, isOpen, onClose }) => {
 const TourDetails = ({ sidebarOpen }) => {
   const { tourId } = useParams(); 
   const navigate = useNavigate();
+  const location = useLocation();
+  const { requireAuthForBooking } = useAuthCheck();
   const [tour, setTour] = useState(null);
   const [loading, setLoading] = useState(true);
   const [exchangeRates, setExchangeRates] = useState({});
@@ -258,6 +261,15 @@ const TourDetails = ({ sidebarOpen }) => {
 
   const [openDialog, setOpenDialog] = useState(false);
 
+  // Handle post-login auto-open inquiry form
+  useEffect(() => {
+    if (location.state?.openInquiry) {
+      setOpenDialog(true);
+      // Clear the state to avoid reopening on subsequent visits
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.state, navigate]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100">
@@ -293,8 +305,27 @@ const TourDetails = ({ sidebarOpen }) => {
     );
   }
 
-  // Handler to open inquiry dialog.
-  const handleOpenDialog = () => setOpenDialog(true);
+  // Handler to open inquiry dialog with authentication check.
+  const handleOpenDialog = () => {
+    // Prepare tour booking data
+    const tourBookingData = {
+      tourId: tour?._id,
+      tourName: tour?.name,
+      selectedNightsKey,
+      selectedNightsOption, 
+      selectedFoodCategory,
+      finalPrice: totalPrice,
+      finalOldPrice
+    };
+
+    // Check authentication before opening inquiry form
+    if (!requireAuthForBooking('tour', tourBookingData)) {
+      return; // User will be redirected to login
+    }
+
+    // User is authenticated, open the inquiry form
+    setOpenDialog(true);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
