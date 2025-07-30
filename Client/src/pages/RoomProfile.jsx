@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { useAuthCheck } from '../hooks/useAuthCheck';
 import {
   FaBed,
   FaRulerCombined,
@@ -33,6 +34,7 @@ export default function EnhancedRoomProfile() {
   const { roomId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const { requireAuthForBooking } = useAuthCheck();
 
   const previousRoute = location.state?.previousRoute || '/search';
   const selectedMarket = location.state?.selectedMarket || '';
@@ -187,19 +189,28 @@ export default function EnhancedRoomProfile() {
       return;
     }
 
+    // Prepare booking data
+    const bookingData = {
+      roomId: roomData._id,
+      hotelId: roomData.hotelId,
+      roomName: roomData.roomName,
+      hotelName: roomData.hotelName,
+      basePricePerNight: perNightPrice,
+      mealPlan: selectedMealPlan,
+      market: selectedMarketObj?.name || selectedMarket,
+      checkIn: checkInDate.toISOString(),
+      checkOut: checkOutDate.toISOString(),
+      previousRoute: location.state?.previousRoute || '/search'
+    };
+
+    // Check authentication before proceeding to booking
+    if (!requireAuthForBooking('hotel', bookingData)) {
+      return; // User will be redirected to login
+    }
+
+    // User is authenticated, proceed to booking
     navigate('/bookingRequest', {
-      state: {
-        roomId: roomData._id,
-        hotelId: roomData.hotelId,
-        roomName: roomData.roomName,
-        hotelName: roomData.hotelName,
-        basePricePerNight: perNightPrice,
-        mealPlan: selectedMealPlan,
-        market: selectedMarketObj?.name || selectedMarket,
-        checkIn: checkInDate.toISOString(),
-        checkOut: checkOutDate.toISOString(),
-        previousRoute: location.state?.previousRoute || '/search'
-      }
+      state: bookingData
     });
   };
 

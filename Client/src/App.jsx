@@ -5,8 +5,8 @@ import LandingHeader from "./Landing/LandingHeader";
 import Footer from "./Components/Footer";
 import WhatsappIcon from "./Components/WhatsappIcon";
 
-// AUTHENTICATION DISABLED - ProtectedRoute import commented out
-// import ProtectedRoute from './Components/ProtectedRoute';
+// AUTHENTICATION RE-ENABLED - ProtectedRoute import added back
+import ProtectedRoute from './Components/ProtectedRoute';
 
 const Home = lazy(() => import("./Landing/Home"));
 const Login = lazy(() => import("./Landing/Login"));
@@ -110,32 +110,32 @@ export default function App() {
             }
           />
 
-          {/* protected - AUTHENTICATION DISABLED, all routes now accessible */}
+          {/* protected - AUTHENTICATION RE-ENABLED for user-specific pages */}
           <Route
             path="/settings"
             element={
-              <>
+              <ProtectedRoute>
                 <Settings />
                 <Footer />
-              </>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/bookings"
             element={
-              <>
+              <ProtectedRoute>
                 <Bookings />
                 <Footer />
-              </>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/bookingRequest"
             element={
-              <>
+              <ProtectedRoute>
                 <BookingRequest />
                 <Footer />
-              </>
+              </ProtectedRoute>
             }
           />
 
@@ -194,26 +194,31 @@ export default function App() {
             }
           />
           <Route path="/activities/:id" element={<><ActivityDetail/><Footer/></>} />
-          <Route path="/activities/:id/booking" element={<><ActivityBookingRequest/><Footer/></>} />
+          <Route path="/activities/:id/booking" element={
+            <ProtectedRoute>
+              <ActivityBookingRequest/>
+              <Footer/>
+            </ProtectedRoute>
+          } />
 
-          {/* user profile - AUTHENTICATION DISABLED */}
+          {/* user profile - AUTHENTICATION RE-ENABLED */}
           <Route
             path="/profile"
             element={
-              <>
+              <ProtectedRoute>
                 <UserProfile />
                 <Footer />
-              </>
+              </ProtectedRoute>
             }
           />
 
-          {/* admin only - AUTHENTICATION DISABLED, now accessible to all */}
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/admin/activities" element={<AdminActivities />} />
-          <Route path="/admin/activities/new" element={<ActivityForm/>} />
-          <Route path="/admin/activities/:id/edit" element={<ActivityForm/>} />
-          <Route path="/admin/activities/:id/view" element={<AdminActivityView/>} />
-          <Route path="/admin/activities/:id" element={<AdminActivityDetail/>} />
+          {/* admin only - AUTHENTICATION RE-ENABLED */}
+          <Route path="/admin" element={<ProtectedRoute requireAdmin={true}><AdminPanel /></ProtectedRoute>} />
+          <Route path="/admin/activities" element={<ProtectedRoute requireAdmin={true}><AdminActivities /></ProtectedRoute>} />
+          <Route path="/admin/activities/new" element={<ProtectedRoute requireAdmin={true}><ActivityForm/></ProtectedRoute>} />
+          <Route path="/admin/activities/:id/edit" element={<ProtectedRoute requireAdmin={true}><ActivityForm/></ProtectedRoute>} />
+          <Route path="/admin/activities/:id/view" element={<ProtectedRoute requireAdmin={true}><AdminActivityView/></ProtectedRoute>} />
+          <Route path="/admin/activities/:id" element={<ProtectedRoute requireAdmin={true}><AdminActivityDetail/></ProtectedRoute>} />
 
           {/* static informational pages */}
           <Route

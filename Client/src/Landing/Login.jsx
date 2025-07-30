@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../context/AuthContext';
@@ -14,6 +14,8 @@ const palette = {
 
 const Login = ({ setIsAuthenticated }) => {
   const { setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -25,7 +27,6 @@ const Login = ({ setIsAuthenticated }) => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
-  const navigate = useNavigate();
 
   const backgroundImages = [
     'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?ixlib=rb-1.2.1&auto=format&fit=crop',
@@ -99,7 +100,40 @@ const Login = ({ setIsAuthenticated }) => {
       try {
         const userResponse = await axios.get('/users/me');
         setUser(userResponse.data);
-        navigate('/'); // Redirect to home page for customers
+        
+        // Handle post-login redirect
+        const bookingIntent = location.state?.bookingIntent;
+        const from = location.state?.from;
+
+        if (bookingIntent) {
+          // Redirect to the booking page with the saved data
+          switch (bookingIntent.type) {
+            case 'hotel':
+              navigate('/bookingRequest', { state: bookingIntent.data });
+              break;
+            case 'activity':
+              navigate(`/activities/${bookingIntent.data.activityId}/booking`, {
+                state: {
+                  selectedDate: bookingIntent.data.selectedDate,
+                  guests: bookingIntent.data.guests
+                }
+              });
+              break;
+            case 'tour':
+              // For tours, redirect back to the tour details page and auto-open inquiry form
+              navigate(bookingIntent.returnTo, {
+                state: { openInquiry: true, tourBookingData: bookingIntent.data }
+              });
+              break;
+            default:
+              navigate(from?.pathname || '/');
+          }
+        } else if (from?.pathname) {
+          // Regular redirect after authentication
+          navigate(from.pathname + (from.search || ''), { replace: true });
+        } else {
+          navigate('/'); // Default redirect to home page
+        }
       } catch (userError) {
         console.error('Failed to fetch user data after login:', userError);
         Swal.fire('Warning', 'Logged in but user data could not be loaded. Please refresh.', 'warning');
@@ -243,6 +277,21 @@ const Login = ({ setIsAuthenticated }) => {
             <div className="text-center mb-10">
               <h2 className="text-3xl font-extrabold" style={{ color: palette.indigo_dye2 }}>Welcome back</h2>
               <p className="mt-2" style={{ color: palette.ash_gray }}>Sign in to your travel agent account</p>
+              {/* Show booking intent message if user was trying to make a booking */}
+              {location.state?.bookingIntent && (
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-sm text-blue-800">
+                    <span className="font-medium">Almost there!</span> Please login to complete your{' '}
+                    {location.state.bookingIntent.type === 'hotel' && 'hotel booking'}
+                    {location.state.bookingIntent.type === 'activity' && 'activity booking'}
+                    {location.state.bookingIntent.type === 'tour' && 'tour inquiry'}
+                    {location.state.bookingIntent.data?.tourName && ` for ${location.state.bookingIntent.data.tourName}`}
+                    {location.state.bookingIntent.data?.activityTitle && ` for ${location.state.bookingIntent.data.activityTitle}`}
+                    {location.state.bookingIntent.data?.hotelName && ` at ${location.state.bookingIntent.data.hotelName}`}
+                    .
+                  </p>
+                </div>
+              )}
             </div>
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
