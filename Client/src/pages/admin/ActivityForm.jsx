@@ -274,16 +274,18 @@ const ActivityForm = () => {
         setSubmitting(false);
         return;
       }
-      
+
       // Use the first image as the main image
       const mainImage = images[0].url;
-      
+
       // Get all gallery image URLs
       const galleryImageUrls = galleryImages.map(img => img.url);
-      
+
       // Prepare activity data
       const activityData = {
         ...values,
+        // Ensure maxParticipants is always a number
+        maxParticipants: values.maxParticipants !== undefined && values.maxParticipants !== null && values.maxParticipants !== '' ? Number(values.maxParticipants) : undefined,
         image: mainImage,
         galleryImages: galleryImageUrls,
         // Parse arrays from form inputs if they're not already arrays
@@ -294,16 +296,16 @@ const ActivityForm = () => {
         requirements: Array.isArray(values.requirements) ? values.requirements : 
                       values.requirements ? values.requirements.split(',').map(item => item.trim()) : [],
       };
-      
+
       let response;
-        if (isNew) {
+      if (isNew) {
         // Create new activity
         response = await axios.post('/activities', activityData);
       } else {
         // Update existing activity
         response = await axios.put(`/activities/${id}`, activityData);
       }
-      
+
       if (response.data.success) {
         // Redirect back to activities list after save
         navigate('/admin/activities');
@@ -550,6 +552,7 @@ const ActivityForm = () => {
                           text-base py-3 px-4 ${
                           errors.maxParticipants && touched.maxParticipants ? 'border-red-300' : ''
                         }`}
+                        onWheel={e => e.target.blur()}
                       />
                       <ErrorMessage name="maxParticipants" component="div" className="mt-1 text-sm text-red-600" />
                     </div>

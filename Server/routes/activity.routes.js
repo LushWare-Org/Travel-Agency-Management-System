@@ -2,7 +2,11 @@ const express = require('express');
 const router = express.Router();
 const activityController = require('../controllers/activityController');
 
+// Route to get activity title suggestions (for search bar)
+router.get('/suggestions', activityController.getActivitySuggestions);
+
 // Route to get all activities
+// Supports query params: type, minPrice, maxPrice, minDuration, maxDuration, location, search, featured, status, sortBy, guests
 router.get('/', activityController.getAllActivities);
 
 // Route to get a single activity by ID
