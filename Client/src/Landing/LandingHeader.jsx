@@ -86,12 +86,12 @@ const LandingHeader = () => {
               Home
             </Link>
             <Link
-              to="/about"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/about') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
+              to="/about-us"
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/about-us') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
               style={{ color: palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
-              About
+              About Us
             </Link>
             <div
               className="relative"
