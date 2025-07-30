@@ -1,9 +1,15 @@
+// Utility to extract src from iframe string
+function extractGoogleMapSrc(iframeString) {
+  const match = iframeString.match(/src=["']([^"']+)["']/);
+  return match ? match[1] : iframeString;
+}
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import AdminLayout from '../../Components/AdminLayout';
 import axios from 'axios';
+import { FaTrash } from "react-icons/fa";
 
 const ActivityForm = () => {
   const { id } = useParams();
@@ -68,6 +74,7 @@ const ActivityForm = () => {
     location: Yup.string().required('Location is required'),
     type: Yup.string().required('Activity type is required'),
     maxParticipants: Yup.number().positive('Must be positive').integer('Must be a whole number'),
+    googleMapLink: Yup.string().url('Must be a valid URL').nullable(),
   });
   // Handle image upload for main image
   const handleImageUpload = async (event) => {
@@ -267,16 +274,18 @@ const ActivityForm = () => {
         setSubmitting(false);
         return;
       }
-      
+
       // Use the first image as the main image
       const mainImage = images[0].url;
-      
+
       // Get all gallery image URLs
       const galleryImageUrls = galleryImages.map(img => img.url);
-      
+
       // Prepare activity data
       const activityData = {
         ...values,
+        // Ensure maxParticipants is always a number
+        maxParticipants: values.maxParticipants !== undefined && values.maxParticipants !== null && values.maxParticipants !== '' ? Number(values.maxParticipants) : undefined,
         image: mainImage,
         galleryImages: galleryImageUrls,
         // Parse arrays from form inputs if they're not already arrays
@@ -287,16 +296,16 @@ const ActivityForm = () => {
         requirements: Array.isArray(values.requirements) ? values.requirements : 
                       values.requirements ? values.requirements.split(',').map(item => item.trim()) : [],
       };
-      
+
       let response;
-        if (isNew) {
+      if (isNew) {
         // Create new activity
         response = await axios.post('/activities', activityData);
       } else {
         // Update existing activity
         response = await axios.put(`/activities/${id}`, activityData);
       }
-      
+
       if (response.data.success) {
         // Redirect back to activities list after save
         navigate('/admin/activities');
@@ -375,6 +384,7 @@ const ActivityForm = () => {
               requirements: activity?.requirements || [],
               featured: activity?.featured || false,
               status: activity?.status || 'active',
+              googleMapLink: activity?.googleMapLink || '',
             }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -385,7 +395,6 @@ const ActivityForm = () => {
                   {/* Basic Info */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium text-gray-900">Basic Information</h3>
-                    
                     <div>
                       <label htmlFor="title" className="block text-base font-medium text-gray-700">
                         Activity Title <span className="text-red-500">*</span>
@@ -401,7 +410,23 @@ const ActivityForm = () => {
                       />
                       <ErrorMessage name="title" component="div" className="mt-1 text-sm text-red-600" />
                     </div>
-                    
+                    <div>
+                      <label htmlFor="googleMapLink" className="block text-base font-medium text-gray-700">
+                        Google Map Link
+                      </label>
+                      <Field
+                        type="url"
+                        name="googleMapLink"
+                        id="googleMapLink"
+                        placeholder="https://www.google.com/maps/embed?..."
+                        className={`mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md 
+                          text-base py-3 px-4 ${
+                          errors.googleMapLink && touched.googleMapLink ? 'border-red-300' : ''
+                        }`}
+                        onBlur={e => setFieldValue('googleMapLink', extractGoogleMapSrc(e.target.value))}
+                      />
+                      <ErrorMessage name="googleMapLink" component="div" className="mt-1 text-sm text-red-600" />
+                    </div>
                     <div>
                       <label htmlFor="shortDescription" className="block text-base font-medium text-gray-700">
                         Short Description (for listings)
@@ -419,7 +444,6 @@ const ActivityForm = () => {
                       />
                       <ErrorMessage name="shortDescription" component="div" className="mt-1 text-sm text-red-600" />
                     </div>
-                    
                     <div>
                       <label htmlFor="description" className="block text-base font-medium text-gray-700">
                         Full Description <span className="text-red-500">*</span>
@@ -436,7 +460,6 @@ const ActivityForm = () => {
                       />
                       <ErrorMessage name="description" component="div" className="mt-1 text-sm text-red-600" />
                     </div>
-                    
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="price" className="block text-base font-medium text-gray-700">
@@ -529,6 +552,7 @@ const ActivityForm = () => {
                           text-base py-3 px-4 ${
                           errors.maxParticipants && touched.maxParticipants ? 'border-red-300' : ''
                         }`}
+                        onWheel={e => e.target.blur()}
                       />
                       <ErrorMessage name="maxParticipants" component="div" className="mt-1 text-sm text-red-600" />
                     </div>
@@ -702,9 +726,10 @@ const ActivityForm = () => {
                         <button
                           type="button"
                           onClick={() => removeImage(image.id)}
-                          className="absolute top-1 right-1 bg-red-600 rounded-full p-1 text-white hover:bg-red-700 focus:outline-none"
+                          className="absolute top-1 right-1 bg-red-600 rounded-full p-2 text-white hover:bg-red-700 focus:outline-none"
+                          title="Remove image"
                         >
-                          <i className="fas fa-times"></i>
+                          <FaTrash size={18} />
                         </button>
                       </div>
                     ))}
@@ -755,9 +780,10 @@ const ActivityForm = () => {
                         <button
                           type="button"
                           onClick={() => removeGalleryImage(image.id)}
-                          className="absolute top-1 right-1 bg-red-600 rounded-full p-1 text-white hover:bg-red-700 focus:outline-none"
+                          className="absolute top-1 right-1 bg-red-600 rounded-full p-2 text-white hover:bg-red-700 focus:outline-none"
+                          title="Remove image"
                         >
-                          <i className="fas fa-times"></i>
+                          <FaTrash size={18} />
                         </button>
                       </div>
                     ))}

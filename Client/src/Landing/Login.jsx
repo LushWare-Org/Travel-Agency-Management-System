@@ -99,11 +99,11 @@ const Login = ({ setIsAuthenticated }) => {
       try {
         const userResponse = await axios.get('/users/me');
         setUser(userResponse.data);
-        navigate('/search');
+        navigate('/'); // Redirect to home page for customers
       } catch (userError) {
         console.error('Failed to fetch user data after login:', userError);
         Swal.fire('Warning', 'Logged in but user data could not be loaded. Please refresh.', 'warning');
-        navigate('/dashboard');
+        navigate('/');
       }
     } catch (err) {
       console.error('Login error:', err);

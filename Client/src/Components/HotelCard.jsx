@@ -1,6 +1,6 @@
 // Components/HotelCard.jsx
 import React from 'react';
-import { Heart, Star } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 const HotelCard = ({ hotel, onClick, isFavorite, onFavoriteToggle, availbleNoOfRooms }) => (
   <div
@@ -40,10 +40,19 @@ const HotelCard = ({ hotel, onClick, isFavorite, onFavoriteToggle, availbleNoOfR
       <div className="flex items-center justify-between pt-2 sm:pt-3 border-t border-ash_gray-400">
         <div className="flex items-center mb-1">
           {[1, 2, 3, 4, 5].map(star => (
-            <Star
+            <svg
               key={star}
-              className={`h-3 sm:h-4 w-3 sm:w-4 mr-0.5 ${star <= (hotel.starRating || 0) ? 'text-lapis_lazuli-500' : 'text-ash_gray-300'}`}
-            />
+              className="h-3 sm:h-4 w-3 sm:w-4 mr-0.5"
+              viewBox="0 0 24 24"
+              fill={star <= (hotel.starRating || 0) ? "#2667A4" : "#E0E0E0"} // lapis_lazuli-500 or gray
+            >
+              <polygon
+                points="12,2 15,9 22,9.3 17,14 18.5,21 12,17.5 5.5,21 7,14 2,9.3 9,9"
+                stroke="#17406D" // darker shade for border, adjust if needed
+                strokeLinejoin="round"
+                strokeWidth="1.2"
+              />
+            </svg>
           ))}
           <span className="text-xs sm:text-sm text-ash_gray-400 ml-1">({hotel.starRating || 0})</span>
         </div>

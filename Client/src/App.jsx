@@ -11,6 +11,7 @@ import WhatsappIcon from './Components/WhatsappIcon';
 const Home          = lazy(() => import('./Landing/Home'));
 const Login         = lazy(() => import('./Landing/Login'));
 const Register      = lazy(() => import('./Landing/Register'));
+const Account       = lazy(() => import('./pages/Account'));
 const Search        = lazy(() => import('./pages/Search'));
 const BookingRequest= lazy(() => import('./pages/BookingRequest'));
 const ActivityBookingRequest = lazy(() => import('./pages/ActivityBookingRequest'));
@@ -49,6 +50,7 @@ export default function App() {
           <Route path="/"       element={<><Home/><Footer/></>} />
           <Route path="/login"  element={<><Login/><Footer/></>} />
           <Route path="/register" element={<><Register/><Footer/></>} />
+          <Route path="/account" element={<><Account/><Footer/></>} />
 
           {/* pages without sidebar */}
           <Route path="/contact"        element={<><ContactForm/><Footer/></>} />

@@ -1,3 +1,25 @@
+// @desc    Get activity title suggestions for search
+// @route   GET /api/activities/suggestions?search=xxx
+// @access  Public
+exports.getActivitySuggestions = async (req, res) => {
+  try {
+    const search = req.query.search || '';
+    if (!search.trim()) {
+      return res.status(200).json({ success: true, suggestions: [] });
+    }
+    // Only search active activities
+    const query = {
+      status: 'active',
+      title: { $regex: search, $options: 'i' }
+    };
+    // Limit to 10 suggestions, only return title field
+    const activities = await Activity.find(query).limit(10).select('title').lean();
+    const suggestions = activities.map(a => a.title);
+    res.status(200).json({ success: true, suggestions });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+};
 const Activity = require('../models/Activity');
 
 // @desc    Get all activities with filtering options
@@ -6,6 +28,13 @@ const Activity = require('../models/Activity');
 exports.getAllActivities = async (req, res) => {
   try {
     let query = {};
+    // Filter by guests (maxParticipants)
+    if (req.query.guests) {
+      const guestsNum = Number(req.query.guests);
+      if (!isNaN(guestsNum) && guestsNum > 0) {
+        query.maxParticipants = { $gte: guestsNum };
+      }
+    }
     
     // Filter by activity type
     if (req.query.type) {

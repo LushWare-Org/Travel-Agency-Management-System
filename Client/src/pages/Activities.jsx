@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ActivityCard from '../Components/ActivityCard';
 // import ImageGallery from '../Components/ImageGallery';
 
 function useDeviceType() {
@@ -32,47 +33,118 @@ const Activities = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activityType, setActivityType] = useState('');
-  const [date, setDate] = useState('');
+  // const [date, setDate] = useState('');
   const [guests, setGuests] = useState('1');
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [navigating, setNavigating] = useState(false);
   const [error, setError] = useState(null);
+  // Suggestions state
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [suggestionLoading, setSuggestionLoading] = useState(false);
+  // Debounce for suggestions
+  useEffect(() => {
+    if (!searchQuery) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    setSuggestionLoading(true);
+    const handler = setTimeout(async () => {
+      try {
+        const params = new URLSearchParams();
+        params.append('search', searchQuery);
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/activities/suggestions?${params.toString()}`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.suggestions)) {
+          setSuggestions(data.suggestions);
+          setShowSuggestions(true);
+        } else {
+          setSuggestions([]);
+          setShowSuggestions(false);
+        }
+      } catch {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      } finally {
+        setSuggestionLoading(false);
+      }
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
 
   // Fetch activities from backend
-  useEffect(() => {
-    const fetchActivities = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        // Build query params
-        const params = new URLSearchParams();
-        if (searchQuery) params.append('search', searchQuery);
-        if (activityType) params.append('type', activityType);
-        // You can add more filters if needed
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/activities?${params.toString()}`,
-          {
-            credentials: 'include',
-          }
-        );
-        const data = await res.json();
-        if (data.success) {
-          setActivities(data.data);
-        } else {
-          setError(data.error || 'Failed to fetch activities');
+  const fetchActivities = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Build query params
+      const params = new URLSearchParams();
+      if (searchQuery) params.append('search', searchQuery);
+      // Only append type if not empty
+      if (activityType && activityType !== '') params.append('type', activityType);
+      // if (date) params.append('date', date);
+      if (guests && guests !== '') params.append('guests', guests);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/activities?${params.toString()}`,
+        {
+          credentials: 'include',
         }
-      } catch (err) {
-        setError('Failed to fetch activities');
-      } finally {
-        setLoading(false);
+      );
+      const data = await res.json();
+      if (data.success) {
+        setActivities(data.data);
+      } else {
+        setError(data.error || 'Failed to fetch activities');
       }
-    };
+    } catch (err) {
+      setError('Failed to fetch activities');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchActivities();
-  }, [searchQuery, activityType]);
+    // eslint-disable-next-line
+  }, []);
 
   // Handle view details navigation
   const handleViewDetails = (activityId) => {
-    navigate(`/activities/${activityId}`);
+    setNavigating(true);
+    setTimeout(() => {
+      navigate(`/activities/${activityId}`);
+    }, 200);
+  };
+
+
+  // Handle search/filter submit
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    setShowSuggestions(false);
+    // fetchActivities(); // Remove this line, fetching is handled by useEffect
+  };
+
+  // Handle reset filters
+  const handleResetFilters = () => {
+    setSearchQuery('');
+    setActivityType('');
+    setGuests(''); // Set to empty string so it doesn't filter by guests
+    setShowSuggestions(false);
+    // fetchActivities(); // Remove this line, fetching is handled by useEffect
+  };
+
+  // Fetch activities when any filter changes
+  useEffect(() => {
+    fetchActivities();
+    // eslint-disable-next-line
+  }, [activityType, searchQuery, guests]);
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion);
+    setShowSuggestions(false);
+    fetchActivities();
   };
 
   return (
@@ -97,71 +169,115 @@ const Activities = () => {
         </header>
 
         {/* Booking Form */}
-        <section className="mt-6 mb-8 bg-white rounded-xl shadow p-6 flex flex-col sm:flex-row gap-4 items-center">
-          <input
-            type="text"
-            placeholder="Search activities..."
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            className="border rounded px-3 py-2 w-full sm:w-1/3"
-          />
-          <select
-            value={activityType}
-            onChange={e => setActivityType(e.target.value)}
-            className="border rounded px-3 py-2 w-full sm:w-1/4"
-          >
-            <option value="">All Types</option>
-            <option value="water">Water Sports</option>
-            <option value="excursion">Excursions</option>
-            <option value="wellness">Wellness & Spa</option>
-            <option value="dining">Dining Experiences</option>
-          </select>
-          <input
-            type="date"
-            value={date}
-            onChange={e => setDate(e.target.value)}
-            className="border rounded px-3 py-2 w-full sm:w-1/4"
-          />
-          <input
-            type="number"
-            min="1"
-            value={guests}
-            onChange={e => setGuests(e.target.value)}
-            className="border rounded px-3 py-2 w-full sm:w-1/6"
-            placeholder="Guests"
-          />
-          <button
-            onClick={handleViewDetails}
-            className="bg-[#005E84] text-white px-6 py-2 rounded-full font-semibold shadow hover:bg-[#075375] transition"
-          >
-            View Details
-          </button>
-        </section>
+        <form onSubmit={handleSearch} className="mt-6 mb-8 bg-white rounded-xl shadow p-6 flex flex-col gap-4 sm:flex-row sm:gap-6 items-stretch relative">
+          {/* Search input */}
+          <div className="w-full sm:w-[38%] relative flex flex-col">
+            <label htmlFor="activity-search" className="sr-only">Search activities</label>
+            <input
+              id="activity-search"
+              type="text"
+              placeholder="Search activities..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true); }}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+              className="border border-gray-300 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/20 rounded-lg px-3 py-2 w-full transition-all duration-150 outline-none text-sm h-11"
+              autoComplete="off"
+            />
+            {showSuggestions && suggestions.length > 0 && (
+              <ul className="absolute z-20 left-0 right-0 bg-white border border-gray-200 rounded shadow mt-1 max-h-48 overflow-y-auto">
+                {suggestionLoading && (
+                  <li className="px-3 py-2 text-gray-400">Loading...</li>
+                )}
+                {suggestions.map((s, idx) => (
+                  <li
+                    key={idx}
+                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                    onMouseDown={() => handleSuggestionClick(s)}
+                  >
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          {/* Activity type select */}
+          <div className="w-full sm:w-[22%] flex flex-col">
+            <label htmlFor="activity-type" className="sr-only">Activity type</label>
+            <select
+              id="activity-type"
+              value={activityType}
+              onChange={e => setActivityType(e.target.value)}
+              className="border border-gray-300 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/20 rounded-lg px-3 py-2 w-full transition-all duration-150 outline-none text-sm h-11 bg-white"
+            >
+              <option value="">All Types</option>
+              <option value="cruises">Cruises</option>
+              <option value="diving">Diving</option>
+              <option value="island-tours">Island Tours</option>
+              <option value="water-sports">Water Sports</option>
+              <option value="adventure">Adventure</option>
+              <option value="cultural">Cultural</option>
+              <option value="wellness">Wellness</option>
+            </select>
+          </div>
+          {/* Guests input */}
+          <div className="w-full sm:w-[16%] flex flex-col">
+            <label htmlFor="guests" className="sr-only">Guests</label>
+            <input
+              id="guests"
+              type="number"
+              min="1"
+              value={guests}
+              onChange={e => setGuests(e.target.value)}
+              className="border border-gray-300 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/20 rounded-lg px-3 py-2 w-full transition-all duration-150 outline-none text-sm h-11"
+              placeholder="Guests"
+            />
+          </div>
+          {/* Search and Reset buttons */}
+          <div className="w-full sm:w-[24%] flex flex-row gap-2 items-center justify-between sm:justify-end">
+            <button
+              type="submit"
+              className="bg-[#005E84] text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-[#075375] transition-all duration-150 h-11 w-full sm:w-auto text-sm"
+            >
+              Search
+            </button>
+            <button
+              type="button"
+              onClick={handleResetFilters}
+              className="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold shadow hover:bg-gray-300 transition-all duration-150 h-11 w-full sm:w-auto text-sm border border-gray-300"
+            >
+              Reset
+            </button>
+          </div>
+        </form>
 
         {/* Activities List Section */}
-        <div className="mt-4 sm:mt-6 lg:mt-8">
-          {loading ? (
-            <div className="text-center py-8 text-gray-500">Loading activities...</div>
+        <div className="mt-4 sm:mt-6 lg:mt-8 min-h-[300px]">
+          {(loading || navigating) ? (
+            <div className="flex justify-center items-center h-60">
+              <div
+                className="animate-spin rounded-full h-16 w-16 border-4 border-lapis_lazuli-500 border-t-indigo_dye-500 border-b-ash_gray-500 border-r-platinum-500 bg-platinum-500 shadow-lg"
+                style={{
+                  borderTopColor: '#0A435C', // indigo_dye 2
+                  borderBottomColor: '#B7C5C7', // ash_gray
+                  borderLeftColor: '#005E84', // lapis_lazuli
+                  borderRightColor: '#E7E9E5', // platinum
+                  backgroundColor: '#E7E9E5', // platinum
+                }}
+              ></div>
+            </div>
           ) : error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : activities.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">No activities found.</div>
+            <div className="text-center py-8 text-ash_gray-400">No activities found.</div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {activities.map(activity => (
-                <div key={activity._id} className="bg-white rounded-xl shadow p-4 flex flex-col items-center">
-                  <img src={activity.image} alt={activity.title} className="h-40 w-full object-cover rounded-lg mb-3" />
-                  <h2 className="text-lg font-bold mb-1 text-[#005E84]">{activity.title}</h2>
-                  <p className="text-sm text-gray-600 mb-2 text-center">{activity.shortDescription || activity.description}</p>
-                  <div className="text-xs text-gray-500 mb-2">{activity.location}</div>
-                  <div className="text-sm font-semibold text-[#005E84] mb-2">${activity.price?.toFixed(2)}</div>
-                  <button
-                    onClick={() => handleViewDetails(activity._id)}
-                    className="bg-[#005E84] text-white px-4 py-2 rounded-full font-semibold shadow hover:bg-[#075375] transition"
-                  >
-                    View Details
-                  </button>
-                </div>
+                <ActivityCard
+                  key={activity._id}
+                  activity={activity}
+                  onClick={() => handleViewDetails(activity._id)}
+                />
               ))}
             </div>
           )}

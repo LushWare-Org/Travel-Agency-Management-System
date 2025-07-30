@@ -51,7 +51,15 @@ const drawerWidth = 240;
 export default function AdminPanel() {
   const [section, setSection] = useState('dashboard');
   const [anchorEl, setAnchorEl] = useState(null);
-  const [stats, setStats] = useState({ users: 0, hotels: 0, bookings: 0, tours:0, contacts: 0 });
+  const [stats, setStats] = useState({ 
+    users: 0, 
+    hotels: 0, 
+    bookings: 0, 
+    tours: 0, 
+    contacts: 0, 
+    activities: 0, 
+    activityBookings: 0 
+  });
   const [recentBookings, setRecentBookings] = useState([]);
   const [recentMessages, setRecentMessages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -63,19 +71,23 @@ export default function AdminPanel() {
       try {
         setLoading(true);
         setError(null);
-        const [u, h, b, t, c] = await Promise.all([
+        const [u, h, b, t, c, a, ab] = await Promise.all([
           axios.get('/users', { withCredentials: true }),
           axios.get('/hotels', { withCredentials: true }),
           axios.get('/bookings', { withCredentials: true }),
           axios.get('/tours', { withCredentials: true }),
-          axios.get('/contacts', { withCredentials: true })
+          axios.get('/contacts', { withCredentials: true }),
+          axios.get('/activities', { withCredentials: true }),
+          axios.get('/activity-bookings', { withCredentials: true }).catch(() => ({ data: { data: [] } }))
         ]);
         setStats({ 
           users: u.data.length, 
           hotels: h.data.length, 
           bookings: b.data.length, 
           tours: t.data.length,
-          contacts: c.data.length 
+          contacts: c.data.length,
+          activities: a.data.success ? a.data.data.length : 0,
+          activityBookings: ab.data.success ? ab.data.data.length : 0
         });
         setRecentBookings(b.data.slice(0, 5));
         setRecentMessages(c.data.slice(0, 5));
@@ -127,7 +139,9 @@ export default function AdminPanel() {
               { title: 'Hotels', value: stats.hotels, color: '#f50057' },
               { title: 'Bookings', value: stats.bookings, color: '#ff9800' },
               { title: 'Tours', value: stats.tours, color: '#2196f3' },
-              { title: 'Messages', value: stats.contacts, color: '#4caf50' }]
+              { title: 'Activities', value: stats.activities, color: '#9c27b0' },
+              { title: 'Activity Bookings', value: stats.activityBookings, color: '#4caf50' },
+              { title: 'Messages', value: stats.contacts, color: '#607d8b' }]
               .map((s) => (
                 <Grid key={s.title} item xs={12} sm={6} md={3}>
                   <Paper sx={{ p:3, textAlign:'center', borderTop:`4px solid ${s.color}`, bgcolor:'white' }}>
