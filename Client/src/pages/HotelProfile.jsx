@@ -287,7 +287,7 @@ function HotelProfile() {
     description,
     amenities,
     mealPlans,
-    dinningOptions,
+    diningOptions,
     gallery,
     contactDetails,
     reviews,
@@ -297,7 +297,14 @@ function HotelProfile() {
     <>
       <div className="min-h-screen bg-gradient-to-br from-platinum to-ash_gray font-sans">
         <section className="relative h-80 sm:h-[400px] md:h-[600px] overflow-hidden">
-          <img src={gallery[0] || "/placeholder.svg"} alt={name} className="w-full h-full object-cover" />
+          <img 
+            src={gallery && gallery[0] ? gallery[0] : "/placeholder.svg"} 
+            alt={name} 
+            className="w-full h-full object-cover" 
+            onError={(e) => {
+              e.target.src = "/placeholder.svg"
+            }}
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
             <div className="container mx-auto px-4 sm:px-6 pb-6 sm:pb-8 md:pb-16">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-2">{name}</h1>
@@ -307,7 +314,7 @@ function HotelProfile() {
                   {location}
                 </div>
                 <div className="flex items-center">
-                  {[...Array(starRating)].map((_, i) => (
+                  {[...Array(5)].map((_, i) => (
                     <AiFillStar key={i} className={`${i < starRating ? "text-yellow-400" : "text-gray-400"} w-4 sm:w-5 h-4 sm:h-5`} />
                   ))}
                   <span className="ml-2">({starRating} Star)</span>
@@ -325,8 +332,8 @@ function HotelProfile() {
                   <button
                     key={idx}
                     onClick={() => handleTabChange(idx)}
-                    className={`px-3 sm:px-6 py-1.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-full transition-all duration-300 min-w-[80px] sm:min-w-[100px] whitespace-nowrap ${
-                      activeTab === idx ? "bg-lapis_lazuli text-white shadow-md" : "text-gray-600 hover:text-lapis_lazuli"
+                    className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-full transition-all duration-300 min-w-[80px] sm:min-w-[100px] whitespace-nowrap flex-shrink-0 min-h-[44px] ${
+                      activeTab === idx ? "bg-lapis_lazuli text-white shadow-md" : "text-gray-600 hover:text-lapis_lazuli hover:bg-gray-50"
                     }`}
                   >
                     {tab}
@@ -345,11 +352,15 @@ function HotelProfile() {
 
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Amenities & Services</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                    {amenities.map((am, i) => (
-                      <div key={i} className="p-3 sm:p-4 bg-blue-50 rounded-xl">
-                        <span className="font-medium text-sm sm:text-base">{am}</span>
+                    {amenities && amenities.length > 0 ? amenities.map((am, i) => (
+                      <div key={i} className="p-3 sm:p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors">
+                        <span className="font-medium text-sm sm:text-base text-gray-800">{am}</span>
                       </div>
-                    ))}
+                    )) : (
+                      <div className="col-span-full text-center py-4 text-gray-500">
+                        <p className="text-sm sm:text-base">No amenities listed</p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -758,26 +769,45 @@ function HotelProfile() {
               <div>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-8">Dining Options</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
-                  {dinningOptions.map((option, index) => (
-                    <div key={index} className="group relative overflow-hidden rounded-2xl shadow-lg">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/40 z-10"></div>
-                      <img
-                        src={option.image || "/placeholder.svg"}
-                        alt={option.optionName}
-                        className="w-full h-48 sm:h-64 md:h-80 object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 z-20 flex flex-col justify-end p-4 sm:p-6 text-white">
-                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2">{option.optionName}</h3>
-                        <p className="text-white/80 text-xs sm:text-base">{option.description}</p>
-                        <button
-                          className="mt-2 sm:mt-4 text-white border border-white/30 hover:bg-white/20 backdrop-blur-sm rounded-lg px-4 sm:px-6 py-1 sm:py-2 transition-colors w-fit text-xs sm:text-base min-h-[44px]"
-                          onClick={() => handleViewMenu(option.menu)}
-                        >
-                          View Menu
-                        </button>
+                  {diningOptions && diningOptions.length > 0 ? (
+                    diningOptions.map((option, index) => (
+                      <div key={index} className="group relative overflow-hidden rounded-2xl shadow-lg">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/40 z-10"></div>
+                        <img
+                          src={option.image || "/placeholder.svg"}
+                          alt={option.optionName}
+                          className="w-full h-48 sm:h-64 md:h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+                          onError={(e) => {
+                            e.target.src = "/placeholder.svg"
+                          }}
+                        />
+                        <div className="absolute inset-0 z-20 flex flex-col justify-end p-4 sm:p-6 text-white">
+                          <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2">{option.optionName}</h3>
+                          <p className="text-white/80 text-xs sm:text-base">{option.description}</p>
+                          {option.menu && (
+                            <button
+                              className="mt-2 sm:mt-4 text-white border border-white/30 hover:bg-white/20 backdrop-blur-sm rounded-lg px-4 sm:px-6 py-2 sm:py-3 transition-colors w-fit text-xs sm:text-base min-h-[44px] font-medium"
+                              onClick={() => handleViewMenu(option.menu)}
+                            >
+                              View Menu
+                            </button>
+                          )}
+                        </div>
                       </div>
+                    ))
+                  ) : (
+                    <div className="col-span-full text-center py-8 sm:py-12 bg-white rounded-xl shadow-lg border border-gray-100">
+                      <div className="bg-platinum rounded-full w-12 sm:w-20 h-12 sm:h-20 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                        <svg className="h-6 sm:h-10 w-6 sm:w-10 text-lapis_lazuli" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                      </div>
+                      <h3 className="text-base sm:text-xl font-semibold text-gray-800 mb-2">No Dining Options Available</h3>
+                      <p className="text-gray-500 text-sm sm:text-base max-w-md mx-auto">
+                        Dining information is currently being updated. Please contact the hotel directly for meal options.
+                      </p>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             )}
@@ -785,31 +815,48 @@ function HotelProfile() {
             {activeTab === 3 && (
               <div>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-8">Photo Gallery</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                  {gallery.map((img, idx) => (
-                    <div key={idx} className="group relative overflow-hidden rounded-xl shadow-md cursor-pointer">
-                      <img
-                        src={img || "/placeholder.svg"}
-                        alt={`Gallery ${idx + 1}`}
-                        className="w-full h-40 sm:h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-lapis_lazuli/0 group-hover:bg-lapis_lazuli/20 flex items-center justify-center transition-all duration-300">
-                        <div className="opacity-0 group-hover:opacity-100 transform group-hover:scale-100 scale-50 transition-all duration-300">
-                          <div className="bg-white/90 backdrop-blur-sm text-lapis_lazuli rounded-full p-2 sm:p-3">
-                            <svg className="h-4 sm:h-6 w-4 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                              />
-                            </svg>
+                {gallery && gallery.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                    {gallery.map((img, idx) => (
+                      <div key={idx} className="group relative overflow-hidden rounded-xl shadow-md cursor-pointer">
+                        <img
+                          src={img || "/placeholder.svg"}
+                          alt={`Gallery ${idx + 1}`}
+                          className="w-full h-40 sm:h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                          onError={(e) => {
+                            e.target.src = "/placeholder.svg"
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-lapis_lazuli/0 group-hover:bg-lapis_lazuli/20 flex items-center justify-center transition-all duration-300">
+                          <div className="opacity-0 group-hover:opacity-100 transform group-hover:scale-100 scale-50 transition-all duration-300">
+                            <div className="bg-white/90 backdrop-blur-sm text-lapis_lazuli rounded-full p-2 sm:p-3">
+                              <svg className="h-4 sm:h-6 w-4 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                />
+                              </svg>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 sm:py-12 bg-white rounded-xl shadow-lg border border-gray-100">
+                    <div className="bg-platinum rounded-full w-12 sm:w-20 h-12 sm:h-20 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <svg className="h-6 sm:h-10 w-6 sm:w-10 text-lapis_lazuli" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
                     </div>
-                  ))}
-                </div>
+                    <h3 className="text-base sm:text-xl font-semibold text-gray-800 mb-2">No Photos Available</h3>
+                    <p className="text-gray-500 text-sm sm:text-base max-w-md mx-auto">
+                      Gallery images are currently being updated. Please check back soon for photos of this hotel.
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 
@@ -932,15 +979,22 @@ function HotelProfile() {
         </main>
         
         {menuModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-            <div className="relative bg-white rounded-lg overflow-hidden">
-              <button onClick={closeMenuModal} className="absolute top-1 right-1 text-gray-600 hover:text-gray-800 text-xl sm:text-2xl min-h-[44px]">
+          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+            <div className="relative bg-white rounded-lg overflow-hidden max-w-[95vw] max-h-[95vh]">
+              <button 
+                onClick={closeMenuModal} 
+                className="absolute top-2 right-2 z-10 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-800 rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-lg sm:text-xl font-bold shadow-lg transition-all min-h-[44px] min-w-[44px]"
+                aria-label="Close menu"
+              >
                 ✕
               </button>
               <img
                 src={menuImageUrl || "/placeholder.svg"}
                 alt="Menu"
-                className="max-h-[80vh] max-w-[90vw] sm:max-h-[80vh] sm:max-w-[80vw] object-contain"
+                className="max-h-[85vh] max-w-[90vw] w-auto h-auto object-contain"
+                onError={(e) => {
+                  e.target.src = "/placeholder.svg"
+                }}
               />
             </div>
           </div>
