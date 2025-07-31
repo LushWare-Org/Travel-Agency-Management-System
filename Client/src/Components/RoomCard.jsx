@@ -130,7 +130,7 @@ const RoomCard = ({ room, onSelect }) => {
               className="bg-lapis_lazuli-500 hover:bg-indigo_dye-500 text-platinum-900 px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg flex items-center gap-2 transition-colors shadow-md hover:shadow-lg w-full sm:w-auto text-xs sm:text-sm min-h-[44px]"
             >
               <FaBed className="w-4 sm:w-5 h-4 sm:h-5" />
-              Book This Room
+              View Room Details
             </button>
           </div>
         </div>

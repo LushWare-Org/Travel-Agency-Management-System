@@ -194,29 +194,8 @@ function HotelProfile() {
   const handleTabChange = (idx) => setActiveTab(idx)
 
   const handleRoomSelect = (roomId) => {
-    if (!bookingData.checkIn || !bookingData.checkOut) {
-      alert("Please select both check-in and check-out dates before selecting a room.")
-      console.log("Room selection aborted: Missing dates", bookingData)
-      return
-    }
-
-    if (!(bookingData.checkIn instanceof Date) || isNaN(bookingData.checkIn)) {
-      alert("Invalid check-in date. Please select a valid date.")
-      console.log("Room selection aborted: Invalid check-in date", bookingData.checkIn)
-      return
-    }
-
-    if (!(bookingData.checkOut instanceof Date) || isNaN(bookingData.checkOut)) {
-      alert("Invalid check-out date. Please select a valid date.")
-      console.log("Room selection aborted: Invalid check-out date", bookingData.checkOut)
-      return
-    }
-
-    if (bookingData.checkIn >= bookingData.checkOut) {
-      alert("Check-out date must be after check-in date.")
-      console.log("Room selection aborted: Invalid date range", bookingData)
-      return
-    }
+    // Allow room navigation without requiring date selection
+    // If dates are selected, they'll be passed to the room profile
 
     const selectedRoom = roomsData.find((room) => room._id === roomId)
     if (!selectedRoom) {
@@ -225,35 +204,30 @@ function HotelProfile() {
       return
     }
 
-    const checkInISO = bookingData.checkIn.toISOString()
-    const checkOutISO = bookingData.checkOut.toISOString()
-
-    console.log("Navigating to room details with state:", {
+    // Prepare navigation state with optional dates
+    const navigationState = {
       hotelId,
       hotelName: hotelData.name,
       roomId,
       roomName: selectedRoom.name,
       basePricePerNight: selectedRoom.basePrice,
-      checkIn: checkInISO,
-      checkOut: checkOutISO,
       mealPlan: selectedRoom.mealPlan || hotelData.mealPlans[0] || { planName: "All-Inclusive" },
       previousRoute,
       selectedNationality,
-    })
+    }
+    
+    // Only add dates if they're valid
+    if (bookingData.checkIn instanceof Date && !isNaN(bookingData.checkIn) && 
+        bookingData.checkOut instanceof Date && !isNaN(bookingData.checkOut) &&
+        bookingData.checkIn < bookingData.checkOut) {
+      navigationState.checkIn = bookingData.checkIn.toISOString()
+      navigationState.checkOut = bookingData.checkOut.toISOString()
+    }
+
+    console.log("Navigating to room details with state:", navigationState)
 
     navigate(`/hotels/${hotelId}/rooms/${roomId}`, {
-      state: {
-        hotelId,
-        hotelName: hotelData.name,
-        roomId,
-        roomName: selectedRoom.name,
-        basePricePerNight: selectedRoom.basePrice,
-        checkIn: checkInISO,
-        checkOut: checkOutISO,
-        mealPlan: selectedRoom.mealPlan || hotelData.mealPlans[0] || { planName: "All-Inclusive" },
-        previousRoute,
-        selectedNationality,
-      },
+      state: navigationState
     })
   }
 
