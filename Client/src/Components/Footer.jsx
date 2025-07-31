@@ -137,7 +137,7 @@ const Footer = () => {
           }}
         >
           <p className="text-sm">
-            © 2025 IsleKey Holidays | Designed by <a href="https://lushware.org/" target="_blank" rel="noopener noreferrer" style={{ color: palette.lapis_lazuli, textDecoration: 'underline' }}>LushWare Org</a>
+            © 2025 IsleKey Holidays | Developed by <a href="https://lushware.org/" target="_blank" rel="noopener noreferrer" style={{ color: palette.lapis_lazuli, textDecoration: 'underline' }}>LushWare Org</a>
           </p>
         </div>
       </div>
