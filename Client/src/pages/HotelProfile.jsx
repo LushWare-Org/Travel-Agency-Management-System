@@ -318,15 +318,17 @@ function HotelProfile() {
         </section>
 
         <main className="container mx-auto px-2 sm:px-4 py-6 sm:py-8 max-w-[100%] sm:max-w-7xl overflow-x-hidden">
-          <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm mb-6 sm:mb-8">
+          <div className="sticky top-0 z-10 mb-6 sm:mb-8">
             <div className="w-full max-w-[100%] mx-auto px-2 sm:px-4">
-              <div className="bg-white rounded-lg sm:rounded-full shadow-lg p-1 flex overflow-x-auto scrollbar-hide">
+              <div className="bg-gradient-to-r from-platinum/90 to-ash_gray/90 backdrop-blur-sm rounded-xl p-2 flex overflow-x-auto scrollbar-hide border border-gray-200">
                 {tabItems.map((tab, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleTabChange(idx)}
-                    className={`px-3 sm:px-6 py-1.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-full transition-all duration-300 min-w-[80px] sm:min-w-[100px] whitespace-nowrap ${
-                      activeTab === idx ? "bg-lapis_lazuli text-white shadow-md" : "text-gray-600 hover:text-lapis_lazuli"
+                    className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium rounded-lg transition-all duration-300 min-w-[80px] sm:min-w-[100px] whitespace-nowrap ${
+                      activeTab === idx 
+                        ? "bg-lapis_lazuli text-white shadow-lg border border-lapis_lazuli" 
+                        : "text-gray-700 hover:text-lapis_lazuli hover:bg-white/50"
                     }`}
                   >
                     {tab}
