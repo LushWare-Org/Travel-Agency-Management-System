@@ -425,24 +425,7 @@ function HotelProfile() {
                     </div>
                   </div>
 
-                  {hotelData.liveAvailability && (
-                    <div className="mt-6">
-                      <a
-                        href={hotelData.liveAvailability}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold text-platinum 
-                                   bg-gradient-to-r from-lapis_lazuli to-indigo_dye border-transparent rounded-xl shadow-lg 
-                                   hover:from-indigo_dye hover:to-indigo_dye focus:outline-none focus:ring-2 focus:ring-offset-2 
-                                   focus:ring-indigo_dye transition-all duration-200 hover:shadow-xl"
-                      >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                        Check Live Availability
-                      </a>
-                    </div>
-                  )}
+                  {/* Live Availability button removed as requested */}
                 </div>
               </div>
             )}
