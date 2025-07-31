@@ -270,7 +270,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-indigo_dye">Phone</h3>
-                      <p className="text-indigo_dye"> +960 938 5050</p>
+                      <p className="text-indigo_dye"> +123 456 7890</p>
                     </div>
                   </div>
                   
@@ -282,7 +282,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-indigo_dye">Email</h3>
-                      <p className="text-indigo_dye">sales@yomaldives.travel</p>
+                      <p className="text-indigo_dye">contact@dummyemail.com</p>
                     </div>
                   </div>
                   
@@ -295,8 +295,8 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-indigo_dye">Address</h3>
-                      <p className="text-indigo_dye">Lot Number 10458, </p>
-                      <p className="text-indigo_dye">Hulhumale, Maldivest</p>
+                      <p className="text-indigo_dye">123 Dummy Street,</p>
+                      <p className="text-indigo_dye">Faketown, Country</p>
                     </div>
                   </div>
                 </div>
