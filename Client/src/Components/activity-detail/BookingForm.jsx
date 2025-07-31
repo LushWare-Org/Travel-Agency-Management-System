@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthCheck } from '../../hooks/useAuthCheck';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const BookingForm = ({ activity }) => {
     const navigate = useNavigate();
@@ -18,15 +20,24 @@ const BookingForm = ({ activity }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        if (!selectedDate) {
+        if (!selectedDate) { 
             alert('Please select a date');
             return;
         }
 
+        // Format date to avoid timezone issues
+        const formatDateToString = (date) => {
+            if (!date) return '';
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
         // Prepare booking data
         const bookingData = {
             activityId: activity._id || activity.id,
-            selectedDate,
+            selectedDate: formatDateToString(selectedDate),
             guests,
             activityTitle: activity.title
         };
@@ -39,7 +50,7 @@ const BookingForm = ({ activity }) => {
         // User is authenticated, proceed to booking
         navigate(`/activities/${activity._id || activity.id}/booking`, {
             state: {
-                selectedDate,
+                selectedDate: formatDateToString(selectedDate),
                 guests
             }
         });
@@ -53,7 +64,7 @@ const BookingForm = ({ activity }) => {
         const dates = [];
         const today = new Date();
         
-        for (let i = 1; i <= 30; i++) {
+        for (let i = 1; i <= 30; i++) { 
             const date = new Date(today);
             date.setDate(today.getDate() + i);
             dates.push(date);
@@ -72,24 +83,25 @@ const BookingForm = ({ activity }) => {
             </div>
             
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                {/* Date Picker (Calendar) */}
+                {/* Date Picker (react-datepicker) */}
                 <div>
                     <label htmlFor="date" className="block text-lapis_lazuli-500 font-medium mb-2">Select Date</label>
-                    <input
-                        type="date"
+                    <DatePicker
                         id="date"
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                        min={(() => {
-                            const today = new Date();
-                            today.setDate(today.getDate() + 1);
-                            return today.toISOString().split('T')[0];
+                        selected={selectedDate}
+                        onChange={date => setSelectedDate(date)}
+                        minDate={(() => {
+                            const d = new Date();
+                            d.setDate(d.getDate() + 1);
+                            return d;
                         })()}
-                        max={(() => {
-                            const today = new Date();
-                            today.setDate(today.getDate() + 30);
-                            return today.toISOString().split('T')[0];
+                        maxDate={(() => {
+                            const d = new Date();
+                            d.setFullYear(d.getFullYear() + 1);
+                            return d;
                         })()}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Choose a date"
                         className="w-full px-3 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
                     />
                 </div>
