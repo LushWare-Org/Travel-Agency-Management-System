@@ -288,10 +288,10 @@ const Activities = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="lg:col-span-2 flex flex-col sm:flex-row gap-2">
+              <div className="lg:col-span-2 flex flex-col sm:flex-row gap-2 w-full">
                 <button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-[#005E84] to-[#0A435C] text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-[#075375] hover:to-[#0d4a60] transition-all duration-200 transform hover:-translate-y-0.5 flex items-center justify-center gap-2 text-sm"
+                  className="flex-1 bg-gradient-to-r from-[#005E84] to-[#0A435C] text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-[#075375] hover:to-[#0d4a60] transition-all duration-200 flex items-center justify-center gap-2 text-sm min-w-0"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -301,7 +301,7 @@ const Activities = () => {
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="flex-1 bg-white text-gray-600 px-6 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 transform hover:-translate-y-0.5 flex items-center justify-center gap-2 text-sm"
+                  className="flex-1 bg-white text-gray-600 px-4 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center gap-2 text-sm min-w-0"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
