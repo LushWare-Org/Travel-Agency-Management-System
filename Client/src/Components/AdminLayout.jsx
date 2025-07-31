@@ -136,8 +136,8 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
           flexGrow: 1, 
           p: 3, 
           mt: '64px', 
-          ml: `${drawerWidth}px`, 
-          width: `calc(100% - ${drawerWidth}px)`,
+          ml: 0, // Remove left margin
+          width: '100%', // Use full width
           backgroundColor: '#f5f5f5',
           minHeight: 'calc(100vh - 64px)'
         }}
