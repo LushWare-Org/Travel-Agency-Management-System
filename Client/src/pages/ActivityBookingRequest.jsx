@@ -195,7 +195,11 @@ const ActivityBookingRequest = () => {
                                     onChange={handleInputChange}
                                     className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
                                     required
-                                    min={new Date().toISOString().split('T')[0]}
+                                    min={(() => {
+                                        const tomorrow = new Date();
+                                        tomorrow.setDate(tomorrow.getDate() + 1);
+                                        return tomorrow.toISOString().split('T')[0];
+                                    })()}
                                 />
                             </div>
                             {/* Number of Guests */}

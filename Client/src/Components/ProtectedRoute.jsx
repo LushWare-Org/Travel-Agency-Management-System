@@ -5,10 +5,6 @@ import axios from 'axios';
 import { CircularProgress, Box, Typography } from '@mui/material';
 
 export default function ProtectedRoute({ children, requireAdmin = false }) {
-  // AUTHENTICATION DISABLED - Always return children without checks
-  return children;
-  
-  /*
   const { user, setUser, loading } = useContext(AuthContext);
   const location = useLocation();
 
@@ -75,5 +71,4 @@ export default function ProtectedRoute({ children, requireAdmin = false }) {
   }
 
   return children;
-  */
 }

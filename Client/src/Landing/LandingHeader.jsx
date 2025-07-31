@@ -74,6 +74,9 @@ const LandingHeader = () => {
             </div>
             <div className="ml-4">
               <h1 className="text-2xl font-bold" style={{ color: palette.lapis_lazuli }}>IsleKey Holidays</h1>
+              <p className="text-base font-medium mt-1" style={{ color: palette.indigo_dye }}>
+                Your Gateway to Paradise
+              </p>
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-8">
