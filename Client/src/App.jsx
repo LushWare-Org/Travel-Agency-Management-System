@@ -271,7 +271,8 @@ export default function App() {
           <Route path="*" element={<Home />} />
         </Routes>
       </div>
-      <WhatsappIcon />
+      {/* Only show WhatsApp icon if not on admin route */}
+      {!isAdminRoute && <WhatsappIcon />}
     </Suspense>
   );
 }

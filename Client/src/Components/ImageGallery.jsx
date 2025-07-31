@@ -240,7 +240,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
   }
 
   const handleWhatsAppClick = () => {
-    const whatsappUrl = `https://wa.me/9609969974`;
+    const whatsappUrl = `https://wa.me/1234567890`;
     window.open(whatsappUrl, '_blank');
   };
 
