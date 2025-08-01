@@ -46,24 +46,39 @@ export const AuthProvider = ({ children }) => {
         const originalReq = err.config;
 
         if (err.response?.status === 401 && !originalReq._retry) {
+          // Only handle authentication-related 401s, not all 401s
+          // Check if this is an endpoint that actually requires authentication
+          const requiresAuth = originalReq.url.includes('/auth/') || 
+                               originalReq.url.includes('/users/me') ||
+                               originalReq.url.includes('/bookings') ||
+                               originalReq.url.includes('/profile') ||
+                               originalReq.url.includes('/admin') ||
+                               originalReq.method.toLowerCase() === 'post' ||
+                               originalReq.method.toLowerCase() === 'put' ||
+                               originalReq.method.toLowerCase() === 'delete';
+
+          // If this is a refresh token call that failed, logout immediately
           if (originalReq.url.includes('/auth/refresh-token')) {
             setUser(null);
             navigate('/login', { replace: true });
             return Promise.reject(err);
           }
 
-          originalReq._retry = true;
-          try {
-            const success = await refreshToken();
-            if (success) {
-              return axios(originalReq);
-            } else {
+          // Only attempt token refresh for endpoints that actually require authentication
+          if (requiresAuth) {
+            originalReq._retry = true;
+            try {
+              const success = await refreshToken();
+              if (success) {
+                return axios(originalReq);
+              } else {
+                return Promise.reject(err);
+              }
+            } catch (error) {
+              setUser(null);
+              navigate('/login', { replace: true });
               return Promise.reject(err);
             }
-          } catch (error) {
-            setUser(null);
-            navigate('/login', { replace: true });
-            return Promise.reject(err);
           }
         }
         return Promise.reject(err);
