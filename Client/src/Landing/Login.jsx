@@ -115,7 +115,8 @@ const Login = ({ setIsAuthenticated }) => {
               navigate(`/activities/${bookingIntent.data.activityId}/booking`, {
                 state: {
                   selectedDate: bookingIntent.data.selectedDate,
-                  guests: bookingIntent.data.guests
+                  guests: bookingIntent.data.guests,
+                  bookingType: bookingIntent.data.bookingType // Preserve the booking type
                 }
               });
               break;
