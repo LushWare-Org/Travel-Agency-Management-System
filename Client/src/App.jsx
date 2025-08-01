@@ -195,10 +195,10 @@ export default function App() {
           />
           <Route path="/activities/:id" element={<><ActivityDetail/><Footer/></>} />
           <Route path="/activities/:id/booking" element={
-            <ProtectedRoute>
+            <>
               <ActivityBookingRequest/>
               <Footer/>
-            </ProtectedRoute>
+            </>
           } />
 
           {/* user profile - AUTHENTICATION RE-ENABLED */}
