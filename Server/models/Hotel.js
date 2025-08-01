@@ -22,7 +22,6 @@ const HotelSchema = new Schema(
       email: String,
       website: String
     },
-    liveAvailability: { type: String, default: false },
     amenities: [String],
     mealPlans: [
       {
