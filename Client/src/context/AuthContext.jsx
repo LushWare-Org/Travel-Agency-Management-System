@@ -46,26 +46,30 @@ export const AuthProvider = ({ children }) => {
         const originalReq = err.config;
 
         if (err.response?.status === 401 && !originalReq._retry) {
-          // Only handle authentication-related 401s, not all 401s
-          // Check if this is an endpoint that actually requires authentication
-          const requiresAuth = originalReq.url.includes('/auth/') || 
-                               originalReq.url.includes('/users/me') ||
-                               originalReq.url.includes('/bookings') ||
-                               originalReq.url.includes('/profile') ||
-                               originalReq.url.includes('/admin') ||
-                               originalReq.method.toLowerCase() === 'post' ||
-                               originalReq.method.toLowerCase() === 'put' ||
-                               originalReq.method.toLowerCase() === 'delete';
+          // Skip interceptor for initial auth checks
+          if (originalReq.headers && originalReq.headers['X-Initial-Auth-Check']) {
+            return Promise.reject(err);
+          }
+
+          // Only handle authentication-related 401s for specific protected endpoints
+          const isProtectedEndpoint = originalReq.url.includes('/bookings') ||
+                                     originalReq.url.includes('/profile') ||
+                                     originalReq.url.includes('/admin') ||
+                                     originalReq.url.includes('/settings') ||
+                                     (originalReq.url.includes('/auth/') && !originalReq.url.includes('/auth/login') && !originalReq.url.includes('/auth/register'));
 
           // If this is a refresh token call that failed, logout immediately
           if (originalReq.url.includes('/auth/refresh-token')) {
             setUser(null);
-            navigate('/login', { replace: true });
+            // Only navigate to login if not already there
+            if (!window.location.pathname.includes('/login')) {
+              navigate('/login', { replace: true });
+            }
             return Promise.reject(err);
           }
 
-          // Only attempt token refresh for endpoints that actually require authentication
-          if (requiresAuth) {
+          // Only attempt token refresh for protected endpoints
+          if (isProtectedEndpoint) {
             originalReq._retry = true;
             try {
               const success = await refreshToken();
@@ -76,7 +80,10 @@ export const AuthProvider = ({ children }) => {
               }
             } catch (error) {
               setUser(null);
-              navigate('/login', { replace: true });
+              // Only navigate to login if not already there
+              if (!window.location.pathname.includes('/login')) {
+                navigate('/login', { replace: true });
+              }
               return Promise.reject(err);
             }
           }
@@ -91,12 +98,30 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get('/users/me', { withCredentials: true });
+        // Use a direct axios call without interceptor interference for initial check
+        const { data } = await axios.get('/users/me', { 
+          withCredentials: true,
+          // Add a custom header to identify this as an initial auth check
+          headers: { 'X-Initial-Auth-Check': 'true' }
+        });
         setUser(data);
       } catch (err) {
         if (err.response?.status === 401) {
-          // Try to refresh token
-          await refreshToken();
+          // Try to refresh token silently, but don't redirect on failure
+          try {
+            await axios.post('/auth/refresh-token', {}, { 
+              withCredentials: true,
+              headers: { 'X-Initial-Auth-Check': 'true' }
+            });
+            const userData = await axios.get('/users/me', { 
+              withCredentials: true,
+              headers: { 'X-Initial-Auth-Check': 'true' }
+            });
+            setUser(userData.data);
+          } catch (refreshError) {
+            // Silent failure - user is just not logged in
+            setUser(null);
+          }
         } else {
           setUser(null);
         }
