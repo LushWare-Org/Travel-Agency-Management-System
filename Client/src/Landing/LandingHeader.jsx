@@ -53,8 +53,23 @@ const LandingHeader = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Helper to check active tab
-  const isActive = (path) => location.pathname === path;
+  // Helper to check active tab - now supports nested routes
+  const isActive = (path) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(path);
+  };
+
+  // Helper to check if we're in resorts/hotels section
+  const isInResortsSection = () => {
+    return location.pathname.startsWith('/search') || location.pathname.startsWith('/hotels');
+  };
+
+  // Helper to check if we're in a services section
+  const isInServicesSection = () => {
+    return location.pathname.match(/\/(travel-services|real-estate|investment-support|brand-representation)/);
+  };
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -83,16 +98,16 @@ const LandingHeader = () => {
             {/* New navigation items */}
             <Link
               to="/"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
-              style={{ color: palette.indigo_dye2 }}
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold' : ''}`}
+              style={{ color: isActive('/') ? palette.lapis_lazuli : palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
               Home
             </Link>
             <Link
               to="/about-us"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/about-us') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
-              style={{ color: palette.indigo_dye2 }}
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/about-us') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold' : ''}`}
+              style={{ color: isActive('/about-us') ? palette.lapis_lazuli : palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
               About Us
@@ -113,8 +128,8 @@ const LandingHeader = () => {
               }}
             >
               <button
-                className={`font-medium transition-colors hover:underline hover:brightness-125 flex items-center ${location.pathname.match(/\/(travel-services|real-estate|investment-support|brand-representation)/) ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
-                style={{ color: palette.indigo_dye2 }}
+                className={`font-medium transition-colors hover:underline hover:brightness-125 flex items-center ${isInServicesSection() ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold' : ''}`}
+                style={{ color: isInServicesSection() ? palette.lapis_lazuli : palette.indigo_dye2 }}
                 type="button"
               >
                 Our Services
@@ -138,41 +153,41 @@ const LandingHeader = () => {
                     }, 150);
                   }}
                 >
-                  <Link to="/travel-services" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Travel Services</Link>
-                  <Link to="/real-estate" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Real Estate</Link>
-                  <Link to="/investment-support" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Investment Support</Link>
-                  <Link to="/brand-representation" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Brand Representation</Link>
+                  <Link to="/travel-services" className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/travel-services') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={scrollToTop}>Travel Services</Link>
+                  <Link to="/real-estate" className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/real-estate') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={scrollToTop}>Real Estate</Link>
+                  <Link to="/investment-support" className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/investment-support') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={scrollToTop}>Investment Support</Link>
+                  <Link to="/brand-representation" className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/brand-representation') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={scrollToTop}>Brand Representation</Link>
                 </div>
               )}
             </div>
             <Link
               to="/search"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/search') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
-              style={{ color: palette.indigo_dye2 }}
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isInResortsSection() ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold' : ''}`}
+              style={{ color: isInResortsSection() ? palette.lapis_lazuli : palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
               Resorts
             </Link>
             <Link
               to="/tours"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/tours') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
-              style={{ color: palette.indigo_dye2 }}
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/tours') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold' : ''}`}
+              style={{ color: isActive('/tours') ? palette.lapis_lazuli : palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
               Tours
             </Link>
             <Link
               to="/activities"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/activities') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
-              style={{ color: palette.indigo_dye2 }}
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/activities') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold' : ''}`}
+              style={{ color: isActive('/activities') ? palette.lapis_lazuli : palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
               Activities
             </Link>
             <Link
               to="/contact"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/contact') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
-              style={{ color: palette.indigo_dye2 }}
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/contact') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold' : ''}`}
+              style={{ color: isActive('/contact') ? palette.lapis_lazuli : palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
               Contact
@@ -241,13 +256,13 @@ const LandingHeader = () => {
         <div className="md:hidden bg-[#B7C5C7] bg-opacity-95 backdrop-blur-sm">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {/* Mobile menu items */}
-            <Link to="/" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Home</Link>
-            <Link to="/about" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/about') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>About</Link>
+            <Link to="/" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`} style={{ color: isActive('/') ? palette.lapis_lazuli : palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Home</Link>
+            <Link to="/about-us" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/about-us') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`} style={{ color: isActive('/about-us') ? palette.lapis_lazuli : palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>About Us</Link>
             {/* Services dropdown for mobile */}
             <div>
               <button
-                className={`flex w-full text-left px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 items-center ${location.pathname.match(/\/(travel-services|real-estate|investment-support|brand-representation)/) ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
-                style={{ color: palette.indigo_dye2 }}
+                className={`flex w-full text-left px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 items-center ${isInServicesSection() ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`}
+                style={{ color: isInServicesSection() ? palette.lapis_lazuli : palette.indigo_dye2 }}
                 onClick={() => setServicesDropdown(!servicesDropdown)}
               >
                 Our Services
@@ -257,17 +272,17 @@ const LandingHeader = () => {
               </button>
               {servicesDropdown && (
                 <div className="ml-4">
-                  <Link to="/travel-services" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/travel-services') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Travel Services</Link>
-                  <Link to="/real-estate" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/real-estate') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Real Estate</Link>
-                  <Link to="/investment-support" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/investment-support') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Investment Support</Link>
-                  <Link to="/brand-representation" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/brand-representation') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Brand Representation</Link>
+                  <Link to="/travel-services" className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/travel-services') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Travel Services</Link>
+                  <Link to="/real-estate" className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/real-estate') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Real Estate</Link>
+                  <Link to="/investment-support" className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/investment-support') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Investment Support</Link>
+                  <Link to="/brand-representation" className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/brand-representation') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Brand Representation</Link>
                 </div>
               )}
             </div>
-            <Link to="/search" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/search') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Resorts</Link>
-            <Link to="/tours" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/tours') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Tours</Link>
-            <Link to="/activities" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/activities') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Activities</Link>
-            <Link to="/contact" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/contact') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} style={{ color: palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Contact</Link>
+            <Link to="/search" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isInResortsSection() ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`} style={{ color: isInResortsSection() ? palette.lapis_lazuli : palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Resorts</Link>
+            <Link to="/tours" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/tours') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`} style={{ color: isActive('/tours') ? palette.lapis_lazuli : palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Tours</Link>
+            <Link to="/activities" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/activities') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`} style={{ color: isActive('/activities') ? palette.lapis_lazuli : palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Activities</Link>
+            <Link to="/contact" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/contact') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`} style={{ color: isActive('/contact') ? palette.lapis_lazuli : palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Contact</Link>
             {/* Auth links for mobile */}
             {!user ? (
               <>
