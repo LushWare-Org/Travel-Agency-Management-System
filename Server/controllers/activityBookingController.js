@@ -9,6 +9,7 @@ exports.createActivityBooking = async (req, res) => {
   try {
     const {
       activityId,
+      type = 'inquiry', // Default to inquiry if not specified
       customerDetails,
       bookingDetails,
       pricing
@@ -43,7 +44,9 @@ exports.createActivityBooking = async (req, res) => {
     }
 
     // Generate unique booking reference
-    const bookingReference = `ACT-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const bookingReference = type === 'inquiry' 
+      ? `INQ-${Date.now()}-${Math.floor(Math.random() * 1000)}`
+      : `ACT-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
     // Calculate total price
     const totalPrice = pricing.pricePerPerson * bookingDetails.guests;
@@ -72,6 +75,7 @@ exports.createActivityBooking = async (req, res) => {
       activity: activityId,
       user: userId,
       bookingReference,
+      type,
       customerDetails,
       bookingDetails,
       pricing: {
@@ -105,9 +109,14 @@ exports.createActivityBooking = async (req, res) => {
 // @access  Private (Admin)
 exports.getAllActivityBookings = async (req, res) => {
   try {
-    const { status, startDate, endDate, activityId } = req.query;
+    const { status, startDate, endDate, activityId, type } = req.query;
     
     let query = {};
+    
+    // Filter by type
+    if (type) {
+      query.type = type;
+    }
     
     // Filter by status
     if (status) {

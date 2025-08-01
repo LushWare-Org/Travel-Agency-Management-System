@@ -16,6 +16,12 @@ const ActivityBookingSchema = new mongoose.Schema({
     required: [true, 'Booking reference is required'],
     unique: true
   },
+  type: {
+    type: String,
+    enum: ['inquiry', 'booking'],
+    default: 'inquiry',
+    required: [true, 'Booking type is required']
+  },
   customerDetails: {
     fullName: {
       type: String,
