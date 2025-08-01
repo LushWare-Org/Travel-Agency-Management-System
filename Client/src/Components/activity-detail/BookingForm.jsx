@@ -147,10 +147,10 @@ const BookingForm = ({ activity }) => {
                         Send Inquiry
                     </button>
                     
-                    <button 
+                    <button
                         type="button"
                         onClick={(e) => handleSubmit(e, 'booking')}
-                        className="w-full py-3 px-4 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                        className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
                     >
                         Book Now
                     </button>
