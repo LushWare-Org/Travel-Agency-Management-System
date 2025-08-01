@@ -363,7 +363,7 @@ const HotelManagement = () => {
 
   return (
     <Paper sx={{ p: 3 }}>
-      <Typography variant="h5" gutterBottom>Hotel Management</Typography>
+      <Typography variant="h5" gutterBottom>Resort Management</Typography>
       <Button variant="contained" startIcon={<AddIcon />} onClick={() => openDialog(null)} sx={{ mb: 2 }}>
         Add Hotel
       </Button>
