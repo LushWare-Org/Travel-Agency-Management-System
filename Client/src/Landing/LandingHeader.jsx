@@ -61,6 +61,11 @@ const LandingHeader = () => {
     return location.pathname.startsWith(path);
   };
 
+  // Helper to check if we're in resorts/hotels section
+  const isInResortsSection = () => {
+    return location.pathname.startsWith('/search') || location.pathname.startsWith('/hotels');
+  };
+
   // Helper to check if we're in a services section
   const isInServicesSection = () => {
     return location.pathname.match(/\/(travel-services|real-estate|investment-support|brand-representation)/);
@@ -157,8 +162,8 @@ const LandingHeader = () => {
             </div>
             <Link
               to="/search"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/search') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold' : ''}`}
-              style={{ color: isActive('/search') ? palette.lapis_lazuli : palette.indigo_dye2 }}
+              className={`font-medium transition-colors hover:underline hover:brightness-125 ${isInResortsSection() ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold' : ''}`}
+              style={{ color: isInResortsSection() ? palette.lapis_lazuli : palette.indigo_dye2 }}
               onClick={scrollToTop}
             >
               Resorts
@@ -274,7 +279,7 @@ const LandingHeader = () => {
                 </div>
               )}
             </div>
-            <Link to="/search" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/search') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`} style={{ color: isActive('/search') ? palette.lapis_lazuli : palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Resorts</Link>
+            <Link to="/search" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isInResortsSection() ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`} style={{ color: isInResortsSection() ? palette.lapis_lazuli : palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Resorts</Link>
             <Link to="/tours" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/tours') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`} style={{ color: isActive('/tours') ? palette.lapis_lazuli : palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Tours</Link>
             <Link to="/activities" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/activities') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`} style={{ color: isActive('/activities') ? palette.lapis_lazuli : palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Activities</Link>
             <Link to="/contact" className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${isActive('/contact') ? 'border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]' : ''}`} style={{ color: isActive('/contact') ? palette.lapis_lazuli : palette.indigo_dye2 }} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Contact</Link>
