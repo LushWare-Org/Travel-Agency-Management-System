@@ -43,12 +43,14 @@ const BookingForm = ({ activity }) => {
             bookingType
         };
 
-        // Check authentication before proceeding to booking
-        if (!requireAuthForBooking('activity', bookingData)) {
-            return; // User will be redirected to login
+        // Only check authentication for booking, not for inquiries
+        if (bookingType === 'booking') {
+            if (!requireAuthForBooking('activity', bookingData)) {
+                return; // User will be redirected to login
+            }
         }
 
-        // User is authenticated, proceed to booking
+        // Proceed to booking/inquiry page
         navigate(`/activities/${activity._id || activity.id}/booking`, {
             state: {
                 selectedDate: formatDateToString(selectedDate),

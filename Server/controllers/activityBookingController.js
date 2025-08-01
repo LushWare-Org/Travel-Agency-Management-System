@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 // @desc    Create a new activity booking
 // @route   POST /api/activity-bookings
-// @access  Private
+// @access  Public for inquiries, Private for bookings
 exports.createActivityBooking = async (req, res) => {
   try {
     const {
@@ -17,6 +17,14 @@ exports.createActivityBooking = async (req, res) => {
 
     console.log('Creating activity booking with data:', req.body);
     console.log('User from auth:', req.user);
+
+    // Check authentication requirement based on type
+    if (type === 'booking' && !req.user) {
+      return res.status(401).json({
+        success: false,
+        error: 'Authentication required for bookings'
+      });
+    }
 
     // Validate activity exists
     const activity = await Activity.findById(activityId);
@@ -51,29 +59,39 @@ exports.createActivityBooking = async (req, res) => {
     // Calculate total price
     const totalPrice = pricing.pricePerPerson * bookingDetails.guests;
 
-    // For mock authentication, we'll use a default user ID or create one
-    let userId = req.user.userId;
-    if (userId === 'mock-user-id') {
-      // Try to find an existing user or use the mock ID
-      const mockUser = await User.findOne({ email: 'mock@admin.com' });
-      if (mockUser) {
-        userId = mockUser._id;
-      } else {
-        // Create a mock user if it doesn't exist
-        const newMockUser = new User({
-          username: 'Mock Admin',
-          email: 'mock@admin.com',
-          password: 'mock-password',
-          role: 'admin'
-        });
-        await newMockUser.save();
-        userId = newMockUser._id;
+    // Handle user ID for authenticated and non-authenticated requests
+    let userId = null;
+    
+    if (req.user) {
+      // User is authenticated
+      userId = req.user.userId;
+      
+      // Handle mock authentication if needed
+      if (userId === 'mock-user-id') {
+        const mockUser = await User.findOne({ email: 'mock@admin.com' });
+        if (mockUser) {
+          userId = mockUser._id;
+        } else {
+          // Create a mock user if it doesn't exist
+          const newMockUser = new User({
+            username: 'Mock Admin',
+            email: 'mock@admin.com',
+            password: 'mock-password',
+            role: 'admin'
+          });
+          await newMockUser.save();
+          userId = newMockUser._id;
+        }
       }
+    } else {
+      // For inquiries without authentication, create a guest user or use null
+      // We'll store customer details in the booking itself
+      userId = null;
     }
 
     const activityBooking = new ActivityBooking({
       activity: activityId,
-      user: userId,
+      user: userId, // Can be null for inquiries
       bookingReference,
       type,
       customerDetails,
@@ -86,10 +104,15 @@ exports.createActivityBooking = async (req, res) => {
 
     await activityBooking.save();
 
-    // Populate the booking with activity and user details
+    // Populate the booking with activity and user details (user might be null)
     const populatedBooking = await ActivityBooking.findById(activityBooking._id)
       .populate('activity', 'title location duration price image')
-      .populate('user', 'email username');
+      .populate({
+        path: 'user',
+        select: 'email username',
+        // Allow null values
+        match: { _id: { $ne: null } }
+      });
 
     res.status(201).json({
       success: true,
@@ -211,11 +234,22 @@ exports.getActivityBookingById = async (req, res) => {
     }
 
     // Check if user owns the booking or is admin
-    if (booking.user._id.toString() !== req.user.userId && req.user.role !== 'admin') {
-      return res.status(403).json({
-        success: false,
-        error: 'Access denied'
-      });
+    // For inquiries without users, only admin can access
+    if (booking.user) {
+      if (booking.user._id.toString() !== req.user.userId && req.user.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          error: 'Access denied'
+        });
+      }
+    } else {
+      // For guest inquiries, only admin can access
+      if (req.user.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          error: 'Access denied'
+        });
+      }
     }
 
     res.status(200).json({
@@ -314,11 +348,22 @@ exports.cancelActivityBooking = async (req, res) => {
     }
 
     // Check if user owns the booking or is admin
-    if (booking.user.toString() !== req.user.userId && req.user.role !== 'admin') {
-      return res.status(403).json({
-        success: false,
-        error: 'Access denied'
-      });
+    // For inquiries without users, only admin can cancel
+    if (booking.user) {
+      if (booking.user.toString() !== req.user.userId && req.user.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          error: 'Access denied'
+        });
+      }
+    } else {
+      // For guest inquiries, only admin can cancel
+      if (req.user.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          error: 'Access denied'
+        });
+      }
     }
 
     // Check if booking can be cancelled

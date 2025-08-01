@@ -95,7 +95,9 @@ const ActivityBookingRequest = () => {
                 }
             };
             
-            const response = await axios.post('/activity-bookings', bookingData);
+            const response = await axios.post('/activity-bookings', bookingData, {
+                withCredentials: true // Always send credentials if available
+            });
             if (response.data.success) {
                 setBookingReference(response.data.data.bookingReference);
                 setBookingId(response.data.data._id);
