@@ -126,6 +126,13 @@ const Login = ({ setIsAuthenticated }) => {
                 state: { openInquiry: true, tourBookingData: bookingIntent.data }
               });
               break;
+            case 'tour-booking':
+              // For tour booking, redirect back to the tour details page
+              // (future booking form will be implemented here)
+              navigate(bookingIntent.returnTo, {
+                state: { proceedToBooking: true, tourBookingData: bookingIntent.data }
+              });
+              break;
             default:
               navigate(from?.pathname || '/');
           }
