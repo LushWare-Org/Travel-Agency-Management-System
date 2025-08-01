@@ -10,6 +10,7 @@ const UserSchema = new Schema({
   phoneNumber:  { type: String, required: true },
   password:     { type: String, required: true },
   role:         { type: String, enum: ['user','agent','admin','pending'], default: 'user' },
+  agencyProfile: { type: Schema.Types.ObjectId, ref: 'AgencyProfile' },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', UserSchema);
