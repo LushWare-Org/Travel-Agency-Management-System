@@ -17,7 +17,7 @@ const BookingForm = ({ activity }) => {
         setTotalPrice(activity.price * guests);
     }, [guests, activity]);
     
-    const handleSubmit = (e) => {
+    const handleSubmit = (e, bookingType = 'inquiry') => {
         e.preventDefault();
         
         if (!selectedDate) { 
@@ -39,7 +39,8 @@ const BookingForm = ({ activity }) => {
             activityId: activity._id || activity.id,
             selectedDate: formatDateToString(selectedDate),
             guests,
-            activityTitle: activity.title
+            activityTitle: activity.title,
+            bookingType
         };
 
         // Check authentication before proceeding to booking
@@ -51,7 +52,8 @@ const BookingForm = ({ activity }) => {
         navigate(`/activities/${activity._id || activity.id}/booking`, {
             state: {
                 selectedDate: formatDateToString(selectedDate),
-                guests
+                guests,
+                bookingType
             }
         });
     };
@@ -135,16 +137,28 @@ const BookingForm = ({ activity }) => {
                     </div>
                 </div>
                 
-                {/* Submit Button */}
-                <button 
-                    type="submit"
-                    className="w-full py-3 px-4 bg-lapis_lazuli-500 text-white rounded-lg font-medium hover:bg-indigo_dye-500 transition-colors focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500 focus:ring-offset-2"
-                >
-                    Continue to Book
-                </button>
+                {/* Submit Buttons */}
+                <div className="space-y-3">
+                    <button 
+                        type="button"
+                        onClick={(e) => handleSubmit(e, 'inquiry')}
+                        className="w-full py-3 px-4 bg-lapis_lazuli-500 text-white rounded-lg font-medium hover:bg-indigo_dye-500 transition-colors focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500 focus:ring-offset-2"
+                    >
+                        Send Inquiry
+                    </button>
+                    
+                    <button 
+                        type="button"
+                        onClick={(e) => handleSubmit(e, 'booking')}
+                        className="w-full py-3 px-4 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                    >
+                        Book Now
+                    </button>
+                </div>
                 
                 <p className="text-ash_gray-400 text-sm mt-4">
-                    You won't be charged yet. Complete your booking on the next page.
+                    <strong>Send Inquiry:</strong> Request information and pricing details<br/>
+                    <strong>Book Now:</strong> Reserve your activity (payment details will be provided separately)
                 </p>
             </form>
         </div>

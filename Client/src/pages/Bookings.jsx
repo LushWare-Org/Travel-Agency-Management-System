@@ -98,7 +98,7 @@ const Bookings = ({ sidebarOpen }) => {
           setActivityBookings(res.data.data);
         }
       } catch (err) {
-        setSnackbar({ open: true, message: 'Failed to load activity bookings', severity: 'error' });
+        setSnackbar({ open: true, message: 'Failed to load activity bookings & inquiries', severity: 'error' });
       } finally {
         setActivityLoading(false);
       }
@@ -367,7 +367,7 @@ const Bookings = ({ sidebarOpen }) => {
                   }`}
                 >
                   <Users className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                  Activity Bookings
+                  Activity Bookings & Inquiries
                   <span className={`ml-2 px-2 py-1 rounded-full text-xs ${
                     activeTab === 'activities' 
                       ? 'bg-white/20 text-white' 
@@ -793,7 +793,7 @@ const Bookings = ({ sidebarOpen }) => {
           </div>
         )}
 
-        {/* Activity Bookings Tab Content */}
+        {/* Activity Bookings & Inquiries Tab Content */}
         {activeTab === 'activities' && (
           <div className="animate-fadeIn">
             {/* Activity Booking Filter Controls */}
@@ -840,7 +840,7 @@ const Bookings = ({ sidebarOpen }) => {
               </div>
             </div>
 
-            {/* Activity Bookings List */}
+            {/* Activity Bookings & Inquiries List */}
             <div className="space-y-4 md:space-y-6">
               <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
                 {filteredActivityBookings.map((b) => (
@@ -848,7 +848,16 @@ const Bookings = ({ sidebarOpen }) => {
                     <div className="p-4 md:p-6">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          <h3 className="text-lg md:text-xl font-bold text-blue-800 mb-1">{b.activity?.title}</h3>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="text-lg md:text-xl font-bold text-blue-800">{b.activity?.title}</h3>
+                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold ${
+                              b.type === 'inquiry' 
+                                ? 'bg-blue-100 text-blue-800' 
+                                : 'bg-green-100 text-green-800'
+                            }`}>
+                              {b.type === 'inquiry' ? 'Inquiry' : 'Booking'}
+                            </span>
+                          </div>
                           <p className="text-sm text-gray-600">{b.activity?.location}</p>
                           <p className="text-xs text-gray-500 mt-1">Ref: {b.bookingReference}</p>
                         </div>
@@ -881,7 +890,8 @@ const Bookings = ({ sidebarOpen }) => {
 
                       <div className="flex justify-between items-center">
                         <span className="text-lg md:text-xl font-bold text-blue-600">
-                          {b.status === 'Cancelled' ? '$0' : `$${b.pricing?.totalPrice?.toFixed(2) || '0.00'}`}
+                          {b.type === 'inquiry' ? 'Inquiry' : 
+                           b.status === 'Cancelled' ? '$0' : `$${b.pricing?.totalPrice?.toFixed(2) || '0.00'}`}
                         </span>
                         <div className="flex space-x-2">
                           {statusConfig[b.status]?.canCancel && (
@@ -907,7 +917,7 @@ const Bookings = ({ sidebarOpen }) => {
                 {filteredActivityBookings.length === 0 && (
                   <div className="col-span-2 py-12 text-center text-indigo-900">
                     <Users className="w-10 h-10 mx-auto text-green-300 mb-3" />
-                    <p className="text-base font-medium">No activity bookings found</p>
+                    <p className="text-base font-medium">No activity bookings or inquiries found</p>
                     <p className="text-sm text-gray-500 mt-1">Try adjusting your filters or book an activity</p>
                   </div>
                 )}

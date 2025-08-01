@@ -14,6 +14,7 @@ const ActivityBookingRequest = () => {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
+    const [bookingType, setBookingType] = useState('inquiry'); // 'inquiry' or 'booking'
     const [formData, setFormData] = useState({
         date: '',
         guests: 2,
@@ -34,6 +35,9 @@ const ActivityBookingRequest = () => {
                 date: location.state.selectedDate,
                 guests: location.state.guests || 2
             }));
+        }
+        if (location.state?.bookingType) {
+            setBookingType(location.state.bookingType);
         }
     }, [location.state]);
 
@@ -75,6 +79,7 @@ const ActivityBookingRequest = () => {
         try {
             const bookingData = {
                 activityId: id,
+                type: bookingType, // Add booking type
                 customerDetails: {
                     fullName: formData.fullName,
                     email: formData.email,
@@ -149,8 +154,15 @@ const ActivityBookingRequest = () => {
         <div className="bg-platinum-500 py-12">
             <div className="container mx-auto px-4">
                 <div className="max-w-3xl mx-auto">
-                    <h1 className="text-3xl font-bold text-lapis_lazuli-500 mb-2 font-display">Complete Your Booking</h1>
-                    <p className="text-ash_gray-400 mb-8">Please review the details and fill in your information to complete your booking request.</p>
+                    <h1 className="text-3xl font-bold text-lapis_lazuli-500 mb-2 font-display">
+                        {bookingType === 'inquiry' ? 'Send Activity Inquiry' : 'Complete Your Booking'}
+                    </h1>
+                    <p className="text-ash_gray-400 mb-8">
+                        {bookingType === 'inquiry' 
+                            ? 'Please fill in your details to send an inquiry about this activity.' 
+                            : 'Please review the details and fill in your information to complete your booking request.'
+                        }
+                    </p>
                     {/* Activity Summary */}
                     <div className="bg-white rounded-lg shadow-md p-6 mb-8">
                         <div className="flex flex-col md:flex-row">
@@ -300,7 +312,7 @@ const ActivityBookingRequest = () => {
                                 } transition-colors`}
                                 disabled={submitting}
                             >
-                                {submitting ? 'Processing...' : 'Send Booking Request'}
+                                {submitting ? 'Processing...' : (bookingType === 'inquiry' ? 'Send Inquiry' : 'Send Booking Request')}
                             </button>
                         </div>
                         {error && (
@@ -315,10 +327,22 @@ const ActivityBookingRequest = () => {
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-                        <h2 className="text-2xl font-bold text-lapis_lazuli-500 mb-4">Booking Confirmed!</h2>
-                        <p className="mb-2">Your booking reference is <span className="font-mono font-bold">{bookingReference}</span>.</p>
-                        <p className="mb-2">Thank you for booking <span className="font-bold">{activity.title}</span> on <span className="font-bold">{formData.date}</span> for <span className="font-bold">{formData.guests}</span> guest(s).</p>
-                        <p className="mb-4">Total Price: <span className="font-bold">${activity.price * formData.guests}</span></p>
+                        <h2 className="text-2xl font-bold text-lapis_lazuli-500 mb-4">
+                            {bookingType === 'inquiry' ? 'Inquiry Sent!' : 'Booking Request Confirmed!'}
+                        </h2>
+                        <p className="mb-2">Your reference is <span className="font-mono font-bold">{bookingReference}</span>.</p>
+                        <p className="mb-2">
+                            {bookingType === 'inquiry' 
+                                ? `Thank you for your inquiry about ${activity.title}. We will get back to you soon with availability and pricing details.`
+                                : `Thank you for booking ${activity.title} on ${formData.date} for ${formData.guests} guest(s).`
+                            }
+                        </p>
+                        {bookingType === 'booking' && (
+                            <p className="mb-4">Total Price: <span className="font-bold">${activity.price * formData.guests}</span></p>
+                        )}
+                        {bookingType === 'inquiry' && (
+                            <p className="mb-4 text-ash_gray-400">We will contact you within 24 hours with detailed information.</p>
+                        )}
                         <button
                             onClick={handleModalClose}
                             className="w-full py-3 px-4 bg-lapis_lazuli-500 text-white rounded-lg font-medium hover:bg-lapis_lazuli-600 transition-colors focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500 focus:ring-offset-2"

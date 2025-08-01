@@ -50,6 +50,7 @@ const ActivityBookings = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState('');
   const [paymentFilter, setPaymentFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
   const [stats, setStats] = useState({});
 
   // Form state for editing
@@ -62,7 +63,7 @@ const ActivityBookings = () => {
   useEffect(() => {
     fetchBookings();
     fetchStats();
-  }, [statusFilter, paymentFilter]);
+  }, [statusFilter, paymentFilter, typeFilter]);
 
   const fetchBookings = async () => {
     try {
@@ -70,6 +71,7 @@ const ActivityBookings = () => {
       const params = {};
       if (statusFilter) params.status = statusFilter;
       if (paymentFilter) params.paymentStatus = paymentFilter;
+      if (typeFilter) params.type = typeFilter;
       
       const response = await axios.get('/activity-bookings', { 
         params,
@@ -200,7 +202,7 @@ const ActivityBookings = () => {
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
-        Activity Bookings Management
+        Activity Bookings & Inquiries Management
       </Typography>
 
       {/* Statistics Cards */}
@@ -209,7 +211,7 @@ const ActivityBookings = () => {
           <Card>
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
-                Total Bookings
+                Total Requests
               </Typography>
               <Typography variant="h4">
                 {stats.totalBookings || 0}
@@ -258,6 +260,18 @@ const ActivityBookings = () => {
       {/* Filters */}
       <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
         <FormControl size="small" sx={{ minWidth: 120 }}>
+          <InputLabel>Type</InputLabel>
+          <Select
+            value={typeFilter}
+            label="Type"
+            onChange={(e) => setTypeFilter(e.target.value)}
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="inquiry">Inquiry</MenuItem>
+            <MenuItem value="booking">Booking</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl size="small" sx={{ minWidth: 120 }}>
           <InputLabel>Status</InputLabel>
           <Select
             value={statusFilter}
@@ -284,7 +298,7 @@ const ActivityBookings = () => {
             <MenuItem value="Refunded">Refunded</MenuItem>
           </Select>
         </FormControl>
-        <Button variant="outlined" onClick={() => { setStatusFilter(''); setPaymentFilter(''); }}>
+        <Button variant="outlined" onClick={() => { setStatusFilter(''); setPaymentFilter(''); setTypeFilter(''); }}>
           Clear Filters
         </Button>
       </Box>
@@ -301,7 +315,8 @@ const ActivityBookings = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Booking Ref</TableCell>
+                <TableCell>Reference</TableCell>
+                <TableCell>Type</TableCell>
                 <TableCell>Activity</TableCell>
                 <TableCell>Customer</TableCell>
                 <TableCell>Date</TableCell>
@@ -309,7 +324,7 @@ const ActivityBookings = () => {
                 <TableCell>Total Price</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Payment</TableCell>
-                <TableCell>Booked On</TableCell>
+                <TableCell>Created On</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -322,6 +337,13 @@ const ActivityBookings = () => {
                       <Typography variant="body2" fontWeight="bold">
                         {booking.bookingReference}
                       </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        label={booking.type === 'inquiry' ? 'Inquiry' : 'Booking'}
+                        color={booking.type === 'inquiry' ? 'info' : 'primary'}
+                        size="small"
+                      />
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2">
