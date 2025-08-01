@@ -612,8 +612,14 @@ export default function EnhancedRoomProfile() {
               </div>
 
               <button
+                onClick={() => alert('Inquiry form coming soon!')}
+                className="w-full mb-3 bg-lapis_lazuli hover:bg-[#005E84] text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform transform hover:scale-105"
+              >
+                <FaCheckCircle className="text-lg" /> Inquire Now
+              </button>
+              <button
                 onClick={handleBookNow}
-                className="w-full bg-indigo_dye hover:bg-[#0A435C] text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform transform hover:scale-105"
+                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl gap-2"
               >
                 <FaBook className="text-lg" /> Book Now
               </button>

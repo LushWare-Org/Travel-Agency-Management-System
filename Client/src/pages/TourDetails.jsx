@@ -650,6 +650,7 @@ const TourDetails = ({ sidebarOpen }) => {
                     Inquire Now
                   </button>
                   <button
+                    onClick={() => alert('Booking form coming soon!')}
                     className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
                   >
                     <CalendarMonthIcon className="w-5 h-5 mr-2" />
