@@ -113,7 +113,7 @@ const LandingHeader = () => {
               }}
             >
               <button
-                className={`font-medium transition-colors hover:underline hover:brightness-125 flex items-center ${location.pathname.startsWith('/services') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
+                className={`font-medium transition-colors hover:underline hover:brightness-125 flex items-center ${location.pathname.match(/\/(travel-services|real-estate|investment-support|brand-representation)/) ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
                 style={{ color: palette.indigo_dye2 }}
                 type="button"
               >
@@ -138,8 +138,10 @@ const LandingHeader = () => {
                     }, 150);
                   }}
                 >
-                  <Link to="/brand-representation" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Brand Representation</Link>
+                  <Link to="/travel-services" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Travel Services</Link>
+                  <Link to="/real-estate" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Real Estate</Link>
                   <Link to="/investment-support" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Investment Support</Link>
+                  <Link to="/brand-representation" className="block px-4 py-2 text-sm hover:bg-gray-100" onClick={scrollToTop}>Brand Representation</Link>
                 </div>
               )}
             </div>
@@ -244,7 +246,7 @@ const LandingHeader = () => {
             {/* Services dropdown for mobile */}
             <div>
               <button
-                className={`block w-full text-left px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 flex items-center ${location.pathname.startsWith('/services') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
+                className={`flex w-full text-left px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 items-center ${location.pathname.match(/\/(travel-services|real-estate|investment-support|brand-representation)/) ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`}
                 style={{ color: palette.indigo_dye2 }}
                 onClick={() => setServicesDropdown(!servicesDropdown)}
               >
@@ -255,9 +257,10 @@ const LandingHeader = () => {
               </button>
               {servicesDropdown && (
                 <div className="ml-4">
-                  <Link to="/services/service1" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/services/service1') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Service 1</Link>
-                  <Link to="/services/service2" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/services/service2') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Service 2</Link>
-                  <Link to="/services/service3" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/services/service3') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); }}>Service 3</Link>
+                  <Link to="/travel-services" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/travel-services') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Travel Services</Link>
+                  <Link to="/real-estate" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/real-estate') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Real Estate</Link>
+                  <Link to="/investment-support" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/investment-support') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Investment Support</Link>
+                  <Link to="/brand-representation" className={`block px-3 py-2 text-sm hover:bg-gray-100 ${isActive('/brand-representation') ? 'border-b-2 border-[#005E84] text-[#005E84]' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Brand Representation</Link>
                 </div>
               )}
             </div>
