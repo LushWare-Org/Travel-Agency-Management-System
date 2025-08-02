@@ -42,7 +42,6 @@ import { useNavigate } from 'react-router-dom';
 
 import HotelManagement from './HotelManagement';
 import RoomManagement from './RoomManagement';
-import ActivityManagement from './ActivityManagement';
 import BookingManagement from './BookingManagement';
 import DiscountManagement from './DiscountManagement';
 import TourManagement from './TourManagement';
@@ -115,11 +114,23 @@ export default function AdminPanel() {
   const handleLogout = () => axios.post('/api/auth/logout', {}, { withCredentials: true }).finally(() => goTo('/login'));
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
+  const handleNavigation = (item) => {
+    if (item.id === 'activities') {
+      navigate('/admin/activities');
+    } else {
+      setSection(item.id);
+    }
+    // Close mobile drawer after navigation
+    if (isMobile) {
+      setMobileOpen(false);
+    }
+  };
+
   const menuItems = [
     { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon /> },
     { id: 'hotels', text: 'Hotel Management', icon: <HotelIcon /> },
     { id: 'rooms', text: 'Room Management', icon: <RoomIcon /> },
-    { id: 'activities', text: 'Activity Management', icon: <LocalActivityIcon /> },
+    { id: 'activities', text: 'Activity Management', icon: <LocalActivityIcon />, path: '/admin/activities' },
     { id: 'bookings', text: 'Booking Oversight', icon: <BookingIcon /> },
     { id: 'discounts', text: 'Discount Management', icon: <DiscountIcon /> },
     { id: 'tours', text: 'Tour Management', icon: <TourOutlined/> },
@@ -199,7 +210,6 @@ export default function AdminPanel() {
       case 'dashboard': return <Dashboard />;
       case 'hotels': return <HotelManagement />;
       case 'rooms': return <RoomManagement />;
-      case 'activities': return <ActivityManagement />;
       case 'bookings': return <BookingManagement />;
       case 'discounts': return <DiscountManagement />;
       case 'tours': return <TourManagement />;
@@ -283,7 +293,7 @@ export default function AdminPanel() {
         <Divider sx={{ bgcolor:'#374151' }} />
         <List>
           {menuItems.map((item) => (
-            <ListItem button key={item.id} onClick={() => { setSection(item.id); if (isMobile) setMobileOpen(false); }}
+            <ListItem button key={item.id} onClick={() => handleNavigation(item)}
               sx={{ '&:hover':{ bgcolor:'#374151' }, bgcolor: section===item.id?'#374151':'transparent' }}>
               <ListItemIcon sx={{ color:'white' }}>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
@@ -309,7 +319,7 @@ export default function AdminPanel() {
         <Divider sx={{ bgcolor:'#374151' }} />
         <List>
           {menuItems.map((item) => (
-            <ListItem button key={item.id} onClick={() => setSection(item.id)}
+            <ListItem button key={item.id} onClick={() => handleNavigation(item)}
               sx={{ '&:hover':{ bgcolor:'#374151' }, bgcolor: section===item.id?'#374151':'transparent' }}>
               <ListItemIcon sx={{ color:'white' }}>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
