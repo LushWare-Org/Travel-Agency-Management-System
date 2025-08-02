@@ -423,7 +423,10 @@ const TravelServices = () => {
                   </p>
                   <ul className="space-y-2">
                     {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center text-[#0A435C]">
+                      <li
+                        key={idx}
+                        className="flex items-center text-[#0A435C]"
+                      >
                         <div className="w-2 h-2 bg-[#075375] rounded-full mr-3"></div>
                         {feature}
                       </li>
