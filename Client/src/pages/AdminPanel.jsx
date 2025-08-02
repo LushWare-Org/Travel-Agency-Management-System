@@ -325,10 +325,11 @@ export default function AdminPanel() {
           p:3, 
           mt:'64px', 
           ml: { xs: 0, md: `${drawerWidth}px` }, 
-          width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` } 
+          width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
+          overflow: 'hidden' // Prevent horizontal scroll
         }}
       >
-        <Container maxWidth="lg">{renderSection()}</Container>
+        <Box sx={{ width: '100%', maxWidth: 'none' }}>{renderSection()}</Box>
       </Box>
     </Box>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   AppBar, 
@@ -13,12 +13,8 @@ import {
   ListItemText,
   Divider,
   CssBaseline,
-  Container,
-  Avatar,
   Menu,
-  MenuItem,
-  useTheme,
-  useMediaQuery
+  MenuItem
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
@@ -33,16 +29,22 @@ import {
   Menu as MenuIcon
 } from '@mui/icons-material';
 import axios from 'axios';
-
-const drawerWidth = 240;
+import { useAdminLayout } from '../hooks/useAdminLayout';
 
 const AdminLayout = ({ children, title = 'Admin Management' }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [anchorEl, setAnchorEl] = useState(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  
+  const {
+    isMobile,
+    mobileOpen,
+    layoutKey,
+    drawerWidth,
+    handleDrawerToggle,
+    getMainContentStyles,
+    getAppBarStyles
+  } = useAdminLayout();
 
   const handleNavigation = (item) => {
     if (item.id === 'activities') {
@@ -53,12 +55,8 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
     }
     // Close mobile drawer after navigation
     if (isMobile) {
-      setMobileOpen(false);
+      handleDrawerToggle();
     }
-  };
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
   };
 
   const openProfileMenu = (e) => setAnchorEl(e.currentTarget);
@@ -111,16 +109,9 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+    <Box key={layoutKey} sx={{ display: 'flex', minHeight: '100vh' }}>
       <CssBaseline />
-      <AppBar 
-        position="fixed" 
-        sx={{ 
-          width: { md: `calc(100% - ${drawerWidth}px)` }, 
-          ml: { md: `${drawerWidth}px` }, 
-          bgcolor: '#1976d2' 
-        }}
-      >
+      <AppBar position="fixed" sx={getAppBarStyles()}>
         <Toolbar>
           {isMobile && (
             <IconButton
@@ -190,21 +181,10 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
         {drawer}
       </Drawer>
 
-      <Box 
-        component="main" 
-        sx={{ 
-          flexGrow: 1, 
-          p: 3, 
-          mt: '64px', 
-          ml: { xs: 0, md: `${drawerWidth}px` }, // Responsive left margin
-          width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` }, // Responsive width
-          backgroundColor: '#f5f5f5',
-          minHeight: 'calc(100vh - 64px)'
-        }}
-      >
-        <Container maxWidth="lg">
+      <Box component="main" sx={getMainContentStyles()}>
+        <Box sx={{ width: '100%', maxWidth: 'none' }}>
           {children}
-        </Container>
+        </Box>
       </Box>
     </Box>
   );

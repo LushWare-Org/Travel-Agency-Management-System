@@ -12,16 +12,45 @@
   margin: 0 !important;
   padding: 0 !important;
   text-align: left !important;
+  width: 100vw !important;
+  height: 100vh !important;
 }
 
 /* Ensure admin layouts have proper overflow handling */
 .admin-layout body {
+  overflow-x: hidden;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.admin-layout html {
   overflow-x: hidden;
 }
 
 /* Prevent any unwanted margins on admin pages */
 .admin-layout * {
   box-sizing: border-box;
+}
+
+/* Fix for MUI layout stability */
+.admin-layout .MuiBox-root {
+  transition: margin-left 0.2s ease, width 0.2s ease !important;
+}
+
+/* Prevent layout shifts during resize */
+.admin-layout .MuiDrawer-paper {
+  transition: none !important;
+}
+
+/* Ensure proper positioning */
+.admin-layout .MuiAppBar-root {
+  transition: margin-left 0.2s ease, width 0.2s ease !important;
+}
+
+/* Prevent horizontal scrolling issues */
+.admin-layout {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
 }
 
 .logo {
