@@ -106,13 +106,18 @@ exports.createActivityBooking = async (req, res) => {
 
     // Populate the booking with activity and user details (user might be null)
     const populatedBooking = await ActivityBooking.findById(activityBooking._id)
-      .populate('activity', 'title location duration price image')
+      .populate({
+        path: 'activity',
+        select: 'title location duration price image type description shortDescription maxParticipants'
+      })
       .populate({
         path: 'user',
-        select: 'email username',
+        select: 'email username firstName lastName',
         // Allow null values
         match: { _id: { $ne: null } }
       });
+
+    console.log('Created activity booking:', JSON.stringify(populatedBooking, null, 2));
 
     res.status(201).json({
       success: true,
@@ -159,9 +164,17 @@ exports.getAllActivityBookings = async (req, res) => {
     }
 
     const bookings = await ActivityBooking.find(query)
-      .populate('activity', 'title location duration price image type')
-      .populate('user', 'email username')
+      .populate({
+        path: 'activity',
+        select: 'title location duration price image type description shortDescription maxParticipants'
+      })
+      .populate({
+        path: 'user',
+        select: 'email username firstName lastName'
+      })
       .sort({ createdAt: -1 });
+
+    console.log(`Admin fetched ${bookings.length} activity bookings`);
 
     res.status(200).json({
       success: true,
@@ -182,6 +195,10 @@ exports.getAllActivityBookings = async (req, res) => {
 // @access  Private
 exports.getMyActivityBookings = async (req, res) => {
   try {
+    console.log('=== GET MY ACTIVITY BOOKINGS DEBUG ===');
+    console.log('Request user:', req.user);
+    console.log('User ID from request:', req.user?.userId);
+    
     let userId = req.user.userId;
     
     // Handle mock authentication
@@ -189,7 +206,9 @@ exports.getMyActivityBookings = async (req, res) => {
       const mockUser = await User.findOne({ email: 'mock@admin.com' });
       if (mockUser) {
         userId = mockUser._id;
+        console.log('Using mock user ID:', userId);
       } else {
+        console.log('No mock user found, returning empty array');
         // Return empty array if no mock user exists yet
         return res.status(200).json({
           success: true,
@@ -199,9 +218,50 @@ exports.getMyActivityBookings = async (req, res) => {
       }
     }
 
+    console.log('Final user ID for query:', userId);
+
     const bookings = await ActivityBooking.find({ user: userId })
-      .populate('activity', 'title location duration price image type')
+      .populate({
+        path: 'activity',
+        select: 'title location duration price image type description shortDescription maxParticipants'
+      })
       .sort({ createdAt: -1 });
+
+    console.log(`Found ${bookings.length} activity bookings for user ${userId}`);
+    
+    // Debug each booking to see what data is included
+    if (bookings.length > 0) {
+      console.log('Sample booking with activity data:');
+      bookings.forEach((booking, index) => {
+        console.log(`Booking ${index + 1}:`, {
+          id: booking._id,
+          reference: booking.bookingReference,
+          activityPopulated: !!booking.activity,
+          activityTitle: booking.activity?.title,
+          activityImage: booking.activity?.image,
+          activityLocation: booking.activity?.location,
+          date: booking.bookingDetails?.date,
+          guests: booking.bookingDetails?.guests,
+          totalPrice: booking.pricing?.totalPrice
+        });
+      });
+    } else {
+      console.log(`No activity bookings found for user ${userId}`);
+      
+      // Let's also check if there are any bookings at all in the system
+      const totalBookings = await ActivityBooking.countDocuments();
+      console.log(`Total activity bookings in database: ${totalBookings}`);
+      
+      // And check if there are any activities
+      const totalActivities = await Activity.countDocuments();
+      console.log(`Total activities in database: ${totalActivities}`);
+      
+      // Check if there are bookings for other users
+      const bookingsForOtherUsers = await ActivityBooking.find({ user: { $ne: userId } }).limit(3);
+      console.log(`Found ${bookingsForOtherUsers.length} bookings for other users`);
+    }
+
+    console.log('=== END DEBUG ===');
 
     res.status(200).json({
       success: true,
@@ -394,6 +454,78 @@ exports.cancelActivityBooking = async (req, res) => {
     });
   } catch (err) {
     console.error('Error cancelling activity booking:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+};
+
+// @desc    Create test activity booking (Development only)
+// @route   POST /api/activity-bookings/test
+// @access  Private
+exports.createTestActivityBooking = async (req, res) => {
+  try {
+    // Only allow in development
+    if (process.env.NODE_ENV === 'production') {
+      return res.status(403).json({
+        success: false,
+        error: 'Test endpoints not available in production'
+      });
+    }
+
+    // Find first active activity
+    const activity = await Activity.findOne({ status: 'active' });
+    if (!activity) {
+      return res.status(404).json({
+        success: false,
+        error: 'No active activities found to create test booking'
+      });
+    }
+
+    // Create test booking
+    const testBooking = new ActivityBooking({
+      activity: activity._id,
+      user: req.user.userId,
+      bookingReference: `TEST-${Date.now()}`,
+      type: 'booking',
+      customerDetails: {
+        fullName: 'Test User',
+        email: 'test@example.com',
+        phone: '+1234567890'
+      },
+      bookingDetails: {
+        date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+        guests: 2,
+        specialRequests: 'Test booking created for development'
+      },
+      pricing: {
+        pricePerPerson: activity.price,
+        totalPrice: activity.price * 2
+      },
+      status: 'Confirmed'
+    });
+
+    await testBooking.save();
+
+    // Populate and return
+    const populatedBooking = await ActivityBooking.findById(testBooking._id)
+      .populate({
+        path: 'activity',
+        select: 'title location duration price image type description shortDescription maxParticipants'
+      })
+      .populate({
+        path: 'user',
+        select: 'email username firstName lastName'
+      });
+
+    res.status(201).json({
+      success: true,
+      message: 'Test booking created successfully',
+      data: populatedBooking
+    });
+  } catch (err) {
+    console.error('Error creating test booking:', err);
     res.status(500).json({
       success: false,
       error: 'Server Error'

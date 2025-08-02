@@ -7,6 +7,9 @@ const conditionalAuth = require('../middleware/conditionalAuth');
 // Route to create a new activity booking (auth optional for inquiries, required for bookings)
 router.post('/', conditionalAuth, activityBookingController.createActivityBooking);
 
+// Route to create test activity booking (development only)
+router.post('/test', auth, activityBookingController.createTestActivityBooking);
+
 // Route to get all activity bookings (admin only)
 router.get('/', auth, activityBookingController.getAllActivityBookings);
 

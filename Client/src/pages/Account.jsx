@@ -18,9 +18,35 @@ const Account = () => {
     const fetchActivities = async () => {
       try {
         const res = await activityBookingsAPI.getMy();
-        if (res.success) setActivityBookings(res.data);
+        console.log('Activity bookings response:', res);
+        if (res.success) {
+          console.log('Activity bookings data:', res.data);
+          console.log('Number of bookings:', res.data.length);
+          
+          // Debug each booking
+          res.data.forEach((booking, index) => {
+            console.log(`Booking ${index + 1}:`, {
+              id: booking._id,
+              reference: booking.bookingReference,
+              hasActivity: !!booking.activity,
+              activityTitle: booking.activity?.title,
+              activityImage: booking.activity?.image,
+              type: booking.type,
+              status: booking.status
+            });
+          });
+          
+          setActivityBookings(res.data);
+        } else {
+          console.error('API response not successful:', res);
+        }
       } catch (err) {
         console.error('Failed to fetch activity bookings', err);
+        console.error('Error details:', {
+          message: err.message,
+          response: err.response?.data,
+          status: err.response?.status
+        });
       } finally {
         setLoadingActivity(false);
       }
@@ -250,43 +276,137 @@ const Account = () => {
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0A435C]"></div>
                   </div>
                 ) : activityBookings.length === 0 ? (
-                  <p className="text-sm text-[#8b9482]">No activity bookings found.</p>
+                  <div className="text-center py-8">
+                    <div className="text-sm text-[#8b9482] mb-4">No activity bookings found.</div>
+                    <div className="text-xs text-gray-500 mb-4">
+                      <a href="/activities" className="text-[#005E84] hover:text-[#0A435C] underline">
+                        Browse activities and make your first booking!
+                      </a>
+                    </div>
+                    {import.meta.env.DEV && (
+                      <button
+                        onClick={async () => {
+                          try {
+                            console.log('Creating test booking...');
+                            const result = await activityBookingsAPI.createTest();
+                            console.log('Test booking created:', result);
+                            // Refresh the bookings
+                            const res = await activityBookingsAPI.getMy();
+                            if (res.success) {
+                              setActivityBookings(res.data);
+                            }
+                          } catch (error) {
+                            console.error('Failed to create test booking:', error);
+                            alert('Failed to create test booking: ' + (error.response?.data?.error || error.message));
+                          }
+                        }}
+                        className="px-4 py-2 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors"
+                      >
+                        Create Test Booking (Dev)
+                      </button>
+                    )}
+                  </div>
                 ) : (
                   <div className="space-y-4">
                     {activityBookings.map(booking => (
                       <div key={booking._id} className="bg-[#B7C5C7]/60 shadow-sm rounded-lg p-4 border border-[#B7C5C7]">
-                        {booking.activity?.image && (
-                          <img 
-                            src={booking.activity.image} 
-                            alt={booking.activity.title} 
-                            className="w-full h-32 object-cover rounded mb-3" 
-                          />
-                        )}
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                          <div className="flex-1">
-                            <h4 className="text-md font-semibold text-[#0A435C]">
-                              {booking.activity?.title || 'Activity Information'}
-                            </h4>
-                            <div className="mt-2 text-sm text-[#075375] space-y-1">
-                              <p>Date: {booking.bookingDetails?.date ? new Date(booking.bookingDetails.date).toLocaleDateString() : 'N/A'}</p>
-                              <p>Guests: {booking.bookingDetails?.guests || 'N/A'}</p>
-                              <p>Status: <span className={`font-medium ${
-                                booking.status === 'Confirmed' ? 'text-[#005E84]' :
-                                booking.status === 'Pending' ? 'text-[#075375]' :
-                                booking.status === 'Cancelled' ? 'text-red-600' : 'text-[#0A435C]'
-                              }`} title={
-                                booking.status === 'Confirmed' ? 'Your booking is confirmed.' :
-                                booking.status === 'Pending' ? 'Your booking is pending confirmation.' :
-                                booking.status === 'Cancelled' ? 'Your booking was cancelled.' : 'Status unknown.'
-                              }>{booking.status || 'Pending'}</span></p>
-                            </div>
-                          </div>
-                          <div className="text-right min-w-[120px]">
-                            {booking.pricing?.totalPrice && (
-                              <p className="text-lg font-bold text-[#0A435C]">
-                                ${booking.pricing.totalPrice}
-                              </p>
+                        <div className="flex flex-col md:flex-row gap-4">
+                          {/* Activity Image */}
+                          <div className="md:w-48 flex-shrink-0">
+                            {booking.activity?.image ? (
+                              <img 
+                                src={booking.activity.image} 
+                                alt={booking.activity.title || 'Activity'} 
+                                className="w-full h-32 md:h-24 object-cover rounded" 
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-32 md:h-24 bg-gray-200 rounded flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-gray-400">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                </svg>
+                              </div>
                             )}
+                          </div>
+                          
+                          {/* Activity Details */}
+                          <div className="flex-1 flex flex-col md:flex-row justify-between">
+                            <div className="flex-1">
+                              <h4 className="text-lg font-semibold text-[#0A435C] mb-2">
+                                {booking.activity?.title || booking.customerDetails?.fullName || 'Activity Booking'}
+                              </h4>
+                              
+                              {booking.activity?.location && (
+                                <p className="text-sm text-[#075375] mb-2">
+                                  📍 {booking.activity.location}
+                                </p>
+                              )}
+                              
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-[#075375]">
+                                <div>
+                                  <span className="font-medium">Date:</span> {booking.bookingDetails?.date ? new Date(booking.bookingDetails.date).toLocaleDateString() : 'N/A'}
+                                </div>
+                                <div>
+                                  <span className="font-medium">Guests:</span> {booking.bookingDetails?.guests || 'N/A'}
+                                </div>
+                                {booking.activity?.duration && (
+                                  <div>
+                                    <span className="font-medium">Duration:</span> {booking.activity.duration} hours
+                                  </div>
+                                )}
+                                <div>
+                                  <span className="font-medium">Status:</span> 
+                                  <span className={`ml-1 font-medium ${
+                                    booking.status === 'Confirmed' ? 'text-green-600' :
+                                    booking.status === 'Pending' ? 'text-yellow-600' :
+                                    booking.status === 'Cancelled' ? 'text-red-600' : 'text-[#0A435C]'
+                                  }`}>
+                                    {booking.status || 'Pending'}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className="font-medium">Type:</span> {booking.type || 'inquiry'}
+                                </div>
+                                {booking.activity?.type && (
+                                  <div>
+                                    <span className="font-medium">Category:</span> {booking.activity.type}
+                                  </div>
+                                )}
+                              </div>
+                              
+                              {booking.bookingDetails?.specialRequests && (
+                                <div className="mt-2">
+                                  <span className="text-sm font-medium text-[#075375]">Special Requests:</span>
+                                  <p className="text-sm text-[#0A435C] mt-1">{booking.bookingDetails.specialRequests}</p>
+                                </div>
+                              )}
+                              
+                              {!booking.activity && (
+                                <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-700">
+                                  ⚠️ Activity details not available. This booking might be for a deleted activity.
+                                </div>
+                              )}
+                            </div>
+                            
+                            {/* Price and Booking Reference */}
+                            <div className="text-right min-w-[140px] mt-4 md:mt-0">
+                              <div className="text-xs text-[#8b9482] mb-1">Booking Ref</div>
+                              <div className="text-sm font-medium text-[#005E84] mb-2">{booking.bookingReference}</div>
+                              
+                              {booking.pricing?.totalPrice && (
+                                <div className="text-2xl font-bold text-[#0A435C]">
+                                  ${booking.pricing.totalPrice}
+                                </div>
+                              )}
+                              
+                              {booking.pricing?.pricePerPerson && (
+                                <div className="text-xs text-[#8b9482] mt-1">
+                                  ${booking.pricing.pricePerPerson} per person
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
