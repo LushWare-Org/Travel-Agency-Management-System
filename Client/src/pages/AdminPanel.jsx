@@ -22,6 +22,8 @@ import {
   MenuItem,
   CircularProgress,
   Alert,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -64,7 +66,10 @@ export default function AdminPanel() {
   const [recentMessages, setRecentMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,6 +113,7 @@ export default function AdminPanel() {
   const closeProfileMenu = () => setAnchorEl(null);
   const goTo = (path) => { navigate(path); closeProfileMenu(); };
   const handleLogout = () => axios.post('/api/auth/logout', {}, { withCredentials: true }).finally(() => goTo('/login'));
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
   const menuItems = [
     { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon /> },
@@ -220,8 +226,26 @@ export default function AdminPanel() {
   return (
     <Box sx={{ display:'flex', minHeight:'100vh' }}>
       <CssBaseline />
-      <AppBar position="fixed" sx={{ width:`calc(100% - ${drawerWidth}px)`, ml:`${drawerWidth}px`, bgcolor:'#1976d2' }}>
+      <AppBar 
+        position="fixed" 
+        sx={{ 
+          width: { md: `calc(100% - ${drawerWidth}px)` }, 
+          ml: { md: `${drawerWidth}px` }, 
+          bgcolor:'#1976d2' 
+        }}
+      >
         <Toolbar>
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
           <Typography variant="h6">Admin Panel</Typography>
           <Box sx={{ ml:'auto' }}>
             <IconButton color="inherit" onClick={openProfileMenu}><PersonIcon /></IconButton>
@@ -237,7 +261,50 @@ export default function AdminPanel() {
         </Toolbar>
       </AppBar>
 
-      <Drawer variant="permanent" anchor="left" sx={{ '& .MuiDrawer-paper':{ width:drawerWidth, boxSizing:'border-box', bgcolor:'#1e293b', color:'white' } }}>
+      {/* Mobile drawer */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { 
+            width: drawerWidth, 
+            boxSizing:'border-box', 
+            bgcolor:'#1e293b', 
+            color:'white' 
+          }
+        }}
+      >
+        <Toolbar />
+        <Divider sx={{ bgcolor:'#374151' }} />
+        <List>
+          {menuItems.map((item) => (
+            <ListItem button key={item.id} onClick={() => { setSection(item.id); if (isMobile) setMobileOpen(false); }}
+              sx={{ '&:hover':{ bgcolor:'#374151' }, bgcolor: section===item.id?'#374151':'transparent' }}>
+              <ListItemIcon sx={{ color:'white' }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+
+      {/* Desktop drawer */}
+      <Drawer 
+        variant="permanent" 
+        sx={{
+          display: { xs: 'none', md: 'block' },
+          '& .MuiDrawer-paper':{ 
+            width:drawerWidth, 
+            boxSizing:'border-box', 
+            bgcolor:'#1e293b', 
+            color:'white' 
+          } 
+        }}
+      >
         <Toolbar />
         <Divider sx={{ bgcolor:'#374151' }} />
         <List>
@@ -251,8 +318,18 @@ export default function AdminPanel() {
         </List>
       </Drawer>
 
-      <Box component="main" sx={{ flexGrow:1, p:3, mt:'64px', ml:`${drawerWidth}px`, width:`calc(100% - ${drawerWidth}px)` }}>
-        <Container maxWidth="lg">{renderSection()}</Container>
+      <Box 
+        component="main" 
+        sx={{ 
+          flexGrow:1, 
+          p:3, 
+          mt:'64px', 
+          ml: { xs: 0, md: `${drawerWidth}px` }, 
+          width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
+          overflow: 'hidden' // Prevent horizontal scroll
+        }}
+      >
+        <Box sx={{ width: '100%', maxWidth: 'none' }}>{renderSection()}</Box>
       </Box>
     </Box>
   );
