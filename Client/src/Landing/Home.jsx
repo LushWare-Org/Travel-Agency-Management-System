@@ -344,20 +344,62 @@ const Home = () => {
                 title: "Overwater Villas",
                 description:
                   "Luxurious accommodations suspended over crystal-clear waters",
-                icon: "🏖️",
+                icon: (
+                  <svg
+                    className="w-8 h-8 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                ),
                 features: ["Private deck", "Glass floor", "Ocean views"],
               },
               {
                 title: "Beachfront Resorts",
                 description:
                   "Direct access to pristine beaches and turquoise waters",
-                icon: "🌊",
+                icon: (
+                  <svg
+                    className="w-8 h-8 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    />
+                  </svg>
+                ),
                 features: ["Beach access", "Water sports", "Spa facilities"],
               },
               {
                 title: "Island Retreats",
                 description: "Exclusive private islands for ultimate seclusion",
-                icon: "🏝️",
+                icon: (
+                  <svg
+                    className="w-8 h-8 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                ),
                 features: [
                   "Private island",
                   "Butler service",
@@ -372,7 +414,7 @@ const Home = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative">
-                  <div className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                     {property.icon}
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
@@ -397,7 +439,7 @@ const Home = () => {
       </section>
 
       {/* Services Navigation Section */}
-      <section className="py-24 bg-white relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
@@ -405,70 +447,191 @@ const Home = () => {
               Our Services
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up animate-delay-1">
-              Explore Our{" "}
+              Discover Our{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
-                Services
+                Expertise
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
-              Comprehensive solutions for all your Maldives needs
+              Comprehensive solutions tailored to your Maldives journey
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
               {
                 title: "Travel Services",
-                description: "Luxury travel planning and concierge services",
-                icon: "✈️",
-                gradient: "from-blue-500 to-cyan-500",
+                subtitle: "Luxury Travel Planning",
+                description:
+                  "Comprehensive travel planning and concierge services for your perfect Maldives experience",
+                icon: (
+                  <svg
+                    className="w-10 h-10 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7"
+                    />
+                  </svg>
+                ),
+                gradient: "from-blue-500 via-blue-600 to-cyan-500",
                 link: "/travel-services",
+                features: [
+                  "Resort Bookings",
+                  "Concierge Services",
+                  "Activity Planning",
+                ],
               },
               {
                 title: "Real Estate",
+                subtitle: "Property Investment",
                 description:
-                  "Investment opportunities and property consultation",
-                icon: "🏠",
-                gradient: "from-green-500 to-emerald-500",
+                  "Expert guidance for real estate investment and development opportunities in the Maldives",
+                icon: (
+                  <svg
+                    className="w-10 h-10 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    />
+                  </svg>
+                ),
+                gradient: "from-green-500 via-emerald-500 to-teal-500",
                 link: "/real-estate",
+                features: [
+                  "Property Consultation",
+                  "Investment Guidance",
+                  "Development Support",
+                ],
               },
               {
                 title: "Investment Support",
-                description: "Foreign investment guidance and business setup",
-                icon: "💼",
-                gradient: "from-purple-500 to-pink-500",
+                subtitle: "Business Development",
+                description:
+                  "Complete foreign investment support and business setup services for the Maldives market",
+                icon: (
+                  <svg
+                    className="w-10 h-10 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
+                  </svg>
+                ),
+                gradient: "from-purple-500 via-pink-500 to-rose-500",
                 link: "/investment-support",
+                features: [
+                  "Business Setup",
+                  "Regulatory Support",
+                  "Partnership Network",
+                ],
               },
               {
                 title: "Brand Representation",
-                description: "International brand representation in Maldives",
-                icon: "🌍",
-                gradient: "from-orange-500 to-red-500",
+                subtitle: "Market Entry",
+                description:
+                  "Official distribution and representation services for international brands in the Maldives",
+                icon: (
+                  <svg
+                    className="w-10 h-10 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"
+                    />
+                  </svg>
+                ),
+                gradient: "from-orange-500 via-red-500 to-pink-500",
                 link: "/brand-representation",
+                features: [
+                  "Market Entry",
+                  "Distribution Network",
+                  "Brand Promotion",
+                ],
               },
             ].map((service, index) => (
               <Link
                 key={index}
                 to={service.link}
-                className="group relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-gray-100 overflow-hidden animate-fade-in-up"
+                className="group relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-gray-100 overflow-hidden animate-fade-in-up"
                 style={{ animationDelay: `${(index + 3) * 0.2}s` }}
                 onClick={scrollToTop}
               >
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${service.gradient} rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                  className={`absolute inset-0 bg-gradient-to-br ${service.gradient} rounded-3xl opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
                 ></div>
                 <div className="relative">
-                  <div
-                    className={`bg-gradient-to-br ${service.gradient} rounded-2xl p-4 w-16 h-16 flex items-center justify-center text-white text-2xl mb-6 group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    {service.icon}
+                  <div className="flex items-start justify-between mb-6">
+                    <div
+                      className={`bg-gradient-to-br ${service.gradient} rounded-2xl p-4 w-20 h-20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
+                    >
+                      {service.icon}
+                    </div>
+                    <div className="text-right">
+                      <div className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
+                        {service.subtitle}
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
+
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+
+                  <p className="text-gray-600 leading-relaxed mb-6">
                     {service.description}
                   </p>
+
+                  <div className="space-y-2 mb-6">
+                    {service.features.map((feature, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center text-sm text-gray-500"
+                      >
+                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3"></div>
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center text-blue-600 font-semibold group-hover:translate-x-2 transition-transform">
+                    Explore Service
+                    <svg
+                      className="w-4 h-4 ml-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </Link>
             ))}
