@@ -441,7 +441,9 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                 <Card
                   sx={{
                     borderRadius: '20px',
-                    maxHeight: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
                     boxShadow: '0px 8px 25px rgba(0, 0, 0, 0.08)',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                     overflow: 'hidden',
@@ -502,10 +504,13 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                   <CardContent sx={{ 
                     backgroundColor: '#fff', 
                     padding: '24px',
-                    background: 'linear-gradient(145deg, #E7E9E5 0%, #EDEEEB 100%)'
+                    background: 'linear-gradient(145deg, #E7E9E5 0%, #EDEEEB 100%)',
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column'
                   }}>
                     {/* Title with Modern Typography */}
-                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+                    <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={3} sx={{ minHeight: '60px' }}>
                       <Typography 
                         variant="h6" 
                         sx={{ 
@@ -513,7 +518,12 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                           fontSize: '20px',
                           color: '#0A435C',
                           lineHeight: 1.3,
-                          fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif'
+                          fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
                         }}
                       >
                         {item.title}
@@ -575,7 +585,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                     </Box>
                     
                     {/* Action Buttons - Original Style with Modern Look */}
-                    <Box display="flex" gap={2} mt={3}>
+                    <Box display="flex" gap={2} mt="auto" sx={{ pt: 2 }}>
                       <Button
                         variant="outlined"
                         startIcon={<WhatsAppIcon />}
