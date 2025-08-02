@@ -1,8 +1,27 @@
+/* Default root styles for non-admin pages */
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+/* Admin layout overrides */
+.admin-layout #root {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+/* Ensure admin layouts have proper overflow handling */
+.admin-layout body {
+  overflow-x: hidden;
+}
+
+/* Prevent any unwanted margins on admin pages */
+.admin-layout * {
+  box-sizing: border-box;
 }
 
 .logo {

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import axios from "axios";
 import LandingHeader from "./Landing/LandingHeader";
@@ -44,6 +44,20 @@ axios.defaults.withCredentials = true;
 export default function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+
+  // Add/remove admin-layout class based on route
+  useEffect(() => {
+    if (isAdminRoute) {
+      document.body.classList.add('admin-layout');
+    } else {
+      document.body.classList.remove('admin-layout');
+    }
+    
+    // Cleanup on component unmount
+    return () => {
+      document.body.classList.remove('admin-layout');
+    };
+  }, [isAdminRoute]);
 
   return (
     <Suspense fallback={<div className="text-center py-10">Loading…</div>}>
