@@ -98,29 +98,7 @@ const Account = () => {
                   <p className="mt-1 text-sm text-gray-900 capitalize">{user.role}</p>
                 </div>
               </div>
-              <div className="mt-8">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <a
-                    href="/bookings"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md text-center hover:bg-blue-700 transition-colors"
-                  >
-                    View Bookings
-                  </a>
-                  <a
-                    href="/search"
-                    className="bg-green-600 text-white px-4 py-2 rounded-md text-center hover:bg-green-700 transition-colors"
-                  >
-                    Search Hotels
-                  </a>
-                  <a
-                    href="/contact"
-                    className="bg-gray-600 text-white px-4 py-2 rounded-md text-center hover:bg-gray-700 transition-colors"
-                  >
-                    Contact Support
-                  </a>
-                </div>
-              </div>
+
 
               {/* Hotel/Resort Booking History */}
               <div className="mt-8">
