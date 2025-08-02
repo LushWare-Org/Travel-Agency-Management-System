@@ -378,7 +378,7 @@ const keyAuthorities = [
 ];
 
 const InvestmentSupport = () => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
+  <div className="min-h-screen bg-gradient-to-br from-[#E7E9E5] via-[#B7C5C7] to-[#E7E9E5]">
     <style>{animationStyles}</style>
 
     {/* Modern Hero Section */}
@@ -394,8 +394,8 @@ const InvestmentSupport = () => (
 
       <div className="absolute inset-0 flex items-center justify-center z-10">
         <div className="text-center text-white px-4 max-w-4xl mx-auto">
-          <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-white/20 animate-fade-in-up animate-delay-1">
-            <span className="text-white font-medium text-sm">
+          <div className="inline-block bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-[#B7C5C7]/30 animate-fade-in-up animate-delay-1">
+            <span className="text-[#E7E9E5] font-medium text-sm">
               Investment Support
             </span>
           </div>
@@ -407,7 +407,7 @@ const InvestmentSupport = () => (
             From setup to operations, we ensure your investment succeeds.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-delay-4">
-            <button className="group bg-white text-gray-900 font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-gray-50 animate-pulse-slow">
+            <button className="group bg-[#E7E9E5] text-[#075375] font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7] animate-pulse-slow">
               <span className="flex items-center">
                 Start Your Investment
                 <svg
@@ -425,7 +425,7 @@ const InvestmentSupport = () => (
                 </svg>
               </span>
             </button>
-            <button className="group border-2 border-white text-white font-bold py-4 px-8 rounded-full hover:bg-white hover:text-gray-900 transition-all transform hover:scale-105">
+            <button className="group border-2 border-[#E7E9E5] text-[#E7E9E5] font-bold py-4 px-8 rounded-full hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105">
               Download Guide
             </button>
           </div>
@@ -441,21 +441,21 @@ const InvestmentSupport = () => (
     </div>
 
     {/* Modern Services Section */}
-    <section className="py-24 bg-white relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-cyan-50/50"></div>
+    <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#B7C5C7]/50 to-[#E7E9E5]/50"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-20">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+          <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
+            <span className="w-2 h-2 bg-[#075375] rounded-full mr-2"></span>
             Our Services
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up animate-delay-1">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
             Complete{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
               Investment Support
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+          <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
             End-to-end support for foreign investors entering the Maldivian
             market
           </p>
@@ -465,24 +465,24 @@ const InvestmentSupport = () => (
           {supportServices.map((service, index) => (
             <div
               key={index}
-              className="group relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-gray-100 h-full overflow-hidden animate-fade-in-up"
+              className="group relative bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-[#B7C5C7] h-full overflow-hidden animate-fade-in-up"
               style={{ animationDelay: `${(index + 3) * 0.2}s` }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative">
-                <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <div className="bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   {service.icon}
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-2xl font-bold text-[#075375] mb-4 group-hover:text-[#005E84] transition-colors">
                   {service.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed mb-6">
+                <p className="text-[#0A435C] leading-relaxed mb-6">
                   {service.description}
                 </p>
                 <ul className="space-y-3">
                   {service.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center text-gray-600">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                    <li key={idx} className="flex items-center text-[#0A435C]">
+                      <div className="w-2 h-2 bg-[#075375] rounded-full mr-3"></div>
                       {feature}
                     </li>
                   ))}
@@ -495,20 +495,20 @@ const InvestmentSupport = () => (
     </section>
 
     {/* Modern Investment Sectors Section */}
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-20">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+          <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
+            <span className="w-2 h-2 bg-[#075375] rounded-full mr-2"></span>
             Investment Sectors
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up animate-delay-1">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
             Key{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
               Sectors
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+          <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
             Key sectors open to foreign investment with strong growth potential
           </p>
         </div>
@@ -517,28 +517,30 @@ const InvestmentSupport = () => (
           {investmentSectors.map((sector, index) => (
             <div
               key={index}
-              className="group relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-gray-100 overflow-hidden animate-fade-in-up"
+              className="group relative bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
               style={{ animationDelay: `${(index + 3) * 0.2}s` }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative">
-                <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <div className="bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   {sector.icon}
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-2xl font-bold text-[#075375] mb-6 group-hover:text-[#005E84] transition-colors">
                   {sector.sector}
                 </h3>
                 <div className="flex flex-wrap gap-3 mb-6">
                   {sector.opportunities.map((opp, idx) => (
                     <span
                       key={idx}
-                      className="px-4 py-2 bg-blue-100 text-blue-800 text-sm rounded-full font-medium"
+                      className="px-4 py-2 bg-[#005E84]/20 text-[#075375] text-sm rounded-full font-medium"
                     >
                       {opp}
                     </span>
                   ))}
                 </div>
-                <p className="text-gray-600 leading-relaxed">{sector.growth}</p>
+                <p className="text-[#0A435C] leading-relaxed">
+                  {sector.growth}
+                </p>
               </div>
             </div>
           ))}
@@ -547,16 +549,16 @@ const InvestmentSupport = () => (
     </section>
 
     {/* Modern Process Section */}
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-20">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+          <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
+            <span className="w-2 h-2 bg-[#075375] rounded-full mr-2"></span>
             Our Process
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up animate-delay-1">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
             How We{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
               Work
             </span>
           </h2>
@@ -573,14 +575,14 @@ const InvestmentSupport = () => (
               style={{ animationDelay: `${(index + 3) * 0.2}s` }}
             >
               <div className="flex items-start space-x-6">
-                <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                   {index + 1}
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-2xl font-bold text-[#075375] mb-4 group-hover:text-[#005E84] transition-colors">
                     {step.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-[#0A435C] leading-relaxed">
                     {step.description}
                   </p>
                 </div>
@@ -592,20 +594,20 @@ const InvestmentSupport = () => (
     </section>
 
     {/* Modern Authorities Section */}
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-20">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+          <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
+            <span className="w-2 h-2 bg-[#075375] rounded-full mr-2"></span>
             Key Authorities
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up animate-delay-1">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
             Government{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
               Partners
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+          <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
             Government bodies we work with to facilitate your investment
           </p>
         </div>
@@ -614,18 +616,18 @@ const InvestmentSupport = () => (
           {keyAuthorities.map((authority, index) => (
             <div
               key={index}
-              className="group relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-gray-100 overflow-hidden animate-fade-in-up"
+              className="group relative bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
               style={{ animationDelay: `${(index + 3) * 0.2}s` }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative">
                 <div className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
                   {authority.logo}
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-2xl font-bold text-[#075375] mb-4 group-hover:text-[#005E84] transition-colors">
                   {authority.name}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-[#0A435C] leading-relaxed">
                   {authority.role}
                 </p>
               </div>
@@ -636,16 +638,16 @@ const InvestmentSupport = () => (
     </section>
 
     {/* Modern Stats Section */}
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up">
             Our{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
               Success
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animate-delay-1">
+          <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-1">
             Trusted by hundreds of investors worldwide
           </p>
         </div>
@@ -662,10 +664,10 @@ const InvestmentSupport = () => (
               className="text-center p-8 animate-fade-in-up"
               style={{ animationDelay: `${(index + 2) * 0.2}s` }}
             >
-              <div className="text-5xl md:text-6xl font-bold text-blue-600 mb-4 animate-pulse-slow">
+              <div className="text-5xl md:text-6xl font-bold text-[#005E84] mb-4 animate-pulse-slow">
                 {stat.number}
               </div>
-              <div className="text-gray-600 font-medium">{stat.label}</div>
+              <div className="text-[#0A435C] font-medium">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -673,29 +675,29 @@ const InvestmentSupport = () => (
     </section>
 
     {/* Modern CTA Section */}
-    <section className="py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] relative overflow-hidden">
       <div className="absolute inset-0 bg-black/10"></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/50 to-cyan-600/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-white/20 animate-fade-in-up">
-            <span className="w-2 h-2 bg-white rounded-full mr-2"></span>
+          <div className="inline-flex items-center px-4 py-2 bg-[#E7E9E5]/20 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-[#E7E9E5]/30 animate-fade-in-up">
+            <span className="w-2 h-2 bg-[#E7E9E5] rounded-full mr-2"></span>
             Ready to Invest
           </div>
-          <h2 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight animate-fade-in-up animate-delay-1">
+          <h2 className="text-4xl md:text-6xl font-black text-[#E7E9E5] mb-8 leading-tight animate-fade-in-up animate-delay-1">
             Ready for Your{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B7C5C7] to-[#E7E9E5]">
               Investment Journey?
             </span>
           </h2>
-          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto font-light animate-fade-in-up animate-delay-2">
+          <p className="text-xl md:text-2xl text-[#E7E9E5]/90 mb-12 max-w-3xl mx-auto font-light animate-fade-in-up animate-delay-2">
             Schedule a consultation to discuss your investment opportunities in
             the Maldives.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animate-delay-3">
             <a
               href="mailto:sales@fasmala.com"
-              className="group bg-white text-blue-600 font-bold py-5 px-10 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-gray-50"
+              className="group bg-[#E7E9E5] text-[#075375] font-bold py-5 px-10 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7]"
             >
               <span className="flex items-center">
                 Schedule Consultation
@@ -714,7 +716,7 @@ const InvestmentSupport = () => (
                 </svg>
               </span>
             </a>
-            <button className="group border-2 border-white text-white font-bold py-5 px-10 rounded-full hover:bg-white hover:text-blue-600 transition-all transform hover:scale-105">
+            <button className="group border-2 border-[#E7E9E5] text-[#E7E9E5] font-bold py-5 px-10 rounded-full hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105">
               Download Guide
             </button>
           </div>

@@ -278,13 +278,13 @@ const values = [
 ];
 
 const AboutUs = () => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
+  <div className="min-h-screen bg-gradient-to-br from-[#E7E9E5] via-[#B7C5C7] to-[#E7E9E5]">
     <style>{animationStyles}</style>
 
     {/* Modern Hero Section */}
-    <section className="relative py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 overflow-hidden">
+    <section className="relative py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] overflow-hidden">
       <div className="absolute inset-0 bg-black/10"></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/50 to-cyan-600/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
 
       {/* Floating Elements */}
       <div className="absolute top-20 right-20 w-32 h-32 border-4 border-white/20 rounded-full animate-float"></div>
@@ -295,32 +295,32 @@ const AboutUs = () => (
       ></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-white/20 animate-fade-in-up">
-          <span className="w-2 h-2 bg-white rounded-full mr-2"></span>
+        <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-[#B7C5C7]/30 animate-fade-in-up">
+          <span className="w-2 h-2 bg-[#E7E9E5] rounded-full mr-2"></span>
           About Us
         </div>
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 tracking-tight leading-tight animate-fade-in-up animate-delay-1">
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-[#E7E9E5] mb-8 tracking-tight leading-tight animate-fade-in-up animate-delay-1">
           About IsleKey{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B7C5C7] to-[#E7E9E5]">
             Holidays
           </span>
         </h1>
-        <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto font-light animate-fade-in-up animate-delay-2">
+        <p className="text-xl md:text-2xl text-[#E7E9E5]/90 mb-12 max-w-4xl mx-auto font-light animate-fade-in-up animate-delay-2">
           Your trusted gateway to the Maldives. We bridge travel, investment,
           and opportunity in paradise, creating unforgettable experiences and
           lasting partnerships.
         </p>
         <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up animate-delay-3">
-          <span className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium border border-white/20 hover:bg-white/20 transition-all">
+          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all">
             Travel Excellence
           </span>
-          <span className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium border border-white/20 hover:bg-white/20 transition-all">
+          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all">
             Real Estate
           </span>
-          <span className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium border border-white/20 hover:bg-white/20 transition-all">
+          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all">
             Investment
           </span>
-          <span className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium border border-white/20 hover:bg-white/20 transition-all">
+          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all">
             Brand Partnerships
           </span>
         </div>
@@ -328,36 +328,36 @@ const AboutUs = () => (
     </section>
 
     {/* Mission Section */}
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="space-y-8 animate-fade-in-left">
-            <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+            <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium">
+              <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></span>
               Our Mission
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#075375]">
               To be the premier{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
                 bridge
               </span>
             </h2>
-            <p className="text-xl text-gray-600 leading-relaxed">
+            <p className="text-xl text-[#075375] leading-relaxed">
               Between international opportunities and the Maldivian paradise,
               delivering exceptional service in travel, real estate, investment,
               and brand partnerships while maintaining the highest standards of
               integrity and local expertise.
             </p>
             <div className="grid grid-cols-2 gap-6">
-              <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl">
-                <div className="text-3xl font-bold text-blue-600 mb-2">
+              <div className="text-center p-4 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] rounded-2xl">
+                <div className="text-3xl font-bold text-[#005E84] mb-2">
                   500+
                 </div>
-                <div className="text-gray-600">Happy Clients</div>
+                <div className="text-[#075375]">Happy Clients</div>
               </div>
-              <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl">
-                <div className="text-3xl font-bold text-blue-600 mb-2">8+</div>
-                <div className="text-gray-600">Years Experience</div>
+              <div className="text-center p-4 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] rounded-2xl">
+                <div className="text-3xl font-bold text-[#005E84] mb-2">8+</div>
+                <div className="text-[#075375]">Years Experience</div>
               </div>
             </div>
           </div>
@@ -377,20 +377,20 @@ const AboutUs = () => (
     </section>
 
     {/* Values Section */}
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#E7E9E5] to-[#B7C5C7] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+          <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
+            <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></span>
             Our Values
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up animate-delay-1">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
             Our Core{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
               Values
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+          <p className="text-xl text-[#075375] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
             The principles that guide everything we do
           </p>
         </div>
@@ -399,18 +399,18 @@ const AboutUs = () => (
           {values.map((value, index) => (
             <div
               key={index}
-              className="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-gray-100 overflow-hidden animate-fade-in-up"
+              className="group bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
               style={{ animationDelay: `${(index + 3) * 0.2}s` }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative">
-                <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <div className="bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   {value.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-xl font-bold text-[#075375] mb-4 group-hover:text-[#005E84] transition-colors">
                   {value.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-[#0A435C] leading-relaxed">
                   {value.description}
                 </p>
               </div>
@@ -421,20 +421,20 @@ const AboutUs = () => (
     </section>
 
     {/* Team Section */}
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+          <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
+            <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></span>
             Our Team
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up animate-delay-1">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
             Meet Our{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
               Experts
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+          <p className="text-xl text-[#075375] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
             The passionate professionals behind our success
           </p>
         </div>
@@ -443,11 +443,11 @@ const AboutUs = () => (
           {team.map((member, index) => (
             <div
               key={index}
-              className="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-gray-100 overflow-hidden animate-fade-in-up"
+              className="group bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
               style={{ animationDelay: `${(index + 3) * 0.2}s` }}
             >
               <div className="relative mb-6">
-                <div className="w-24 h-24 rounded-full overflow-hidden mx-auto border-4 border-gray-100 group-hover:border-blue-200 transition-colors">
+                <div className="w-24 h-24 rounded-full overflow-hidden mx-auto border-4 border-[#B7C5C7] group-hover:border-[#005E84] transition-colors">
                   <img
                     src={member.img}
                     alt={member.name}
@@ -470,13 +470,13 @@ const AboutUs = () => (
                   </svg>
                 </div>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2 text-center group-hover:text-blue-600 transition-colors">
+              <h3 className="text-xl font-bold text-[#075375] mb-2 text-center group-hover:text-[#005E84] transition-colors">
                 {member.name}
               </h3>
-              <p className="text-blue-600 font-semibold mb-4 text-center text-sm">
+              <p className="text-[#005E84] font-semibold mb-4 text-center text-sm">
                 {member.role}
               </p>
-              <p className="text-gray-600 text-sm leading-relaxed text-center">
+              <p className="text-[#0A435C] text-sm leading-relaxed text-center">
                 {member.description}
               </p>
             </div>
@@ -486,9 +486,9 @@ const AboutUs = () => (
     </section>
 
     {/* Journey Timeline Section - Previous Design */}
-    <section className="py-16 px-6 bg-gray-50">
+    <section className="py-16 px-6 bg-[#E7E9E5]">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-12 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#075375] mb-12 text-center">
           Our Journey
         </h2>
 
@@ -497,15 +497,15 @@ const AboutUs = () => (
 
           {journey.map((item, index) => (
             <div key={index} className="relative flex items-start mb-12 group">
-              <div className="flex-shrink-0 w-16 h-16 bg-[#1e7ba8] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md group-hover:scale-110 transition-transform duration-300 relative z-10">
+              <div className="flex-shrink-0 w-16 h-16 bg-[#005E84] rounded-full flex items-center justify-center text-[#E7E9E5] font-bold text-sm shadow-md group-hover:scale-110 transition-transform duration-300 relative z-10">
                 {item.year}
               </div>
               <div className="ml-8 flex-1">
-                <div className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors duration-300">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">
+                <div className="bg-[#B7C5C7] rounded-lg p-6 hover:bg-[#E7E9E5] transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-[#075375] mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">{item.event}</p>
+                  <p className="text-[#0A435C] leading-relaxed">{item.event}</p>
                 </div>
               </div>
             </div>
@@ -515,41 +515,43 @@ const AboutUs = () => (
     </section>
 
     {/* Testimonial Section */}
-    <section className="py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] relative overflow-hidden">
       <div className="absolute inset-0 bg-black/10"></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/50 to-cyan-600/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div className="text-6xl text-white/30 mb-6 animate-fade-in-up">"</div>
-        <blockquote className="text-xl md:text-2xl font-light italic mb-8 leading-relaxed text-white/90 animate-fade-in-up animate-delay-1">
+        <div className="text-6xl text-[#E7E9E5]/30 mb-6 animate-fade-in-up">
+          "
+        </div>
+        <blockquote className="text-xl md:text-2xl font-light italic mb-8 leading-relaxed text-[#E7E9E5]/90 animate-fade-in-up animate-delay-1">
           With years of experience bridging travel, real estate, investment, and
           brand representation, we are your trusted partner in unlocking the
           true potential of the Maldives.
         </blockquote>
         <div className="flex items-center justify-center animate-fade-in-up animate-delay-2">
-          <div className="w-12 h-0.5 bg-white/50 mr-4"></div>
-          <cite className="font-semibold not-italic text-white">
+          <div className="w-12 h-0.5 bg-[#E7E9E5]/50 mr-4"></div>
+          <cite className="font-semibold not-italic text-[#E7E9E5]">
             The IsleKey Holidays Team
           </cite>
-          <div className="w-12 h-0.5 bg-white/50 ml-4"></div>
+          <div className="w-12 h-0.5 bg-[#E7E9E5]/50 ml-4"></div>
         </div>
       </div>
     </section>
 
     {/* Statistics Section - Modern Design */}
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#E7E9E5] to-[#B7C5C7] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+          <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
+            <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></span>
             Our Impact
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up animate-delay-1">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
             Numbers That{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
               Matter
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+          <p className="text-xl text-[#075375] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
             Our achievements and impact in the Maldives market
           </p>
         </div>
@@ -639,27 +641,27 @@ const AboutUs = () => (
           ].map((stat, index) => (
             <div
               key={index}
-              className="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-gray-100 overflow-hidden animate-fade-in-up"
+              className="group bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
               style={{ animationDelay: `${(index + 3) * 0.2}s` }}
             >
               <div
-                className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} rounded-3xl opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
+                className={`absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
               ></div>
               <div className="relative">
                 <div
-                  className={`bg-gradient-to-br ${stat.gradient} rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                  className={`bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
                 >
                   {stat.icon}
                 </div>
-                <div className="text-4xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                <div className="text-4xl font-bold text-[#075375] mb-2 group-hover:text-[#005E84] transition-colors">
                   {stat.number}
                 </div>
-                <div className="text-gray-600 font-medium text-lg">
+                <div className="text-[#0A435C] font-medium text-lg">
                   {stat.label}
                 </div>
-                <div className="mt-4 pt-4 border-t border-gray-100">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                <div className="mt-4 pt-4 border-t border-[#B7C5C7]">
+                  <div className="flex items-center text-sm text-[#005E84]">
+                    <div className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></div>
                     <span>Growing steadily</span>
                   </div>
                 </div>
@@ -671,24 +673,24 @@ const AboutUs = () => (
     </section>
 
     {/* Call to Action Section */}
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-        <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-8 animate-fade-in-up">
-          <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+        <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium mb-8 animate-fade-in-up">
+          <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></span>
           Get Started
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up animate-delay-1">
+        <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
           Ready to Start Your{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
             Journey?
           </span>
         </h2>
-        <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+        <p className="text-xl text-[#075375] mb-12 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
           Let us help you discover the endless possibilities that await in the
           Maldives. Contact us today to begin your adventure.
         </p>
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animate-delay-3">
-          <button className="group bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105">
+          <button className="group bg-gradient-to-r from-[#005E84] to-[#0A435C] text-[#E7E9E5] font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105">
             <span className="flex items-center">
               Contact Us Today
               <svg
@@ -706,7 +708,7 @@ const AboutUs = () => (
               </svg>
             </span>
           </button>
-          <button className="group border-2 border-blue-600 text-blue-600 font-bold py-4 px-8 rounded-full hover:bg-blue-600 hover:text-white transition-all transform hover:scale-105">
+          <button className="group border-2 border-[#005E84] text-[#005E84] font-bold py-4 px-8 rounded-full hover:bg-[#005E84] hover:text-[#E7E9E5] transition-all transform hover:scale-105">
             View Our Services
           </button>
         </div>
