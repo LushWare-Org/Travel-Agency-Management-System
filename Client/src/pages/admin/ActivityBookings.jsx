@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import AdminLayout from '../../Components/AdminLayout';
 import {
   Box,
   Paper,
@@ -52,6 +54,7 @@ const ActivityBookings = () => {
   const [paymentFilter, setPaymentFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [stats, setStats] = useState({});
+  const location = useLocation();
 
   // Form state for editing
   const [editForm, setEditForm] = useState({
@@ -193,17 +196,51 @@ const ActivityBookings = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
-        <CircularProgress />
-      </Box>
+      <AdminLayout>
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
+          <CircularProgress />
+        </Box>
+      </AdminLayout>
     );
   }
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Activity Bookings & Inquiries Management
-      </Typography>
+    <AdminLayout>
+      {/* Header */}
+      <div className="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Activity Management</h1>
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="border-b border-gray-200 mb-6">
+        <nav className="-mb-px flex space-x-8">
+          <Link
+            to="/admin/activities"
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              location.pathname === '/admin/activities' || (location.pathname.startsWith('/admin/activities/') && !location.pathname.includes('/bookings'))
+                ? 'border-blue-500 text-blue-600' 
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Activities
+          </Link>
+          <Link
+            to="/admin/activities/bookings"
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              location.pathname === '/admin/activities/bookings'
+                ? 'border-blue-500 text-blue-600' 
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Bookings & Inquiries
+          </Link>
+        </nav>
+      </div>
+
+      <Box>
+        <Typography variant="h4" gutterBottom>
+          Activity Bookings & Inquiries Management
+        </Typography>
 
       {/* Statistics Cards */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
@@ -574,6 +611,7 @@ const ActivityBookings = () => {
         </DialogActions>
       </Dialog>
     </Box>
+    </AdminLayout>
   );
 };
 
