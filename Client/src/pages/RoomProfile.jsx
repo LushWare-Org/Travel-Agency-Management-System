@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthCheck } from '../hooks/useAuthCheck';
+import DatePicker from 'react-datepicker';
 import {
   FaBed,
   FaRulerCombined,
@@ -38,6 +39,22 @@ export default function EnhancedRoomProfile() {
 
   const previousRoute = location.state?.previousRoute || '/search';
   const selectedMarket = location.state?.selectedMarket || '';
+  
+  // Initialize dates from location state if available
+  useEffect(() => {
+    if (location.state?.checkIn) {
+      setBookingDates(prev => ({
+        ...prev,
+        checkIn: new Date(location.state.checkIn)
+      }));
+    }
+    if (location.state?.checkOut) {
+      setBookingDates(prev => ({
+        ...prev,
+        checkOut: new Date(location.state.checkOut)
+      }));
+    }
+  }, [location.state]);
 
   const [roomData, setRoomData] = useState(null);
   const [selectedMealPlan, setSelectedMealPlan] = useState(null);
@@ -51,6 +68,12 @@ export default function EnhancedRoomProfile() {
   const [error, setError] = useState(null);
   const [perNightPrice, setPerNightPrice] = useState(0);
   const [availableMarkets, setAvailableMarkets] = useState([]);
+  // Add booking date state
+  const [bookingDates, setBookingDates] = useState({
+    checkIn: null,
+    checkOut: null
+  });
+  const datePickerRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -164,27 +187,26 @@ export default function EnhancedRoomProfile() {
       return;
     }
 
-    const { checkIn, checkOut } = location.state || {};
+    // Use our bookingDates state instead of location.state
+    const { checkIn, checkOut } = bookingDates;
 
     if (!checkIn || !checkOut) {
       alert('Please select both check-in and check-out dates before booking');
       return;
     }
 
-    const checkInDate = new Date(checkIn);
-    const checkOutDate = new Date(checkOut);
-
-    if (!(checkInDate instanceof Date) || isNaN(checkInDate.getTime())) {
+    // No need to convert since we're already storing Date objects
+    if (!(checkIn instanceof Date) || isNaN(checkIn.getTime())) {
       alert('Invalid check-in date. Please select a valid date.');
       return;
     }
 
-    if (!(checkOutDate instanceof Date) || isNaN(checkOutDate.getTime())) {
+    if (!(checkOut instanceof Date) || isNaN(checkOut.getTime())) {
       alert('Invalid check-out date. Please select a valid date.');
       return;
     }
 
-    if (checkInDate >= checkOutDate) {
+    if (checkIn >= checkOut) {
       alert('Check-out date must be after check-in date.');
       return;
     }
@@ -198,8 +220,8 @@ export default function EnhancedRoomProfile() {
       basePricePerNight: perNightPrice,
       mealPlan: selectedMealPlan,
       market: selectedMarketObj?.name || selectedMarket,
-      checkIn: checkInDate.toISOString(),
-      checkOut: checkOutDate.toISOString(),
+      checkIn: checkIn.toISOString(),
+      checkOut: checkOut.toISOString(),
       previousRoute: location.state?.previousRoute || '/search'
     };
 
@@ -449,6 +471,127 @@ export default function EnhancedRoomProfile() {
               </div>
 
                <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Select Your Dates
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  <div className="relative">
+                    <label className="block text-xs font-medium text-gray-600 mb-1">
+                      Check-in Date
+                    </label>
+                    <div
+                      className="relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer"
+                      onClick={() => datePickerRef.current?.setOpen(true)}
+                    >
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-lapis_lazuli">
+                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </div>
+                      <input
+                        type="text"
+                        value={
+                          bookingDates.checkIn
+                            ? bookingDates.checkIn.toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              })
+                            : ""
+                        }
+                        readOnly
+                        placeholder="Select check-in date"
+                        className="w-full pl-9 pr-3 py-2 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs"
+                      />
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <label className="block text-xs font-medium text-gray-600 mb-1">
+                      Check-out Date
+                    </label>
+                    <div
+                      className="relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer"
+                      onClick={() => datePickerRef.current?.setOpen(true)}
+                    >
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-lapis_lazuli">
+                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </div>
+                      <input
+                        type="text"
+                        value={
+                          bookingDates.checkOut
+                            ? bookingDates.checkOut.toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              })
+                            : ""
+                        }
+                        readOnly
+                        placeholder="Select check-out date"
+                        className="w-full pl-9 pr-3 py-2 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs"
+                      />
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Hidden DatePicker for date selection */}
+                <DatePicker
+                  selectsRange
+                  startDate={bookingDates.checkIn}
+                  endDate={bookingDates.checkOut}
+                  onChange={(dates) => {
+                    const [start, end] = dates;
+                    setBookingDates({
+                      checkIn: start,
+                      checkOut: end
+                    });
+                  }}
+                  minDate={new Date()}
+                  dateFormat="MMMM d, yyyy"
+                  popperPlacement="bottom-start"
+                  popperModifiers={[
+                    {
+                      name: "offset",
+                      options: {
+                        offset: [0, 8],
+                      },
+                    },
+                    {
+                      name: "preventOverflow",
+                      options: {
+                        rootBoundary: "viewport",
+                        tether: true,
+                        altAxis: true,
+                        padding: 8,
+                      },
+                    },
+                  ]}
+                  ref={datePickerRef}
+                  className="absolute opacity-0 pointer-events-none"
+                />
+
+                {bookingDates.checkIn && bookingDates.checkOut && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4 text-sm">
+                    <p className="font-medium text-green-800 flex items-center">
+                      <FaCheckCircle className="mr-2" /> 
+                      {Math.ceil((bookingDates.checkOut - bookingDates.checkIn) / (1000 * 60 * 60 * 24))} nights selected
+                    </p>
+                  </div>
+                )}
+
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Meal Plan
                 </label>
@@ -469,8 +612,14 @@ export default function EnhancedRoomProfile() {
               </div>
 
               <button
+                onClick={() => alert('Inquiry form coming soon!')}
+                className="w-full mb-3 bg-lapis_lazuli hover:bg-[#005E84] text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform transform hover:scale-105"
+              >
+                <FaCheckCircle className="text-lg" /> Inquire Now
+              </button>
+              <button
                 onClick={handleBookNow}
-                className="w-full bg-indigo_dye hover:bg-[#0A435C] text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform transform hover:scale-105"
+                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl gap-2"
               >
                 <FaBook className="text-lg" /> Book Now
               </button>
@@ -479,6 +628,115 @@ export default function EnhancedRoomProfile() {
         </div>
       </main>
       
+      <style jsx global>{`
+        .react-datepicker {
+          font-family: 'Inter', sans-serif;
+          border: 1px solid #e5e7eb;
+          border-radius: 0.5rem;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          width: 260px;
+          z-index: 1000;
+          background-color: white;
+        }
+        @media (min-width: 640px) {
+          .react-datepicker {
+            width: 280px;
+          }
+        }
+        @media (min-width: 768px) {
+          .react-datepicker {
+            width: 300px;
+          }
+        }
+        .react-datepicker__header {
+          background-color: #005E84;
+          color: white;
+          border-top-left-radius: 0.5rem;
+          border-top-right-radius: 0.5rem;
+          padding: 0.5rem;
+        }
+        .react-datepicker__current-month,
+        .react-datepicker__day-name {
+          color: white;
+          font-weight: 600;
+          font-size: 0.7rem;
+        }
+        @media (min-width: 640px) {
+          .react-datepicker__current-month,
+          .react-datepicker__day-name {
+            font-size: 0.75rem;
+          }
+        }
+        @media (min-width: 768px) {
+          .react-datepicker__current-month,
+          .react-datepicker__day-name {
+            font-size: 0.875rem;
+          }
+        }
+        .react-datepicker__day {
+          color: #1f2937;
+          border-radius: 0.375rem;
+          transition: all 0.2s;
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          font-size: 0.7rem;
+        }
+        @media (min-width: 640px) {
+          .react-datepicker__day {
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            font-size: 0.75rem;
+          }
+        }
+        @media (min-width: 768px) {
+          .react-datepicker__day {
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            font-size: 0.875rem;
+          }
+        }
+        .react-datepicker__day:hover {
+          background-color: #E7E9E5;
+          color: #005E84;
+        }
+        .react-datepicker__day--selected,
+        .react-datepicker__day--in-range,
+        .react-datepicker__day--in-selecting-range {
+          background-color: #E7E9E5;
+          color: #005E84;
+        }
+        .react-datepicker__day--range-start,
+        .react-datepicker__day--range-end {
+          background-color: #005E84 !important;
+          color: white !important;
+        }
+        .react-datepicker__day--range-start:hover,
+        .react-datepicker__day--range-end:hover {
+          background-color: #075375 !important;
+        }
+        .react-datepicker__day--outside-month {
+          color: #d1d5db;
+        }
+        .react-datepicker__day--disabled {
+          color: #d1d5db;
+          cursor: not-allowed;
+        }
+        .react-datepicker__navigation-icon::before {
+          border-color: white;
+        }
+        .react-datepicker__triangle {
+          display: none;
+        }
+        .react-datepicker-popper {
+          z-index: 1000;
+        }
+        .react-datepicker__month-container {
+          width: 100%;
+        }
+      `}</style>
     </div>
   );
 }

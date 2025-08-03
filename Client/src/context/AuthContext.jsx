@@ -46,24 +46,46 @@ export const AuthProvider = ({ children }) => {
         const originalReq = err.config;
 
         if (err.response?.status === 401 && !originalReq._retry) {
-          if (originalReq.url.includes('/auth/refresh-token')) {
-            setUser(null);
-            navigate('/login', { replace: true });
+          // Skip interceptor for initial auth checks
+          if (originalReq.headers && originalReq.headers['X-Initial-Auth-Check']) {
             return Promise.reject(err);
           }
 
-          originalReq._retry = true;
-          try {
-            const success = await refreshToken();
-            if (success) {
-              return axios(originalReq);
-            } else {
+          // Only handle authentication-related 401s for specific protected endpoints
+          const isProtectedEndpoint = originalReq.url.includes('/bookings') ||
+                                     originalReq.url.includes('/profile') ||
+                                     originalReq.url.includes('/admin') ||
+                                     originalReq.url.includes('/settings') ||
+                                     (originalReq.url.includes('/auth/') && !originalReq.url.includes('/auth/login') && !originalReq.url.includes('/auth/register'));
+
+          // If this is a refresh token call that failed, logout immediately
+          if (originalReq.url.includes('/auth/refresh-token')) {
+            setUser(null);
+            // Only navigate to login if not already there
+            if (!window.location.pathname.includes('/login')) {
+              navigate('/login', { replace: true });
+            }
+            return Promise.reject(err);
+          }
+
+          // Only attempt token refresh for protected endpoints
+          if (isProtectedEndpoint) {
+            originalReq._retry = true;
+            try {
+              const success = await refreshToken();
+              if (success) {
+                return axios(originalReq);
+              } else {
+                return Promise.reject(err);
+              }
+            } catch (error) {
+              setUser(null);
+              // Only navigate to login if not already there
+              if (!window.location.pathname.includes('/login')) {
+                navigate('/login', { replace: true });
+              }
               return Promise.reject(err);
             }
-          } catch (error) {
-            setUser(null);
-            navigate('/login', { replace: true });
-            return Promise.reject(err);
           }
         }
         return Promise.reject(err);
@@ -76,12 +98,30 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get('/users/me', { withCredentials: true });
+        // Use a direct axios call without interceptor interference for initial check
+        const { data } = await axios.get('/users/me', { 
+          withCredentials: true,
+          // Add a custom header to identify this as an initial auth check
+          headers: { 'X-Initial-Auth-Check': 'true' }
+        });
         setUser(data);
       } catch (err) {
         if (err.response?.status === 401) {
-          // Try to refresh token
-          await refreshToken();
+          // Try to refresh token silently, but don't redirect on failure
+          try {
+            await axios.post('/auth/refresh-token', {}, { 
+              withCredentials: true,
+              headers: { 'X-Initial-Auth-Check': 'true' }
+            });
+            const userData = await axios.get('/users/me', { 
+              withCredentials: true,
+              headers: { 'X-Initial-Auth-Check': 'true' }
+            });
+            setUser(userData.data);
+          } catch (refreshError) {
+            // Silent failure - user is just not logged in
+            setUser(null);
+          }
         } else {
           setUser(null);
         }
@@ -93,7 +133,7 @@ export const AuthProvider = ({ children }) => {
 
   // Set up token refresh interval (every 45 minutes)
   useEffect(() => {
-    const interval = setInterval(refreshToken, 45 * 60 * 1000);
+    const interval = setInterval(refreshToken, 24 * 60 * 60 * 1000); // 24 hours
     return () => clearInterval(interval);
   }, []);
 

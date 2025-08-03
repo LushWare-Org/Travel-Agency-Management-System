@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AdminLayout from '../../Components/AdminLayout';
 import axios from 'axios';
 
@@ -9,6 +9,7 @@ const AdminActivities = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('all');
+  const location = useLocation();
   
   useEffect(() => {
     const fetchActivities = async () => {
@@ -86,7 +87,7 @@ const AdminActivities = () => {
   return (
     <AdminLayout>
       <div className="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Manage Activities</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Activity Management</h1>
         <div className="mt-3 sm:mt-0 sm:ml-4">
           <Link
             to="/admin/activities/new"
@@ -95,6 +96,32 @@ const AdminActivities = () => {
             <i className="fas fa-plus mr-2"></i> Add New Activity
           </Link>
         </div>
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="border-b border-gray-200 mb-6">
+        <nav className="-mb-px flex space-x-8">
+          <Link
+            to="/admin/activities"
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              location.pathname === '/admin/activities' || location.pathname.startsWith('/admin/activities/') && !location.pathname.includes('/bookings')
+                ? 'border-blue-500 text-blue-600' 
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Activities
+          </Link>
+          <Link
+            to="/admin/activities/bookings"
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              location.pathname === '/admin/activities/bookings'
+                ? 'border-blue-500 text-blue-600' 
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Bookings & Inquiries
+          </Link>
+        </nav>
       </div>
 
       {/* Filters and Search */}

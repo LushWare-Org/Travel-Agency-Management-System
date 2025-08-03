@@ -71,10 +71,10 @@ const BookingRequest = ({ sidebarOpen }) => {
   // Helper to get transport icon
   const getTransportIcon = (method) => {
     const lowerMethod = method.toLowerCase()
-    if (lowerMethod.includes('boat') || lowerMethod.includes('ship')) return <FaShip className="text-blue-500" />
-    if (lowerMethod.includes('plane') && !lowerMethod.includes('domestic')) return <FaPlane className="text-blue-500" />
-    if (lowerMethod.includes('domestic flight')) return <FaPlaneDeparture className="text-blue-500" />
-    return <FaCar className="text-blue-500" />
+    if (lowerMethod.includes('boat') || lowerMethod.includes('ship')) return <FaShip className="text-[#005E84]" />
+    if (lowerMethod.includes('plane') && !lowerMethod.includes('domestic')) return <FaPlane className="text-[#005E84]" />
+    if (lowerMethod.includes('domestic flight')) return <FaPlaneDeparture className="text-[#005E84]" />
+    return <FaCar className="text-[#005E84]" />
   }
 
   // Validate dates on mount and redirect if invalid
@@ -509,6 +509,7 @@ const handleChange = (e) => {
       }
 
       setLoading(false)
+      setShowConfirmation(false) // Hide the confirmation popup
       setActiveStep(3)
     } catch (err) {
       console.error("Booking failed", err)
@@ -519,14 +520,14 @@ const handleChange = (e) => {
 
   // --- DESKTOP LAYOUT ---
   const renderDesktopLayout = () => (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-indigo-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-[#E7E9E5] to-[#B7C5C7] flex flex-col">
       <div className="flex flex-1">
         <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? "md:ml-64" : "md:ml-20"} ml-0`}>
           <div className="container mx-auto px-6 py-8 max-w-7xl overflow-x-hidden">
             {loadingData ? (
               <div className="flex items-center justify-center h-screen">
                 <div className="text-center">
-                  <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                  <div className="w-16 h-16 border-4 border-[#005E84] border-t-transparent rounded-full animate-spin mx-auto"></div>
                   <p className="mt-3 text-gray-600 text-lg font-medium">Loading booking information...</p>
                 </div>
               </div>
@@ -539,9 +540,9 @@ const handleChange = (e) => {
                       alt="Maldives"
                       className="w-full h-64 object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/70 to-transparent flex flex-col justify-center px-10">
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#0A435C]/70 to-transparent flex flex-col justify-center px-10">
                       <h1 className="text-4xl font-bold text-white mb-2">Book Your Luxury Escape</h1>
-                      <p className="text-lg text-indigo-100 max-w-xl">
+                      <p className="text-lg text-[#B7C5C7] max-w-xl">
                         Complete your booking at {hotelName} for an unforgettable Maldives getaway
                       </p>
                     </div>
@@ -556,19 +557,19 @@ const handleChange = (e) => {
                           <div key={step} className="flex flex-col items-center relative w-full">
                             <div
                               className={`w-10 h-10 rounded-full flex items-center justify-center text-base font-semibold z-10 ${
-                                activeStep >= index ? "bg-blue-800 text-white" : "bg-gray-200 text-gray-600"
+                                activeStep >= index ? "bg-[#0A435C] text-white" : "bg-gray-200 text-gray-600"
                               }`}
                             >
                               {index + 1}
                             </div>
                             <p
-                              className={`mt-2 text-sm font-medium ${activeStep >= index ? "text-blue-800" : "text-gray-500"}`}
+                              className={`mt-2 text-sm font-medium ${activeStep >= index ? "text-[#0A435C]" : "text-gray-500"}`}
                             >
                               {step}
                             </p>
                             {index < steps.length - 1 && (
                               <div
-                                className={`absolute h-1 top-5 left-1/2 w-full ${activeStep > index ? "bg-blue-800" : "bg-gray-200"}`}
+                                className={`absolute h-1 top-5 left-1/2 w-full ${activeStep > index ? "bg-[#0A435C]" : "bg-gray-200"}`}
                               ></div>
                             )}
                           </div>
@@ -595,7 +596,7 @@ const handleChange = (e) => {
                               <div className="flex items-center mt-2 mb-4">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
-                                  className="h-4 w-4 text-indigo-500"
+                                  className="h-4 w-4 text-[#005E84]"
                                   fill="none"
                                   viewBox="0 0 24 24"
                                   stroke="currentColor"
@@ -617,13 +618,13 @@ const handleChange = (e) => {
                               </div>
                               <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-4">
                                 <div>
-                                  <span className="text-2xl font-bold text-blue-800">${getFinalPerNightPrice()}</span>
+                                  <span className="text-2xl font-bold text-[#0A435C]">${getFinalPerNightPrice()}</span>
                                   <span className="text-sm text-gray-500 ml-1">per night</span>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 mt-6 border border-indigo-100">
+                          <div className="bg-gradient-to-br from-[#E7E9E5] to-[#B7C5C7] rounded-xl p-5 mt-6 border border-[#B7C5C7]">
                             <h3 className="text-lg font-semibold text-gray-800 mb-3">Property Highlights</h3>
                             <span className="text-sm text-gray-700">{hotel?.descriptionShort}</span>
                           </div>
@@ -741,21 +742,21 @@ const handleChange = (e) => {
                               <div className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700 text-sm flex items-center">
                                 {market || 'Not selected'}
                                 {marketSurcharge > 0 && (
-                                  <span className="ml-2 text-blue-600">(+${marketSurcharge} per night)</span>
+                                  <span className="ml-2 text-[#075375]">(+${marketSurcharge} per night)</span>
                                 )}
                               </div>
                             </div>
                             {room?.transportations && room.transportations.length > 0 && (
                               <div className="mt-4">
-                                <label className="block text-sm font-semibold text-black mb-2 flex items-center gap-2">
-                                  <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <label className="flex text-sm font-semibold text-black mb-2 items-center gap-2">
+                                  <svg className="w-5 h-5 text-[#005E84]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                   </svg>
                                   Transportation Options
                                 </label>
                                 <ul className="flex flex-wrap gap-2">
                                   {room.transportations.map((t, idx) => (
-                                    <li key={idx} className="flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-full text-xs shadow-sm hover:bg-blue-100 transition-all">
+                                    <li key={idx} className="flex items-center gap-2 bg-[#E7E9E5] border border-[#B7C5C7] text-[#0A435C] px-4 py-2 rounded-full text-xs shadow-sm hover:bg-[#B7C5C7] transition-all">
                                       {getTransportIcon(t.method)}
                                       <span className="font-medium capitalize">{t.type}: {t.method}</span>
                                     </li>
@@ -865,7 +866,7 @@ const handleChange = (e) => {
                               );
                             })()}
                             {bookingData.checkIn && bookingData.checkOut && calculateNights() > 0 && (
-                              <div className="bg-gradient-to-r from-indigo-50 to-blue-100 rounded-xl p-6 border border-indigo-100 mt-6">
+                              <div className="bg-gradient-to-r from-[#E7E9E5] to-[#B7C5C7] rounded-xl p-6 border border-[#B7C5C7] mt-6">
                                 <h4 className="text-lg font-medium text-gray-900 mb-4">Price Summary</h4>
                                 <div className="flex justify-between items-center mb-3">
                                   <div className="text-gray-600 text-sm">
@@ -986,7 +987,7 @@ const handleChange = (e) => {
                           <div className="flex-shrink-0">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="h-5 w-5 text-indigo-500"
+                              className="h-5 w-5 text-[#005E84]"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -1056,7 +1057,7 @@ const handleChange = (e) => {
                             value={bookingData.specialRequests}
                             onChange={handleChange}
                             rows={4}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#005E84] focus:border-[#005E84] text-sm"
                             placeholder="Enter any special requests or preferences..."
                           />
                         </div>
@@ -1067,9 +1068,9 @@ const handleChange = (e) => {
                           
                           {/* Adult Guests */}
                           <div className="mb-6">
-                            <h4 className="font-medium text-blue-800 mb-3">Adult Guests</h4>
+                            <h4 className="font-medium text-[#0A435C] mb-3">Adult Guests</h4>
                             {[...Array(bookingData.adults)].map((_, idx) => (
-                              <div key={`adult-${idx}`} className="mb-8 p-4 border border-gray-200 rounded-lg bg-blue-50">
+                              <div key={`adult-${idx}`} className="mb-8 p-4 border border-gray-200 rounded-lg bg-[#E7E9E5]">
                                 <h4 className="font-medium text-gray-700 mb-2">Adult {idx + 1}</h4>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                   <div>
@@ -1168,7 +1169,7 @@ const handleChange = (e) => {
                           {/* Child Guests */}
                           {bookingData.children > 0 && (
                             <div className="mb-6">
-                              <h4 className="font-medium text-blue-800 mb-3">Child Guests</h4>
+                              <h4 className="font-medium text-[#0A435C] mb-3">Child Guests</h4>
                               {[...Array(bookingData.children)].map((_, idx) => (
                                 <div key={`child-${idx}`} className="mb-8 p-4 border border-gray-200 rounded-lg bg-indigo-50">
                                   <h4 className="font-medium text-gray-700 mb-2 flex items-center">Child {idx + 1}
@@ -1379,7 +1380,7 @@ const handleChange = (e) => {
                         </div>
 
                         <div className="space-y-6">
-                          <div className="bg-gradient-to-r from-indigo-50 to-blue-100 rounded-xl p-6 border border-indigo-100 sticky top-6">
+                          <div className="bg-gradient-to-br from-[#E7E9E5] to-[#B7C5C7] rounded-xl p-6 border border-[#B7C5C7] sticky top-6">
                             <h3 className="text-lg font-semibold text-gray-800 mb-4">Price Breakdown</h3>
                             {/* Use the same structure as Price Summary */}
                             <div className="flex justify-between items-center mb-3">
@@ -1503,7 +1504,7 @@ const handleChange = (e) => {
                       </div>
                       <button
                         onClick={() => navigate("/search")}
-                        className="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                        className="bg-[#075375] text-white px-8 py-3 rounded-lg hover:bg-[#0A435C] transition-colors font-medium"
                       >
                         Return to Search
                       </button>
@@ -1522,7 +1523,7 @@ const handleChange = (e) => {
                       )}
                       <button
                         onClick={activeStep === 2 ? handleConfirmSubmit : handleNext}
-                        className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors ml-auto"
+                        className="bg-[#075375] text-white px-6 py-2 rounded-lg hover:bg-[#0A435C] transition-colors ml-auto"
                         disabled={loading}
                       >
                         {loading ? "Submitting..." : activeStep === 2 ? "Confirm Booking" : "Continue"}
@@ -1548,9 +1549,10 @@ const handleChange = (e) => {
                         </button>
                         <button
                           onClick={handleSubmit}
-                          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                          className="bg-[#075375] text-white px-4 py-2 rounded-lg hover:bg-[#0A435C] transition-colors"
                           disabled={loading}
                         >
+
                           {loading ? "Submitting..." : "Confirm"}
                         </button>
                       </div>
@@ -1564,8 +1566,7 @@ const handleChange = (e) => {
       </div>
       
       <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
+        .scrollbar-hide::-webkit
         }
         .scrollbar-hide {
           -ms-overflow-style: none;

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import AdminLayout from '../../Components/AdminLayout';
 import {
   Box,
   Paper,
@@ -50,7 +52,9 @@ const ActivityBookings = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState('');
   const [paymentFilter, setPaymentFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
   const [stats, setStats] = useState({});
+  const location = useLocation();
 
   // Form state for editing
   const [editForm, setEditForm] = useState({
@@ -62,7 +66,7 @@ const ActivityBookings = () => {
   useEffect(() => {
     fetchBookings();
     fetchStats();
-  }, [statusFilter, paymentFilter]);
+  }, [statusFilter, paymentFilter, typeFilter]);
 
   const fetchBookings = async () => {
     try {
@@ -70,6 +74,7 @@ const ActivityBookings = () => {
       const params = {};
       if (statusFilter) params.status = statusFilter;
       if (paymentFilter) params.paymentStatus = paymentFilter;
+      if (typeFilter) params.type = typeFilter;
       
       const response = await axios.get('/activity-bookings', { 
         params,
@@ -191,17 +196,51 @@ const ActivityBookings = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
-        <CircularProgress />
-      </Box>
+      <AdminLayout>
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
+          <CircularProgress />
+        </Box>
+      </AdminLayout>
     );
   }
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Activity Bookings Management
-      </Typography>
+    <AdminLayout>
+      {/* Header */}
+      <div className="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Activity Management</h1>
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="border-b border-gray-200 mb-6">
+        <nav className="-mb-px flex space-x-8">
+          <Link
+            to="/admin/activities"
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              location.pathname === '/admin/activities' || (location.pathname.startsWith('/admin/activities/') && !location.pathname.includes('/bookings'))
+                ? 'border-blue-500 text-blue-600' 
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Activities
+          </Link>
+          <Link
+            to="/admin/activities/bookings"
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              location.pathname === '/admin/activities/bookings'
+                ? 'border-blue-500 text-blue-600' 
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Bookings & Inquiries
+          </Link>
+        </nav>
+      </div>
+
+      <Box>
+        <Typography variant="h4" gutterBottom>
+          Activity Bookings & Inquiries Management
+        </Typography>
 
       {/* Statistics Cards */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
@@ -209,7 +248,7 @@ const ActivityBookings = () => {
           <Card>
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
-                Total Bookings
+                Total Requests
               </Typography>
               <Typography variant="h4">
                 {stats.totalBookings || 0}
@@ -258,6 +297,18 @@ const ActivityBookings = () => {
       {/* Filters */}
       <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
         <FormControl size="small" sx={{ minWidth: 120 }}>
+          <InputLabel>Type</InputLabel>
+          <Select
+            value={typeFilter}
+            label="Type"
+            onChange={(e) => setTypeFilter(e.target.value)}
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="inquiry">Inquiry</MenuItem>
+            <MenuItem value="booking">Booking</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl size="small" sx={{ minWidth: 120 }}>
           <InputLabel>Status</InputLabel>
           <Select
             value={statusFilter}
@@ -284,7 +335,7 @@ const ActivityBookings = () => {
             <MenuItem value="Refunded">Refunded</MenuItem>
           </Select>
         </FormControl>
-        <Button variant="outlined" onClick={() => { setStatusFilter(''); setPaymentFilter(''); }}>
+        <Button variant="outlined" onClick={() => { setStatusFilter(''); setPaymentFilter(''); setTypeFilter(''); }}>
           Clear Filters
         </Button>
       </Box>
@@ -301,7 +352,8 @@ const ActivityBookings = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Booking Ref</TableCell>
+                <TableCell>Reference</TableCell>
+                <TableCell>Type</TableCell>
                 <TableCell>Activity</TableCell>
                 <TableCell>Customer</TableCell>
                 <TableCell>Date</TableCell>
@@ -309,7 +361,7 @@ const ActivityBookings = () => {
                 <TableCell>Total Price</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Payment</TableCell>
-                <TableCell>Booked On</TableCell>
+                <TableCell>Created On</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -322,6 +374,13 @@ const ActivityBookings = () => {
                       <Typography variant="body2" fontWeight="bold">
                         {booking.bookingReference}
                       </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        label={booking.type === 'inquiry' ? 'Inquiry' : 'Booking'}
+                        color={booking.type === 'inquiry' ? 'info' : 'primary'}
+                        size="small"
+                      />
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2">
@@ -552,6 +611,7 @@ const ActivityBookings = () => {
         </DialogActions>
       </Dialog>
     </Box>
+    </AdminLayout>
   );
 };
 

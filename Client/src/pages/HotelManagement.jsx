@@ -235,7 +235,6 @@ const HotelManagement = () => {
     mealPrice: '',
     dinningOptions: [],
     gallery: [],
-    liveAvailability: '',
   });
   const [profileOpen, setProfileOpen] = useState(false);
   const [profileHotel, setProfileHotel] = useState(null);
@@ -276,7 +275,6 @@ const HotelManagement = () => {
         mealPrice: '',
         dinningOptions: hotel.dinningOptions.map(d => ({ ...d })),
         gallery: hotel.gallery || [],
-        liveAvailability: hotel.liveAvailability || '',
       });
       setUploadStatuses(hotel.gallery.map(url => ({ file: null, status: 'success', url, error: null })));
     } else {
@@ -296,7 +294,6 @@ const HotelManagement = () => {
         mealPrice: '',
         dinningOptions: [],
         gallery: [],
-        liveAvailability: '',
       });
       setUploadStatuses([]);
     }
@@ -320,7 +317,6 @@ const HotelManagement = () => {
       mealPlans: formData.mealPlans,
       dinningOptions: formData.dinningOptions,
       gallery: formData.gallery,
-      liveAvailability: formData.liveAvailability,
     };
     try {
       let res;
@@ -363,7 +359,7 @@ const HotelManagement = () => {
 
   return (
     <Paper sx={{ p: 3 }}>
-      <Typography variant="h5" gutterBottom>Hotel Management</Typography>
+      <Typography variant="h5" gutterBottom>Resort Management</Typography>
       <Button variant="contained" startIcon={<AddIcon />} onClick={() => openDialog(null)} sx={{ mb: 2 }}>
         Add Hotel
       </Button>
@@ -480,15 +476,6 @@ const HotelManagement = () => {
                     contactDetails: { ...f.contactDetails, website: e.target.value },
                   }))
                 }
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Live Inventory URL"
-                fullWidth
-                value={formData.liveAvailability}
-                onChange={e => setFormData(f => ({ ...f, liveAvailability: e.target.value }))}
-                placeholder="https://inventory.example.com"
               />
             </Grid>
             {/* Amenities */}

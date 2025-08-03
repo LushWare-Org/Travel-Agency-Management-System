@@ -4,11 +4,12 @@ const User = require('../models/User');
 
 // @desc    Create a new activity booking
 // @route   POST /api/activity-bookings
-// @access  Private
+// @access  Public for inquiries, Private for bookings
 exports.createActivityBooking = async (req, res) => {
   try {
     const {
       activityId,
+      type = 'inquiry', // Default to inquiry if not specified
       customerDetails,
       bookingDetails,
       pricing
@@ -16,6 +17,14 @@ exports.createActivityBooking = async (req, res) => {
 
     console.log('Creating activity booking with data:', req.body);
     console.log('User from auth:', req.user);
+
+    // Check authentication requirement based on type
+    if (type === 'booking' && !req.user) {
+      return res.status(401).json({
+        success: false,
+        error: 'Authentication required for bookings'
+      });
+    }
 
     // Validate activity exists
     const activity = await Activity.findById(activityId);
@@ -43,35 +52,48 @@ exports.createActivityBooking = async (req, res) => {
     }
 
     // Generate unique booking reference
-    const bookingReference = `ACT-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const bookingReference = type === 'inquiry' 
+      ? `INQ-${Date.now()}-${Math.floor(Math.random() * 1000)}`
+      : `ACT-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
     // Calculate total price
     const totalPrice = pricing.pricePerPerson * bookingDetails.guests;
 
-    // For mock authentication, we'll use a default user ID or create one
-    let userId = req.user.userId;
-    if (userId === 'mock-user-id') {
-      // Try to find an existing user or use the mock ID
-      const mockUser = await User.findOne({ email: 'mock@admin.com' });
-      if (mockUser) {
-        userId = mockUser._id;
-      } else {
-        // Create a mock user if it doesn't exist
-        const newMockUser = new User({
-          username: 'Mock Admin',
-          email: 'mock@admin.com',
-          password: 'mock-password',
-          role: 'admin'
-        });
-        await newMockUser.save();
-        userId = newMockUser._id;
+    // Handle user ID for authenticated and non-authenticated requests
+    let userId = null;
+    
+    if (req.user) {
+      // User is authenticated
+      userId = req.user.userId;
+      
+      // Handle mock authentication if needed
+      if (userId === 'mock-user-id') {
+        const mockUser = await User.findOne({ email: 'mock@admin.com' });
+        if (mockUser) {
+          userId = mockUser._id;
+        } else {
+          // Create a mock user if it doesn't exist
+          const newMockUser = new User({
+            username: 'Mock Admin',
+            email: 'mock@admin.com',
+            password: 'mock-password',
+            role: 'admin'
+          });
+          await newMockUser.save();
+          userId = newMockUser._id;
+        }
       }
+    } else {
+      // For inquiries without authentication, create a guest user or use null
+      // We'll store customer details in the booking itself
+      userId = null;
     }
 
     const activityBooking = new ActivityBooking({
       activity: activityId,
-      user: userId,
+      user: userId, // Can be null for inquiries
       bookingReference,
+      type,
       customerDetails,
       bookingDetails,
       pricing: {
@@ -82,10 +104,20 @@ exports.createActivityBooking = async (req, res) => {
 
     await activityBooking.save();
 
-    // Populate the booking with activity and user details
+    // Populate the booking with activity and user details (user might be null)
     const populatedBooking = await ActivityBooking.findById(activityBooking._id)
-      .populate('activity', 'title location duration price image')
-      .populate('user', 'email username');
+      .populate({
+        path: 'activity',
+        select: 'title location duration price image type description shortDescription maxParticipants'
+      })
+      .populate({
+        path: 'user',
+        select: 'email username firstName lastName',
+        // Allow null values
+        match: { _id: { $ne: null } }
+      });
+
+    console.log('Created activity booking:', JSON.stringify(populatedBooking, null, 2));
 
     res.status(201).json({
       success: true,
@@ -105,9 +137,14 @@ exports.createActivityBooking = async (req, res) => {
 // @access  Private (Admin)
 exports.getAllActivityBookings = async (req, res) => {
   try {
-    const { status, startDate, endDate, activityId } = req.query;
+    const { status, startDate, endDate, activityId, type } = req.query;
     
     let query = {};
+    
+    // Filter by type
+    if (type) {
+      query.type = type;
+    }
     
     // Filter by status
     if (status) {
@@ -127,9 +164,17 @@ exports.getAllActivityBookings = async (req, res) => {
     }
 
     const bookings = await ActivityBooking.find(query)
-      .populate('activity', 'title location duration price image type')
-      .populate('user', 'email username')
+      .populate({
+        path: 'activity',
+        select: 'title location duration price image type description shortDescription maxParticipants'
+      })
+      .populate({
+        path: 'user',
+        select: 'email username firstName lastName'
+      })
       .sort({ createdAt: -1 });
+
+    console.log(`Admin fetched ${bookings.length} activity bookings`);
 
     res.status(200).json({
       success: true,
@@ -150,6 +195,10 @@ exports.getAllActivityBookings = async (req, res) => {
 // @access  Private
 exports.getMyActivityBookings = async (req, res) => {
   try {
+    console.log('=== GET MY ACTIVITY BOOKINGS DEBUG ===');
+    console.log('Request user:', req.user);
+    console.log('User ID from request:', req.user?.userId);
+    
     let userId = req.user.userId;
     
     // Handle mock authentication
@@ -157,7 +206,9 @@ exports.getMyActivityBookings = async (req, res) => {
       const mockUser = await User.findOne({ email: 'mock@admin.com' });
       if (mockUser) {
         userId = mockUser._id;
+        console.log('Using mock user ID:', userId);
       } else {
+        console.log('No mock user found, returning empty array');
         // Return empty array if no mock user exists yet
         return res.status(200).json({
           success: true,
@@ -167,9 +218,50 @@ exports.getMyActivityBookings = async (req, res) => {
       }
     }
 
+    console.log('Final user ID for query:', userId);
+
     const bookings = await ActivityBooking.find({ user: userId })
-      .populate('activity', 'title location duration price image type')
+      .populate({
+        path: 'activity',
+        select: 'title location duration price image type description shortDescription maxParticipants'
+      })
       .sort({ createdAt: -1 });
+
+    console.log(`Found ${bookings.length} activity bookings for user ${userId}`);
+    
+    // Debug each booking to see what data is included
+    if (bookings.length > 0) {
+      console.log('Sample booking with activity data:');
+      bookings.forEach((booking, index) => {
+        console.log(`Booking ${index + 1}:`, {
+          id: booking._id,
+          reference: booking.bookingReference,
+          activityPopulated: !!booking.activity,
+          activityTitle: booking.activity?.title,
+          activityImage: booking.activity?.image,
+          activityLocation: booking.activity?.location,
+          date: booking.bookingDetails?.date,
+          guests: booking.bookingDetails?.guests,
+          totalPrice: booking.pricing?.totalPrice
+        });
+      });
+    } else {
+      console.log(`No activity bookings found for user ${userId}`);
+      
+      // Let's also check if there are any bookings at all in the system
+      const totalBookings = await ActivityBooking.countDocuments();
+      console.log(`Total activity bookings in database: ${totalBookings}`);
+      
+      // And check if there are any activities
+      const totalActivities = await Activity.countDocuments();
+      console.log(`Total activities in database: ${totalActivities}`);
+      
+      // Check if there are bookings for other users
+      const bookingsForOtherUsers = await ActivityBooking.find({ user: { $ne: userId } }).limit(3);
+      console.log(`Found ${bookingsForOtherUsers.length} bookings for other users`);
+    }
+
+    console.log('=== END DEBUG ===');
 
     res.status(200).json({
       success: true,
@@ -202,11 +294,22 @@ exports.getActivityBookingById = async (req, res) => {
     }
 
     // Check if user owns the booking or is admin
-    if (booking.user._id.toString() !== req.user.userId && req.user.role !== 'admin') {
-      return res.status(403).json({
-        success: false,
-        error: 'Access denied'
-      });
+    // For inquiries without users, only admin can access
+    if (booking.user) {
+      if (booking.user._id.toString() !== req.user.userId && req.user.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          error: 'Access denied'
+        });
+      }
+    } else {
+      // For guest inquiries, only admin can access
+      if (req.user.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          error: 'Access denied'
+        });
+      }
     }
 
     res.status(200).json({
@@ -305,11 +408,22 @@ exports.cancelActivityBooking = async (req, res) => {
     }
 
     // Check if user owns the booking or is admin
-    if (booking.user.toString() !== req.user.userId && req.user.role !== 'admin') {
-      return res.status(403).json({
-        success: false,
-        error: 'Access denied'
-      });
+    // For inquiries without users, only admin can cancel
+    if (booking.user) {
+      if (booking.user.toString() !== req.user.userId && req.user.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          error: 'Access denied'
+        });
+      }
+    } else {
+      // For guest inquiries, only admin can cancel
+      if (req.user.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          error: 'Access denied'
+        });
+      }
     }
 
     // Check if booking can be cancelled
@@ -340,6 +454,78 @@ exports.cancelActivityBooking = async (req, res) => {
     });
   } catch (err) {
     console.error('Error cancelling activity booking:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+};
+
+// @desc    Create test activity booking (Development only)
+// @route   POST /api/activity-bookings/test
+// @access  Private
+exports.createTestActivityBooking = async (req, res) => {
+  try {
+    // Only allow in development
+    if (process.env.NODE_ENV === 'production') {
+      return res.status(403).json({
+        success: false,
+        error: 'Test endpoints not available in production'
+      });
+    }
+
+    // Find first active activity
+    const activity = await Activity.findOne({ status: 'active' });
+    if (!activity) {
+      return res.status(404).json({
+        success: false,
+        error: 'No active activities found to create test booking'
+      });
+    }
+
+    // Create test booking
+    const testBooking = new ActivityBooking({
+      activity: activity._id,
+      user: req.user.userId,
+      bookingReference: `TEST-${Date.now()}`,
+      type: 'booking',
+      customerDetails: {
+        fullName: 'Test User',
+        email: 'test@example.com',
+        phone: '+1234567890'
+      },
+      bookingDetails: {
+        date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+        guests: 2,
+        specialRequests: 'Test booking created for development'
+      },
+      pricing: {
+        pricePerPerson: activity.price,
+        totalPrice: activity.price * 2
+      },
+      status: 'Confirmed'
+    });
+
+    await testBooking.save();
+
+    // Populate and return
+    const populatedBooking = await ActivityBooking.findById(testBooking._id)
+      .populate({
+        path: 'activity',
+        select: 'title location duration price image type description shortDescription maxParticipants'
+      })
+      .populate({
+        path: 'user',
+        select: 'email username firstName lastName'
+      });
+
+    res.status(201).json({
+      success: true,
+      message: 'Test booking created successfully',
+      data: populatedBooking
+    });
+  } catch (err) {
+    console.error('Error creating test booking:', err);
     res.status(500).json({
       success: false,
       error: 'Server Error'

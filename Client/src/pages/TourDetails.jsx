@@ -261,11 +261,16 @@ const TourDetails = ({ sidebarOpen }) => {
 
   const [openDialog, setOpenDialog] = useState(false);
 
-  // Handle post-login auto-open inquiry form
+  // Handle post-login auto-open inquiry form or proceed to booking
   useEffect(() => {
     if (location.state?.openInquiry) {
       setOpenDialog(true);
       // Clear the state to avoid reopening on subsequent visits
+      navigate(location.pathname, { replace: true });
+    } else if (location.state?.proceedToBooking) {
+      // For future booking implementation - for now just show an alert
+      alert('Booking form coming soon! You are now logged in.');
+      // Clear the state to avoid showing on subsequent visits
       navigate(location.pathname, { replace: true });
     }
   }, [location.state, navigate]);
@@ -305,8 +310,14 @@ const TourDetails = ({ sidebarOpen }) => {
     );
   }
 
-  // Handler to open inquiry dialog with authentication check.
+  // Handler to open inquiry dialog - no authentication required
   const handleOpenDialog = () => {
+    // Open the inquiry form directly without authentication check
+    setOpenDialog(true);
+  };
+
+  // Handler for "Book Now" button - requires authentication
+  const handleBookNow = () => {
     // Prepare tour booking data
     const tourBookingData = {
       tourId: tour?._id,
@@ -318,13 +329,13 @@ const TourDetails = ({ sidebarOpen }) => {
       finalOldPrice
     };
 
-    // Check authentication before opening inquiry form
-    if (!requireAuthForBooking('tour', tourBookingData)) {
+    // Check authentication before proceeding to booking
+    if (!requireAuthForBooking('tour-booking', tourBookingData)) {
       return; // User will be redirected to login
     }
 
-    // User is authenticated, open the inquiry form
-    setOpenDialog(true);
+    // User is authenticated, proceed with booking (for future implementation)
+    alert('Booking form coming soon!');
   };
 
   return (
@@ -648,6 +659,13 @@ const TourDetails = ({ sidebarOpen }) => {
                   >
                     <SendIcon className="w-5 h-5 mr-2" />
                     Inquire Now
+                  </button>
+                  <button
+                    onClick={handleBookNow}
+                    className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
+                  >
+                    <CalendarMonthIcon className="w-5 h-5 mr-2" />
+                    Book Now
                   </button>
                   
                   <button

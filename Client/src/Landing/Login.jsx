@@ -115,7 +115,8 @@ const Login = ({ setIsAuthenticated }) => {
               navigate(`/activities/${bookingIntent.data.activityId}/booking`, {
                 state: {
                   selectedDate: bookingIntent.data.selectedDate,
-                  guests: bookingIntent.data.guests
+                  guests: bookingIntent.data.guests,
+                  bookingType: bookingIntent.data.bookingType // Preserve the booking type
                 }
               });
               break;
@@ -123,6 +124,13 @@ const Login = ({ setIsAuthenticated }) => {
               // For tours, redirect back to the tour details page and auto-open inquiry form
               navigate(bookingIntent.returnTo, {
                 state: { openInquiry: true, tourBookingData: bookingIntent.data }
+              });
+              break;
+            case 'tour-booking':
+              // For tour booking, redirect back to the tour details page
+              // (future booking form will be implemented here)
+              navigate(bookingIntent.returnTo, {
+                state: { proceedToBooking: true, tourBookingData: bookingIntent.data }
               });
               break;
             default:

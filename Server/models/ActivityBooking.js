@@ -9,12 +9,21 @@ const ActivityBookingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: [true, 'User is required']
+    required: function() {
+      // User is required only for bookings, not for inquiries
+      return this.type === 'booking';
+    }
   },
   bookingReference: {
     type: String,
     required: [true, 'Booking reference is required'],
     unique: true
+  },
+  type: {
+    type: String,
+    enum: ['inquiry', 'booking'],
+    default: 'inquiry',
+    required: [true, 'Booking type is required']
   },
   customerDetails: {
     fullName: {

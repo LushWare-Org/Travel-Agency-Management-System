@@ -194,29 +194,8 @@ function HotelProfile() {
   const handleTabChange = (idx) => setActiveTab(idx)
 
   const handleRoomSelect = (roomId) => {
-    if (!bookingData.checkIn || !bookingData.checkOut) {
-      alert("Please select both check-in and check-out dates before selecting a room.")
-      console.log("Room selection aborted: Missing dates", bookingData)
-      return
-    }
-
-    if (!(bookingData.checkIn instanceof Date) || isNaN(bookingData.checkIn)) {
-      alert("Invalid check-in date. Please select a valid date.")
-      console.log("Room selection aborted: Invalid check-in date", bookingData.checkIn)
-      return
-    }
-
-    if (!(bookingData.checkOut instanceof Date) || isNaN(bookingData.checkOut)) {
-      alert("Invalid check-out date. Please select a valid date.")
-      console.log("Room selection aborted: Invalid check-out date", bookingData.checkOut)
-      return
-    }
-
-    if (bookingData.checkIn >= bookingData.checkOut) {
-      alert("Check-out date must be after check-in date.")
-      console.log("Room selection aborted: Invalid date range", bookingData)
-      return
-    }
+    // Allow room navigation without requiring date selection
+    // If dates are selected, they'll be passed to the room profile
 
     const selectedRoom = roomsData.find((room) => room._id === roomId)
     if (!selectedRoom) {
@@ -225,35 +204,30 @@ function HotelProfile() {
       return
     }
 
-    const checkInISO = bookingData.checkIn.toISOString()
-    const checkOutISO = bookingData.checkOut.toISOString()
-
-    console.log("Navigating to room details with state:", {
+    // Prepare navigation state with optional dates
+    const navigationState = {
       hotelId,
       hotelName: hotelData.name,
       roomId,
       roomName: selectedRoom.name,
       basePricePerNight: selectedRoom.basePrice,
-      checkIn: checkInISO,
-      checkOut: checkOutISO,
       mealPlan: selectedRoom.mealPlan || hotelData.mealPlans[0] || { planName: "All-Inclusive" },
       previousRoute,
       selectedNationality,
-    })
+    }
+    
+    // Only add dates if they're valid
+    if (bookingData.checkIn instanceof Date && !isNaN(bookingData.checkIn) && 
+        bookingData.checkOut instanceof Date && !isNaN(bookingData.checkOut) &&
+        bookingData.checkIn < bookingData.checkOut) {
+      navigationState.checkIn = bookingData.checkIn.toISOString()
+      navigationState.checkOut = bookingData.checkOut.toISOString()
+    }
+
+    console.log("Navigating to room details with state:", navigationState)
 
     navigate(`/hotels/${hotelId}/rooms/${roomId}`, {
-      state: {
-        hotelId,
-        hotelName: hotelData.name,
-        roomId,
-        roomName: selectedRoom.name,
-        basePricePerNight: selectedRoom.basePrice,
-        checkIn: checkInISO,
-        checkOut: checkOutISO,
-        mealPlan: selectedRoom.mealPlan || hotelData.mealPlans[0] || { planName: "All-Inclusive" },
-        previousRoute,
-        selectedNationality,
-      },
+      state: navigationState
     })
   }
 
@@ -318,15 +292,17 @@ function HotelProfile() {
         </section>
 
         <main className="container mx-auto px-2 sm:px-4 py-6 sm:py-8 max-w-[100%] sm:max-w-7xl overflow-x-hidden">
-          <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm mb-6 sm:mb-8">
+          <div className="sticky top-0 z-10 mb-6 sm:mb-8">
             <div className="w-full max-w-[100%] mx-auto px-2 sm:px-4">
-              <div className="bg-white rounded-lg sm:rounded-full shadow-lg p-1 flex overflow-x-auto scrollbar-hide">
+              <div className="bg-gradient-to-r from-platinum/90 to-ash_gray/90 backdrop-blur-sm rounded-xl p-2 flex overflow-x-auto scrollbar-hide border border-gray-200">
                 {tabItems.map((tab, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleTabChange(idx)}
-                    className={`px-3 sm:px-6 py-1.5 sm:py-3 text-xs sm:text-sm font-medium rounded-lg sm:rounded-full transition-all duration-300 min-w-[80px] sm:min-w-[100px] whitespace-nowrap ${
-                      activeTab === idx ? "bg-lapis_lazuli text-white shadow-md" : "text-gray-600 hover:text-lapis_lazuli"
+                    className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium rounded-lg transition-all duration-300 min-w-[80px] sm:min-w-[100px] whitespace-nowrap ${
+                      activeTab === idx 
+                        ? "bg-lapis_lazuli text-white shadow-lg border border-lapis_lazuli" 
+                        : "text-gray-700 hover:text-lapis_lazuli hover:bg-white/50"
                     }`}
                   >
                     {tab}
@@ -423,24 +399,7 @@ function HotelProfile() {
                     </div>
                   </div>
 
-                  {hotelData.liveAvailability && (
-                    <div className="mt-6">
-                      <a
-                        href={hotelData.liveAvailability}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold text-platinum 
-                                   bg-gradient-to-r from-lapis_lazuli to-indigo_dye border-transparent rounded-xl shadow-lg 
-                                   hover:from-indigo_dye hover:to-indigo_dye focus:outline-none focus:ring-2 focus:ring-offset-2 
-                                   focus:ring-indigo_dye transition-all duration-200 hover:shadow-xl"
-                      >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                        Check Live Availability
-                      </a>
-                    </div>
-                  )}
+                  {/* Live Availability button removed as requested */}
                 </div>
               </div>
             )}

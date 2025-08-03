@@ -145,7 +145,7 @@ const Search = () => {
       })
       .catch(err => {
         console.error('Load error', err);
-        alert('Could not load properties.');
+        alert('Could not load Resorts.');
       })
       .finally(() => setLoading(false));
   }, [location]);
@@ -991,7 +991,7 @@ const Search = () => {
       onClick={handleSearch}
       className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm font-medium text-white bg-lapis_lazuli rounded-lg shadow-sm hover:bg-indigo_dye transition-colors"
     >
-      Search Properties
+      Search Resorts
     </button>
   </div>
 </Box>
@@ -1078,17 +1078,17 @@ const Search = () => {
                 <Box id="property-section" sx={{ mb: { xs: 4, sm: 6, md: 8, lg: 12 } }}>
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 lg:mb-8">
                     <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 sm:mb-0">
-                      Available Properties
+                      Available Resorts
                     </h3>
                     <span className="text-lapis_lazuli font-medium text-sm sm:text-base">
-                      {searchResults.length} properties found
+                      {searchResults.length} resorts found
                     </span>
                   </div>
 
                   {searchResults.length === 0 ? (
                     <div className="bg-white rounded-2xl shadow-md p-4 sm:p-8 text-center border border-gray-200">
                       <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                        No properties match your search criteria
+                        No resorts match your search criteria
                       </h4>
                       <p className="text-sm sm:text-base text-gray-600 mb-4">
                         Try adjusting your filters or search for a different hotel/resort name
