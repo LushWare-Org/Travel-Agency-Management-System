@@ -175,7 +175,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#E7E9E5] via-[#B7C5C7] to-[#E7E9E5]">
       <style>{animationStyles}</style>
       <LandingHeader />
 
@@ -212,7 +212,7 @@ const Home = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-delay-4">
                   <Link
                     to="/explore"
-                    className="group bg-white text-gray-900 font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-gray-50 animate-pulse-slow"
+                    className="group bg-[#E7E9E5] text-[#075375] font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7] animate-pulse-slow"
                     onClick={scrollToTop}
                   >
                     <span className="flex items-center">
@@ -234,7 +234,7 @@ const Home = () => {
                   </Link>
                   <Link
                     to="/travel-services"
-                    className="group border-2 border-white text-white font-bold py-4 px-8 rounded-full hover:bg-white hover:text-gray-900 transition-all transform hover:scale-105"
+                    className="group border-2 border-[#E7E9E5] text-[#E7E9E5] font-bold py-4 px-8 rounded-full hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105"
                     onClick={scrollToTop}
                   >
                     Explore Services
@@ -262,37 +262,37 @@ const Home = () => {
       </div>
 
       {/* About Section */}
-      <section className="py-24 bg-white relative overflow-hidden">
+      <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
-              <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium animate-fade-in-left">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+              <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium animate-fade-in-left">
+                <span className="w-2 h-2 bg-[#075375] rounded-full mr-2"></span>
                 About Us
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 animate-fade-in-left animate-delay-1">
+              <h2 className="text-4xl md:text-5xl font-bold text-[#075375] animate-fade-in-left animate-delay-1">
                 Your Gateway to{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
                   Paradise
                 </span>
               </h2>
-              <p className="text-xl text-gray-600 leading-relaxed animate-fade-in-left animate-delay-2">
+              <p className="text-xl text-[#0A435C] leading-relaxed animate-fade-in-left animate-delay-2">
                 We specialize in creating unforgettable experiences in the
                 Maldives. From luxury resorts to exclusive villas, we bring your
                 dream vacation to life.
               </p>
               <div className="grid grid-cols-2 gap-6 animate-fade-in-left animate-delay-3">
                 <div className="text-center p-4">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">
+                  <div className="text-3xl font-bold text-[#005E84] mb-2">
                     500+
                   </div>
-                  <div className="text-gray-600">Happy Guests</div>
+                  <div className="text-[#0A435C]">Happy Guests</div>
                 </div>
                 <div className="text-center p-4">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">
+                  <div className="text-3xl font-bold text-[#005E84] mb-2">
                     50+
                   </div>
-                  <div className="text-gray-600">Premium Resorts</div>
+                  <div className="text-[#0A435C]">Premium Resorts</div>
                 </div>
               </div>
             </div>
@@ -305,27 +305,27 @@ const Home = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
-              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl shadow-lg animate-pulse-slow"></div>
+              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl shadow-lg animate-pulse-slow"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Property Types Section */}
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+            <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
+              <span className="w-2 h-2 bg-[#075375] rounded-full mr-2"></span>
               Property Types
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up animate-delay-1">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
               Choose Your{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
                 Perfect Stay
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+            <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
               From overwater bungalows to beachfront villas, find your ideal
               accommodation
             </p>
@@ -402,24 +402,27 @@ const Home = () => {
             ].map((property, index) => (
               <div
                 key={index}
-                className="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-gray-100 overflow-hidden animate-fade-in-up"
+                className="group bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
                 style={{ animationDelay: `${(index + 3) * 0.2}s` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <div className="bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                     {property.icon}
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-2xl font-bold text-[#075375] mb-4 group-hover:text-[#005E84] transition-colors">
                     {property.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed mb-6">
+                  <p className="text-[#0A435C] leading-relaxed mb-6">
                     {property.description}
                   </p>
                   <ul className="space-y-2">
                     {property.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center text-gray-600">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                      <li
+                        key={idx}
+                        className="flex items-center text-[#0A435C]"
+                      >
+                        <div className="w-2 h-2 bg-[#075375] rounded-full mr-3"></div>
                         {feature}
                       </li>
                     ))}
@@ -432,20 +435,20 @@ const Home = () => {
       </section>
 
       {/* Services Navigation Section */}
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+            <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
+              <span className="w-2 h-2 bg-[#075375] rounded-full mr-2"></span>
               Our Services
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in-up animate-delay-1">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
               Discover Our{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
                 Expertise
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+            <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
               Comprehensive solutions tailored to your Maldives journey
             </p>
           </div>
@@ -472,7 +475,7 @@ const Home = () => {
                     />
                   </svg>
                 ),
-                gradient: "from-blue-500 via-blue-600 to-cyan-500",
+                gradient: "from-[#005E84] via-[#075375] to-[#0A435C]",
                 link: "/travel-services",
                 features: [
                   "Resort Bookings",
@@ -568,7 +571,7 @@ const Home = () => {
               <Link
                 key={index}
                 to={service.link}
-                className="group relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-gray-100 overflow-hidden animate-fade-in-up"
+                className="group relative bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
                 style={{ animationDelay: `${(index + 3) * 0.2}s` }}
                 onClick={scrollToTop}
               >
@@ -583,17 +586,17 @@ const Home = () => {
                       {service.icon}
                     </div>
                     <div className="text-right">
-                      <div className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
+                      <div className="inline-flex items-center px-3 py-1 bg-[#B7C5C7] text-[#075375] rounded-full text-xs font-medium">
                         {service.subtitle}
                       </div>
                     </div>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-2xl font-bold text-[#075375] mb-4 group-hover:text-[#005E84] transition-colors">
                     {service.title}
                   </h3>
 
-                  <p className="text-gray-600 leading-relaxed mb-6">
+                  <p className="text-[#0A435C] leading-relaxed mb-6">
                     {service.description}
                   </p>
 
@@ -601,15 +604,15 @@ const Home = () => {
                     {service.features.map((feature, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center text-sm text-gray-500"
+                        className="flex items-center text-sm text-[#075375]"
                       >
-                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3"></div>
+                        <div className="w-1.5 h-1.5 bg-[#005E84] rounded-full mr-3"></div>
                         {feature}
                       </div>
                     ))}
                   </div>
 
-                  <div className="flex items-center text-blue-600 font-semibold group-hover:translate-x-2 transition-transform">
+                  <div className="flex items-center text-[#005E84] font-semibold group-hover:translate-x-2 transition-transform">
                     Explore Service
                     <svg
                       className="w-4 h-4 ml-2"
@@ -633,9 +636,9 @@ const Home = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/50 to-cyan-600/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div className="max-w-4xl mx-auto">
             <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-white/20 animate-fade-in-up">
@@ -654,7 +657,7 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animate-delay-3">
               <Link
                 to="/travel-services"
-                className="group bg-white text-blue-600 font-bold py-5 px-10 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-gray-50"
+                className="group bg-[#E7E9E5] text-[#075375] font-bold py-5 px-10 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7]"
                 onClick={scrollToTop}
               >
                 <span className="flex items-center">
@@ -676,7 +679,7 @@ const Home = () => {
               </Link>
               <Link
                 to="/contact"
-                className="group border-2 border-white text-white font-bold py-5 px-10 rounded-full hover:bg-white hover:text-blue-600 transition-all transform hover:scale-105"
+                className="group border-2 border-white text-white font-bold py-5 px-10 rounded-full hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105"
                 onClick={scrollToTop}
               >
                 Contact Us
