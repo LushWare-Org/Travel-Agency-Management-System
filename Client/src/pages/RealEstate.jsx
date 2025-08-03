@@ -188,7 +188,7 @@ const RealEstate = () => {
   return (
     <>
       <style>{animationStyles}</style>
-      <div className="min-h-screen bg-gradient-to-br from-[#E7E9E5] via-white to-[#F5F7F5]">
+      <div className="min-h-screen bg-gradient-to-br from-[#E7E9E5] via-[#B7C5C7] to-[#E7E9E5]">
         {/* Hero Section - Parallax Style */}
         <div className="relative h-screen flex items-center justify-center overflow-hidden">
           {/* Background with parallax effect */}
@@ -203,7 +203,7 @@ const RealEstate = () => {
 
           {/* Floating content */}
           <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto animate-fade-in-up">
-            <div className="bg-black/30 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-white/20 animate-scale-in">
+            <div className="bg-[#075375]/30 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-[#B7C5C7]/30 animate-scale-in">
               <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight animate-fade-in-up animate-delay-1">
                 Maldives Real Estate & Construction
               </h1>
@@ -212,10 +212,10 @@ const RealEstate = () => {
                 for homes, businesses, and resorts across the Maldives.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-delay-3">
-                <button className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg animate-float">
+                <button className="px-8 py-4 bg-[#E7E9E5] text-[#075375] font-bold rounded-full hover:bg-[#B7C5C7] transition-all transform hover:scale-105 shadow-lg animate-float">
                   Start Your Project
                 </button>
-                <button className="px-8 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-black transition-all transform hover:scale-105 animate-float animate-delay-1">
+                <button className="px-8 py-4 border-2 border-[#E7E9E5] text-[#E7E9E5] font-bold rounded-full hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105 animate-float animate-delay-1">
                   View Portfolio
                 </button>
               </div>
@@ -224,8 +224,8 @@ const RealEstate = () => {
 
           {/* Scroll indicator */}
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
+            <div className="w-6 h-10 border-2 border-[#E7E9E5] rounded-full flex justify-center">
+              <div className="w-1 h-3 bg-[#E7E9E5] rounded-full mt-2 animate-pulse"></div>
             </div>
           </div>
         </div>
@@ -293,10 +293,10 @@ const RealEstate = () => {
         </section>
 
         {/* Services - Masonry Layout */}
-        <section className="py-20 px-4 bg-white">
+        <section className="py-20 px-4 bg-[#E7E9E5]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 animate-fade-in-up">
-              <h2 className="text-4xl md:text-5xl font-bold text-[#0A435C] mb-6 animate-fade-in-up animate-delay-1">
+              <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
                 Our Construction Services
               </h2>
               <p className="text-xl text-[#075375] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
@@ -317,25 +317,25 @@ const RealEstate = () => {
                   <div className="bg-gradient-to-br from-[#005E84] to-[#075375] rounded-3xl p-8 text-white relative overflow-hidden">
                     {/* Background pattern */}
                     <div className="absolute inset-0 opacity-10">
-                      <div className="absolute top-4 right-4 w-20 h-20 border-2 border-white rounded-full"></div>
-                      <div className="absolute bottom-4 left-4 w-16 h-16 border-2 border-white rounded-full"></div>
+                      <div className="absolute top-4 right-4 w-20 h-20 border-2 border-[#E7E9E5] rounded-full"></div>
+                      <div className="absolute bottom-4 left-4 w-16 h-16 border-2 border-[#E7E9E5] rounded-full"></div>
                     </div>
 
                     <div className="relative z-10">
                       <div className="mb-6">{service.icon}</div>
-                      <h3 className="text-2xl font-bold mb-4 group-hover:text-yellow-300 transition-colors">
+                      <h3 className="text-2xl font-bold mb-4 group-hover:text-[#B7C5C7] transition-colors">
                         {service.title}
                       </h3>
-                      <p className="text-white/90 leading-relaxed mb-6">
+                      <p className="text-[#E7E9E5]/90 leading-relaxed mb-6">
                         {service.desc}
                       </p>
-                      <button className="px-6 py-3 bg-white/20 backdrop-blur-sm rounded-xl text-white font-semibold hover:bg-white/30 transition-all transform hover:scale-105">
+                      <button className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-xl text-[#E7E9E5] font-semibold hover:bg-[#B7C5C7]/30 transition-all transform hover:scale-105">
                         Learn More →
                       </button>
                     </div>
 
                     {/* Hover effect */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#B7C5C7]/20 to-[#E7E9E5]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
                   </div>
                 </div>
               ))}
@@ -376,7 +376,7 @@ const RealEstate = () => {
                     <div
                       className={`w-5/12 ${index % 2 === 0 ? "pr-8" : "pl-8"}`}
                     >
-                      <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
+                      <div className="bg-[#E7E9E5] rounded-2xl p-8 shadow-xl border border-[#B7C5C7]">
                         <div className="flex items-center mb-4">
                           <div className="w-12 h-12 bg-gradient-to-br from-[#005E84] to-[#075375] rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
                             {index + 1}
