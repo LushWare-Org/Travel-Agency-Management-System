@@ -7,7 +7,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: 'http://api.yomaldives.live',
+        target: 'https://api.islekeyholidays.com',
         changeOrigin: true
       },
     },
