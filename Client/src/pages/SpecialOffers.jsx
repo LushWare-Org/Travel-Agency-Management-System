@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navigation from '../Components/Header';
+import { Navigation } from 'lucide-react';
 import Footer from '../Components/Footer';
 import OfferCard from '../Components/OfferCard';
 import axios from 'axios';
