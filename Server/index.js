@@ -7,7 +7,7 @@ const fileUpload = require('express-fileupload');
 const app = express();
 
 app.use(cors({
-  origin: ['https://islekeyholidays.com', 'https://www.islekeyholidays.com', 'http://localhost:5173'],
+  origin: ['https://islekeyholidays.com', 'https://www.islekeyholidays.com'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
