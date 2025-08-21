@@ -4,13 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
 import HotelCard from '../Components/HotelCard';
 import Footer from '../Components/Footer';
 import { countries } from '../assets/nationalities';
@@ -499,629 +493,944 @@ const Search = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen bg-gradient-to-br from-platinum via-ash_gray to-platinum flex justify-center items-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
+        >
+          <div className="relative">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              className="w-16 h-16 border-4 border-lapis_lazuli/20 border-t-lapis_lazuli rounded-full mx-auto mb-4"
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <svg className="w-6 h-6 text-lapis_lazuli" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            </motion.div>
+          </div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-lapis_lazuli font-medium text-lg"
+          >
+            Discovering your perfect getaway...
+          </motion.p>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div>
-        <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
-          {/* Banner */}
-          <header
-            className="bg-cover bg-center h-32 sm:h-40 lg:h-60 shadow-lg rounded-2xl overflow-hidden"
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      className="min-h-screen bg-gradient-to-br from-platinum via-white to-ash_gray/30"
+    >
+      <div className="relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23005E84' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }} />
+        </div>
+
+        <main className="relative px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 max-w-7xl mx-auto">
+          {/* Hero Banner */}
+          <motion.header
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="relative bg-gradient-to-r from-indigo_dye_2 via-lapis_lazuli to-indigo_dye bg-cover bg-center h-40 sm:h-48 lg:h-72 shadow-2xl rounded-3xl overflow-hidden mb-8 sm:mb-12"
             style={{
-              backgroundImage:
-                "linear-gradient(to bottom, rgba(10,67,92,0.5), rgba(10,67,92,0.5)), url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1920')"
+              backgroundImage: "linear-gradient(135deg, rgba(10,67,92,0.85), rgba(0,94,132,0.85)), url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1920')",
+              backgroundBlendMode: 'overlay'
             }}
           >
-            <div className="flex flex-col items-center justify-center h-full text-white text-center px-4">
-              <h1 className="text-lg sm:text-xl lg:text-3xl font-extrabold drop-shadow-md">Discover Paradise</h1>
-              <p className="text-xs sm:text-sm mt-2 drop-shadow-md max-w-md px-4">
-                Find your perfect Maldives getaway with exclusive B2B rates
-              </p>
-            </div>
-          </header>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            <motion.div 
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="relative flex flex-col items-center justify-center h-full text-white text-center px-6"
+            >
+              <div className="space-y-2 sm:space-y-4">
+                <motion.h1 
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  className="text-2xl sm:text-3xl lg:text-5xl font-bold tracking-tight"
+                >
+                  <span className="bg-gradient-to-r from-white to-platinum bg-clip-text text-transparent">
+                    Discover Paradise
+                  </span>
+                </motion.h1>
+                <motion.p 
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.7, duration: 0.6 }}
+                  className="text-sm sm:text-base lg:text-lg text-white/90 max-w-2xl leading-relaxed"
+                >
+                  Find your perfect Maldives getaway with exclusive B2B rates and luxury accommodations
+                </motion.p>
+              </div>
+              
+              {/* Floating Elements */}
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-8 right-8 opacity-20"
+              >
+                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              </motion.div>
+            </motion.div>
+          </motion.header>
 
           {/* Search Form */}
-          <Box sx={{ 
-            mt: { xs: 2, sm: 4, lg: 6 },
-            mx: 'auto',
-            maxWidth: '100%',
-            width: '100%'
-          }}>
-            <Card elevation={5} sx={{
-              borderRadius: 3,
-              overflow: 'hidden',
-              border: '1px solid rgba(183,197,199,0.2)',
-              backgroundColor: '#E7E9E5'
-            }}>
-              <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
-                <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
-                  {/* Destination */}
-                  <Grid item xs={12} md={6} lg={4}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Hotel / Resort Name</label>
-                    <div className="relative destination-dropdown">
-                      <input
-                        type="text"
-                        className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
-                        placeholder="Enter hotel or resort name"
-                        value={destinationSearch}
-                        onChange={e => {
-                          setDestinationSearch(e.target.value);
-                          setShowDestinationDropdown(true);
-                          handleInputChange('destination', e.target.value);
-                        }}
-                        onClick={() => setShowDestinationDropdown(true)}
-                      />
-                      {/* Clear button */}
-                      {selectedDestination && (
-                        <button
-                          type="button"
-                          className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-800"
-                          onClick={() => {
-                            setSelectedDestination(null);
-                            setDestinationSearch('');
-                            handleInputChange('destination', '');
-                          }}
-                        >
-                          ×
-                        </button>
-                      )}
-                      {showDestinationDropdown && (
-                        <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                          {hotels
-                            .filter(h =>
-                              destinationSearch === ''
-                                ? true
-                                : (h.name || '').toLowerCase().includes(destinationSearch.toLowerCase())
-                            )
-                            .map(h => (
-                              <div
-                                key={h._id}
-                                className="px-4 py-2 hover:bg-ash_gray cursor-pointer text-sm sm:text-base"
-                                onClick={() => {
-                                  setSelectedDestination(h);
-                                  setDestinationSearch(h.name);
-                                  handleInputChange('destination', h.name);
-                                  setShowDestinationDropdown(false);
-                                }}
-                              >
-                                {h.name}
-                              </div>
-                            ))}
-                        </div>
-                      )}
-                    </div>
-                  </Grid>
-
-                  {/* Check-in */}
-                  <Grid item xs={12} sm={6} lg={4}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Check-in Date</label>
-                    <div className="relative w-full">
-                      <div
-                        className="relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer w-full"
-                        onClick={() => datePickerRef.current?.setOpen(true)}
-                      >
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-lapis_lazuli">
-                          <svg className="h-4 sm:h-5 w-4 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                          </svg>
-                        </div>
-                        <input
-                          type="text"
-                          value={
-                            dateRange[0]
-                              ? dateRange[0].toLocaleDateString("en-US", {
-                                  month: "short",
-                                  day: "numeric",
-                                  year: "numeric",
-                                })
-                              : ""
-                          }
-                          readOnly
-                          placeholder="Select check-in date"
-                          className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs sm:text-base"
-                        />
-                      </div>
-                      <DatePicker
-                        selectsRange
-                        startDate={dateRange[0]}
-                        endDate={dateRange[1]}
-                        onChange={(dates) => {
-                          const [start, end] = dates;
-                          setDateRange([start, end]);
-                          handleInputChange('checkIn', start || null);
-                          handleInputChange('checkOut', end || null);
-                          if (start && end) {
-                            setTimeout(() => {
-                              datePickerRef.current?.setOpen(false);
-                            }, 100);
-                          }
-                        }}
-                        minDate={new Date()}
-                        dateFormat="MMMM d, yyyy"
-                        popperPlacement="bottom-start"
-                        popperModifiers={[
-                          { name: "offset", options: { offset: [0, 8] } },
-                          { name: "preventOverflow", options: { rootBoundary: "viewport", tether: true, altAxis: true, padding: 8 } },
-                          { name: "flip", options: { fallbackPlacements: ["top", "bottom", "left", "right"] } },
-                        ]}
-                        ref={datePickerRef}
-                        className="absolute opacity-0 pointer-events-none"
-                        shouldCloseOnSelect={false}
-                        selectsStart
-                        monthsShown={1}
-                      />
-                    </div>
-                  </Grid>
-
-                  <Grid item xs={12} sm={6} lg={4}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Check-out Date</label>
-                    <div className="relative w-full">
-                      <div
-                        className="relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer w-full"
-                        onClick={() => datePickerRef.current?.setOpen(true)}
-                      >
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-lapis_lazuli">
-                          <svg className="h-4 sm:h-5 w-4 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                          </svg>
-                        </div>
-                        <input
-                          type="text"
-                          value={
-                            dateRange[1]
-                              ? dateRange[1].toLocaleDateString("en-US", {
-                                  month: "short",
-                                  day: "numeric",
-                                  year: "numeric",
-                                })
-                              : ""
-                          }
-                          readOnly
-                          placeholder="Select check-out date"
-                          className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs sm:text-base"
-                        />
-                      </div>
-                    </div>
-                  </Grid>
-
-                  {/* Custom calendar style*/}
-                  <style jsx global>{`
-                    .react-datepicker {
-                      font-family: 'Inter', sans-serif;
-                      border: 1px solid #e5e7eb;
-                      border-radius: 0.5rem;
-                      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                      width: 260px;
-                      z-index: 1000;
-                      background-color: white;
-                    }
-                    @media (min-width: 640px) {
-                      .react-datepicker {
-                        width: 280px;
-                      }
-                    }
-                    @media (min-width: 768px) {
-                      .react-datepicker {
-                        width: 300px;
-                      }
-                    }
-                    .react-datepicker__header {
-                      background-color: #005E84;
-                      color: white;
-                      border-top-left-radius: 0.5rem;
-                      border-top-right-radius: 0.5rem;
-                      padding: 0.5rem;
-                    }
-                    .react-datepicker__current-month,
-                    .react-datepicker__day-name {
-                      color: white;
-                      font-weight: 600;
-                      font-size: 0.7rem;
-                    }
-                    @media (min-width: 640px) {
-                      .react-datepicker__current-month,
-                      .react-datepicker__day-name {
-                        font-size: 0.75rem;
-                      }
-                    }
-                    @media (min-width: 768px) {
-                      .react-datepicker__current-month,
-                      .react-datepicker__day-name {
-                        font-size: 0.875rem;
-                      }
-                    }
-                    .react-datepicker__day {
-                      color: #1f2937;
-                      border-radius: 0.375rem;
-                      transition: all 0.2s;
-                      width: 30px;
-                      height: 30px;
-                      line-height: 30px;
-                      font-size: 0.7rem;
-                    }
-                    @media (min-width: 640px) {
-                      .react-datepicker__day {
-                        width: 32px;
-                        height: 32px;
-                        line-height: 32px;
-                        font-size: 0.75rem;
-                      }
-                    }
-                    @media (min-width: 768px) {
-                      .react-datepicker__day {
-                        width: 36px;
-                        height: 36px;
-                        line-height: 36px;
-                        font-size: 0.875rem;
-                      }
-                    }
-                    .react-datepicker__day:hover {
-                      background-color: #B7C5C7;
-                      color: #005E84;
-                    }
-                    .react-datepicker__day--selected,
-                    .react-datepicker__day--in-range,
-                    .react-datepicker__day--in-selecting-range {
-                      background-color: #B7C5C7;
-                      color: #005E84;
-                    }
-                    .react-datepicker__day--range-start,
-                    .react-datepicker__day--range-end {
-                      background-color: #005E84 !important;
-                      color: white !important;
-                    }
-                    .react-datepicker__day--range-start:hover,
-                    .react-datepicker__day--range-end:hover {
-                      background-color: #075375 !important;
-                    }
-                    .react-datepicker__navigation-icon::before {
-                      border-color: white;
-                    }
-                    .react-datepicker__triangle {
-                      display: none;
-                    }
-                    .react-datepicker-popper {
-                      z-index: 1000;
-                    }
-                    .react-datepicker__month-container {
-                      width: 100%;
-                    }
-                    .scrollbar-hide::-webkit-scrollbar {
-                      display: none;
-                    }
-                    .scrollbar-hide {
-                      -ms-overflow-style: none;
-                      scrollbar-width: none;
-                    }
-                  `}</style>
-
-                  {/* Nationality */}
-                  <Grid item xs={12} sm={6} lg={4}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Nationality</label>
-                    <div className="relative nationality-dropdown">
-                      <input
-                        type="text"
-                        className="w-full h-12 pl-3 pr-10 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
-                        placeholder="Search country..."
-                        value={countrySearch}
-                        onChange={e => {
-                          setCountrySearch(e.target.value);
-                          setShowCountryDropdown(true);
-                        }}
-                        onClick={() => setShowCountryDropdown(true)}
-                      />
-
-                      {/* Clear button */}
-                      {selectedCountry && (
-                        <button
-                          type="button"
-                          className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-800"
-                          onClick={() => {
-                            setSelectedCountry(null);
-                            setCountrySearch('');
-                            handleInputChange('nationality', '');
-                          }}
-                        >
-                          ×
-                        </button>
-                      )}
-
-                      {showCountryDropdown && (
-                        <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                          {countries
-                            .filter(c =>
-                              countrySearch === ''
-                                ? true
-                                : c.name.toLowerCase().includes(countrySearch.toLowerCase())
-                            )
-                            .map(c => (
-                              <div
-                                key={c.name}
-                                className="px-4 py-2 hover:bg-ash_gray cursor-pointer"
-                                onClick={() => {
-                                  setSelectedCountry(c);
-                                  setCountrySearch(c.flag + ' ' + c.name);
-                                  handleInputChange('nationality', c.name);
-                                  setShowCountryDropdown(false);
-                                }}
-                              >
-                                {c.flag} {c.name}
-                              </div>
-                            ))}
-                        </div>
-                      )}
-                    </div>
-                  </Grid>
-
-                  {/* Meal Plan */}
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Meal Plan</label>
-                    <select
-                      className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
-                      value={searchParams.mealPlan}
-                      onChange={e => handleInputChange('mealPlan', e.target.value)}
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="relative"
+          >
+            <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+              <div className="bg-gradient-to-r from-platinum to-ash_gray/50 p-1">
+                <div className="bg-white rounded-3xl p-6 sm:p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    
+                    {/* Destination */}
+                    <motion.div
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.6, duration: 0.5 }}
+                      className="lg:col-span-2"
                     >
-                      <option value="">All Meal Plans</option>
-                      <option value="Full Board">Full Board</option>
-                      <option value="Half Board">Half Board</option>
-                      <option value="All-Inclusive">All-Inclusive</option>
-                    </select>
-                  </Grid>
-
-                  {/* Rooms */}
-                  <Grid item xs={6} sm={6} lg={3}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Rooms</label>
-                    <div className="flex items-center h-10 sm:h-12 bg-gray-50 border border-gray-300 rounded-lg overflow-hidden">
-                      <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
-                        onClick={() => handleInputChange('rooms', Math.max(1, searchParams.rooms - 1))}
-                      >−</button>
-                      <div className="flex-1 text-center text-sm sm:text-base font-medium">
-                        {searchParams.rooms}
-                      </div>
-                      <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
-                        onClick={() => handleInputChange('rooms', searchParams.rooms + 1)}
-                      >+</button>
-                    </div>
-                  </Grid>
-
-                  {/* Adults */}
-                  <Grid item xs={6} sm={6} lg={3}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Adults</label>
-                    <div className="flex items-center h-10 sm:h-12 bg-gray-50 border border-gray-300 rounded-lg overflow-hidden">
-                      <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
-                        onClick={() => handleInputChange('adults', Math.max(1, searchParams.adults - 1))}
-                      >−</button>
-                      <div className="flex-1 text-center text-sm sm:text-base font-medium">
-                        {searchParams.adults}
-                      </div>
-                      <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
-                        onClick={() => handleInputChange('adults', searchParams.adults + 1)}
-                      >+</button>
-                    </div>
-                  </Grid>
-
-                  {/* Children */}
-                  <Grid item xs={6} sm={6} lg={3}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Children</label>
-                    <div className="flex items-center h-10 sm:h-12 bg-gray-50 border border-gray-300 rounded-lg overflow-hidden">
-                      <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
-                        onClick={() => handleChildrenChange(Math.max(0, searchParams.children - 1))}
-                      >−</button>
-                      <div className="flex-1 text-center text-sm sm:text-base font-medium">
-                        {searchParams.children}
-                      </div>
-                      <button
-                        className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
-                        onClick={() => handleChildrenChange(searchParams.children + 1)}
-                      >+</button>
-                    </div>
-                  </Grid>
-
-                  {/* Children Ages */}
-                  {searchParams.children > 0 && (
-                    <Grid item xs={12}>
-                      <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gray-50 rounded-lg">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Children Ages</label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-4">
-                          {searchParams.childrenAges.map((age, i) => (
-                            <select
-                              key={i}
-                              className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
-                              value={age}
-                              onChange={e => handleChildAgeChange(i, e.target.value)}
+                      <label className="block text-sm font-semibold text-indigo_dye_2 mb-2">
+                        🏝️ Hotel / Resort Name
+                      </label>
+                      <div className="relative destination-dropdown group">
+                        <input
+                          type="text"
+                          className="w-full h-12 sm:h-14 pl-4 pr-12 text-base text-gray-700 bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-lapis_lazuli/50 focus:border-lapis_lazuli transition-all duration-300 placeholder-gray-400"
+                          placeholder="Search paradise destinations..."
+                          value={destinationSearch}
+                          onChange={e => {
+                            setDestinationSearch(e.target.value);
+                            setShowDestinationDropdown(true);
+                            handleInputChange('destination', e.target.value);
+                          }}
+                          onClick={() => setShowDestinationDropdown(true)}
+                        />
+                        <div className="absolute inset-y-0 right-0 px-4 flex items-center">
+                          <svg className="h-5 w-5 text-lapis_lazuli" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                          </svg>
+                        </div>
+                        
+                        {selectedDestination && (
+                          <motion.button
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            type="button"
+                            className="absolute inset-y-0 right-10 px-2 flex items-center text-gray-400 hover:text-red-500 transition-colors"
+                            onClick={() => {
+                              setSelectedDestination(null);
+                              setDestinationSearch('');
+                              handleInputChange('destination', '');
+                            }}
+                          >
+                            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </motion.button>
+                        )}
+                        
+                        <AnimatePresence>
+                          {showDestinationDropdown && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              transition={{ duration: 0.2 }}
+                              className="absolute z-20 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-2xl max-h-60 overflow-y-auto"
                             >
-                              {[...Array(18).keys()].map(n => (
-                                <option key={n} value={n}>{n} {n === 1 ? 'year' : 'years'}</option>
-                              ))}
-                            </select>
-                          ))}
+                              {hotels
+                                .filter(h =>
+                                  destinationSearch === ''
+                                    ? true
+                                    : (h.name || '').toLowerCase().includes(destinationSearch.toLowerCase())
+                                )
+                                .map(h => (
+                                  <motion.div
+                                    key={h._id}
+                                    whileHover={{ backgroundColor: "#B7C5C7", x: 4 }}
+                                    className="px-4 py-3 hover:bg-ash_gray cursor-pointer text-base transition-colors border-b border-gray-100 last:border-b-0"
+                                    onClick={() => {
+                                      setSelectedDestination(h);
+                                      setDestinationSearch(h.name);
+                                      handleInputChange('destination', h.name);
+                                      setShowDestinationDropdown(false);
+                                    }}
+                                  >
+                                    <div className="flex items-center space-x-2">
+                                      <span className="text-lapis_lazuli">🏨</span>
+                                      <span className="text-gray-700">{h.name}</span>
+                                    </div>
+                                  </motion.div>
+                                ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </motion.div>
+
+                    {/* Check-in & Check-out */}
+                    <motion.div
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.7, duration: 0.5 }}
+                      className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                    >
+                      <div>
+                        <label className="block text-sm font-semibold text-indigo_dye_2 mb-2">
+                          📅 Check-in Date
+                        </label>
+                        <div className="relative">
+                          <div
+                            className="relative bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer h-12 sm:h-14 group"
+                            onClick={() => datePickerRef.current?.setOpen(true)}
+                          >
+                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-lapis_lazuli group-hover:text-indigo_dye transition-colors">
+                              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                            </div>
+                            <input
+                              type="text"
+                              value={
+                                dateRange[0]
+                                  ? dateRange[0].toLocaleDateString("en-US", {
+                                      month: "short",
+                                      day: "numeric",
+                                      year: "numeric",
+                                    })
+                                  : ""
+                              }
+                              readOnly
+                              placeholder="Select arrival"
+                              className="w-full pl-12 pr-4 py-3 bg-transparent text-gray-700 focus:outline-none cursor-pointer text-base placeholder-gray-400"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </Grid>
-                  )}
-                </Grid>
 
-                  {/* Buttons */}                    
-                  <Box sx={{ 
-  display: 'flex', 
-  flexDirection: { xs: 'column', sm: 'row' }, 
-  justifyContent: 'space-between', 
-  alignItems: { xs: 'stretch', sm: 'center' }, 
-  gap: { xs: 2, sm: 0 }, 
-  mt: { xs: 3, sm: 4 }, 
-  mb: { xs: 4, sm: 5 } 
-}}>
-  <button
-    onClick={() => setShowFilters(f => !f)}
-    className="flex items-center justify-center sm:justify-start text-lapis_lazuli font-medium text-sm hover:text-indigo_dye transition-colors"
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-      <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
-    </svg>
-    {showFilters ? 'Hide Filters' : 'Show Filters'}
-  </button>
-  <div className="flex flex-col sm:flex-row gap-2">
-    <button
-      onClick={handleReset}
-      className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-    >
-      Reset
-    </button>
-    <button
-      onClick={handleSearch}
-      className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm font-medium text-white bg-lapis_lazuli rounded-lg shadow-sm hover:bg-indigo_dye transition-colors"
-    >
-      Search Resorts
-    </button>
-  </div>
-</Box>
-
-                  {/* Advanced Filters */}
-                  {showFilters && (
-                    <Box sx={{ 
-                      mt: { xs: 3, sm: 4 }, 
-                      mb: { xs: 4, sm: 6 }, 
-                      pt: { xs: 3, sm: 4 },
-                      borderTop: '1px solid #e5e7eb' 
-                  }}>
-                    <Typography variant="h6" sx={{ 
-                      fontWeight: 600, 
-                      mb: { xs: 2, sm: 3 },
-                      fontSize: { xs: '1rem', sm: '1.25rem' }
-                    }}>
-                      Advanced Filters
-                    </Typography>
-                    <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
-                      {/* Price Range */}
-                      <Grid item xs={12} md={8}>
-                        <label className="block text-sm font-medium text-gray-700 mb-2 sm:mb-3">
-                          Price Range (${searchParams.priceRange[0]} – ${searchParams.priceRange[1]})
+                      <div>
+                        <label className="block text-sm font-semibold text-indigo_dye_2 mb-2">
+                          📅 Check-out Date
                         </label>
-                        <div className="h-2 bg-ash_gray rounded-full w-full">
+                        <div className="relative">
                           <div
-                            className="h-2 bg-lapis_lazuli rounded-full"
-                            style={calculatePriceRangeStyles()}
-                          />
-                        </div>
-                        <div className="flex gap-3 sm:gap-4 justify-between mt-2 sm:mt-3">
-                          <div className="w-full">
+                            className="relative bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer h-12 sm:h-14 group"
+                            onClick={() => datePickerRef.current?.setOpen(true)}
+                          >
+                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-lapis_lazuli group-hover:text-indigo_dye transition-colors">
+                              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                            </div>
                             <input
-                              type="number"
-                              className="w-full h-10 sm:h-12 px-3 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg"
-                              value={searchParams.priceRange[0]}
-                              onChange={e => {
-                                const value = parseInt(e.target.value) || globalPriceRange[0];
-                                handlePriceRangeChange(value, searchParams.priceRange[1]);
-                              }}
-                              min={globalPriceRange[0]}
-                              max={searchParams.priceRange[1] - 1}
+                              type="text"
+                              value={
+                                dateRange[1]
+                                  ? dateRange[1].toLocaleDateString("en-US", {
+                                      month: "short",
+                                      day: "numeric",
+                                      year: "numeric",
+                                    })
+                                  : ""
+                              }
+                              readOnly
+                              placeholder="Select departure"
+                              className="w-full pl-12 pr-4 py-3 bg-transparent text-gray-700 focus:outline-none cursor-pointer text-base placeholder-gray-400"
                             />
-                            <span className="text-xs text-gray-500 mt-1 block">Min: ${globalPriceRange[0]}</span>
-                          </div>
-                          <div className="w-full">
-                            <input
-                              type="number"
-                              className="w-full h-10 sm:h-12 px-3 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg"
-                              value={searchParams.priceRange[1]}
-                              onChange={e => {
-                                const value = parseInt(e.target.value) || globalPriceRange[1];
-                                handlePriceRangeChange(searchParams.priceRange[0], value);
-                              }}
-                              min={searchParams.priceRange[0] + 1}
-                              max={globalPriceRange[1]}
-                            />
-                            <span className="text-xs text-gray-500 mt-1 block">Max: ${globalPriceRange[1]}</span>
                           </div>
                         </div>
-                      </Grid>
+                      </div>
+                    </motion.div>
 
-                      {/* Sort By */}
-                      <Grid item xs={12} md={4}>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+                    <DatePicker
+                      selectsRange
+                      startDate={dateRange[0]}
+                      endDate={dateRange[1]}
+                      onChange={(dates) => {
+                        const [start, end] = dates;
+                        setDateRange([start, end]);
+                        handleInputChange('checkIn', start || null);
+                        handleInputChange('checkOut', end || null);
+                        if (start && end) {
+                          setTimeout(() => {
+                            datePickerRef.current?.setOpen(false);
+                          }, 100);
+                        }
+                      }}
+                      minDate={new Date()}
+                      dateFormat="MMMM d, yyyy"
+                      popperPlacement="bottom-start"
+                      popperModifiers={[
+                        { name: "offset", options: { offset: [0, 8] } },
+                        { name: "preventOverflow", options: { rootBoundary: "viewport", tether: true, altAxis: true, padding: 8 } },
+                        { name: "flip", options: { fallbackPlacements: ["top", "bottom", "left", "right"] } },
+                      ]}
+                      ref={datePickerRef}
+                      className="absolute opacity-0 pointer-events-none"
+                      shouldCloseOnSelect={false}
+                      selectsStart
+                      monthsShown={1}
+                    />
+
+                    {/* Nationality */}
+                    <motion.div
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.8, duration: 0.5 }}
+                    >
+                      <label className="block text-sm font-semibold text-indigo_dye_2 mb-2">
+                        🌍 Nationality
+                      </label>
+                      <div className="relative nationality-dropdown group">
+                        <input
+                          type="text"
+                          className="w-full h-12 sm:h-14 pl-4 pr-12 text-base text-gray-700 bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-lapis_lazuli/50 focus:border-lapis_lazuli transition-all duration-300 placeholder-gray-400"
+                          placeholder="Select your country..."
+                          value={countrySearch}
+                          onChange={e => {
+                            setCountrySearch(e.target.value);
+                            setShowCountryDropdown(true);
+                          }}
+                          onClick={() => setShowCountryDropdown(true)}
+                        />
+                        <div className="absolute inset-y-0 right-0 px-4 flex items-center">
+                          <svg className="h-5 w-5 text-lapis_lazuli" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+
+                        {selectedCountry && (
+                          <motion.button
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            type="button"
+                            className="absolute inset-y-0 right-10 px-2 flex items-center text-gray-400 hover:text-red-500 transition-colors"
+                            onClick={() => {
+                              setSelectedCountry(null);
+                              setCountrySearch('');
+                              handleInputChange('nationality', '');
+                            }}
+                          >
+                            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </motion.button>
+                        )}
+
+                        <AnimatePresence>
+                          {showCountryDropdown && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              transition={{ duration: 0.2 }}
+                              className="absolute z-20 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-2xl max-h-60 overflow-y-auto"
+                            >
+                              {countries
+                                .filter(c =>
+                                  countrySearch === ''
+                                    ? true
+                                    : c.name.toLowerCase().includes(countrySearch.toLowerCase())
+                                )
+                                .map(c => (
+                                  <motion.div
+                                    key={c.name}
+                                    whileHover={{ backgroundColor: "#B7C5C7", x: 4 }}
+                                    className="px-4 py-3 hover:bg-ash_gray cursor-pointer transition-colors border-b border-gray-100 last:border-b-0 flex items-center space-x-3"
+                                    onClick={() => {
+                                      setSelectedCountry(c);
+                                      setCountrySearch(c.flag + ' ' + c.name);
+                                      handleInputChange('nationality', c.name);
+                                      setShowCountryDropdown(false);
+                                    }}
+                                  >
+                                    <span className="text-lg">{c.flag}</span>
+                                    <span className="text-gray-700 font-medium">{c.name}</span>
+                                  </motion.div>
+                                ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </motion.div>
+
+                    {/* Guest Details */}
+                    <motion.div
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.9, duration: 0.5 }}
+                      className="grid grid-cols-2 sm:grid-cols-4 gap-4"
+                    >
+                      {/* Meal Plan */}
+                      <div className="col-span-2">
+                        <label className="block text-sm font-semibold text-indigo_dye_2 mb-2">
+                          🍽️ Meal Plan
+                        </label>
                         <select
-                          className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
-                          value={searchParams.sortBy}
-                          onChange={e => handleInputChange('sortBy', e.target.value)}
+                          className="w-full h-12 sm:h-14 pl-4 pr-10 text-base text-gray-700 bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-lapis_lazuli/50 focus:border-lapis_lazuli transition-all duration-300 cursor-pointer"
+                          value={searchParams.mealPlan}
+                          onChange={e => handleInputChange('mealPlan', e.target.value)}
                         >
-                          <option value="price_low">Price: Low to High</option>
-                          <option value="price_high">Price: High to Low</option>
-                          <option value="rating">Highest Rating</option>
-                          <option value="popularity">Most Popular</option>
-                          <option value="availability">Availability</option>
+                          <option value="">All Meal Plans</option>
+                          <option value="Full Board">Full Board</option>
+                          <option value="Half Board">Half Board</option>
+                          <option value="All-Inclusive">All-Inclusive</option>
                         </select>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                )}
+                      </div>
 
-                {/* Results */}
-                <Box id="property-section" sx={{ mb: { xs: 4, sm: 6, md: 8, lg: 12 } }}>
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 lg:mb-8">
-                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 sm:mb-0">
-                      Available Resorts
-                    </h3>
-                    <span className="text-lapis_lazuli font-medium text-sm sm:text-base">
-                      {searchResults.length} resorts found
-                    </span>
+                      {/* Rooms */}
+                      <div>
+                        <label className="block text-sm font-semibold text-indigo_dye_2 mb-2">
+                          🏠 Rooms
+                        </label>
+                        <div className="flex items-center h-12 sm:h-14 bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 rounded-xl overflow-hidden">
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="w-12 h-full flex items-center justify-center text-lapis_lazuli hover:bg-ash_gray/50 transition-colors"
+                            onClick={() => handleInputChange('rooms', Math.max(1, searchParams.rooms - 1))}
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                            </svg>
+                          </motion.button>
+                          <div className="flex-1 text-center text-base font-semibold text-gray-700">
+                            {searchParams.rooms}
+                          </div>
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="w-12 h-full flex items-center justify-center text-lapis_lazuli hover:bg-ash_gray/50 transition-colors"
+                            onClick={() => handleInputChange('rooms', searchParams.rooms + 1)}
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                          </motion.button>
+                        </div>
+                      </div>
+
+                      {/* Adults */}
+                      <div>
+                        <label className="block text-sm font-semibold text-indigo_dye_2 mb-2">
+                          👥 Adults
+                        </label>
+                        <div className="flex items-center h-12 sm:h-14 bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 rounded-xl overflow-hidden">
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="w-12 h-full flex items-center justify-center text-lapis_lazuli hover:bg-ash_gray/50 transition-colors"
+                            onClick={() => handleInputChange('adults', Math.max(1, searchParams.adults - 1))}
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                            </svg>
+                          </motion.button>
+                          <div className="flex-1 text-center text-base font-semibold text-gray-700">
+                            {searchParams.adults}
+                          </div>
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="w-12 h-full flex items-center justify-center text-lapis_lazuli hover:bg-ash_gray/50 transition-colors"
+                            onClick={() => handleInputChange('adults', searchParams.adults + 1)}
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                          </motion.button>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Children */}
+                    <motion.div
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 1.0, duration: 0.5 }}
+                      className="grid grid-cols-1 gap-4"
+                    >
+                      <div>
+                        <label className="block text-sm font-semibold text-indigo_dye_2 mb-2">
+                          👶 Children (0-17 years)
+                        </label>
+                        <div className="flex items-center h-12 sm:h-14 bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 rounded-xl overflow-hidden max-w-xs">
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="w-12 h-full flex items-center justify-center text-lapis_lazuli hover:bg-ash_gray/50 transition-colors"
+                            onClick={() => handleChildrenChange(Math.max(0, searchParams.children - 1))}
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                            </svg>
+                          </motion.button>
+                          <div className="flex-1 text-center text-base font-semibold text-gray-700">
+                            {searchParams.children}
+                          </div>
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="w-12 h-full flex items-center justify-center text-lapis_lazuli hover:bg-ash_gray/50 transition-colors"
+                            onClick={() => handleChildrenChange(searchParams.children + 1)}
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                          </motion.button>
+                        </div>
+                      </div>
+
+                      {/* Children Ages */}
+                      <AnimatePresence>
+                        {searchParams.children > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="bg-gradient-to-r from-ash_gray/20 to-platinum/30 rounded-xl p-4 border border-ash_gray/30"
+                          >
+                            <label className="block text-sm font-semibold text-indigo_dye_2 mb-3">
+                              Children Ages
+                            </label>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                              {searchParams.childrenAges.map((age, i) => (
+                                <motion.select
+                                  key={i}
+                                  initial={{ opacity: 0, scale: 0.8 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ delay: i * 0.1 }}
+                                  className="w-full h-10 sm:h-12 pl-3 pr-8 text-sm text-gray-700 bg-white border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli/50 focus:border-lapis_lazuli transition-all duration-300"
+                                  value={age}
+                                  onChange={e => handleChildAgeChange(i, e.target.value)}
+                                >
+                                  {[...Array(18).keys()].map(n => (
+                                    <option key={n} value={n}>{n} {n === 1 ? 'year' : 'years'}</option>
+                                  ))}
+                                </motion.select>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
                   </div>
 
-                  {searchResults.length === 0 ? (
-                    <div className="bg-white rounded-2xl shadow-md p-4 sm:p-8 text-center border border-gray-200">
-                      <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                        No resorts match your search criteria
-                      </h4>
-                      <p className="text-sm sm:text-base text-gray-600 mb-4">
-                        Try adjusting your filters or search for a different hotel/resort name
-                      </p>
-                      <button
-                        onClick={() => setShowFilters(true)}
-                        className="bg-lapis_lazuli text-white px-4 sm:px-6 py-2 text-sm sm:text-base rounded-lg font-semibold hover:bg-indigo_dye transition-colors shadow-md"
+                  {/* Action Buttons */}
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 1.1, duration: 0.5 }}
+                    className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-ash_gray/30"
+                  >
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setShowFilters(f => !f)}
+                      className="flex items-center justify-center text-lapis_lazuli font-semibold text-sm hover:text-indigo_dye transition-colors group"
+                    >
+                      <motion.svg 
+                        animate={{ rotate: showFilters ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" 
+                        viewBox="0 0 20 20" 
+                        fill="currentColor"
                       >
-                        Modify Search
-                      </button>
+                        <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
+                      </motion.svg>
+                      {showFilters ? 'Hide Advanced Filters' : 'Show Advanced Filters'}
+                    </motion.button>
+
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <motion.button
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleReset}
+                        className="px-6 py-3 text-sm font-semibold text-gray-600 bg-gradient-to-r from-gray-100 to-gray-200 rounded-xl hover:from-gray-200 hover:to-gray-300 transition-all duration-300 shadow-sm hover:shadow-md"
+                      >
+                        Reset Filters
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleSearch}
+                        className="px-8 py-3 text-sm font-semibold text-white bg-gradient-to-r from-lapis_lazuli to-indigo_dye rounded-xl shadow-lg hover:shadow-xl hover:from-indigo_dye hover:to-indigo_dye_2 transition-all duration-300 transform"
+                      >
+                        <span className="flex items-center space-x-2">
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                          </svg>
+                          <span>Search Paradise</span>
+                        </span>
+                      </motion.button>
                     </div>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Advanced Filters */}
+          <AnimatePresence>
+            {showFilters && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="mt-6 overflow-hidden"
+              >
+                <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+                  <div className="bg-gradient-to-r from-indigo_dye_2 to-lapis_lazuli p-1">
+                    <div className="bg-white rounded-3xl p-6 sm:p-8">
+                      <motion.h3
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-xl sm:text-2xl font-bold text-indigo_dye_2 mb-6 flex items-center"
+                      >
+                        <span className="mr-3">🎯</span>
+                        Advanced Filters
+                      </motion.h3>
+                      
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        {/* Price Range */}
+                        <motion.div
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: 0.3 }}
+                          className="lg:col-span-2"
+                        >
+                          <label className="block text-sm font-semibold text-indigo_dye_2 mb-4">
+                            💰 Price Range (${searchParams.priceRange[0]} – ${searchParams.priceRange[1]})
+                          </label>
+                          
+                          <div className="relative mb-6">
+                            <div className="h-3 bg-gradient-to-r from-ash_gray/50 to-ash_gray rounded-full">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: calculatePriceRangeStyles().width }}
+                                transition={{ duration: 0.5, ease: "easeOut" }}
+                                className="h-3 bg-gradient-to-r from-lapis_lazuli to-indigo_dye rounded-full shadow-sm"
+                                style={{ marginLeft: calculatePriceRangeStyles().marginLeft }}
+                              />
+                            </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-xs font-medium text-gray-600 mb-2">Minimum Price</label>
+                              <input
+                                type="number"
+                                className="w-full h-12 px-4 text-base text-gray-700 bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-lapis_lazuli/50 focus:border-lapis_lazuli transition-all duration-300"
+                                value={searchParams.priceRange[0]}
+                                onChange={e => {
+                                  const value = parseInt(e.target.value) || globalPriceRange[0];
+                                  handlePriceRangeChange(value, searchParams.priceRange[1]);
+                                }}
+                                min={globalPriceRange[0]}
+                                max={searchParams.priceRange[1] - 1}
+                              />
+                              <span className="text-xs text-gray-500 mt-1 block">Min: ${globalPriceRange[0]}</span>
+                            </div>
+                            <div>
+                              <label className="block text-xs font-medium text-gray-600 mb-2">Maximum Price</label>
+                              <input
+                                type="number"
+                                className="w-full h-12 px-4 text-base text-gray-700 bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-lapis_lazuli/50 focus:border-lapis_lazuli transition-all duration-300"
+                                value={searchParams.priceRange[1]}
+                                onChange={e => {
+                                  const value = parseInt(e.target.value) || globalPriceRange[1];
+                                  handlePriceRangeChange(searchParams.priceRange[0], value);
+                                }}
+                                min={searchParams.priceRange[0] + 1}
+                                max={globalPriceRange[1]}
+                              />
+                              <span className="text-xs text-gray-500 mt-1 block">Max: ${globalPriceRange[1]}</span>
+                            </div>
+                          </div>
+                        </motion.div>
+
+                        {/* Sort By */}
+                        <motion.div
+                          initial={{ x: 20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: 0.4 }}
+                        >
+                          <label className="block text-sm font-semibold text-indigo_dye_2 mb-4">
+                            📊 Sort Results By
+                          </label>
+                          <select
+                            className="w-full h-12 px-4 text-base text-gray-700 bg-gradient-to-r from-gray-50 to-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-lapis_lazuli/50 focus:border-lapis_lazuli transition-all duration-300 cursor-pointer"
+                            value={searchParams.sortBy}
+                            onChange={e => handleInputChange('sortBy', e.target.value)}
+                          >
+                            <option value="price_low">💸 Price: Low to High</option>
+                            <option value="price_high">💰 Price: High to Low</option>
+                            <option value="rating">⭐ Highest Rating</option>
+                            <option value="popularity">🔥 Most Popular</option>
+                            <option value="availability">🏨 Best Availability</option>
+                          </select>
+                        </motion.div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Results Section */}
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="mt-8 sm:mt-12"
+          >
+            <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+              <div className="bg-gradient-to-r from-platinum to-ash_gray/50 p-1">
+                <div className="bg-white rounded-3xl p-6 sm:p-8">
+                  {/* Results Header */}
+                  <motion.div
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.7 }}
+                    className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 pb-4 border-b border-ash_gray/30"
+                  >
+                    <div>
+                      <h3 className="text-2xl sm:text-3xl font-bold text-indigo_dye_2 mb-2 flex items-center">
+                        <span className="mr-3">🏝️</span>
+                        Available Paradise Resorts
+                      </h3>
+                      <p className="text-gray-600">Discover your perfect tropical getaway</p>
+                    </div>
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
+                      className="bg-gradient-to-r from-lapis_lazuli to-indigo_dye text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg mt-4 sm:mt-0"
+                    >
+                      {searchResults.length} resort{searchResults.length !== 1 ? 's' : ''} found
+                    </motion.div>
+                  </motion.div>
+
+                  {/* Results Content */}
+                  {searchResults.length === 0 ? (
+                    <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                      className="text-center py-16"
+                    >
+                      <div className="relative">
+                        <motion.div
+                          animate={{ y: [0, -10, 0] }}
+                          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                          className="inline-block"
+                        >
+                          <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-ash_gray/20 to-platinum/40 rounded-full flex items-center justify-center">
+                            <svg className="w-12 h-12 text-lapis_lazuli/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                          </div>
+                        </motion.div>
+                        
+                        <h4 className="text-xl sm:text-2xl font-bold text-indigo_dye_2 mb-3">
+                          No paradise found... yet!
+                        </h4>
+                        <p className="text-gray-600 mb-6 max-w-md mx-auto leading-relaxed">
+                          Try adjusting your search criteria or explore different destinations to find your perfect tropical escape.
+                        </p>
+                        <motion.button
+                          whileHover={{ scale: 1.05, y: -2 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => setShowFilters(true)}
+                          className="bg-gradient-to-r from-lapis_lazuli to-indigo_dye text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 transform"
+                        >
+                          Adjust Search Filters
+                        </motion.button>
+                      </div>
+                    </motion.div>
                   ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
-                      {searchResults.map(p => (
-                        <div key={p._id} className="flex w-full">
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.9, duration: 0.5 }}
+                      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+                    >
+                      {searchResults.map((property, index) => (
+                        <motion.div
+                          key={property._id}
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ 
+                            delay: 0.9 + (index * 0.1), 
+                            duration: 0.5,
+                            ease: "easeOut"
+                          }}
+                          whileHover={{ y: -5 }}
+                          className="group"
+                        >
                           <HotelCard
-                            hotel={p}
-                            availbleNoOfRooms={p.rooms.length}
-                            onClick={() => handlePropertyClick(p._id)}
-                            onFavoriteToggle={() => toggleFavorite(p._id)}
-                            isFavorite={Boolean(favorites[p._id])}
+                            hotel={property}
+                            availbleNoOfRooms={property.rooms.length}
+                            onClick={() => handlePropertyClick(property._id)}
+                            onFavoriteToggle={() => toggleFavorite(property._id)}
+                            isFavorite={Boolean(favorites[property._id])}
                           />
-                        </div>
+                        </motion.div>
                       ))}
-                    </div>
+                    </motion.div>
                   )}
-                </Box>
-              </CardContent>
-            </Card>
-          </Box>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Custom Calendar Styles */}
+          <style jsx global>{`
+            .react-datepicker {
+              font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+              border: 2px solid #E7E9E5;
+              border-radius: 1rem;
+              box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+              width: 320px;
+              z-index: 1000;
+              background-color: white;
+              overflow: hidden;
+            }
+            
+            .react-datepicker__header {
+              background: linear-gradient(135deg, #005E84, #075375);
+              color: white;
+              border-top-left-radius: 1rem;
+              border-top-right-radius: 1rem;
+              padding: 1rem;
+              border-bottom: none;
+            }
+            
+            .react-datepicker__current-month,
+            .react-datepicker__day-name {
+              color: white;
+              font-weight: 700;
+              font-size: 0.875rem;
+            }
+            
+            .react-datepicker__day-names {
+              border-bottom: 1px solid rgba(255,255,255,0.2);
+              padding-bottom: 0.5rem;
+              margin-bottom: 0.5rem;
+            }
+            
+            .react-datepicker__day {
+              color: #374151;
+              border-radius: 0.5rem;
+              transition: all 0.2s ease;
+              width: 36px;
+              height: 36px;
+              line-height: 36px;
+              font-size: 0.875rem;
+              font-weight: 500;
+              margin: 0.125rem;
+            }
+            
+            .react-datepicker__day:hover {
+              background: linear-gradient(135deg, #B7C5C7, #E7E9E5);
+              color: #005E84;
+              transform: scale(1.1);
+            }
+            
+            .react-datepicker__day--selected,
+            .react-datepicker__day--in-range,
+            .react-datepicker__day--in-selecting-range {
+              background: linear-gradient(135deg, #B7C5C7, #E7E9E5);
+              color: #005E84;
+              font-weight: 700;
+            }
+            
+            .react-datepicker__day--range-start,
+            .react-datepicker__day--range-end {
+              background: linear-gradient(135deg, #005E84, #075375) !important;
+              color: white !important;
+              font-weight: 700;
+              transform: scale(1.1);
+            }
+            
+            .react-datepicker__day--range-start:hover,
+            .react-datepicker__day--range-end:hover {
+              background: linear-gradient(135deg, #075375, #0A435C) !important;
+              transform: scale(1.15);
+            }
+            
+            .react-datepicker__navigation {
+              top: 1.25rem;
+            }
+            
+            .react-datepicker__navigation-icon::before {
+              border-color: white;
+              border-width: 2px 2px 0 0;
+              width: 7px;
+              height: 7px;
+            }
+            
+            .react-datepicker__triangle {
+              display: none;
+            }
+            
+            .react-datepicker-popper {
+              z-index: 1000;
+            }
+            
+            .react-datepicker__month-container {
+              width: 100%;
+            }
+            
+            .react-datepicker__month {
+              padding: 1rem;
+            }
+            
+            .scrollbar-hide::-webkit-scrollbar {
+              display: none;
+            }
+            
+            .scrollbar-hide {
+              -ms-overflow-style: none;
+              scrollbar-width: none;
+            }
+          `}</style>
         </main>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
