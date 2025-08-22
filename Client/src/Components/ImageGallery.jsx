@@ -586,31 +586,7 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                     
                     {/* Action Buttons - Original Style with Modern Look */}
                     <Box display="flex" gap={2} mt="auto" sx={{ pt: 2 }}>
-                      <Button
-                        variant="outlined"
-                        startIcon={<WhatsAppIcon />}
-                        sx={{
-                          borderColor: '#005E84',
-                          color: '#005E84',
-                          padding: '10px 20px',
-                          borderRadius: '12px',
-                          fontWeight: 600,
-                          textTransform: 'none',
-                          fontSize: '14px',
-                          border: '2px solid #005E84',
-                          '&:hover': {
-                            backgroundColor: '#005E84',
-                            color: '#fff',
-                            borderColor: '#005E84',
-                            transform: 'translateY(-2px)',
-                            boxShadow: '0 8px 16px rgba(0, 94, 132, 0.3)',
-                          },
-                          transition: 'all 0.2s ease'
-                        }}
-                        onClick={handleWhatsAppClick}
-                      >
-                        Chat
-                      </Button>
+                      
                       <Button
                         variant="contained"
                         fullWidth
