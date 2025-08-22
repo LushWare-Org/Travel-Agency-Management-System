@@ -1,6 +1,6 @@
 // src/pages/Search.jsx
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
@@ -61,6 +61,68 @@ const getRoomPrice = (room, nationality) => {
 const Search = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
+
+  // Performance optimization: Memoize animation variants
+  const pageVariants = useMemo(() => ({
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: shouldReduceMotion ? 0.1 : 0.6 }
+  }), [shouldReduceMotion]);
+
+  const fadeInVariants = useMemo(() => ({
+    initial: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: shouldReduceMotion ? 0.1 : 0.5 }
+  }), [shouldReduceMotion]);
+
+  const staggerVariants = useMemo(() => ({
+    initial: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: shouldReduceMotion ? 0.1 : 0.6, ease: "easeOut" }
+  }), [shouldReduceMotion]);
+
+  // Animation variants for performance optimization
+  const animations = useMemo(() => ({
+    form: {
+      hidden: { opacity: 0, y: 20 },
+      visible: { opacity: 1, y: 0 }
+    },
+    input: {
+      hidden: { opacity: 0, y: 10 },
+      visible: { opacity: 1, y: 0 }
+    },
+    container: {
+      hidden: { opacity: 0 },
+      visible: { 
+        opacity: 1,
+        transition: { staggerChildren: 0.05 }
+      }
+    },
+    item: {
+      hidden: { opacity: 0, y: 20 },
+      visible: { opacity: 1, y: 0 }
+    }
+  }), []);
+
+  const simpleAnimations = useMemo(() => ({
+    form: {
+      hidden: { opacity: 0 },
+      visible: { opacity: 1 }
+    },
+    input: {
+      hidden: { opacity: 0 },
+      visible: { opacity: 1 }
+    },
+    container: {
+      hidden: { opacity: 0 },
+      visible: { opacity: 1 }
+    },
+    item: {
+      hidden: { opacity: 0 },
+      visible: { opacity: 1 }
+    }
+  }), []);
 
   // State
   const [hotels, setHotels] = useState([]);          // raw hotels list
@@ -205,10 +267,36 @@ const Search = () => {
     };
   };
 
-  // Update a simple param
-  const handleInputChange = (key, value) => {
+  // Optimized handlers with useCallback to prevent unnecessary re-renders
+  const handleInputChange = useCallback((key, value) => {
     setSearchParams(prev => ({ ...prev, [key]: value }));
-  };
+  }, []);
+
+  const handleChildrenChange = useCallback((value) => {
+    const count = parseInt(value, 10) || 0;
+    setSearchParams(prev => ({
+      ...prev,
+      children: count,
+      childrenAges: Array(count).fill(0),
+    }));
+  }, []);
+
+  const handleChildAgeChange = useCallback((idx, value) => {
+    const ages = [...searchParams.childrenAges];
+    ages[idx] = Number(value);
+    setSearchParams(prev => ({ ...prev, childrenAges: ages }));
+  }, [searchParams.childrenAges]);
+
+  const handlePriceRangeChange = useCallback((min, max) => {
+    if (min > max) min = max;
+    min = Math.max(globalPriceRange[0], Math.min(globalPriceRange[1], min));
+    max = Math.max(globalPriceRange[0], Math.min(globalPriceRange[1], max));
+    setSearchParams(prev => ({ ...prev, priceRange: [min, max] }));
+  }, [globalPriceRange]);
+
+  const toggleFavorite = useCallback((id) => {
+    setFavorites(f => ({ ...f, [id]: !f[id] }));
+  }, []);
 
   useEffect(() => {
     if (
@@ -229,28 +317,6 @@ const Search = () => {
       setDateRange([null, null]);
     }
   }, [searchParams.checkIn, searchParams.checkOut]);
-
-  const handleChildrenChange = value => {
-    const count = parseInt(value, 10) || 0;
-    setSearchParams(prev => ({
-      ...prev,
-      children: count,
-      childrenAges: Array(count).fill(0),
-    }));
-  };
-
-  const handleChildAgeChange = (idx, value) => {
-    const ages = [...searchParams.childrenAges];
-    ages[idx] = Number(value);
-    setSearchParams(prev => ({ ...prev, childrenAges: ages }));
-  };
-
-  const handlePriceRangeChange = (min, max) => {
-    if (min > max) min = max;
-    min = Math.max(globalPriceRange[0], Math.min(globalPriceRange[1], min));
-    max = Math.max(globalPriceRange[0], Math.min(globalPriceRange[1], max));
-    setSearchParams(prev => ({ ...prev, priceRange: [min, max] }));
-  };
 
   // Main search + filter + sort
   const handleSearch = async () => {
@@ -509,23 +575,21 @@ const Search = () => {
     return hotel ? hotel.rooms : [];
   };
 
-  const toggleFavorite = id => setFavorites(f => ({ ...f, [id]: !f[id] }));
-
   if (loading) {
     return (
       <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        {...pageVariants}
         className="flex flex-col justify-center items-center h-screen bg-gradient-to-br from-platinum to-ash_gray/30"
+        style={{ willChange: 'auto' }}
       >
         <motion.div
-          animate={{ rotate: 360 }}
+          animate={{ rotate: shouldReduceMotion ? 0 : 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           className="relative"
         >
           <div className="w-16 h-16 border-4 border-lapis_lazuli/30 border-t-lapis_lazuli rounded-full animate-spin"></div>
           <motion.div
-            animate={{ scale: [0.8, 1.2, 0.8] }}
+            animate={{ scale: shouldReduceMotion ? 1 : [0.8, 1.2, 0.8] }}
             transition={{ duration: 2, repeat: Infinity }}
             className="absolute inset-0 flex items-center justify-center"
           >
@@ -533,8 +597,7 @@ const Search = () => {
           </motion.div>
         </motion.div>
         <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          {...fadeInVariants}
           transition={{ delay: 0.3 }}
           className="mt-4 text-indigo_dye font-medium"
         >
@@ -546,90 +609,160 @@ const Search = () => {
 
   return (
     <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="min-h-screen bg-gradient-to-br from-platinum via-white to-ash_gray/20"
+      {...pageVariants}
+      className="min-h-screen bg-gradient-to-br from-platinum via-white to-ash_gray/20 scroll-smooth"
+      style={{ 
+        willChange: 'auto',
+        scrollBehavior: 'smooth',
+        WebkitOverflowScrolling: 'touch'
+      }}
     >
-      <div>
+      {/* Enhanced smooth scrolling styles */}
+      <style jsx>{`
+        * {
+          scroll-behavior: smooth;
+        }
+        
+        html {
+          scroll-behavior: smooth;
+          overflow-x: hidden;
+        }
+        
+        body {
+          overflow-x: hidden;
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Optimize scroll performance */
+        .scroll-container {
+          transform: translateZ(0);
+          backface-visibility: hidden;
+          perspective: 1000;
+          contain: layout style paint;
+        }
+        
+        /* Enhanced scroll smoothness */
+        .scroll-smooth {
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch;
+          transform: translateZ(0);
+          backface-visibility: hidden;
+        }
+        
+        /* Optimize animations for scroll performance */
+        .motion-optimized {
+          will-change: transform;
+          transform: translateZ(0);
+          backface-visibility: hidden;
+        }
+        
+        /* Reduce animation complexity on lower-end devices */
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+          }
+        }
+        
+        /* Performance optimizations for mobile */
+        @media (max-width: 768px) {
+          .motion-item {
+            will-change: auto;
+          }
+          
+          * {
+            transform: translateZ(0);
+          }
+        }
+      `}</style>
+      
+      <div className="scroll-container">
         <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
-          {/* Hero Banner */}
+          {/* Hero Banner - Optimized */}
           <motion.header
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            {...staggerVariants}
+            transition={{ delay: 0.1, duration: shouldReduceMotion ? 0.1 : 0.8, ease: "easeOut" }}
             className="relative bg-cover bg-center h-40 sm:h-48 lg:h-72 shadow-2xl rounded-3xl overflow-hidden mb-6 sm:mb-8 lg:mb-12"
             style={{
               backgroundImage:
-                "linear-gradient(135deg, rgba(0,94,132,0.8), rgba(7,83,117,0.6)), url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1920')"
+                "linear-gradient(135deg, rgba(0,94,132,0.8), rgba(7,83,117,0.6)), url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1920')",
+              willChange: 'auto'
             }}
           >
-            {/* Floating Elements */}
-            <motion.div
-              animate={{ 
-                y: [0, -10, 0],
-                rotate: [0, 5, 0]
-              }}
-              transition={{ 
-                duration: 4, 
-                repeat: Infinity, 
-                ease: "easeInOut" 
-              }}
-              className="absolute top-4 right-4 opacity-20"
-            >
-              <Palmtree className="w-8 h-8 sm:w-12 sm:h-12 text-white" />
-            </motion.div>
-            
-            <motion.div
-              animate={{ 
-                x: [0, 10, 0],
-                y: [0, -5, 0]
-              }}
-              transition={{ 
-                duration: 5, 
-                repeat: Infinity, 
-                ease: "easeInOut",
-                delay: 1
-              }}
-              className="absolute top-6 left-6 opacity-20"
-            >
-              <Plane className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-            </motion.div>
+            {/* Simplified Floating Elements - Reduced for performance */}
+            {!shouldReduceMotion && (
+              <>
+                <motion.div
+                  animate={{ 
+                    y: [0, -10, 0],
+                    rotate: [0, 5, 0]
+                  }}
+                  transition={{ 
+                    duration: 6, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                  className="absolute top-4 right-4 opacity-20"
+                >
+                  <Palmtree className="w-8 h-8 sm:w-12 sm:h-12 text-white" />
+                </motion.div>
+                
+                <motion.div
+                  animate={{ 
+                    x: [0, 10, 0],
+                    y: [0, -5, 0]
+                  }}
+                  transition={{ 
+                    duration: 8, 
+                    repeat: Infinity, 
+                    ease: "easeInOut",
+                    delay: 1
+                  }}
+                  className="absolute top-6 left-6 opacity-20"
+                >
+                  <Plane className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                </motion.div>
+              </>
+            )}
 
             <div className="flex flex-col items-center justify-center h-full text-white text-center px-4 relative z-10">
               <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
+                {...fadeInVariants}
+                transition={{ delay: 0.2, duration: shouldReduceMotion ? 0.1 : 0.8 }}
                 className="text-2xl sm:text-3xl lg:text-5xl font-bold drop-shadow-lg mb-2 sm:mb-4"
               >
                 Discover Your Paradise
               </motion.h1>
               <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
+                {...fadeInVariants}
+                transition={{ delay: 0.3, duration: shouldReduceMotion ? 0.1 : 0.8 }}
                 className="text-sm sm:text-base lg:text-lg drop-shadow-md max-w-2xl px-4 leading-relaxed"
               >
                 Find your perfect Maldives getaway with exclusive B2B rates and unmatched luxury
               </motion.p>
               
-              {/* Decorative Wave */}
-              <motion.div
-                animate={{ x: [-10, 10, -10] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute bottom-4 left-1/2 transform -translate-x-1/2"
-              >
-                <Waves className="w-8 h-8 text-white opacity-30" />
-              </motion.div>
+              {/* Simplified Decorative Wave */}
+              {!shouldReduceMotion && (
+                <motion.div
+                  animate={{ x: [-10, 10, -10] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute bottom-4 left-1/2 transform -translate-x-1/2"
+                >
+                  <Waves className="w-8 h-8 text-white opacity-30" />
+                </motion.div>
+              )}
             </div>
           </motion.header>
 
-          {/* Search Form */}
+          {/* Search Form - Optimized */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
+            variants={shouldReduceMotion ? simpleAnimations.form : animations.form}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.2, duration: shouldReduceMotion ? 0.1 : 0.8 }}
           >
             <Box sx={{ 
               mt: { xs: 2, sm: 4, lg: 6 },
@@ -647,9 +780,8 @@ const Search = () => {
               }}>
                 <CardContent sx={{ p: { xs: 3, sm: 4, md: 6 } }}>
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 }}
+                    {...fadeInVariants}
+                    transition={{ delay: 0.3 }}
                     className="flex items-center mb-6"
                   >
                     <SearchIcon className="w-6 h-6 text-lapis_lazuli mr-3" />
@@ -663,12 +795,11 @@ const Search = () => {
                   </motion.div>
 
                   <Grid container spacing={{ xs: 3, sm: 4, md: 4 }}>
-                    {/* Destination */}
+                    {/* Destination - Simplified Animation */}
                     <Grid item xs={12} md={6} lg={4}>
                       <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.7 }}
+                        {...fadeInVariants}
+                        transition={{ delay: 0.4 }}
                       >
                         <label className="flex items-center text-sm font-semibold text-indigo_dye mb-2">
                           <MapPin className="w-4 h-4 mr-2" />
@@ -690,10 +821,9 @@ const Search = () => {
                           {/* Clear button */}
                           {selectedDestination && (
                             <motion.button
-                              initial={{ opacity: 0, scale: 0 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
+                              {...fadeInVariants}
+                              whileHover={!shouldReduceMotion ? { scale: 1.1 } : {}}
+                              whileTap={!shouldReduceMotion ? { scale: 0.9 } : {}}
                               type="button"
                               className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-800"
                               onClick={() => {
@@ -708,10 +838,10 @@ const Search = () => {
                           <AnimatePresence>
                             {showDestinationDropdown && (
                               <motion.div
-                                initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                transition={{ duration: 0.2 }}
+                                initial={{ opacity: 0, y: -5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -5 }}
+                                transition={{ duration: shouldReduceMotion ? 0.1 : 0.2 }}
                                 className="absolute z-20 mt-2 w-full bg-white/95 backdrop-blur-lg border border-gray-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto"
                               >
                                 {hotels
@@ -723,9 +853,9 @@ const Search = () => {
                                   .map((h, index) => (
                                     <motion.div
                                       key={h._id}
-                                      initial={{ opacity: 0, x: -10 }}
-                                      animate={{ opacity: 1, x: 0 }}
-                                      transition={{ delay: index * 0.05 }}
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: 1 }}
+                                      transition={{ delay: shouldReduceMotion ? 0 : index * 0.02 }}
                                       className="px-4 py-3 hover:bg-ash_gray/30 cursor-pointer text-base border-b border-gray-100 last:border-b-0 transition-colors duration-200"
                                       onClick={() => {
                                         setSelectedDestination(h);
@@ -748,9 +878,8 @@ const Search = () => {
                     {/* Check-in & Check-out */}
                     <Grid item xs={12} sm={6} lg={4}>
                       <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.8 }}
+                        variants={shouldReduceMotion ? simpleAnimations.input : animations.input}
+                        transition={{ delay: shouldReduceMotion ? 0 : 0.5 }}
                       >
                         <label className="flex items-center text-sm font-semibold text-indigo_dye mb-2">
                           <Calendar className="w-4 h-4 mr-2" />
@@ -758,8 +887,9 @@ const Search = () => {
                         </label>
                         <div className="relative w-full">
                           <motion.div
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+                            whileHover={shouldReduceMotion ? {} : { scale: 1.01 }}
+                            whileTap={shouldReduceMotion ? {} : { scale: 0.99 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 25 }}
                             className="relative bg-white/70 backdrop-blur-sm rounded-xl shadow-sm border-2 border-gray-200 hover:border-lapis_lazuli hover:bg-white/90 transition-all duration-300 cursor-pointer w-full"
                             onClick={() => datePickerRef.current?.setOpen(true)}
                           >
@@ -817,9 +947,8 @@ const Search = () => {
 
                     <Grid item xs={12} sm={6} lg={4}>
                       <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.9 }}
+                        variants={shouldReduceMotion ? simpleAnimations.input : animations.input}
+                        transition={{ delay: shouldReduceMotion ? 0 : 0.6 }}
                       >
                         <label className="flex items-center text-sm font-semibold text-indigo_dye mb-2">
                           <Calendar className="w-4 h-4 mr-2" />
@@ -827,8 +956,9 @@ const Search = () => {
                         </label>
                         <div className="relative w-full">
                           <motion.div
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+                            whileHover={shouldReduceMotion ? {} : { scale: 1.01 }}
+                            whileTap={shouldReduceMotion ? {} : { scale: 0.99 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 25 }}
                             className="relative bg-white/70 backdrop-blur-sm rounded-xl shadow-sm border-2 border-gray-200 hover:border-lapis_lazuli hover:bg-white/90 transition-all duration-300 cursor-pointer w-full"
                             onClick={() => datePickerRef.current?.setOpen(true)}
                           >
@@ -1330,10 +1460,14 @@ const Search = () => {
                   <AnimatePresence>
                     {showFilters && (
                       <motion.div
-                        initial={{ opacity: 0, height: 0, y: -20 }}
-                        animate={{ opacity: 1, height: 'auto', y: 0 }}
-                        exit={{ opacity: 0, height: 0, y: -20 }}
-                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ 
+                          duration: shouldReduceMotion ? 0.2 : 0.5, 
+                          ease: "easeInOut",
+                          height: { type: "spring", stiffness: 300, damping: 30 }
+                        }}
                       >
                         <Box sx={{ 
                           mt: { xs: 4, sm: 6 }, 
@@ -1345,9 +1479,8 @@ const Search = () => {
                           p: { xs: 3, sm: 4 }
                         }}>
                           <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.2 }}
+                            variants={shouldReduceMotion ? simpleAnimations.input : animations.input}
+                            transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
                             className="flex items-center mb-6"
                           >
                             <Filter className="w-6 h-6 text-lapis_lazuli mr-3" />
@@ -1363,9 +1496,8 @@ const Search = () => {
                             {/* Price Range */}
                             <Grid item xs={12} md={8}>
                               <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 }}
+                                variants={shouldReduceMotion ? simpleAnimations.input : animations.input}
+                                transition={{ delay: shouldReduceMotion ? 0 : 0.3 }}
                               >
                                 <label className="flex items-center text-sm font-semibold text-indigo_dye mb-4">
                                   <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1378,17 +1510,25 @@ const Search = () => {
                                     <motion.div
                                       initial={{ width: 0 }}
                                       animate={{ width: calculatePriceRangeStyles().width }}
-                                      transition={{ delay: 0.5, duration: 0.8 }}
+                                      transition={{ 
+                                        delay: shouldReduceMotion ? 0 : 0.5, 
+                                        duration: shouldReduceMotion ? 0.2 : 0.8,
+                                        type: "spring",
+                                        stiffness: 300,
+                                        damping: 30
+                                      }}
                                       className="h-3 bg-gradient-to-r from-lapis_lazuli to-indigo_dye rounded-full shadow-lg"
-                                      style={{ marginLeft: calculatePriceRangeStyles().marginLeft }}
+                                      style={{ 
+                                        marginLeft: calculatePriceRangeStyles().marginLeft,
+                                        willChange: 'width, margin-left'
+                                      }}
                                     />
                                   </div>
                                 </div>
                                 <div className="flex gap-4 justify-between mt-4">
                                   <motion.div 
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.6 }}
+                                    variants={shouldReduceMotion ? simpleAnimations.input : animations.input}
+                                    transition={{ delay: shouldReduceMotion ? 0 : 0.6 }}
                                     className="w-full"
                                   >
                                     <input
@@ -1405,9 +1545,8 @@ const Search = () => {
                                     <span className="text-xs text-gray-500 mt-1 block">Min: ${globalPriceRange[0]}</span>
                                   </motion.div>
                                   <motion.div 
-                                    initial={{ opacity: 0, x: 10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.6 }}
+                                    variants={shouldReduceMotion ? simpleAnimations.input : animations.input}
+                                    transition={{ delay: shouldReduceMotion ? 0 : 0.6 }}
                                     className="w-full"
                                   >
                                     <input
@@ -1461,6 +1600,10 @@ const Search = () => {
                       </motion.div>
                     )}
                   </AnimatePresence>
+                </CardContent>
+              </Card>
+            </Box>
+          </motion.div>
 
                 {/* Results Section */}
                 <motion.div
@@ -1546,22 +1689,31 @@ const Search = () => {
                         </motion.div>
                       ) : (
                         <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.6 }}
+                          variants={shouldReduceMotion ? simpleAnimations.container : animations.container}
+                          initial="hidden"
+                          animate="visible"
+                          transition={{ 
+                            duration: shouldReduceMotion ? 0.2 : 0.6,
+                            staggerChildren: shouldReduceMotion ? 0 : 0.05,
+                            delayChildren: shouldReduceMotion ? 0 : 0.1
+                          }}
                           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
+                          style={{ willChange: 'contents' }}
                         >
                           {searchResults.map((p, index) => (
                             <motion.div
                               key={p._id}
-                              initial={{ opacity: 0, y: 30 }}
-                              animate={{ opacity: 1, y: 0 }}
+                              variants={shouldReduceMotion ? simpleAnimations.item : animations.item}
                               transition={{ 
-                                delay: index * 0.1,
-                                duration: 0.6,
-                                ease: "easeOut"
+                                delay: shouldReduceMotion ? 0 : Math.min(index * 0.03, 0.5),
+                                duration: shouldReduceMotion ? 0.1 : 0.4,
+                                ease: "easeOut",
+                                type: "spring",
+                                stiffness: 300,
+                                damping: 25
                               }}
                               className="flex w-full"
+                              style={{ willChange: 'transform, opacity' }}
                             >
                               <HotelCard
                                 hotel={p}
@@ -1577,13 +1729,9 @@ const Search = () => {
                     </AnimatePresence>
                   </Box>
                 </motion.div>
-              </CardContent>
-            </Card>
-          </Box>
-        </motion.div>
         </main>
       </div>
-     
+      
     </motion.div>
   );
 };
