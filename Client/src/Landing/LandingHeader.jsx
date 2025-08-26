@@ -157,6 +157,8 @@ const LandingHeader = () => {
                   <Link to="/real-estate" className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/real-estate') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={scrollToTop}>Real Estate</Link>
                   <Link to="/investment-support" className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/investment-support') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={scrollToTop}>Investment Support</Link>
                   <Link to="/brand-representation" className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/brand-representation') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={scrollToTop}>Brand Representation</Link>
+                  <Link to="/hulhumeedhoo" className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/hulhumeedhoo') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={scrollToTop}>Hulhumeedhoo Island</Link>
+                  <Link to="/token-program" className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/token-program') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={scrollToTop}>Token Program</Link>
                 </div>
               )}
             </div>
@@ -276,6 +278,8 @@ const LandingHeader = () => {
                   <Link to="/real-estate" className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/real-estate') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Real Estate</Link>
                   <Link to="/investment-support" className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/investment-support') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Investment Support</Link>
                   <Link to="/brand-representation" className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/brand-representation') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Brand Representation</Link>
+                  <Link to="/hulhumeedhoo" className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/hulhumeedhoo') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Hulhumeedhoo Island</Link>
+                  <Link to="/token-program" className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${isActive('/token-program') ? 'bg-[#E7E9E5] text-[#005E84] font-semibold' : ''}`} onClick={() => { scrollToTop(); setIsMenuOpen(false); setServicesDropdown(false); }}>Token Program</Link>
                 </div>
               )}
             </div>

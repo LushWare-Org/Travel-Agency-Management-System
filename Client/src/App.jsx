@@ -33,6 +33,8 @@ const RealEstate = lazy(() => import("./pages/RealEstate"));
 const InvestmentSupport = lazy(() => import("./pages/InvestmentSupport"));
 const BrandRepresentation = lazy(() => import("./pages/BrandRepresentation"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
+const Hulhumeedhoo = lazy(() => import("./pages/Hulhumeedhoo"));
+const TokenProgram = lazy(() => import("./pages/TokenProgram"));
 const ActivityDetail = lazy(() => import("./pages/ActivityDetail"));
 const ActivityForm = lazy(() => import("./pages/admin/ActivityForm"));
 const AdminActivityDetail = lazy(() => import("./pages/admin/ActivityDetail"));
@@ -348,6 +350,24 @@ export default function App() {
             element={
               <>
                 <AboutUs />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/hulhumeedhoo"
+            element={
+              <>
+                <Hulhumeedhoo />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/token-program"
+            element={
+              <>
+                <TokenProgram />
                 <Footer />
               </>
             }

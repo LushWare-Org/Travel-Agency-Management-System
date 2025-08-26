@@ -456,6 +456,34 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
               {
+                title: "Hulhumeedhoo Island",
+                subtitle: "Island of Everything",
+                description:
+                  "Discover Hulhumeedhoo, the eastern jewel of Addu Atoll, where history, culture, and natural beauty meet",
+                icon: (
+                  <svg
+                    className="w-10 h-10 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                    />
+                  </svg>
+                ),
+                gradient: "from-[#005E84] via-[#075375] to-[#0A435C]",
+                link: "/hulhumeedhoo",
+                features: [
+                  "Wedding Packages",
+                  "Investment Opportunities",
+                  "Authentic Experiences",
+                ],
+              },
+              {
                 title: "Travel Services",
                 subtitle: "Luxury Travel Planning",
                 description:
