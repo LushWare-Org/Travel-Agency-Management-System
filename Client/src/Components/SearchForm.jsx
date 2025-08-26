@@ -41,17 +41,39 @@ const SearchForm = ({
       maxWidth: '100%',
       width: '100%'
     }}>
-      <Card elevation={5} sx={{
-        borderRadius: 3,
-        overflow: 'hidden',
-        border: '1px solid rgba(183,197,199,0.2)',
-        backgroundColor: '#E7E9E5'
-      }}>
-        <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
-          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+      {/* Enhanced Filtering Section */}
+      <div className="mt-6 mb-8 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+        {/* Filter Header */}
+        <div className="bg-gradient-to-r from-[#005E84] to-[#0A435C] px-6 py-4 rounded-t-3xl rounded-b-none">
+          <h2 className="text-white font-semibold text-lg flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
+            </svg>
+            Find Your Perfect Hotel or Resort
+          </h2>
+          <p className="text-blue-100 text-sm mt-1">Search and filter hotels and resorts to match your travel preferences</p>
+        </div>
+        <Card elevation={0} sx={{
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
+          borderBottomLeftRadius: 24,
+          borderBottomRightRadius: 24,
+          overflow: 'hidden',
+          border: 'none',
+          backgroundColor: 'transparent',
+        }}>
+          <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+            <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
             {/* Destination */}
             <Grid item xs={12} md={6} lg={4}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Hotel / Resort Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-[#005E84]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14M16 3v4M8 3v4M3 10h18" />
+                  </svg>
+                  Hotel / Resort Name
+                </span>
+              </label>
               <div className="relative destination-dropdown">
                 <input
                   type="text"
@@ -108,7 +130,14 @@ const SearchForm = ({
 
             {/* Check-in */}
             <Grid item xs={12} sm={6} lg={4}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Check-in Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-[#005E84]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Check-in Date
+                </span>
+              </label>
               <div className="relative w-full">
                 <div
                   className="relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer w-full"
@@ -173,7 +202,14 @@ const SearchForm = ({
             </Grid>
 
             <Grid item xs={12} sm={6} lg={4}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Check-out Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-[#005E84]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Check-out Date
+                </span>
+              </label>
               <div className="relative w-full">
                 <div
                   className="relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer w-full"
@@ -321,7 +357,14 @@ const SearchForm = ({
 
             {/* Nationality */}
             <Grid item xs={12} sm={6} lg={4}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nationality</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-[#005E84]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                  </svg>
+                  Nationality
+                </span>
+              </label>
               <div className="relative nationality-dropdown">
                 <input
                   type="text"
@@ -379,7 +422,14 @@ const SearchForm = ({
 
             {/* Meal Plan */}
             <Grid item xs={12} sm={6} lg={3}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Meal Plan</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-[#005E84]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                  </svg>
+                  Meal Plan
+                </span>
+              </label>
               <select
                 className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
                 value={searchParams.mealPlan}
@@ -394,7 +444,14 @@ const SearchForm = ({
 
             {/* Rooms */}
             <Grid item xs={6} sm={6} lg={3}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Rooms</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-[#005E84]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7h16M4 11h16M4 15h16M4 19h16" />
+                  </svg>
+                  Rooms
+                </span>
+              </label>
               <div className="flex items-center h-10 sm:h-12 bg-gray-50 border border-gray-300 rounded-lg overflow-hidden">
                 <button
                   className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
@@ -412,7 +469,14 @@ const SearchForm = ({
 
             {/* Adults */}
             <Grid item xs={6} sm={6} lg={3}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Adults</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-[#005E84]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5s-3 1.34-3 3 1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05C17.16 13.36 20 14.28 20 15.5V19h4v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                  </svg>
+                  Adults
+                </span>
+              </label>
               <div className="flex items-center h-10 sm:h-12 bg-gray-50 border border-gray-300 rounded-lg overflow-hidden">
                 <button
                   className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
@@ -430,7 +494,14 @@ const SearchForm = ({
 
             {/* Children */}
             <Grid item xs={6} sm={6} lg={3}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Children</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-[#005E84]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                  </svg>
+                  Children
+                </span>
+              </label>
               <div className="flex items-center h-10 sm:h-12 bg-gray-50 border border-gray-300 rounded-lg overflow-hidden">
                 <button
                   className="w-8 sm:w-12 h-full flex items-center justify-center text-gray-500 hover:bg-ash_gray"
@@ -450,7 +521,14 @@ const SearchForm = ({
             {searchParams.children > 0 && (
               <Grid item xs={12}>
                 <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gray-50 rounded-lg">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Children Ages</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <span className="flex items-center gap-2">
+                      <svg className="w-4 h-4 text-[#005E84]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                      </svg>
+                      Children Ages
+                    </span>
+                  </label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-4">
                     {searchParams.childrenAges.map((age, i) => (
                       <select
@@ -498,8 +576,12 @@ const SearchForm = ({
               </button>
               <button
                 onClick={handleSearch}
-                className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm font-medium text-white bg-lapis_lazuli rounded-lg shadow-sm hover:bg-indigo_dye transition-colors"
+                className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm font-medium text-white bg-lapis_lazuli rounded-lg shadow-sm hover:bg-indigo_dye transition-colors flex items-center gap-2 justify-center"
               >
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
                 Search Resorts
               </button>
             </div>
@@ -584,6 +666,7 @@ const SearchForm = ({
           )}
         </CardContent>
       </Card>
+      </div>
     </Box>
   );
 };
