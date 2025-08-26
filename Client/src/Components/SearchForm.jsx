@@ -36,13 +36,13 @@ const SearchForm = ({
 }) => {
   return (
     <Box sx={{ 
-      mt: { xs: 2, sm: 4, lg: 6 },
+      mt: { xs: 2, sm: 3, lg: 4 }, // reduced top margin
       mx: 'auto',
       maxWidth: '100%',
       width: '100%'
     }}>
       {/* Enhanced Filtering Section */}
-      <div className="mt-6 mb-8 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+      <div className="mt-3 mb-4 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"> {/* reduced vertical margin */}
         {/* Filter Header */}
         <div className="bg-gradient-to-r from-[#005E84] to-[#0A435C] px-6 py-4 rounded-t-3xl rounded-b-none">
           <h2 className="text-white font-semibold text-lg flex items-center gap-2">
@@ -63,7 +63,8 @@ const SearchForm = ({
           backgroundColor: 'transparent',
         }}>
           <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
-            <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+            {/* Use a consistent spacing for all rows */}
+            <Grid container spacing={2}>
             {/* Destination */}
             <Grid item xs={12} md={6} lg={4}>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -520,7 +521,7 @@ const SearchForm = ({
             {/* Children Ages */}
             {searchParams.children > 0 && (
               <Grid item xs={12}>
-                <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gray-50 rounded-lg">
+                <div className="mt-2 p-3 bg-gray-50 rounded-lg"> {/* reduced top margin, unified padding */}
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     <span className="flex items-center gap-2">
                       <svg className="w-4 h-4 text-[#005E84]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -555,8 +556,8 @@ const SearchForm = ({
             justifyContent: 'space-between', 
             alignItems: { xs: 'stretch', sm: 'center' }, 
             gap: { xs: 2, sm: 0 }, 
-            mt: { xs: 3, sm: 4 }, 
-            mb: { xs: 4, sm: 5 } 
+            mt: 2, // unified margin top
+            mb: 2  // unified margin bottom
           }}>
             <button
               onClick={() => setShowFilters(f => !f)}
@@ -590,19 +591,19 @@ const SearchForm = ({
           {/* Advanced Filters */}
           {showFilters && (
             <Box sx={{ 
-              mt: { xs: 3, sm: 4 }, 
-              mb: { xs: 4, sm: 6 }, 
-              pt: { xs: 3, sm: 4 },
+              mt: 2, // unified margin top
+              mb: 2, // unified margin bottom
+              pt: 2, // unified padding top
               borderTop: '1px solid #e5e7eb' 
             }}>
               <Typography variant="h6" sx={{ 
                 fontWeight: 600, 
-                mb: { xs: 2, sm: 3 },
+                mb: 2,
                 fontSize: { xs: '1rem', sm: '1.25rem' }
               }}>
                 Advanced Filters
               </Typography>
-              <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+              <Grid container spacing={2}>
                 {/* Price Range */}
                 <Grid item xs={12} md={8}>
                   <label className="block text-sm font-medium text-gray-700 mb-2 sm:mb-3">
