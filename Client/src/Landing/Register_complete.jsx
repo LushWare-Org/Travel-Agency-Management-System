@@ -36,6 +36,8 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
@@ -144,6 +146,14 @@ const Register = () => {
     }
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Enhanced image slideshow with smoother transitions (matching Login page)
   useEffect(() => {
     const interval = setInterval(() => {
@@ -206,7 +216,75 @@ const Register = () => {
         }
       `}</style>
 
+      {/* Enhanced Navigation (matching Login page) */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-white/10 backdrop-blur-lg border-b border-white/20' : 'bg-transparent'
+      }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <Link to="/" className="flex items-center space-x-2 group">
+              <img
+                src="/IsleKey Logo.jpg"
+                alt="IsleKey Holidays"
+                className="h-10 w-auto transition-transform duration-300 group-hover:scale-105"
+                onError={(e) => {
+                  e.target.src = "/Logo.png";
+                }}
+              />
+              <span className="text-xl font-bold text-white drop-shadow-lg">
+                IsleKey Holidays
+              </span>
+            </Link>
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Link to="/" className="text-white hover:text-blue-200 transition-colors duration-200 font-medium">
+                Home
+              </Link>
+              <Link to="/login" className="text-white hover:text-blue-200 transition-colors duration-200 font-medium">
+                Login
+              </Link>
+              <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+              <span className="text-blue-200 font-medium">Register</span>
+            </div>
 
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-white hover:text-blue-200 transition-colors duration-200"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white/10 backdrop-blur-lg border-t border-white/20">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              <Link
+                to="/"
+                className="block px-3 py-2 text-white hover:text-blue-200 transition-colors duration-200"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                to="/login"
+                className="block px-3 py-2 text-white hover:text-blue-200 transition-colors duration-200"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Login
+              </Link>
+              <span className="block px-3 py-2 text-blue-200 font-medium">Register</span>
+            </div>
+          </div>
+        )}
+      </nav>
 
       {/* Dynamic Background Slideshow (matching Login page) */}
       <div className="absolute inset-0">
@@ -523,7 +601,7 @@ const Register = () => {
                     >
                       {showRepeatPassword ? (
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268 2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
                         </svg>
                       ) : (
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
