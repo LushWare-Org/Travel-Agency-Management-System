@@ -841,7 +841,7 @@ function HotelProfile() {
         )}
       </div>
 
-      <Footer />
+     
 
       <style jsx global>{`
         .react-datepicker {
