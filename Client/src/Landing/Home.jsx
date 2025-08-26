@@ -76,6 +76,54 @@ const animationStyles = `
       transform: scale(1.05);
     }
   }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+    }
+  }
+  
+  @keyframes rotate3d {
+    0% {
+      transform: perspective(1000px) rotateY(0deg);
+    }
+    100% {
+      transform: perspective(1000px) rotateY(360deg);
+    }
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+  
+  @keyframes gradientFlow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 
   .animate-fade-in-up {
     animation: fadeInUp 0.8s ease-out forwards;
@@ -123,6 +171,57 @@ const animationStyles = `
 
   .animate-delay-5 {
     animation-delay: 1s;
+  }
+  
+  .animate-shimmer {
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
+  }
+  
+  .animate-glow {
+    animation: glow 3s infinite;
+  }
+  
+  .animate-rotate-3d {
+    animation: rotate3d 8s infinite linear;
+    transform-style: preserve-3d;
+  }
+  
+  .animate-bounce-slow {
+    animation: bounce 3s ease-in-out infinite;
+  }
+  
+  .animate-gradient-flow {
+    background: linear-gradient(-45deg, #075375, #0A435C, #005E84, #B7C5C7);
+    background-size: 400% 400%;
+    animation: gradientFlow 8s ease infinite;
+  }
+  
+  .shine-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shine-effect::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to bottom right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(30deg);
+    transition: transform 1.5s ease;
+  }
+  
+  .shine-effect:hover::after {
+    transform: rotate(30deg) translateY(100%);
   }
 
   .opacity-0 {
@@ -198,7 +297,7 @@ const Home = () => {
             />
             <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
               <div className="max-w-4xl mx-auto">
-                <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-white/20 animate-fade-in-up animate-delay-1">
+                <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-white/20 animate-fade-in-up animate-delay-1 animate-glow">
                   <span className="text-white font-medium text-sm">
                     {slide.badge}
                   </span>
@@ -212,7 +311,7 @@ const Home = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-delay-4">
                   <Link
                     to="/explore"
-                    className="group bg-[#E7E9E5] text-[#075375] font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7] animate-pulse-slow"
+                    className="group bg-[#E7E9E5] text-[#075375] font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7] shine-effect"
                     onClick={scrollToTop}
                   >
                     <span className="flex items-center">
@@ -234,7 +333,7 @@ const Home = () => {
                   </Link>
                   <Link
                     to="/travel-services"
-                    className="group border-2 border-[#E7E9E5] text-[#E7E9E5] font-bold py-4 px-8 rounded-full hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105"
+                    className="group border-2 border-[#E7E9E5] text-[#E7E9E5] font-bold py-4 px-8 rounded-full hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105 animate-glow shine-effect"
                     onClick={scrollToTop}
                   >
                     Explore Services
@@ -246,14 +345,14 @@ const Home = () => {
         ))}
 
         {/* Modern Navigation Dots */}
-        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-4">
+        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-4 animate-bounce-slow">
           {heroSlides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
               className={`w-4 h-4 rounded-full transition-all duration-300 ${
                 index === currentSlide
-                  ? "bg-white scale-125 shadow-lg"
+                  ? "bg-white scale-125 shadow-lg animate-glow"
                   : "bg-white/50 hover:bg-white/75"
               }`}
             />
@@ -266,15 +365,12 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
-              <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium animate-fade-in-left">
-                <span className="w-2 h-2 bg-[#075375] rounded-full mr-2"></span>
+              <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium animate-fade-in-left shine-effect">
+                <span className="w-2 h-2 bg-[#075375] rounded-full mr-2 animate-pulse"></span>
                 About Us
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-[#075375] animate-fade-in-left animate-delay-1">
-                Your Gateway to{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
-                  Paradise
-                </span>
+                Your Gateway to <span className="text-[#0A435C]">Paradise</span>
               </h2>
               <p className="text-xl text-[#0A435C] leading-relaxed animate-fade-in-left animate-delay-2">
                 We specialize in creating unforgettable experiences in the
@@ -282,13 +378,13 @@ const Home = () => {
                 dream vacation to life.
               </p>
               <div className="grid grid-cols-2 gap-6 animate-fade-in-left animate-delay-3">
-                <div className="text-center p-4">
+                <div className="text-center p-4 bg-white/50 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
                   <div className="text-3xl font-bold text-[#005E84] mb-2">
                     500+
                   </div>
                   <div className="text-[#0A435C]">Happy Guests</div>
                 </div>
-                <div className="text-center p-4">
+                <div className="text-center p-4 bg-white/50 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
                   <div className="text-3xl font-bold text-[#005E84] mb-2">
                     50+
                   </div>
@@ -297,7 +393,8 @@ const Home = () => {
               </div>
             </div>
             <div className="relative animate-fade-in-right animate-delay-2">
-              <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl animate-float">
+              <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-700 shine-effect">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/10 via-transparent to-[#005E84]/10 animate-shimmer"></div>
                 <img
                   src="/travel-services/mike-swigunski-k9Zeq6EH_bk-unsplash.jpg"
                   alt="Luxury Maldives Resort"
@@ -305,7 +402,8 @@ const Home = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
-              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl shadow-lg animate-pulse-slow"></div>
+              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl shadow-lg animate-pulse-slow animate-glow"></div>
+              <div className="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-[#0A435C] to-[#005E84] rounded-full opacity-70 animate-bounce-slow"></div>
             </div>
           </div>
         </div>
@@ -320,10 +418,7 @@ const Home = () => {
               Property Types
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-              Choose Your{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
-                Perfect Stay
-              </span>
+              Choose Your <span className="text-[#0A435C]">Perfect Stay</span>
             </h2>
             <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
               From overwater bungalows to beachfront villas, find your ideal
@@ -402,12 +497,12 @@ const Home = () => {
             ].map((property, index) => (
               <div
                 key={index}
-                className="group bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
+                className="group bg-gradient-to-br from-[#E7E9E5] to-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-[#B7C5C7]/50 overflow-hidden animate-fade-in-up shine-effect"
                 style={{ animationDelay: `${(index + 3) * 0.2}s` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <div className="bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 animate-glow">
                     {property.icon}
                   </div>
                   <h3 className="text-2xl font-bold text-[#075375] mb-4 group-hover:text-[#005E84] transition-colors">
@@ -420,9 +515,9 @@ const Home = () => {
                     {property.features.map((feature, idx) => (
                       <li
                         key={idx}
-                        className="flex items-center text-[#0A435C]"
+                        className="flex items-center text-[#0A435C] transform transition-transform group-hover:translate-x-1"
                       >
-                        <div className="w-2 h-2 bg-[#075375] rounded-full mr-3"></div>
+                        <div className="w-2 h-2 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-full mr-3 animate-pulse"></div>
                         {feature}
                       </li>
                     ))}
@@ -443,10 +538,7 @@ const Home = () => {
               Our Services
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-              Discover Our{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
-                Expertise
-              </span>
+              Discover Our <span className="text-[#0A435C]">Expertise</span>
             </h2>
             <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
               Comprehensive solutions tailored to your Maldives journey
@@ -599,7 +691,7 @@ const Home = () => {
               <Link
                 key={index}
                 to={service.link}
-                className="group relative bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
+                className="group relative bg-gradient-to-br from-white to-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7]/30 overflow-hidden animate-fade-in-up shine-effect"
                 style={{ animationDelay: `${(index + 3) * 0.2}s` }}
                 onClick={scrollToTop}
               >
@@ -609,12 +701,12 @@ const Home = () => {
                 <div className="relative">
                   <div className="flex items-start justify-between mb-6">
                     <div
-                      className={`bg-gradient-to-br ${service.gradient} rounded-2xl p-4 w-20 h-20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
+                      className={`bg-gradient-to-br ${service.gradient} rounded-2xl p-4 w-20 h-20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-glow`}
                     >
                       {service.icon}
                     </div>
                     <div className="text-right">
-                      <div className="inline-flex items-center px-3 py-1 bg-[#B7C5C7] text-[#075375] rounded-full text-xs font-medium">
+                      <div className="inline-flex items-center px-3 py-1 bg-[#B7C5C7] text-[#075375] rounded-full text-xs font-medium group-hover:bg-gradient-to-r group-hover:from-[#005E84] group-hover:to-[#0A435C] group-hover:text-white transition-all duration-300">
                         {service.subtitle}
                       </div>
                     </div>
@@ -624,7 +716,7 @@ const Home = () => {
                     {service.title}
                   </h3>
 
-                  <p className="text-[#0A435C] leading-relaxed mb-6">
+                  <p className="text-[#0A435C] leading-relaxed mb-6 group-hover:text-[#005E84] transition-colors">
                     {service.description}
                   </p>
 
@@ -632,9 +724,10 @@ const Home = () => {
                     {service.features.map((feature, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center text-sm text-[#075375]"
+                        className="flex items-center text-sm text-[#075375] transform transition-transform group-hover:translate-x-1"
+                        style={{ transitionDelay: `${idx * 50}ms` }}
                       >
-                        <div className="w-1.5 h-1.5 bg-[#005E84] rounded-full mr-3"></div>
+                        <div className="w-1.5 h-1.5 bg-[#005E84] rounded-full mr-3 animate-pulse-slow"></div>
                         {feature}
                       </div>
                     ))}
@@ -643,7 +736,7 @@ const Home = () => {
                   <div className="flex items-center text-[#005E84] font-semibold group-hover:translate-x-2 transition-transform">
                     Explore Service
                     <svg
-                      className="w-4 h-4 ml-2"
+                      className="w-4 h-4 ml-2 group-hover:animate-bounce-slow"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -664,20 +757,40 @@ const Home = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] relative overflow-hidden animate-gradient-flow">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
+
+        {/* Animated particles */}
+        <div
+          className="absolute top-20 left-20 w-32 h-32 bg-white/5 rounded-full animate-float"
+          style={{ animationDelay: "0s" }}
+        ></div>
+        <div
+          className="absolute top-40 right-40 w-20 h-20 bg-white/5 rounded-full animate-float"
+          style={{ animationDelay: "0.5s" }}
+        ></div>
+        <div
+          className="absolute bottom-20 left-1/3 w-24 h-24 bg-white/5 rounded-full animate-float"
+          style={{ animationDelay: "1s" }}
+        ></div>
+        <div
+          className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/5 rounded-full animate-float"
+          style={{ animationDelay: "1.5s" }}
+        ></div>
+
+        {/* Shimmering overlay */}
+        <div className="absolute inset-0 animate-shimmer opacity-30"></div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div className="max-w-4xl mx-auto">
-            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-white/20 animate-fade-in-up">
-              <span className="w-2 h-2 bg-white rounded-full mr-2"></span>
+            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-white/20 animate-fade-in-up animate-glow">
+              <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse-slow"></span>
               Get Started
             </div>
             <h2 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight animate-fade-in-up animate-delay-1">
               Ready to Experience{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
-                Paradise?
-              </span>
+              <span className="text-yellow-300">Paradise?</span>
             </h2>
             <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto font-light animate-fade-in-up animate-delay-2">
               Start planning your dream Maldives vacation today
@@ -685,7 +798,7 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animate-delay-3">
               <Link
                 to="/travel-services"
-                className="group bg-[#E7E9E5] text-[#075375] font-bold py-5 px-10 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7]"
+                className="group bg-[#E7E9E5] text-[#075375] font-bold py-5 px-10 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7] shine-effect animate-glow"
                 onClick={scrollToTop}
               >
                 <span className="flex items-center">
@@ -707,7 +820,7 @@ const Home = () => {
               </Link>
               <Link
                 to="/contact"
-                className="group border-2 border-white text-white font-bold py-5 px-10 rounded-full hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105"
+                className="group border-2 border-white text-white font-bold py-5 px-10 rounded-full hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105 shine-effect"
                 onClick={scrollToTop}
               >
                 Contact Us
