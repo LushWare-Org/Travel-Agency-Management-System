@@ -2,9 +2,29 @@
 import { useState, useEffect, useRef } from "react"
 import { useParams, useNavigate, useLocation } from "react-router-dom"
 import axios from "axios"
-import { FaBed, FaPhone, FaGlobe, FaEnvelope } from "react-icons/fa"
-import { MdLocationOn } from "react-icons/md"
+import { 
+  FaBed, 
+  FaPhone, 
+  FaGlobe, 
+  FaEnvelope, 
+  FaWifi, 
+  FaCar, 
+  FaSwimmingPool, 
+  FaDumbbell, 
+  FaSpa, 
+  FaUtensils, 
+  FaCocktail, 
+  FaConciergeBell, 
+  FaShieldAlt,
+  FaHeart,
+  FaCalendarAlt,
+  FaClock,
+  FaImage
+} from "react-icons/fa"
+import { MdLocationOn, MdRestaurant, MdLocalBar, MdSpa, MdFitnessCenter, MdPool, MdLocalParking, MdRoomService } from "react-icons/md"
 import { AiFillStar } from "react-icons/ai"
+import { BiWifi, BiRestaurant } from "react-icons/bi"
+import { IoIosCheckmarkCircle } from "react-icons/io"
 import Footer from "../Components/Footer"
 import RoomCard from "../Components/RoomCard"
 import DatePicker from "react-datepicker"
@@ -33,6 +53,28 @@ function HotelProfile() {
 
   const previousRoute = locationState.state?.previousRoute || "/search"
   const selectedNationality = locationState.state?.nationality || ""
+
+  // Icon mapping for amenities
+  const getAmenityIcon = (amenity) => {
+    const iconMap = {
+      'wifi': <BiWifi className="w-4 h-4 text-lapis_lazuli" />,
+      'pool': <FaSwimmingPool className="w-4 h-4 text-lapis_lazuli" />,
+      'gym': <FaDumbbell className="w-4 h-4 text-lapis_lazuli" />,
+      'spa': <FaSpa className="w-4 h-4 text-lapis_lazuli" />,
+      'restaurant': <FaUtensils className="w-4 h-4 text-lapis_lazuli" />,
+      'bar': <FaCocktail className="w-4 h-4 text-lapis_lazuli" />,
+      'parking': <FaCar className="w-4 h-4 text-lapis_lazuli" />,
+      'concierge': <FaConciergeBell className="w-4 h-4 text-lapis_lazuli" />,
+      'security': <FaShieldAlt className="w-4 h-4 text-lapis_lazuli" />,
+      'room service': <MdRoomService className="w-4 h-4 text-lapis_lazuli" />
+    }
+    
+    const key = Object.keys(iconMap).find(k => 
+      amenity.toLowerCase().includes(k)
+    )
+    
+    return key ? iconMap[key] : <IoIosCheckmarkCircle className="w-4 h-4 text-lapis_lazuli" />
+  }
 
   const getRoomPrice = (room, nationality, checkIn, checkOut) => {
     if (!room) return 0;
@@ -269,128 +311,173 @@ function HotelProfile() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-platinum to-ash_gray font-sans">
-        <section className="relative h-80 sm:h-[400px] md:h-[600px] overflow-hidden">
-          <img src={gallery[0] || "/placeholder.svg"} alt={name} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
-            <div className="container mx-auto px-4 sm:px-6 pb-6 sm:pb-8 md:pb-16">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-2">{name}</h1>
-              <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-white mb-2 sm:mb-4 text-xs sm:text-base">
-                <div className="flex items-center">
-                  <MdLocationOn className="text-lapis_lazuli mr-1 w-4 sm:w-5 h-4 sm:h-5" />
+      <div className="min-h-screen bg-slate-50 font-['Inter',sans-serif]">
+        {/* Hero Section with Photo Collage */}
+        <section className="relative h-96 sm:h-[500px] md:h-[600px] overflow-hidden">
+          <div className="grid grid-cols-12 gap-2 h-full p-2">
+            {/* Main large image */}
+            <div className="col-span-12 md:col-span-8 relative overflow-hidden rounded-xl">
+              <img 
+                src={gallery[0] || "/placeholder.svg"} 
+                alt={name} 
+                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+            </div>
+            
+            {/* Secondary images */}
+            <div className="hidden md:flex md:col-span-4 flex-col gap-2">
+              <div className="flex-1 relative overflow-hidden rounded-xl">
+                <img 
+                  src={gallery[1] || gallery[0] || "/placeholder.svg"} 
+                  alt={`${name} view 2`} 
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              </div>
+              <div className="flex-1 relative overflow-hidden rounded-xl">
+                <img 
+                  src={gallery[2] || gallery[0] || "/placeholder.svg"} 
+                  alt={`${name} view 3`} 
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Text overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 md:p-12">
+            <div className="max-w-4xl">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 leading-tight tracking-tight">{name}</h1>
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-white/90 mb-4 text-sm sm:text-base">
+                <div className="flex items-center bg-black/20 backdrop-blur-sm rounded-full px-3 py-1.5">
+                  <MdLocationOn className="text-white mr-2 w-4 h-4" />
                   {location}
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center bg-black/20 backdrop-blur-sm rounded-full px-3 py-1.5">
                   {[...Array(starRating)].map((_, i) => (
-                    <AiFillStar key={i} className={`${i < starRating ? "text-yellow-400" : "text-gray-400"} w-4 sm:w-5 h-4 sm:h-5`} />
+                    <AiFillStar key={i} className="text-yellow-400 w-4 h-4" />
                   ))}
-                  <span className="ml-2">({starRating} Star)</span>
+                  <span className="ml-2 font-medium">{starRating} Star Hotel</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <main className="container mx-auto px-2 sm:px-4 py-6 sm:py-8 max-w-[100%] sm:max-w-7xl overflow-x-hidden">
-          <div className="sticky top-0 z-10 mb-6 sm:mb-8">
-            <div className="w-full max-w-[100%] mx-auto px-2 sm:px-4">
-              <div className="bg-gradient-to-r from-platinum/90 to-ash_gray/90 backdrop-blur-sm rounded-xl p-2 flex overflow-x-auto scrollbar-hide border border-gray-200">
+        <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-7xl">
+          {/* Modern Tab Navigation */}
+          <div className="sticky top-0 z-10 mb-8 sm:mb-12">
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-2 shadow-sm border border-slate-200">
+              <div className="flex overflow-x-auto scrollbar-hide">
                 {tabItems.map((tab, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleTabChange(idx)}
-                    className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium rounded-lg transition-all duration-300 min-w-[80px] sm:min-w-[100px] whitespace-nowrap ${
+                    className={`relative px-6 py-3 text-sm font-medium rounded-xl transition-all duration-300 min-w-[100px] whitespace-nowrap ${
                       activeTab === idx 
-                        ? "bg-lapis_lazuli text-white shadow-lg border border-lapis_lazuli" 
-                        : "text-gray-700 hover:text-lapis_lazuli hover:bg-white/50"
+                        ? "text-lapis_lazuli font-semibold" 
+                        : "text-slate-600 hover:text-lapis_lazuli hover:bg-slate-50"
                     }`}
                   >
                     {tab}
+                    {activeTab === idx && (
+                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-lapis_lazuli rounded-full transition-all duration-300"></div>
+                    )}
                   </button>
                 ))}
               </div>
             </div>
           </div>
 
-          <div className="bg-platinum rounded-2xl shadow-xl p-4 sm:p-6">
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8">
             {activeTab === 0 && (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-10">
-                <div className="lg:col-span-2">
-                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">About</h2>
-                  <p className="text-gray-600 leading-relaxed mb-6 sm:mb-10 text-sm sm:text-base">{description}</p>
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 lg:gap-12">
+                <div className="xl:col-span-2 space-y-8">
+                  {/* About Section */}
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-6 tracking-tight">About This Hotel</h2>
+                    <p className="text-slate-600 leading-relaxed text-base sm:text-lg">{description}</p>
+                  </div>
 
-                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Amenities & Services</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                    {amenities.map((am, i) => (
-                      <div key={i} className="p-3 sm:p-4 bg-blue-50 rounded-xl">
-                        <span className="font-medium text-sm sm:text-base">{am}</span>
-                      </div>
-                    ))}
+                  {/* Amenities Section */}
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-6 tracking-tight">Amenities & Services</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {amenities.map((amenity, i) => (
+                        <div key={i} className="flex items-center p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-lapis_lazuli/20 hover:bg-lapis_lazuli/5 transition-all duration-200">
+                          <div className="mr-3 p-2 bg-white rounded-lg shadow-sm">
+                            {getAmenityIcon(amenity)}
+                          </div>
+                          <span className="font-medium text-slate-700 text-sm">{amenity}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <div className="lg:sticky lg:top-20">
-                  <div className="bg-white border border-gray-100 rounded-2xl shadow-lg overflow-hidden">
-                    <div className="bg-gradient-to-r from-lapis_lazuli to-indigo_dye text-white p-6">
-                      <div className="flex items-center">
-                        <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl mr-4">
-                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                          </svg>
+                {/* Meal Plans Card */}
+                <div className="xl:sticky xl:top-32">
+                  <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                    <div className="p-6 border-b border-slate-100">
+                      <div className="flex items-center mb-2">
+                        <div className="bg-lapis_lazuli/10 p-3 rounded-xl mr-4">
+                          <FaUtensils className="w-5 h-5 text-lapis_lazuli" />
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold">Meal Plans</h3>
-                          <p className="text-ash_gray text-sm mt-1">Select your perfect meal experience</p>
+                          <h3 className="text-xl font-bold text-slate-800">Meal Plans</h3>
+                          <p className="text-slate-500 text-sm">Choose your dining experience</p>
                         </div>
                       </div>
                     </div>
                     
-                    <div className="p-6 space-y-4 bg-platinum/50">
+                    <div className="p-6 space-y-4">
                       {mealPlans.map((plan, i) => (
-                        <div key={i} className="bg-white border border-platinum rounded-xl p-5 shadow-sm hover:shadow-md hover:border-lapis_lazuli transition-all duration-200 group">
+                        <div key={i} className="bg-white border border-slate-100 rounded-xl p-5 hover:border-lapis_lazuli/20 hover:shadow-sm transition-all duration-200 group">
                           <div className="flex justify-between items-start mb-3">
-                            <h4 className="font-semibold text-base text-gray-800 group-hover:text-blue-700 transition-colors">
+                            <h4 className="font-semibold text-slate-800 group-hover:text-lapis_lazuli transition-colors">
                               {plan.planName}
                             </h4>
                             <div className="text-right">
                               {plan.price === 0 ? (
-                                <span className="text-sm bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-medium">
+                                <span className="text-xs bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full font-medium border border-emerald-200">
                                   Included
                                 </span>
                               ) : (
-                                <div className="text-gray-800">
+                                <div className="text-slate-800">
                                   <span className="font-bold text-lg text-lapis_lazuli">${plan.price}</span>
-                                  <span className="text-xs text-gray-500 block mt-0.5">per person/day</span>
+                                  <span className="text-xs text-slate-500 block mt-0.5">per person/day</span>
                                 </div>
                               )}
                             </div>
                           </div>
                           
-                          <p className="text-gray-600 text-sm leading-relaxed mb-4">{plan.description}</p>
+                          <p className="text-slate-600 text-sm leading-relaxed mb-4">{plan.description}</p>
                           
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-3">
                             {plan.planName.toLowerCase().includes('breakfast') && (
                               <div className="flex items-center space-x-1.5">
-                                <div className="w-2.5 h-2.5 bg-amber-400 rounded-full"></div>
-                                <span className="text-xs text-gray-500 font-medium">Breakfast</span>
+                                <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
+                                <span className="text-xs text-slate-500 font-medium">Breakfast</span>
                               </div>
                             )}
                             {plan.planName.toLowerCase().includes('lunch') && (
                               <div className="flex items-center space-x-1.5">
-                                <div className="w-2.5 h-2.5 bg-orange-400 rounded-full"></div>
-                                <span className="text-xs text-gray-500 font-medium">Lunch</span>
+                                <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                <span className="text-xs text-slate-500 font-medium">Lunch</span>
                               </div>
                             )}
                             {plan.planName.toLowerCase().includes('dinner') && (
                               <div className="flex items-center space-x-1.5">
-                                <div className="w-2.5 h-2.5 bg-indigo-400 rounded-full"></div>
-                                <span className="text-xs text-gray-500 font-medium">Dinner</span>
+                                <div className="w-2 h-2 bg-indigo-400 rounded-full"></div>
+                                <span className="text-xs text-slate-500 font-medium">Dinner</span>
                               </div>
                             )}
                             {plan.planName.toLowerCase().includes('all') && (
                               <div className="flex items-center space-x-1.5">
-                                <div className="w-2.5 h-2.5 bg-lapis_lazuli rounded-full"></div>
-                                <span className="text-xs text-gray-500 font-medium">All Meals</span>
+                                <div className="w-2 h-2 bg-lapis_lazuli rounded-full"></div>
+                                <span className="text-xs text-slate-500 font-medium">All Meals</span>
                               </div>
                             )}
                           </div>
@@ -398,23 +485,32 @@ function HotelProfile() {
                       ))}
                     </div>
                   </div>
-
-                  {/* Live Availability button removed as requested */}
                 </div>
               </div>
             )}
             {activeTab === 1 && (
-              <div className="w-full overflow-x-hidden">
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Find Your Perfect Room</h2>
-
-                {/* Check Room Availability section removed as requested */}
+              <div className="w-full">
+                <div className="flex items-center mb-8">
+                  <div className="bg-lapis_lazuli/10 p-3 rounded-xl mr-4">
+                    <FaBed className="w-6 h-6 text-lapis_lazuli" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">Available Rooms</h2>
+                    <p className="text-slate-500">Find your perfect accommodation</p>
+                  </div>
+                </div>
 
                 {roomsData.length > 0 && (
-                  <div className="mb-4 sm:mb-6 bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4 text-center">
-                    <h3 className="text-sm sm:text-lg font-semibold text-green-800">
-                      {roomsData.length} Room{roomsData.length !== 1 ? "s" : ""} Available
-                    </h3>
-                    <p className="text-xs sm:text-sm text-green-600">
+                  <div className="mb-8 bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-xl p-6 text-center">
+                    <div className="flex items-center justify-center mb-3">
+                      <div className="bg-emerald-100 p-2 rounded-full mr-3">
+                        <IoIosCheckmarkCircle className="w-5 h-5 text-emerald-600" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-emerald-800">
+                        {roomsData.length} Room{roomsData.length !== 1 ? "s" : ""} Available
+                      </h3>
+                    </div>
+                    <p className="text-sm text-emerald-600">
                       for{" "}
                       {bookingData.checkIn?.toLocaleDateString("en-US", {
                         month: "short",
@@ -431,10 +527,10 @@ function HotelProfile() {
                   </div>
                 )}
 
-                <div className="w-full space-y-4 sm:space-y-8">
+                <div className="space-y-6">
                   {roomsData.length > 0 ? (
                     roomsData.map((room) => (
-                      <div key={room._id} className="w-full min-h-[auto] mx-0 overflow-visible">
+                      <div key={room._id} className="transform transition-all duration-200 hover:scale-[1.01]">
                         <RoomCard 
                           room={{
                             ...room,
@@ -448,14 +544,25 @@ function HotelProfile() {
                       </div>
                     ))
                   ) : (
-                    <div className="text-center py-8 sm:py-12 bg-white rounded-xl shadow-lg border border-gray-100">
-                      <div className="bg-platinum rounded-full w-12 sm:w-20 h-12 sm:h-20 flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                        <FaBed className="h-6 sm:h-10 w-6 sm:w-10 text-lapis_lazuli" />
+                    <div className="text-center py-16 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-200">
+                      <div className="bg-slate-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                        <FaBed className="h-8 w-8 text-slate-400" />
                       </div>
-                      <h3 className="text-base sm:text-xl font-semibold text-gray-800 mb-2">No Rooms Selected Yet</h3>
-                      <p className="text-gray-500 text-sm sm:text-base max-w-md mx-auto">
-                        Choose your check-in and check-out dates above to find available rooms for your stay.
+                      <h3 className="text-xl font-semibold text-slate-800 mb-3">Ready to Find Your Room?</h3>
+                      <p className="text-slate-500 max-w-md mx-auto leading-relaxed">
+                        Select your check-in and check-out dates to discover available rooms tailored to your perfect stay.
                       </p>
+                      <div className="mt-6 flex items-center justify-center space-x-4 text-sm text-slate-400">
+                        <div className="flex items-center">
+                          <FaCalendarAlt className="w-4 h-4 mr-2" />
+                          Choose Dates
+                        </div>
+                        <div className="w-1 h-1 bg-slate-300 rounded-full"></div>
+                        <div className="flex items-center">
+                          <FaClock className="w-4 h-4 mr-2" />
+                          Instant Results
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -464,25 +571,40 @@ function HotelProfile() {
 
             {activeTab === 2 && (
               <div>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-8">Dining Options</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
+                <div className="flex items-center mb-8">
+                  <div className="bg-lapis_lazuli/10 p-3 rounded-xl mr-4">
+                    <FaUtensils className="w-6 h-6 text-lapis_lazuli" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">Dining Experiences</h2>
+                    <p className="text-slate-500">Savor exceptional culinary delights</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {dinningOptions.map((option, index) => (
-                    <div key={index} className="group relative overflow-hidden rounded-2xl shadow-lg">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/40 z-10"></div>
+                    <div key={index} className="group relative overflow-hidden rounded-2xl shadow-sm border border-slate-200 hover:shadow-lg transition-all duration-300">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
                       <img
                         src={option.image || "/placeholder.svg"}
                         alt={option.optionName}
-                        className="w-full h-48 sm:h-64 md:h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-64 md:h-72 lg:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 z-20 flex flex-col justify-end p-4 sm:p-6 text-white">
-                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2">{option.optionName}</h3>
-                        <p className="text-white/80 text-xs sm:text-base">{option.description}</p>
-                        <button
-                          className="mt-2 sm:mt-4 text-white border border-white/30 hover:bg-white/20 backdrop-blur-sm rounded-lg px-4 sm:px-6 py-1 sm:py-2 transition-colors w-fit text-xs sm:text-base min-h-[44px]"
-                          onClick={() => handleViewMenu(option.menu)}
-                        >
-                          View Menu
-                        </button>
+                      <div className="absolute inset-0 z-20 flex flex-col justify-end p-6 text-white">
+                        <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                          <h3 className="text-xl md:text-2xl font-bold mb-2 leading-tight">{option.optionName}</h3>
+                          <p className="text-white/90 text-sm leading-relaxed mb-4 opacity-90 group-hover:opacity-100 transition-opacity duration-300">
+                            {option.description}
+                          </p>
+                          <button
+                            className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 
+                                     text-white rounded-lg px-5 py-2.5 transition-all duration-300 w-fit text-sm font-medium
+                                     transform hover:scale-105 min-h-[44px] flex items-center"
+                            onClick={() => handleViewMenu(option.menu)}
+                          >
+                            <FaImage className="w-4 h-4 mr-2" />
+                            View Menu
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -492,26 +614,34 @@ function HotelProfile() {
 
             {activeTab === 3 && (
               <div>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-8">Photo Gallery</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                <div className="flex items-center mb-8">
+                  <div className="bg-lapis_lazuli/10 p-3 rounded-xl mr-4">
+                    <FaImage className="w-6 h-6 text-lapis_lazuli" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">Photo Gallery</h2>
+                    <p className="text-slate-500">Explore our beautiful spaces</p>
+                  </div>
+                </div>
+                
+                {/* Masonry Grid Layout */}
+                <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
                   {gallery.map((img, idx) => (
-                    <div key={idx} className="group relative overflow-hidden rounded-xl shadow-md cursor-pointer">
+                    <div key={idx} className="break-inside-avoid group relative overflow-hidden rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition-all duration-300 cursor-pointer">
                       <img
                         src={img || "/placeholder.svg"}
                         alt={`Gallery ${idx + 1}`}
-                        className="w-full h-40 sm:h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-lapis_lazuli/0 group-hover:bg-lapis_lazuli/20 flex items-center justify-center transition-all duration-300">
-                        <div className="opacity-0 group-hover:opacity-100 transform group-hover:scale-100 scale-50 transition-all duration-300">
-                          <div className="bg-white/90 backdrop-blur-sm text-lapis_lazuli rounded-full p-2 sm:p-3">
-                            <svg className="h-4 sm:h-6 w-4 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                              />
-                            </svg>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                          <div className="flex items-center justify-between text-white">
+                            <span className="text-sm font-medium">View {idx + 1}</span>
+                            <div className="bg-white/20 backdrop-blur-sm rounded-full p-2">
+                              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                              </svg>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -523,33 +653,44 @@ function HotelProfile() {
 
             {activeTab === 4 && (
               <div>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Guest Reviews</h2>
+                <div className="flex items-center mb-8">
+                  <div className="bg-lapis_lazuli/10 p-3 rounded-xl mr-4">
+                    <FaHeart className="w-6 h-6 text-lapis_lazuli" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">Guest Reviews</h2>
+                    <p className="text-slate-500">Hear from our valued guests</p>
+                  </div>
+                </div>
+
+                {/* Enhanced Overall Rating Section */}
                 {reviews.length > 0 && (
-                  <div className="bg-blue-50 p-4 sm:p-6 rounded-xl mb-4 sm:mb-8">
-                    <div className="flex flex-col sm:flex-row items-center justify-between">
-                      <div>
-                        <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2">Overall Rating</h3>
-                        <div className="flex items-center">
+                  <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-6 sm:p-8 mb-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                      {/* Left: Overall Rating */}
+                      <div className="text-center lg:text-left">
+                        <h3 className="text-lg font-semibold text-slate-800 mb-4">Overall Rating</h3>
+                        <div className="flex flex-col items-center lg:items-start">
                           {(() => {
                             const totalRating = reviews.reduce((sum, rev) => sum + rev.rating, 0)
                             const avgRating = totalRating / reviews.length
                             return (
                               <>
-                                <div className="flex mr-2 sm:mr-3">
-                                  {[...Array(5)].map((_, i) => (
-                                    <AiFillStar
-                                      key={i}
-                                      size={20}
-                                      className={`${i < Math.round(avgRating) ? "text-yellow-400" : "text-gray-300"} sm:size-28`}
-                                    />
-                                  ))}
-                                </div>
-                                <div>
-                                  <span className="text-xl sm:text-2xl md:text-3xl font-bold text-lapis_lazuli">{avgRating.toFixed(1)}</span>
-                                  <span className="text-gray-600 ml-1">/ 5</span>
-                                  <p className="text-gray-600 text-xs sm:text-sm">
-                                    from {reviews.length} review{reviews.length !== 1 ? "s" : ""}
-                                  </p>
+                                <div className="flex items-center mb-3">
+                                  <span className="text-4xl sm:text-5xl font-bold text-lapis_lazuli mr-3">{avgRating.toFixed(1)}</span>
+                                  <div>
+                                    <div className="flex mb-1">
+                                      {[...Array(5)].map((_, i) => (
+                                        <AiFillStar
+                                          key={i}
+                                          className={`w-5 h-5 ${i < Math.round(avgRating) ? "text-yellow-400" : "text-slate-300"}`}
+                                        />
+                                      ))}
+                                    </div>
+                                    <p className="text-slate-600 text-sm">
+                                      from {reviews.length} review{reviews.length !== 1 ? "s" : ""}
+                                    </p>
+                                  </div>
                                 </div>
                               </>
                             )
@@ -557,52 +698,83 @@ function HotelProfile() {
                         </div>
                       </div>
 
-                      <div className="mt-3 sm:mt-0 p-3 sm:p-4 bg-white rounded-lg shadow-sm">
-                        <div className="text-center">
-                          <div className="text-lg sm:text-xl md:text-2xl font-bold text-lapis_lazuli">{reviews.length}</div>
-                          <div className="text-gray-600 text-xs sm:text-sm">Total Reviews</div>
+                      {/* Right: Rating Distribution */}
+                      <div>
+                        <h4 className="text-lg font-semibold text-slate-800 mb-4">Rating Distribution</h4>
+                        <div className="space-y-2">
+                          {[5, 4, 3, 2, 1].map((star) => {
+                            const count = reviews.filter(r => r.rating === star).length
+                            const percentage = reviews.length > 0 ? (count / reviews.length) * 100 : 0
+                            return (
+                              <div key={star} className="flex items-center text-sm">
+                                <span className="w-8 text-slate-600 font-medium">{star}</span>
+                                <AiFillStar className="w-4 h-4 text-yellow-400 mr-2" />
+                                <div className="flex-1 bg-slate-200 rounded-full h-2 mr-3">
+                                  <div 
+                                    className="bg-lapis_lazuli rounded-full h-2 transition-all duration-300"
+                                    style={{ width: `${percentage}%` }}
+                                  ></div>
+                                </div>
+                                <span className="w-8 text-slate-500 text-xs">{count}</span>
+                              </div>
+                            )
+                          })}
                         </div>
                       </div>
                     </div>
                   </div>
                 )}
-                <div className="mb-4 sm:mb-6">
-                  <label className="block text-xs sm:text-base mb-2">Your Rating:</label>
-                  <div className="flex items-center mb-2">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        onClick={() => setNewRating(star)}
-                        className="text-lg sm:text-2xl focus:outline-none transition-colors mr-1 min-h-[44px]"
-                      >
-                        <AiFillStar
-                          className={`${
-                            star <= newRating ? "text-yellow-400" : "text-gray-300"
-                          } hover:text-yellow-400 transform hover:scale-110 transition-all`}
-                        />
-                      </button>
-                    ))}
-                    <span className="ml-2 text-gray-600 text-xs sm:text-sm">
-                      {newRating} Star{newRating !== 1 ? "s" : ""}
-                    </span>
+
+                {/* Submit Review Section */}
+                <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-8">
+                  <h3 className="text-lg font-semibold text-slate-800 mb-4">Share Your Experience</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Your Rating:</label>
+                      <div className="flex items-center mb-3">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setNewRating(star)}
+                            className="text-2xl focus:outline-none transition-all mr-1 min-h-[44px] hover:scale-110"
+                          >
+                            <AiFillStar
+                              className={`${
+                                star <= newRating ? "text-yellow-400" : "text-slate-300"
+                              } hover:text-yellow-400 transition-colors`}
+                            />
+                          </button>
+                        ))}
+                        <span className="ml-3 text-slate-600 text-sm bg-slate-50 px-3 py-1 rounded-full">
+                          {newRating} Star{newRating !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Your Review:</label>
+                      <textarea
+                        rows={4}
+                        placeholder="Tell us about your experience at this hotel..."
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        className="w-full border border-slate-200 rounded-xl p-4 text-sm focus:ring-2 focus:ring-lapis_lazuli/20 focus:border-lapis_lazuli transition-colors resize-none"
+                      />
+                    </div>
+                    <button
+                      onClick={submitReview}
+                      className="bg-lapis_lazuli hover:bg-lapis_lazuli/90 text-white px-6 py-3 
+                               rounded-xl transition-all duration-200 shadow-sm hover:shadow-md text-sm font-medium min-h-[44px]
+                               flex items-center transform hover:scale-105"
+                    >
+                      <FaHeart className="w-4 h-4 mr-2" />
+                      Submit Review
+                    </button>
                   </div>
-                  <textarea
-                    rows={4}
-                    placeholder="Write your review..."
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    className="w-full border p-1.5 sm:p-2 rounded mb-3 sm:mb-4 text-xs sm:text-base"
-                  />
-                  <button
-                    onClick={submitReview}
-                    className="bg-lapis_lazuli hover:bg-indigo_dye text-platinum px-4 sm:px-6 py-1.5 sm:py-2 
-                               rounded-full transition-colors shadow-md text-xs sm:text-base min-h-[44px]"
-                  >
-                    Submit Review
-                  </button>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+
+                {/* Reviews List */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {reviews.map((rev, i) => {
                     const userId = typeof rev.user === "string" ? rev.user : rev.user._id
                     const displayName = usersData[userId] || "Anonymous"
@@ -610,26 +782,30 @@ function HotelProfile() {
                     return (
                       <div
                         key={i}
-                        className="bg-white p-4 sm:p-6 rounded-xl border border-gray-100 shadow-md hover:shadow-lg transition"
+                        className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-sm transition-all duration-200"
                       >
-                        <div className="flex justify-between items-center mb-2 sm:mb-3">
+                        <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center">
-                            <div className="bg-platinum text-indigo_dye rounded-full w-6 sm:w-10 h-6 sm:h-10 flex items-center justify-center font-bold mr-2 sm:mr-3 text-xs sm:text-base">
+                            <div className="bg-lapis_lazuli/10 text-lapis_lazuli rounded-full w-10 h-10 flex items-center justify-center font-bold mr-3 text-sm">
                               {initial}
                             </div>
-                            <strong className="text-xs sm:text-base">{displayName}</strong>
+                            <div>
+                              <strong className="text-slate-800 font-medium">{displayName}</strong>
+                              <div className="flex items-center mt-1">
+                                {[...Array(5)].map((_, idx) => (
+                                  <AiFillStar
+                                    key={idx}
+                                    className={`w-4 h-4 ${idx < rev.rating ? "text-yellow-400" : "text-slate-300"}`}
+                                  />
+                                ))}
+                              </div>
+                            </div>
                           </div>
-                          <div className="flex">
-                            {[...Array(5)].map((_, idx) => (
-                              <AiFillStar
-                                key={idx}
-                                className={`${idx < rev.rating ? "text-yellow-400" : "text-gray-300"} w-3 sm:w-5 h-3 sm:h-5`}
-                              />
-                            ))}
+                          <div className="text-slate-400 text-xs bg-slate-50 px-2 py-1 rounded-full">
+                            {new Date(rev.createdAt).toLocaleDateString()}
                           </div>
                         </div>
-                        <p className="text-gray-600 text-xs sm:text-base mb-2">{rev.comment}</p>
-                        <div className="text-gray-400 text-xs sm:text-sm">{new Date(rev.createdAt).toLocaleDateString()}</div>
+                        <p className="text-slate-600 text-sm leading-relaxed">{rev.comment}</p>
                       </div>
                     )
                   })}
@@ -639,100 +815,92 @@ function HotelProfile() {
           </div>
         </main>
         
+        {/* Enhanced Menu Modal */}
         {menuModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-            <div className="relative bg-white rounded-lg overflow-hidden">
-              <button onClick={closeMenuModal} className="absolute top-1 right-1 text-gray-600 hover:text-gray-800 text-xl sm:text-2xl min-h-[44px]">
-                ✕
-              </button>
-              <img
-                src={menuImageUrl || "/placeholder.svg"}
-                alt="Menu"
-                className="max-h-[80vh] max-w-[90vw] sm:max-h-[80vh] sm:max-w-[80vw] object-contain"
-              />
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl max-w-4xl max-h-[90vh] w-full">
+              <div className="absolute top-4 right-4 z-10">
+                <button 
+                  onClick={closeMenuModal} 
+                  className="bg-white/90 hover:bg-white text-slate-600 hover:text-slate-800 rounded-full p-2 shadow-lg transition-all duration-200 min-h-[44px] w-11 h-11 flex items-center justify-center"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="p-2">
+                <img
+                  src={menuImageUrl || "/placeholder.svg"}
+                  alt="Menu"
+                  className="w-full h-auto object-contain rounded-xl"
+                />
+              </div>
             </div>
           </div>
         )}
       </div>
 
+      <Footer />
+
       <style jsx global>{`
         .react-datepicker {
           font-family: 'Inter', sans-serif;
-          border: 1px solid #e5e7eb;
-          border-radius: 0.5rem;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-          width: 260px;
+          border: 1px solid #e2e8f0;
+          border-radius: 1rem;
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+          width: 280px;
           z-index: 1000;
           background-color: white;
         }
         @media (min-width: 640px) {
           .react-datepicker {
-            width: 280px;
+            width: 300px;
           }
         }
         @media (min-width: 768px) {
           .react-datepicker {
-            width: 300px;
+            width: 320px;
           }
         }
         .react-datepicker__header {
           background-color: #005E84;
           color: white;
-          border-top-left-radius: 0.5rem;
-          border-top-right-radius: 0.5rem;
-          padding: 0.5rem;
+          border-top-left-radius: 1rem;
+          border-top-right-radius: 1rem;
+          padding: 1rem;
+          border-bottom: none;
         }
         .react-datepicker__current-month,
         .react-datepicker__day-name {
           color: white;
           font-weight: 600;
-          font-size: 0.7rem;
+          font-size: 0.875rem;
         }
-        @media (min-width: 640px) {
-          .react-datepicker__current-month,
-          .react-datepicker__day-name {
-            font-size: 0.75rem;
-          }
+        .react-datepicker__day-names {
+          padding: 0 1rem;
         }
-        @media (min-width: 768px) {
-          .react-datepicker__current-month,
-          .react-datepicker__day-name {
-            font-size: 0.875rem;
-          }
+        .react-datepicker__month {
+          padding: 0 1rem 1rem;
         }
         .react-datepicker__day {
-          color: #1f2937;
-          border-radius: 0.375rem;
+          color: #475569;
+          border-radius: 0.5rem;
           transition: all 0.2s;
-          width: 30px;
-          height: 30px;
-          line-height: 30px;
-          font-size: 0.7rem;
-        }
-        @media (min-width: 640px) {
-          .react-datepicker__day {
-            width: 32px;
-            height: 32px;
-            line-height: 32px;
-            font-size: 0.75rem;
-          }
-        }
-        @media (min-width: 768px) {
-          .react-datepicker__day {
-            width: 36px;
-            height: 36px;
-            line-height: 36px;
-            font-size: 0.875rem;
-          }
+          width: 36px;
+          height: 36px;
+          line-height: 36px;
+          font-size: 0.875rem;
+          margin: 0.125rem;
         }
         .react-datepicker__day:hover {
-          background-color: #E7E9E5;
+          background-color: #f1f5f9;
           color: #005E84;
         }
         .react-datepicker__day--selected,
         .react-datepicker__day--in-range,
         .react-datepicker__day--in-selecting-range {
-          background-color: #E7E9E5;
+          background-color: #e2e8f0;
           color: #005E84;
         }
         .react-datepicker__day--range-start,
@@ -742,13 +910,13 @@ function HotelProfile() {
         }
         .react-datepicker__day--range-start:hover,
         .react-datepicker__day--range-end:hover {
-          background-color: #075375 !important;
+          background-color: #075985 !important;
         }
         .react-datepicker__day--outside-month {
-          color: #d1d5db;
+          color: #cbd5e1;
         }
         .react-datepicker__day--disabled {
-          color: #d1d5db;
+          color: #cbd5e1;
           cursor: not-allowed;
         }
         .react-datepicker__navigation-icon::before {
@@ -769,6 +937,15 @@ function HotelProfile() {
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
+        }
+        /* Masonry layout support */
+        .columns-1 { columns: 1; }
+        .columns-2 { columns: 2; }
+        .columns-3 { columns: 3; }
+        .columns-4 { columns: 4; }
+        .break-inside-avoid {
+          break-inside: avoid;
+          page-break-inside: avoid;
         }
       `}</style>
     </>
