@@ -29,6 +29,7 @@ const Tours = lazy(() => import("./pages/Tours"));
 const TourDetails = lazy(() => import("./pages/TourDetails"));
 const TourBooking = lazy(() => import("./pages/TourBooking"));
 const InquiryPage = lazy(() => import("./pages/InquiryPage"));
+const RoomInquiry = lazy(() => import("./pages/RoomInquiry"));
 const Activities = lazy(() => import("./pages/Activities"));
 const TravelServices = lazy(() => import("./pages/TravelServices"));
 const RealEstate = lazy(() => import("./pages/RealEstate"));
@@ -244,6 +245,17 @@ export default function App() {
             element={
               <>
                 <InquiryPage />
+                <Footer />
+              </>
+            }
+          />
+
+          {/* Room inquiry */}
+          <Route
+            path="/rooms/:roomId/inquiry"
+            element={
+              <>
+                <RoomInquiry />
                 <Footer />
               </>
             }

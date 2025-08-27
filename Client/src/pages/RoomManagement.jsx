@@ -10,7 +10,37 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Close as CloseIcon, ErrorOutline as ErrorIcon } from '@mui/icons-material';
+import { Tabs, Tab, Card, CardContent, CardActions, Divider, Badge } from '@mui/material';
+import {
+  CheckCircle as CheckCircleIcon,
+  Cancel as CancelIcon,
+  Email as EmailIcon,
+  Phone as PhoneIcon,
+  Person as PersonIcon,
+  Hotel as HotelIcon,
+  KingBed as KingBedIcon,
+  AttachMoney as MoneyIcon,
+  Schedule as ScheduleIcon,
+  LocationOn as LocationIcon
+} from '@mui/icons-material';
 import UploadProgress from '../Components/UploadProgress';
+
+// TabPanel component for tab content
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
 
 // Predefined markets
 const defaultMarkets = [
@@ -40,6 +70,9 @@ const RoomManagement = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadStatuses, setUploadStatuses] = useState([]); // Track upload status for each image
   const [customMarkets, setCustomMarkets] = useState([]); 
+  const [activeTab, setActiveTab] = useState(0);
+  const [roomInquiries, setRoomInquiries] = useState([]);
+  const [inquiriesLoading, setInquiriesLoading] = useState(false); 
 
   const handleSnackbarClose = () => {
     setSnackbar(prev => ({ ...prev, open: false }));
@@ -108,6 +141,25 @@ const RoomManagement = () => {
     };
     fetchData();
   }, []);
+
+  const fetchRoomInquiries = async () => {
+    try {
+      setInquiriesLoading(true);
+      const response = await axios.get('/inquiries?inquiry_type=room', { withCredentials: true });
+      setRoomInquiries(response.data);
+    } catch (err) {
+      console.error('Error fetching room inquiries:', err);
+      setSnackbar({ open: true, message: 'Failed to load room inquiries', severity: 'error' });
+    } finally {
+      setInquiriesLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 1) {
+      fetchRoomInquiries();
+    }
+  }, [activeTab]);
 
   const resetForm = () => setForm({
     hotelId: '',
@@ -371,6 +423,19 @@ const RoomManagement = () => {
 
   const closeRoomProfile = () => setOpenProfile(false);
 
+  const handleInquiryAction = async (inquiryId, action) => {
+    try {
+      await axios.put(`/api/inquiries/${inquiryId}`, { status: action }, { withCredentials: true });
+      setRoomInquiries(prev => prev.map(inquiry => 
+        inquiry._id === inquiryId ? { ...inquiry, status: action } : inquiry
+      ));
+      setSnackbar({ open: true, message: `Inquiry ${action} successfully`, severity: 'success' });
+    } catch (err) {
+      console.error(`Error ${action}ing inquiry:`, err);
+      setSnackbar({ open: true, message: `Failed to ${action} inquiry`, severity: 'error' });
+    }
+  };
+
   const handleImageUpload = async (e, key, setForm, setSnackbar, setUploadProgress, setUploadStatuses) => {
     const files = [...e.target.files];
     if (!files.length) return;
@@ -479,69 +544,208 @@ const RoomManagement = () => {
   return (
     <Paper sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>Room Management</Typography>
-      <Button variant="contained" startIcon={<AddIcon />} onClick={() => openDialog(null)} sx={{ mb: 2 }}>
-        Add Room
-      </Button>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Hotel</TableCell>
-              <TableCell>Room Name</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Current Price</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rooms.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5} align="center">
-                  <Typography color="textSecondary">No rooms found</Typography>
-                </TableCell>
-              </TableRow>
-            ) : (
-              rooms.map(r => (
-                <TableRow key={r._id}>
-                  <TableCell>
-                    {(() => {
-                      const hotel = r.hotel;
-                      if (!hotel) return 'Unknown Hotel';
-                      const hotelId = typeof hotel === 'object' ? (hotel._id || hotel.$oid) : hotel;
-                      return hotels.find(h => h._id === hotelId)?.name || 'Unknown Hotel';
-                    })()}
-                  </TableCell>
-                  <TableCell>{r.roomName}</TableCell>
-                  <TableCell>{r.roomType}</TableCell>
-                  <TableCell>
-                    ${(() => {
-                      const today = new Date();
-                      today.setHours(0, 0, 0, 0);
-                      const currentPeriod = r.pricePeriods?.find(p => {
-                        const start = new Date(p.startDate);
-                        const end = new Date(p.endDate);
-                        return start <= today && end >= today;
-                      });
-                      return currentPeriod?.price || 0;
-                    })()}
-                  </TableCell>
-                  <TableCell>
-                    <IconButton onClick={() => openDialog(r)}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(r._id)} color="error">
-                      <DeleteIcon />
-                    </IconButton>
-                    <Button onClick={() => openRoomProfile(r)}>
-                      Profile
-                    </Button>
-                  </TableCell>
+      
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)}>
+          <Tab label="Rooms" />
+          <Tab 
+            label={
+              <Badge badgeContent={roomInquiries.filter(i => i.status === 'pending').length} color="primary">
+                Room Inquiries
+              </Badge>
+            } 
+          />
+        </Tabs>
+      </Box>
+
+      <TabPanel value={activeTab} index={0}>
+        <Box sx={{ mt: 3 }}>
+          <Button variant="contained" startIcon={<AddIcon />} onClick={() => openDialog(null)} sx={{ mb: 2 }}>
+            Add Room
+          </Button>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Hotel</TableCell>
+                  <TableCell>Room Name</TableCell>
+                  <TableCell>Type</TableCell>
+                  <TableCell>Current Price</TableCell>
+                  <TableCell>Actions</TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              </TableHead>
+              <TableBody>
+                {rooms.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} align="center">
+                      <Typography color="textSecondary">No rooms found</Typography>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  rooms.map(r => (
+                    <TableRow key={r._id}>
+                      <TableCell>
+                        {(() => {
+                          const hotel = r.hotel;
+                          if (!hotel) return 'Unknown Hotel';
+                          const hotelId = typeof hotel === 'object' ? (hotel._id || hotel.$oid) : hotel;
+                          return hotels.find(h => h._id === hotelId)?.name || 'Unknown Hotel';
+                        })()}
+                      </TableCell>
+                      <TableCell>{r.roomName}</TableCell>
+                      <TableCell>{r.roomType}</TableCell>
+                      <TableCell>
+                        ${(() => {
+                          const today = new Date();
+                          today.setHours(0, 0, 0, 0);
+                          const currentPeriod = r.pricePeriods?.find(p => {
+                            const start = new Date(p.startDate);
+                            const end = new Date(p.endDate);
+                            return start <= today && end >= today;
+                          });
+                          return currentPeriod?.price || 0;
+                        })()}
+                      </TableCell>
+                      <TableCell>
+                        <IconButton onClick={() => openDialog(r)}>
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(r._id)} color="error">
+                          <DeleteIcon />
+                        </IconButton>
+                        <Button onClick={() => openRoomProfile(r)}>
+                          Profile
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </TabPanel>
+
+      <TabPanel value={activeTab} index={1}>
+        <Box sx={{ mt: 3 }}>
+          {inquiriesLoading ? (
+            <Box textAlign="center" p={4}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Guest Name</TableCell>
+                    <TableCell>Contact</TableCell>
+                    <TableCell>Hotel</TableCell>
+                    <TableCell>Room</TableCell>
+                    <TableCell>Check-in</TableCell>
+                    <TableCell>Check-out</TableCell>
+                    <TableCell>Guests</TableCell>
+                    <TableCell>Status</TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {roomInquiries.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={9} align="center">
+                        <Typography color="textSecondary">No room inquiries found</Typography>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    roomInquiries.map(inquiry => (
+                      <TableRow key={inquiry._id}>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <PersonIcon />
+                            <Typography>{inquiry.guestName}</Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <EmailIcon fontSize="small" />
+                              <Typography variant="body2">{inquiry.email}</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <PhoneIcon fontSize="small" />
+                              <Typography variant="body2">{inquiry.phone}</Typography>
+                            </Box>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <HotelIcon />
+                            <Typography>
+                              {inquiry.hotel_name || 'Unknown Hotel'}
+                            </Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <KingBedIcon />
+                            <Typography>{inquiry.room_name || 'Unknown Room'}</Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <ScheduleIcon />
+                            <Typography>{new Date(inquiry.check_in).toLocaleDateString()}</Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <ScheduleIcon />
+                            <Typography>{new Date(inquiry.check_out).toLocaleDateString()}</Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <PersonIcon />
+                            <Typography>{inquiry.guest_count} guests</Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Chip 
+                            label={inquiry.status} 
+                            color={inquiry.status === 'confirmed' ? 'success' : inquiry.status === 'cancelled' ? 'error' : 'warning'}
+                            variant={inquiry.status === 'pending' ? 'outlined' : 'filled'}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', gap: 1 }}>
+                            {inquiry.status === 'pending' && (
+                              <>
+                                <IconButton 
+                                  color="success" 
+                                  onClick={() => handleInquiryAction(inquiry._id, 'confirmed')}
+                                  title="Confirm Inquiry"
+                                >
+                                  <CheckCircleIcon />
+                                </IconButton>
+                                <IconButton 
+                                  color="error" 
+                                  onClick={() => handleInquiryAction(inquiry._id, 'cancelled')}
+                                  title="Cancel Inquiry"
+                                >
+                                  <CancelIcon />
+                                </IconButton>
+                              </>
+                            )}
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </Box>
+      </TabPanel>
 
       <Dialog open={open} onClose={closeDialog} fullWidth maxWidth="md">
         <DialogTitle>{editing ? 'Edit Room' : 'Add Room'}</DialogTitle>
