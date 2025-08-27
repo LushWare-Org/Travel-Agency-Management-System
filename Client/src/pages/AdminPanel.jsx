@@ -46,7 +46,6 @@ import BookingManagement from './BookingManagement';
 import DiscountManagement from './DiscountManagement';
 import TourManagement from './TourManagement';
 import ContactManagement from './ContactManagement';
-import TourBookingManagement from './TourBookingManagement';
 
 const drawerWidth = 240;
 
@@ -60,12 +59,10 @@ export default function AdminPanel() {
     tours: 0, 
     contacts: 0, 
     activities: 0, 
-    activityBookings: 0,
-    tourInquiries: 0 
+    activityBookings: 0 
   });
   const [recentBookings, setRecentBookings] = useState([]);
   const [recentMessages, setRecentMessages] = useState([]);
-  const [recentTourInquiries, setRecentTourInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -78,15 +75,14 @@ export default function AdminPanel() {
       try {
         setLoading(true);
         setError(null);
-        const [u, h, b, t, c, a, ab, tb] = await Promise.all([
+        const [u, h, b, t, c, a, ab] = await Promise.all([
           axios.get('/users', { withCredentials: true }),
           axios.get('/hotels', { withCredentials: true }),
           axios.get('/bookings', { withCredentials: true }),
           axios.get('/tours', { withCredentials: true }),
           axios.get('/contacts', { withCredentials: true }),
           axios.get('/activities', { withCredentials: true }),
-          axios.get('/activity-bookings', { withCredentials: true }).catch(() => ({ data: { data: [] } })),
-          axios.get('/tour-bookings', { withCredentials: true })
+          axios.get('/activity-bookings', { withCredentials: true }).catch(() => ({ data: { data: [] } }))
         ]);
         setStats({ 
           users: u.data.length, 
@@ -95,12 +91,10 @@ export default function AdminPanel() {
           tours: t.data.length,
           contacts: c.data.length,
           activities: a.data.success ? a.data.data.length : 0,
-          activityBookings: ab.data.success ? ab.data.data.length : 0,
-          tourInquiries: tb.data.length
+          activityBookings: ab.data.success ? ab.data.data.length : 0
         });
         setRecentBookings(b.data.slice(0, 5));
         setRecentMessages(c.data.slice(0, 5));
-        setRecentTourInquiries(tb.data.slice(0, 5));
       } catch (err) {
         console.error('Error fetching admin data:', err);
         setError('Failed to load admin dashboard data. Please try refreshing the page.');
@@ -140,7 +134,6 @@ export default function AdminPanel() {
     { id: 'bookings', text: 'Booking Oversight', icon: <BookingIcon /> },
     { id: 'discounts', text: 'Discount Management', icon: <DiscountIcon /> },
     { id: 'tours', text: 'Tour Management', icon: <TourOutlined/> },
-    { id: 'tour-bookings', text: 'Tour Bookings', icon: <BookingIcon /> },
     { id: 'contacts', text: 'Contact Submissions', icon: <EmailIcon /> },
   ];
 
@@ -165,7 +158,6 @@ export default function AdminPanel() {
               { title: 'Tours', value: stats.tours, color: '#2196f3' },
               { title: 'Activities', value: stats.activities, color: '#9c27b0' },
               { title: 'Activity Bookings', value: stats.activityBookings, color: '#4caf50' },
-              { title: 'Tour Bookings', value: stats.tourInquiries, color: '#ff5722' },
               { title: 'Messages', value: stats.contacts, color: '#607d8b' }]
               .map((s) => (
                 <Grid key={s.title} item xs={12} sm={6} md={3}>
@@ -177,7 +169,7 @@ export default function AdminPanel() {
             ))}
           </Grid>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
               <Paper sx={{ p:2 }}>
                 <Typography variant="h6">Recent Bookings</Typography>
                 {recentBookings.length > 0 ? (
@@ -192,22 +184,7 @@ export default function AdminPanel() {
                 <Button onClick={() => setSection('bookings')}>View All</Button>
               </Paper>
             </Grid>
-            <Grid item xs={12} md={4}>
-              <Paper sx={{ p:2 }}>
-                <Typography variant="h6">Recent Tour Bookings</Typography>
-                {recentTourInquiries.length > 0 ? (
-                  recentTourInquiries.map((inquiry) => (
-                    <Box key={inquiry._id} sx={{ p:1, m:1, border:'1px solid #ddd', borderRadius:1 }}>
-                      <Typography>{inquiry.clientName} • {inquiry.tourTitle} • {new Date(inquiry.createdAt).toLocaleDateString()}</Typography>
-                    </Box>
-                  ))
-                ) : (
-                  <Typography color="textSecondary" sx={{ p: 2 }}>No recent tour bookings</Typography>
-                )}
-                <Button onClick={() => setSection('tour-bookings')}>View All</Button>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
               <Paper sx={{ p:2 }}>
                 <Typography variant="h6">Recent Messages</Typography>
                 {recentMessages.length > 0 ? (
@@ -236,7 +213,6 @@ export default function AdminPanel() {
       case 'bookings': return <BookingManagement />;
       case 'discounts': return <DiscountManagement />;
       case 'tours': return <TourManagement />;
-      case 'tour-bookings': return <TourBookingManagement />;
       case 'contacts': return <ContactManagement />;
       default: return <Dashboard />;
     }

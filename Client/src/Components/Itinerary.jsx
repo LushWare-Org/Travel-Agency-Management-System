@@ -142,372 +142,210 @@ const Itinerary = ({selectedNightsKey}) => {
   }
 
   return (
-    <div className="itinerary-wrap flex flex-col w-full bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
-  {/* Elegant header section removed as requested */}
-
-      {/* Premium tab navigation */}
-      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-gray-200/50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="tabs flex gap-1 py-4">
-            {["itinerary", "fineprint"].map((tab) => (
-              <div
-                key={tab}
-                className={`tab relative flex items-center justify-center px-8 py-3 text-base md:text-lg font-semibold 
-                  transition-all duration-500 ease-out rounded-full cursor-pointer flex-1 group overflow-hidden
-                  ${
-                    activeTab === tab
-                      ? "bg-gradient-to-r from-[#005E84] to-[#0A435C] text-white shadow-lg shadow-[#005E84]/25 transform scale-[1.02]"
-                      : "bg-white text-gray-600 hover:text-[#005E84] hover:bg-gray-50 border border-gray-200 hover:border-[#005E84]/30 hover:shadow-md"
-                  }`}
-                onClick={() => setActiveTab(tab)}
-              >
-                {/* Background glow effect for active tab */}
-                {activeTab === tab && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/20 to-[#0A435C]/20 blur-xl"></div>
-                )}
-                <span className="relative z-10 flex items-center gap-2">
-                  {tab === "itinerary" && (
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                    </svg>
-                  )}
-                  {tab === "fineprint" && (
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
-                    </svg>
-                  )}
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </span>
-              </div>
-            ))}
+    <div className="itinerary-wrap flex flex-col w-full">
+      <Divider />
+      <div className="tabs flex mb-6 mt-6 gap-2 w-full justify-between align-middle">
+        {["itinerary", "fineprint"].map((tab) => (
+          <div
+            key={tab}
+            className={`tab flex items-center justify-center px-2 py-2 text-lg md:text-2xl font-bold 
+              transition-all duration-300 transform border-2 rounded-lg cursor-pointer w-full 
+              ${
+                activeTab === tab
+                  ? "bg-lapis_lazuli text-white shadow-md border-lapis_lazuli"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200 border-gray-300"
+              }`}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
           </div>
-        </div>
+        ))}
       </div>
 
-      <div className="tab-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="tab-content px-2 md:px-6">
         {activeTab === "itinerary" && (
-          <div className="space-y-8">
-            {/* Timeline indicator */}
-            <div className="relative">
-              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#005E84] via-[#0A435C] to-[#075375] hidden lg:block"></div>
-              
-              {itineraryDays.map((dayItem, index) => (
-                <div
-                  key={index}
-                  className="itinerary-item group relative mb-12 last:mb-0"
-                >
-                  {/* Timeline dot */}
-                  <div className="absolute left-6 w-4 h-4 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full border-4 border-white shadow-lg z-10 hidden lg:block group-hover:scale-125 transition-transform duration-300"></div>
-                  
-                  {/* Card container with hover effects */}
-                  <div className="lg:ml-16 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1 overflow-hidden border border-gray-100">
-                    {/* Card header with gradient */}
-                    <div className="bg-gradient-to-r from-[#005E84] via-[#0A435C] to-[#075375] text-white p-6">
-                      <div className="flex items-center gap-4 flex-wrap">
-                        <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
-                          <span className="font-bold text-lg md:text-xl">Day {dayItem.day}</span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-xl md:text-2xl font-bold truncate">{dayItem.title}</h3>
-                        </div>
-                      </div>
+          <div>
+            {itineraryDays.map((dayItem, index) => (
+              <div
+                key={index}
+                className="itinerary-item flex flex-col lg:flex-row border border-gray-300 p-2 mb-6 bg-white shadow-lg transition-all"
+              >
+                <div className="itinerary-desc-wrap flex flex-col gap-4 p-2 flex-1">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <div className="itinerary-day-box px-4 py-2 bg-lapis_lazuli text-white font-semibold text-xl md:text-2xl">
+                      Day {dayItem.day}
                     </div>
-
-                    {/* Card content */}
-                    <div className="flex flex-col lg:flex-row">
-                      {/* Content section */}
-                      <div className={`${dayItem.images && dayItem.images.length > 0 ? 'flex-1' : 'w-full'} p-6 lg:p-8`}>
-                        <div className="itinerary-desc">
-                          {dayItem.details.length > 0 ? (
-                            <div className="space-y-4">
-                              {dayItem.details.map((detail, idx) => (
-                                <div key={idx} className="flex items-start gap-3 group/item">
-                                  <div className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full mt-2 group-hover/item:scale-150 transition-transform duration-200"></div>
-                                  <p className="text-gray-700 text-base md:text-lg leading-relaxed group-hover/item:text-gray-900 transition-colors duration-200">
-                                    {detail}
-                                  </p>
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <div className="text-center py-8">
-                              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                                </svg>
-                              </div>
-                              <p className="text-gray-500 text-lg">No activities available for this day.</p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Image section with enhanced styling */}
-                      {dayItem.images && dayItem.images.length > 0 && (
-                        <div className="lg:w-80 xl:w-96 relative">
-                          <div className="relative h-64 lg:h-full lg:max-h-96 overflow-hidden">
-                            <img
-                              src={dayItem.images[imageIndices[index]]}
-                              alt={`Day ${dayItem.day} image`}
-                              style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                              }}
-                              className="transition-all duration-1000 ease-in-out group-hover:scale-105"
-                            />
-                            
-                            {/* Image overlay gradient */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-                            
-                            {/* Navigation arrows with enhanced styling */}
-                            <button
-                              className="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white text-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group-hover:scale-110"
-                              onClick={() =>
-                                setImageIndices((prev) => {
-                                  const newIndices = [...prev];
-                                  newIndices[index] =
-                                    (newIndices[index] - 1 + dayItem.images.length) %
-                                    dayItem.images.length;
-                                  return newIndices;
-                                })
-                              }
-                            >
-                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            </button>
-                            <button
-                              className="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white text-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group-hover:scale-110"
-                              onClick={() =>
-                                setImageIndices((prev) => {
-                                  const newIndices = [...prev];
-                                  newIndices[index] = (newIndices[index] + 1) % dayItem.images.length;
-                                  return newIndices;
-                                })
-                              }
-                            >
-                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                              </svg>
-                            </button>
-                            
-                            {/* Image indicator dots */}
-                            {dayItem.images.length > 1 && (
-                              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                                {dayItem.images.map((_, imgIdx) => (
-                                  <div
-                                    key={imgIdx}
-                                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                                      imgIdx === imageIndices[index]
-                                        ? 'bg-white scale-125'
-                                        : 'bg-white/50 hover:bg-white/75'
-                                    }`}
-                                  ></div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
+                    <div className="itinerary-title bg-ash_gray px-4 py-2 w-full md:w-auto text-lg md:text-2xl font-semibold text-lapis_lazuli">
+                      {dayItem.title}
                     </div>
                   </div>
+
+                  <div className="itinerary-desc text-sm md:text-base leading-relaxed text-gray-700">
+                    {dayItem.details.length > 0 ? (
+                      <ul className="list-disc pl-6">
+                        {dayItem.details.map((detail, idx) => (
+                          <li key={idx} className="mb-2">
+                            {detail}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No activities available for this day.</p>
+                    )}
+                  </div>
                 </div>
-              ))}
-            </div>
+
+                <div className="itinerary-images relative flex items-center justify-center w-full h-48 md:w-64 md:h-60 lg:h-auto lg:w-80 overflow-hidden">
+                  {dayItem.images && dayItem.images.length > 0 ? (
+                    <>
+                      <img
+                        src={dayItem.images[imageIndices[index]]}
+                        alt={`Day ${dayItem.day} image`}
+                        style={{
+                          width: '100%',
+                          aspectRatio: '3 / 2',
+                          objectFit: 'cover',
+                        }}
+                        className="transition-all duration-1000 ease-in-out"
+                      />
+                      <div
+                        className="absolute left-2 top-1/2 transform -translate-y-1/2 text-lg font-bold cursor-pointer z-10 select-none text-white"
+                        onClick={() =>
+                          setImageIndices((prev) => {
+                            const newIndices = [...prev];
+                            newIndices[index] =
+                              (newIndices[index] - 1 + dayItem.images.length) %
+                              dayItem.images.length;
+                            return newIndices;
+                          })
+                        }
+                      >
+                        &lt;
+                      </div>
+                      <div
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-lg font-bold cursor-pointer z-10 select-none text-white"
+                        onClick={() =>
+                          setImageIndices((prev) => {
+                            const newIndices = [...prev];
+                            newIndices[index] = (newIndices[index] + 1) % dayItem.images.length;
+                            return newIndices;
+                          })
+                        }
+                      >
+                        &gt;
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-center">No images available for this day.</p>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
         {activeTab === "fineprint" && (
-          <div className="space-y-12">
-            {/* Hero summary section */}
-            <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-              <div className="flex flex-col lg:flex-row">
-                <div className="flex-1 p-8 lg:p-12">
-                  <div className="mb-8">
-                    <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                      Tour Summary
-                    </h2>
-                    <div className="w-24 h-1 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full"></div>
-                  </div>
-                  <div className="prose prose-lg max-w-none">
-                    <p className="text-gray-700 text-lg leading-relaxed">
-                      {tourData.tour_summary || "No summary available."}
-                    </p>
-                  </div>
+          <div className="overflow-x-auto bg-white p-0 lg:p-8">
+            <div className="summary-item flex flex-wrap border border-gray-300 p-0 mb-6 bg-white shadow-lg transform">
+              <div className="summary-desc-wrap flex flex-col gap-6 flex-1">
+                <div className="summary-desc text-lg text-gray-700 leading-relaxed text-justify lg:p-6 p-4">
+                  {tourData.tour_summary || "No summary available."}
                 </div>
-                {tourData.tour_image && (
-                  <div className={`${isMobile ? 'w-full h-64' : 'w-96 lg:w-1/3'} relative overflow-hidden`}>
-                    <img
-                      src={tourData.tour_image}
-                      alt="Tour Summary"
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-                  </div>
-                )}
               </div>
-            </div>
-
-            {/* Package contents section */}
-            <div className="text-center mb-12">
-              <h2 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#005E84] via-[#0A435C] to-[#075375] bg-clip-text text-transparent mb-4">
-                What&apos;s Inside the Package?
-              </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Discover everything that&apos;s included and excluded in your amazing journey
-              </p>
-              <div className="w-32 h-1 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full mx-auto mt-6"></div>
-            </div>
-
-            {/* Inclusions and Exclusions */}
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Inclusions */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100 hover:shadow-xl transition-all duration-500 group">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900">Inclusions</h3>
+              {tourData.tour_image && !isMobile && (
+                <div className="summary-item-img flex-shrink-0 justify-center align-middle w-64 h-fit lg:mx-0  overflow-hidden">
+                  <img
+                    src={tourData.tour_image}
+                    alt="Tour Summary"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <Divider className="mb-6" />
+              )}
+              {tourData.tour_image && isMobile && (
+                <div className="summary-item-img flex-shrink-0 justify-center align-middle w-full h-44 lg:mx-0 overflow-hidden">
+                  <img
+                    src={tourData.tour_image}
+                    alt="Tour Summary"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+            </div>
+
+            <h2 className="text-4xl font-semibold mb-6 mt-6 text-center text-lapis_lazuli">
+              What&apos;s Inside the Package?
+            </h2>
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="inclusions w-full md:w-1/2 border p-4 bg-ash_gray/50">
+                <h3 className="text-xl font-bold mb-4 text-indigo_dye">Inclusions</h3>
+                <Divider/>
                 {Array.isArray(tourData.inclusions) && tourData.inclusions.length > 0 ? (
-                  <div className="space-y-4">
+                  <ul className="list-none gap-y-4 text-lg mt-4">
                     {tourData.inclusions.map((inc, index) => (
-                      <div key={index} className="flex items-start gap-4 group/item">
-                        <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mt-0.5 group-hover/item:scale-110 transition-transform duration-200">
-                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        </div>
-                        <p className="text-gray-700 text-lg leading-relaxed group-hover/item:text-gray-900 transition-colors duration-200">
-                          {inc}
-                        </p>
-                      </div>
+                      <li key={index} className="flex items-center text-green-500 mb-4">
+                        <span className="mr-4 text-xl">&#10004;</span>
+                        {inc}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 ) : (
-                  <div className="text-center py-8">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <p className="text-gray-500 text-lg">No inclusions available.</p>
-                  </div>
+                  <p className="text-gray-700 text-lg">No inclusions available.</p>
                 )}
               </div>
-
-              {/* Exclusions */}
-              <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-2xl p-8 border border-red-100 hover:shadow-xl transition-all duration-500 group">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-rose-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900">Exclusions</h3>
-                </div>
-                <Divider className="mb-6" />
+              <div className="exclusions w-full md:w-1/2 border p-4 bg-ash_gray/50">
+                <h3 className="text-xl font-bold mb-4 text-indigo_dye">Exclusions</h3>
+                <Divider />
                 {Array.isArray(tourData.exclusions) && tourData.exclusions.length > 0 ? (
-                  <div className="space-y-4">
+                  <ul className="list-none gap-y-4 text-lg mt-4">
                     {tourData.exclusions.map((exc, index) => (
-                      <div key={index} className="flex items-start gap-4 group/item">
-                        <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-red-500 to-rose-600 rounded-full flex items-center justify-center mt-0.5 group-hover/item:scale-110 transition-transform duration-200">
-                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                          </svg>
-                        </div>
-                        <p className="text-gray-700 text-lg leading-relaxed group-hover/item:text-gray-900 transition-colors duration-200">
-                          {exc}
-                        </p>
-                      </div>
+                      <li key={index} className="flex items-center text-red-500 mb-4">
+                        <span className="mr-4 text-xl">&#10008;</span>
+                        {exc}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 ) : (
-                  <div className="text-center py-8">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <p className="text-gray-500 text-lg">No exclusions available.</p>
-                  </div>
+                  <p className="text-gray-700 text-lg">No exclusions available.</p>
                 )}
               </div>
             </div>
 
-            {/* Policies section */}
-            <div className="space-y-8">
-              {[
-                {
-                  title: "Refund Policies",
-                  icon: (
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
-                    </svg>
-                  ),
-                  description: "Refund policies are designed to uphold fairness and transparency, ensuring peace of mind for our valued travelers.",
-                  points: [
-                    "Refunds are applicable under specific terms and conditions.",
-                    "Review the cancellation policy before booking.",
-                    "Refunds will be processed within 7–10 business days after confirmation."
-                  ]
-                },
-                {
-                  title: "Payment Methods",
-                  icon: (
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-                      <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
-                    </svg>
-                  ),
-                  description: "We provide a variety of secure and convenient payment options.",
-                  points: [
-                    "Credit cards and debit cards are accepted.",
-                    "Secure online payment gateways available.",
-                    "Bank transfers can be arranged for large amounts."
-                  ]
-                },
-                {
-                  title: "Payment Policies",
-                  icon: (
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2H6zm1 2a1 1 0 000 2h6a1 1 0 100-2H7zm6 7a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm-3 3a1 1 0 100 2h.01a1 1 0 100-2H10zm-4 1a1 1 0 011-1h.01a1 1 0 110 2H7a1 1 0 01-1-1zm1-4a1 1 0 100 2h.01a1 1 0 100-2H7zm2 0a1 1 0 100 2h.01a1 1 0 100-2H9zm2 0a1 1 0 100 2h.01a1 1 0 100-2H11z" clipRule="evenodd" />
-                    </svg>
-                  ),
-                  description: "To secure your booking, we require either full payment or a partial deposit.",
-                  points: [
-                    "Full payment is required at the time of booking or as per the terms.",
-                    "Deposits may be required for certain trips or packages.",
-                    "Payments must be made according to the specified deadlines."
-                  ]
-                }
-              ].map((policy, index) => (
-                <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 border border-gray-100 group">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
-                      {policy.icon}
-                    </div>
-                    <h3 className="text-2xl lg:text-3xl font-bold text-gray-900">{policy.title}</h3>
-                  </div>
-                  <p className="text-gray-700 text-lg mb-6 leading-relaxed">
-                    {policy.description}
-                  </p>
-                  <div className="space-y-3">
-                    {policy.points.map((point, idx) => (
-                      <div key={idx} className="flex items-start gap-3 group/item">
-                        <div className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full mt-3 group-hover/item:scale-150 transition-transform duration-200"></div>
-                        <p className="text-gray-700 text-lg leading-relaxed group-hover/item:text-gray-900 transition-colors duration-200">
-                          {point}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
+            <div className="mt-12 space-y-12 lg:p-0 p-6">
+              <div>
+                <h3 className="text-3xl font-semibold text-lapis_lazuli mb-6">Refund Policies</h3>
+                <p className="text-gray-700 text-lg mb-6 text-justify">
+                  Refund policies are designed to uphold fairness and transparency, ensuring peace of mind for our valued travelers.
+                </p>
+                <ul className="list-disc pl-8 text-gray-800 text-lg leading-relaxed">
+                  <li>Refunds are applicable under specific terms and conditions.</li>
+                  <li>Review the cancellation policy before booking.</li>
+                  <li>Refunds will be processed within 7–10 business days after confirmation.</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-3xl font-semibold text-lapis_lazuli mb-6">Payment Methods</h3>
+                <p className="text-gray-700 text-lg mb-6 text-justify">
+                  We provide a variety of secure and convenient payment options.
+                </p>
+                <ul className="list-disc pl-8 text-gray-800 text-lg leading-relaxed">
+                  <li>Credit cards and debit cards are accepted.</li>
+                  <li>Secure online payment gateways available.</li>
+                  <li>Bank transfers can be arranged for large amounts.</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-3xl font-semibold text-lapis_lazuli mb-6">Payment Policies</h3>
+                <p className="text-gray-700 text-lg mb-6 text-justify">
+                  To secure your booking, we require either full payment or a partial deposit.
+                </p>
+                <ul className="list-disc pl-8 text-gray-800 text-lg leading-relaxed">
+                  <li>Full payment is required at the time of booking or as per the terms.</li>
+                  <li>Deposits may be required for certain trips or packages.</li>
+                  <li>Payments must be made according to the specified deadlines.</li>
+                </ul>
+              </div>
             </div>
           </div>
         )}

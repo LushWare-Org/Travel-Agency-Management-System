@@ -12,20 +12,13 @@ const palette = {
   indigo_dye2: "#0A435C"
 };
 
-// Enhanced animations and micro-interactions
-const animations = {
-  fadeIn: "animate-[fadeIn_0.6s_ease-out]",
-  slideUp: "animate-[slideUp_0.5s_ease-out]",
-  float: "animate-[float_3s_ease-in-out_infinite]",
-  shimmer: "animate-[shimmer_2s_linear_infinite]",
-  pulse: "animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]"
-};
-
 const Login = ({ setIsAuthenticated }) => {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -34,47 +27,35 @@ const Login = ({ setIsAuthenticated }) => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
-  const [showPassword, setShowPassword] = useState(false); // Enhanced UX: password visibility toggle
-  const [focusedField, setFocusedField] = useState(null); // Enhanced UX: field focus states
-  const [loginSuccess, setLoginSuccess] = useState(false); // Enhanced UX: success state
 
-  // Luxurious Maldives-themed background images with higher quality
   const backgroundImages = [
-    'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-    'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-    'https://images.unsplash.com/photo-1586861635167-e5223aedc9b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-    'https://images.unsplash.com/photo-1520483601560-389dff434fdf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-    'https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'
+    'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?ixlib=rb-1.2.1&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?ixlib=rb-1.2.1&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1586861635167-e5223aedc9b0?ixlib=rb-1.2.1&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1520483601560-389dff434fdf?ixlib=rb-1.2.1&auto=format&fit=crop'
   ];
 
-  // Enhanced image slideshow with smoother transitions
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % backgroundImages.length);
-    }, 6000); // Slower transition for more luxurious feel
+    }, 5000);
     return () => clearInterval(interval);
   }, [backgroundImages.length]);
 
-  // Enhanced form handling with better UX
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
-    
-    // Clear errors as user types for better UX
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
-  };
-
-  const handleFocus = (fieldName) => {
-    setFocusedField(fieldName);
-  };
-
-  const handleBlur = () => {
-    setFocusedField(null);
   };
 
   const validateForm = () => {
@@ -98,7 +79,7 @@ const Login = ({ setIsAuthenticated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
-      // Enhanced error display - no intrusive popup
+      Swal.fire('Oops', 'Please fix the highlighted errors before submitting.', 'error');
       return;
     }
 
@@ -114,76 +95,71 @@ const Login = ({ setIsAuthenticated }) => {
         setIsAuthenticated(true);
       }
 
-      // Enhanced success feedback - elegant transition instead of popup
-      setLoginSuccess(true);
+      Swal.fire('Success', response.data.msg || 'Login successful!', 'success');
 
       try {
         const userResponse = await axios.get('/users/me');
         setUser(userResponse.data);
         
-        // Smooth transition before redirect
-        setTimeout(() => {
-          // Handle post-login redirect
-          const bookingIntent = location.state?.bookingIntent;
-          const from = location.state?.from;
+        // Handle post-login redirect
+        const bookingIntent = location.state?.bookingIntent;
+        const from = location.state?.from;
 
-          if (bookingIntent) {
-            // Redirect to the booking page with the saved data
-            switch (bookingIntent.type) {
-              case 'hotel':
-                navigate('/bookingRequest', { state: bookingIntent.data });
-                break;
-              case 'activity':
-                navigate(`/activities/${bookingIntent.data.activityId}/booking`, {
-                  state: {
-                    selectedDate: bookingIntent.data.selectedDate,
-                    guests: bookingIntent.data.guests,
-                    bookingType: bookingIntent.data.bookingType // Preserve the booking type
-                  }
-                });
-                break;
-              case 'tour':
-                // For tours, redirect back to the tour details page and auto-open inquiry form
-                navigate(bookingIntent.returnTo, {
-                  state: { openInquiry: true, tourBookingData: bookingIntent.data }
-                });
-                break;
-              case 'tour-booking':
-                // For tour booking, redirect back to the tour details page
-                // (future booking form will be implemented here)
-                navigate(bookingIntent.returnTo, {
-                  state: { proceedToBooking: true, tourBookingData: bookingIntent.data }
-                });
-                break;
-              default:
-                navigate(from?.pathname || '/');
-            }
-          } else if (from?.pathname) {
-            // Regular redirect after authentication
-            navigate(from.pathname + (from.search || ''), { replace: true });
-          } else {
-            navigate('/'); // Default redirect to home page
+        if (bookingIntent) {
+          // Redirect to the booking page with the saved data
+          switch (bookingIntent.type) {
+            case 'hotel':
+              navigate('/bookingRequest', { state: bookingIntent.data });
+              break;
+            case 'activity':
+              navigate(`/activities/${bookingIntent.data.activityId}/booking`, {
+                state: {
+                  selectedDate: bookingIntent.data.selectedDate,
+                  guests: bookingIntent.data.guests,
+                  bookingType: bookingIntent.data.bookingType // Preserve the booking type
+                }
+              });
+              break;
+            case 'tour':
+              // For tours, redirect back to the tour details page and auto-open inquiry form
+              navigate(bookingIntent.returnTo, {
+                state: { openInquiry: true, tourBookingData: bookingIntent.data }
+              });
+              break;
+            case 'tour-booking':
+              // For tour booking, redirect back to the tour details page
+              // (future booking form will be implemented here)
+              navigate(bookingIntent.returnTo, {
+                state: { proceedToBooking: true, tourBookingData: bookingIntent.data }
+              });
+              break;
+            default:
+              navigate(from?.pathname || '/');
           }
-        }, 1500); // Allow success animation to play
-
+        } else if (from?.pathname) {
+          // Regular redirect after authentication
+          navigate(from.pathname + (from.search || ''), { replace: true });
+        } else {
+          navigate('/'); // Default redirect to home page
+        }
       } catch (userError) {
         console.error('Failed to fetch user data after login:', userError);
-        // Enhanced error handling - subtle notification
-        setErrors({ general: 'Logged in but user data could not be loaded. Please refresh.' });
-        setTimeout(() => navigate('/'), 2000);
+        Swal.fire('Warning', 'Logged in but user data could not be loaded. Please refresh.', 'warning');
+        navigate('/');
       }
     } catch (err) {
       console.error('Login error:', err);
       
       // Handle pending status
       if (err.response?.status === 403 && err.response?.data?.status === 'pending') {
-        setErrors({ 
-          general: 'Your account is pending approval. You will be notified once approved.' 
+        Swal.fire({
+          title: 'Account Pending',
+          text: err.response.data.msg,
+          icon: 'info',
+          confirmButtonText: 'OK'
         });
       } else {
-        setErrors({ 
-          general: err.response?.data?.msg || 'Login failed. Please check your credentials and try again.' 
-        });
+        Swal.fire('Error', err.response?.data?.msg || 'Login failed. Please try again.', 'error');
       }
     } finally {
       setIsLoading(false);
@@ -191,305 +167,269 @@ const Login = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Enhanced Custom CSS Animations (matching Register page) */}
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        @keyframes shimmer {
-          0% { background-position: -200px 0; }
-          100% { background-position: calc(200px + 100%) 0; }
-        }
-        @keyframes success-pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.1); }
-        }
-        .backdrop-blur-lg {
-          backdrop-filter: blur(16px);
-        }
-        .backdrop-blur-sm {
-          backdrop-filter: blur(4px);
-        }
-      `}</style>
-
-
-
-      {/* Dynamic Background Slideshow (matching Register page) */}
-      <div className="absolute inset-0">
-        {backgroundImages.map((image, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-2000 ${
-              index === currentImage ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              backgroundImage: `url(${image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
-          />
-        ))}
-        {/* Enhanced overlay for better readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/70 via-teal-800/60 to-blue-800/70" />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
-
-      {/* Login Success Overlay */}
-      {loginSuccess && (
-        <div className="fixed inset-0 bg-gradient-to-br from-blue-600 to-teal-600 flex items-center justify-center z-50">
-          <div className="text-white text-center">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-white/20 flex items-center justify-center animate-[success-pulse_1s_ease-in-out]">
-              <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: palette.platinum }}>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#B7C5C7] shadow-lg"
+          : "bg-gradient-to-r from-[#E7E9E5]/80 via-[#B7C5C7]/60 to-[#E7E9E5]/80 backdrop-blur-md"
+      }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-20">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <img 
+                  className="h-16 w-auto mb-1" 
+                  src="./IsleKey Logo.jpg" 
+                  alt="Logo" 
+                />
+              </div>
+              <div className="ml-4">
+                <h1 className="text-2xl font-bold" style={{ color: palette.lapis_lazuli }}>IsleKey Holidays</h1>
+                <p className="text-[palette.ash_gray] text-sm" style={{ color: palette.ash_gray }}>Maldives Wholesale Experts</p>
+              </div>
             </div>
-            <h2 className="text-2xl font-bold mb-4">Welcome Back!</h2>
-            <p className="text-white/80">Redirecting to your dashboard...</p>
+            <div className="hidden md:flex items-center space-x-8">
+              <Link to="/" className="font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.indigo_dye2 }}>
+                Home
+              </Link>
+              <Link to="/login" className="font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.lapis_lazuli }}>
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className={`px-6 py-2 rounded-full font-medium shadow-md transition-all duration-300 ${
+                  scrolled
+                    ? "bg-[#E7E9E5] hover:bg-[#B7C5C7] text-[#005E84]"
+                    : "bg-white/30 backdrop-blur-sm hover:bg-white/50 text-[#005E84] border border-white/30"
+                } hover:brightness-110`}
+              >
+                Register
+              </Link>
+            </div>
+            <div className="md:hidden flex items-center">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="inline-flex items-center justify-center p-2 rounded-md text-blue-100 hover:text-white hover:bg-indigo-700 focus:outline-none"
+              >
+                <svg
+                  className="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  {isMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
-      )}
-
-      {/* Main Content - Split Screen Layout */}
-      <div className="relative z-10 min-h-screen flex">
-        {/* Left Side - Branding & Information */}
-        <div className="hidden lg:flex lg:w-1/2 items-center justify-center p-12">
-          <div className="max-w-md text-center text-white">
-            <div className={`mb-8 ${animations.float}`}>
-              <img
-                src="/IsleKey Logo.jpg"
-                alt="IsleKey Holidays"
-                className="h-24 w-auto mx-auto mb-6 rounded-2xl shadow-2xl"
-                onError={(e) => {
-                  e.target.src = "/Logo.png";
-                }}
-              />
+        {isMenuOpen && (
+          <div className="md:hidden bg-[#B7C5C7] bg-opacity-95 backdrop-blur-sm">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              <Link to="/" className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125" style={{ color: palette.indigo_dye2 }}>
+                Home
+              </Link>
+              <Link
+                to="/login"
+                className="block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 hover:bg-[#E7E9E5]"
+                style={{ color: palette.lapis_lazuli }}
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="bg-[#E7E9E5] text-[#005E84] block px-3 py-2 rounded-md font-medium hover:bg-[#B7C5C7] mt-4 hover:brightness-110"
+              >
+                Register
+              </Link>
             </div>
-            <h1 className={`text-4xl font-bold mb-6 ${animations.fadeIn}`}>
-              Welcome Back
-            </h1>
-            <p className={`text-xl text-blue-100 mb-8 leading-relaxed ${animations.slideUp}`}>
-              Sign in to your travel agent portal and continue creating amazing experiences 
-              for your clients in the beautiful Maldives.
-            </p>
-            
-            {/* Enhanced Booking Intent Message */}
-            {location.state?.bookingIntent && (
-              <div className={`mb-8 p-4 rounded-xl bg-blue-400/20 border border-blue-300/30 ${animations.fadeIn}`}>
-                <div className="flex items-start space-x-3">
-                  <div className="flex-shrink-0">
-                    <svg className="w-5 h-5 mt-0.5 text-blue-200" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div className="text-left">
-                    <p className="font-semibold text-sm text-blue-200">
-                      Complete Your Booking
-                    </p>
-                    <p className="text-sm mt-1 text-blue-100">
-                      Please login to continue with your{' '}
-                      {location.state.bookingIntent.type === 'hotel' && 'hotel reservation'}
-                      {location.state.bookingIntent.type === 'activity' && 'activity booking'}
-                      {location.state.bookingIntent.type === 'tour' && 'tour inquiry'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            <div className={`grid grid-cols-1 gap-4 ${animations.slideUp}`}>
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-8 h-8 bg-blue-400/30 rounded-lg flex items-center justify-center">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <span>Exclusive Access to Properties</span>
-              </div>
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-8 h-8 bg-blue-400/30 rounded-lg flex items-center justify-center">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <span>Real-time Booking Management</span>
-              </div>
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-8 h-8 bg-blue-400/30 rounded-lg flex items-center justify-center">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <span>Dedicated Partner Support</span>
-              </div>
+          </div>
+        )}
+      </nav>
+
+      <div className="flex-grow flex">
+        <div className="hidden md:block w-1/2 relative overflow-hidden">
+          {backgroundImages.map((image, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${
+                index === currentImage ? 'opacity-100' : 'opacity-0'
+              }`}
+              style={{ backgroundImage: `url(${image})` }}
+            />
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A435C]/80 to-[#B7C5C7]/50 flex flex-col justify-center px-12">
+            <h1 className="text-4xl font-bold" style={{ color: palette.platinum }}>Welcome to Maldives Reservation Portal</h1>
+            <p className="text-xl mb-8" style={{ color: palette.ash_gray }}>Access exclusive properties and manage bookings for your clients</p>
+            <div className="absolute bottom-8 left-12 flex space-x-3">
+              {backgroundImages.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImage(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    index === currentImage ? 'bg-white scale-110 w-8' : 'bg-white/50 hover:bg-white/75'
+                  }`}
+                />
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Right Side - Login Form */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8">
+        <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-4 md:p-12" style={{ backgroundColor: palette.platinum }}>
           <div className="w-full max-w-md">
-            <div className={`bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20 ${animations.slideUp}`}>
-              {/* Form Header */}
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
-                <p className="text-blue-100">Sign in to your travel agent portal</p>
-              </div>
-
-              {/* Enhanced Error Display */}
-              {errors.general && (
-                <div className="mb-6 bg-red-500/20 border border-red-400/30 text-red-100 px-4 py-3 rounded-xl backdrop-blur-sm">
-                  {errors.general}
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-extrabold" style={{ color: palette.indigo_dye2 }}>Welcome back</h2>
+              <p className="mt-2" style={{ color: palette.ash_gray }}>Sign in to your travel agent account</p>
+              {/* Show booking intent message if user was trying to make a booking */}
+              {location.state?.bookingIntent && (
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-sm text-blue-800">
+                    <span className="font-medium">Almost there!</span> Please login to complete your{' '}
+                    {location.state.bookingIntent.type === 'hotel' && 'hotel booking'}
+                    {location.state.bookingIntent.type === 'activity' && 'activity booking'}
+                    {location.state.bookingIntent.type === 'tour' && 'tour inquiry'}
+                    {location.state.bookingIntent.data?.tourName && ` for ${location.state.bookingIntent.data.tourName}`}
+                    {location.state.bookingIntent.data?.activityTitle && ` for ${location.state.bookingIntent.data.activityTitle}`}
+                    {location.state.bookingIntent.data?.hotelName && ` at ${location.state.bookingIntent.data.hotelName}`}
+                    .
+                  </p>
                 </div>
               )}
-
-              {/* Login Form */}
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Email */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-blue-100">
-                    Email Address *
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      onFocus={() => handleFocus('email')}
-                      onBlur={handleBlur}
-                      className={`w-full px-4 py-3 bg-white/10 border ${
-                        errors.email 
-                          ? 'border-red-400/50 focus:border-red-400' 
-                          : focusedField === 'email'
-                            ? 'border-blue-400 focus:border-blue-400'
-                            : 'border-white/20 focus:border-blue-400'
-                      } rounded-xl text-white placeholder-blue-200/60 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
-                      placeholder="Enter your email address"
-                    />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                      <svg className="h-5 w-5 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                      </svg>
-                    </div>
-                  </div>
-                  {errors.email && (
-                    <p className="text-red-300 text-sm">{errors.email}</p>
-                  )}
-                </div>
-
-                {/* Password */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-blue-100">
-                    Password *
-                  </label>
-                  <div className="relative">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      onFocus={() => handleFocus('password')}
-                      onBlur={handleBlur}
-                      className={`w-full px-4 py-3 pr-12 bg-white/10 border ${
-                        errors.password 
-                          ? 'border-red-400/50 focus:border-red-400' 
-                          : focusedField === 'password'
-                            ? 'border-blue-400 focus:border-blue-400'
-                            : 'border-white/20 focus:border-blue-400'
-                      } rounded-xl text-white placeholder-blue-200/60 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
-                      placeholder="Enter your password"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-blue-300 hover:text-blue-200 transition-colors duration-200"
+            </div>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email address
+                </label>
+                <div className="mt-1 relative rounded-md shadow-sm">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg
+                      className="h-5 w-5 text-gray-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                     >
-                      {showPassword ? (
-                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
-                        </svg>
-                      ) : (
-                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                      )}
-                    </button>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                      />
+                    </svg>
                   </div>
-                  {errors.password && (
-                    <p className="text-red-300 text-sm">{errors.password}</p>
-                  )}
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`block w-full pl-10 pr-3 py-3 border rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                      errors.email ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="you@example.com"
+                  />
                 </div>
-
-                {/* Remember Me & Forgot Password */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <input
-                      id="remember-me"
-                      name="rememberMe"
-                      type="checkbox"
-                      checked={formData.rememberMe}
-                      onChange={handleChange}
-                      className="h-4 w-4 text-blue-400 focus:ring-blue-400 border-white/30 rounded bg-white/10"
-                    />
-                    <label htmlFor="remember-me" className="ml-2 block text-sm text-blue-100">
-                      Remember me
-                    </label>
+                {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+              </div>
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  Password
+                </label>
+                <div className="mt-1 relative rounded-md shadow-sm">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg
+                      className="h-5 w-5 text-gray-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                      />
+                    </svg>
                   </div>
-                  <div className="text-sm">
-                    <a href="#" className="text-blue-300 hover:text-blue-200 transition-colors duration-200">
-                      Forgot password?
-                    </a>
-                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    className={`block w-full pl-10 pr-3 py-3 border rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                      errors.password ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="••••••"
+                  />
                 </div>
-
-                {/* Submit Button */}
+                {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="rememberMe"
+                    type="checkbox"
+                    checked={formData.rememberMe}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                    Remember me
+                  </label>
+                </div>
+                <div className="text-sm">
+                  <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                    Forgot password?
+                  </a>
+                </div>
+              </div>
+              <div>
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full py-4 px-6 rounded-xl font-medium transition-all duration-200 ${
-                    isLoading
-                      ? 'bg-blue-400/50 cursor-not-allowed text-blue-100'
-                      : 'bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]'
-                  } focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                  className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#005E84] to-[#0A435C] hover:from-[#075375] hover:to-[#005E84] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#005E84] transform transition-all duration-300 hover:scale-105 ${
+                    isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                 >
-                  {isLoading ? (
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="w-5 h-5 border-2 border-blue-200 border-t-transparent rounded-full animate-spin"></div>
-                      <span>Signing you in...</span>
-                    </div>
-                  ) : (
-                    'Sign In'
-                  )}
+                  {isLoading ? 'Signing in...' : 'Sign in'}
                 </button>
-
-                {/* Register Link */}
-                <div className="text-center pt-4">
-                  <p className="text-blue-100">
-                    Don't have an account?{' '}
-                    <Link 
-                      to="/register" 
-                      className="text-blue-300 hover:text-blue-200 font-medium transition-colors duration-200 hover:underline"
-                    >
-                      Create account here
-                    </Link>
-                  </p>
-                </div>
-              </form>
+              </div>
+            </form>
+            <div className="mt-8 text-center">
+              <p className="text-sm" style={{ color: palette.ash_gray }}>
+                Don't have an account?{' '}
+                <Link to="/register" className="font-medium" style={{ color: palette.lapis_lazuli }}>
+                  Register here
+                </Link>
+              </p>
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="md:hidden flex justify-center space-x-2 py-4">
+        {backgroundImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentImage(index)}
+            className={`w-2 h-2 rounded-full transition-all ${
+              index === currentImage ? 'bg-indigo-600 scale-110' : 'bg-indigo-300 hover:bg-indigo-400'
+            }`}
+          />
+        ))}
       </div>
     </div>
   );
