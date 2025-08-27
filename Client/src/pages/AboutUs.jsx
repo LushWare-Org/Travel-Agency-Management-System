@@ -74,45 +74,6 @@ const animationStyles = `
       transform: scale(1.05);
     }
   }
-  
-  @keyframes shimmer {
-    0% {
-      background-position: -200% 0;
-    }
-    100% {
-      background-position: 200% 0;
-    }
-  }
-  
-  @keyframes glow {
-    0%, 100% {
-      box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3);
-    }
-    50% {
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
-    }
-  }
-  
-  @keyframes bounce {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-15px);
-    }
-  }
-  
-  @keyframes gradientFlow {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
 
   .animate-fade-in-up {
     animation: fadeInUp 0.8s ease-out forwards;
@@ -160,52 +121,6 @@ const animationStyles = `
 
   .animate-delay-5 {
     animation-delay: 1s;
-  }
-  
-  .animate-shimmer {
-    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
-    background-size: 200% 100%;
-    animation: shimmer 3s infinite;
-  }
-  
-  .animate-glow {
-    animation: glow 3s infinite;
-  }
-  
-  .animate-bounce-slow {
-    animation: bounce 3s ease-in-out infinite;
-  }
-  
-  .animate-gradient-flow {
-    background: linear-gradient(-45deg, #075375, #0A435C, #005E84, #B7C5C7);
-    background-size: 400% 400%;
-    animation: gradientFlow 8s ease infinite;
-  }
-  
-  .shine-effect {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .shine-effect::after {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-      to bottom right,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.1) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    transform: rotate(30deg);
-    transition: transform 1.5s ease;
-  }
-  
-  .shine-effect:hover::after {
-    transform: rotate(30deg) translateY(100%);
   }
 
   .opacity-0 {
@@ -367,34 +282,26 @@ const AboutUs = () => (
     <style>{animationStyles}</style>
 
     {/* Modern Hero Section */}
-    <section className="relative py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] overflow-hidden animate-gradient-flow">
+    <section className="relative py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] overflow-hidden">
       <div className="absolute inset-0 bg-black/10"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
 
       {/* Floating Elements */}
-      <div className="absolute top-20 right-20 w-32 h-32 border-4 border-white/20 rounded-full animate-float animate-glow"></div>
-      <div className="absolute bottom-20 left-20 w-20 h-20 border-2 border-white/30 rounded-full animate-pulse-slow animate-glow"></div>
+      <div className="absolute top-20 right-20 w-32 h-32 border-4 border-white/20 rounded-full animate-float"></div>
+      <div className="absolute bottom-20 left-20 w-20 h-20 border-2 border-white/30 rounded-full animate-pulse-slow"></div>
       <div
-        className="absolute top-1/2 left-1/4 w-6 h-6 bg-white/40 rounded-full animate-float animate-glow"
+        className="absolute top-1/2 left-1/4 w-6 h-6 bg-white/40 rounded-full animate-float"
         style={{ animationDelay: "1s" }}
       ></div>
-      
-      {/* Animated particles */}
-      <div className="absolute top-40 right-40 w-16 h-16 bg-white/5 rounded-full animate-float" style={{ animationDelay: "0.5s" }}></div>
-      <div className="absolute bottom-40 left-1/3 w-20 h-20 bg-white/5 rounded-full animate-float" style={{ animationDelay: "1.2s" }}></div>
-      <div className="absolute top-1/3 right-1/4 w-12 h-12 bg-white/5 rounded-full animate-float" style={{ animationDelay: "1.8s" }}></div>
-      
-      {/* Shimmering overlay */}
-      <div className="absolute inset-0 animate-shimmer opacity-20"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-[#B7C5C7]/30 animate-fade-in-up animate-glow">
-          <span className="w-2 h-2 bg-[#E7E9E5] rounded-full mr-2 animate-pulse-slow"></span>
+        <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-[#B7C5C7]/30 animate-fade-in-up">
+          <span className="w-2 h-2 bg-[#E7E9E5] rounded-full mr-2"></span>
           About Us
         </div>
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-[#E7E9E5] mb-8 tracking-tight leading-tight animate-fade-in-up animate-delay-1">
           About IsleKey{" "}
-          <span className="text-[#B7C5C7]">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B7C5C7] to-[#E7E9E5]">
             Holidays
           </span>
         </h1>
@@ -404,16 +311,16 @@ const AboutUs = () => (
           lasting partnerships.
         </p>
         <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up animate-delay-3">
-          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
+          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all">
             Travel Excellence
           </span>
-          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
+          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all">
             Real Estate
           </span>
-          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
+          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all">
             Investment
           </span>
-          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
+          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all">
             Brand Partnerships
           </span>
         </div>
@@ -425,13 +332,13 @@ const AboutUs = () => (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="space-y-8 animate-fade-in-left">
-            <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium shine-effect">
-              <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2 animate-pulse-slow"></span>
+            <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium">
+              <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></span>
               Our Mission
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-[#075375]">
               To be the premier{" "}
-              <span className="text-[#0A435C]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
                 bridge
               </span>
             </h2>
@@ -442,21 +349,20 @@ const AboutUs = () => (
               integrity and local expertise.
             </p>
             <div className="grid grid-cols-2 gap-6">
-              <div className="text-center p-4 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 duration-500 shine-effect">
+              <div className="text-center p-4 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] rounded-2xl">
                 <div className="text-3xl font-bold text-[#005E84] mb-2">
                   500+
                 </div>
                 <div className="text-[#075375]">Happy Clients</div>
               </div>
-              <div className="text-center p-4 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 duration-500 shine-effect">
+              <div className="text-center p-4 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] rounded-2xl">
                 <div className="text-3xl font-bold text-[#005E84] mb-2">8+</div>
                 <div className="text-[#075375]">Years Experience</div>
               </div>
             </div>
           </div>
           <div className="relative animate-fade-in-right animate-delay-2">
-            <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-700 shine-effect">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/10 via-transparent to-[#005E84]/10 animate-shimmer"></div>
+            <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl animate-float">
               <img
                 src="/travel-services/mike-swigunski-k9Zeq6EH_bk-unsplash.jpg"
                 alt="Luxury Maldives Resort"
@@ -464,8 +370,7 @@ const AboutUs = () => (
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
-            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl shadow-lg animate-pulse-slow animate-glow"></div>
-            <div className="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-[#0A435C] to-[#005E84] rounded-full opacity-70 animate-bounce-slow"></div>
+            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl shadow-lg animate-pulse-slow"></div>
           </div>
         </div>
       </div>
@@ -481,7 +386,7 @@ const AboutUs = () => (
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
             Our Core{" "}
-            <span className="text-[#0A435C]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
               Values
             </span>
           </h2>
@@ -494,12 +399,12 @@ const AboutUs = () => (
           {values.map((value, index) => (
             <div
               key={index}
-              className="group relative bg-gradient-to-br from-white to-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7]/30 overflow-hidden animate-fade-in-up shine-effect"
+              className="group bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
               style={{ animationDelay: `${(index + 3) * 0.2}s` }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative">
-                <div className="bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 animate-glow">
+                <div className="bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   {value.icon}
                 </div>
                 <h3 className="text-xl font-bold text-[#075375] mb-4 group-hover:text-[#005E84] transition-colors">
@@ -525,7 +430,7 @@ const AboutUs = () => (
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
             Meet Our{" "}
-            <span className="text-[#0A435C]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
               Experts
             </span>
           </h2>
@@ -538,18 +443,18 @@ const AboutUs = () => (
           {team.map((member, index) => (
             <div
               key={index}
-              className="group bg-gradient-to-br from-white to-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7]/30 overflow-hidden animate-fade-in-up shine-effect"
+              className="group bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
               style={{ animationDelay: `${(index + 3) * 0.2}s` }}
             >
               <div className="relative mb-6">
-                <div className="w-24 h-24 rounded-full overflow-hidden mx-auto border-4 border-[#B7C5C7] group-hover:border-[#005E84] transition-colors animate-glow">
+                <div className="w-24 h-24 rounded-full overflow-hidden mx-auto border-4 border-[#B7C5C7] group-hover:border-[#005E84] transition-colors">
                   <img
                     src={member.img}
                     alt={member.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
-                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-full flex items-center justify-center animate-pulse-slow">
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
                   <svg
                     className="w-4 h-4 text-white"
                     fill="none"
@@ -580,7 +485,7 @@ const AboutUs = () => (
       </div>
     </section>
 
-    {/* Journey Timeline Section - Enhanced Design */}
+    {/* Journey Timeline Section - Previous Design */}
     <section className="py-16 px-6 bg-[#E7E9E5]">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-[#075375] mb-12 text-center">
@@ -588,16 +493,15 @@ const AboutUs = () => (
         </h2>
 
         <div className="relative">
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#005E84] to-[#0A435C] animate-pulse-slow"></div>
+          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-[#1e7ba8]"></div>
 
           {journey.map((item, index) => (
-            <div key={index} className="relative flex items-start mb-12 group animate-fade-in-left" 
-                 style={{ animationDelay: `${index * 0.2}s` }}>
-              <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-full flex items-center justify-center text-[#E7E9E5] font-bold text-sm shadow-md group-hover:scale-110 transition-transform duration-300 relative z-10 animate-glow">
+            <div key={index} className="relative flex items-start mb-12 group">
+              <div className="flex-shrink-0 w-16 h-16 bg-[#005E84] rounded-full flex items-center justify-center text-[#E7E9E5] font-bold text-sm shadow-md group-hover:scale-110 transition-transform duration-300 relative z-10">
                 {item.year}
               </div>
               <div className="ml-8 flex-1">
-                <div className="bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] rounded-lg p-6 hover:shadow-xl transform group-hover:-translate-y-1 transition-all duration-300 shine-effect">
+                <div className="bg-[#B7C5C7] rounded-lg p-6 hover:bg-[#E7E9E5] transition-colors duration-300">
                   <h3 className="text-xl font-bold text-[#075375] mb-2">
                     {item.title}
                   </h3>
@@ -611,21 +515,11 @@ const AboutUs = () => (
     </section>
 
     {/* Testimonial Section */}
-    <section className="py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] relative overflow-hidden animate-gradient-flow">
+    <section className="py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] relative overflow-hidden">
       <div className="absolute inset-0 bg-black/10"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
-      
-      {/* Animated particles */}
-      <div className="absolute top-20 left-20 w-32 h-32 bg-white/5 rounded-full animate-float" style={{ animationDelay: "0s" }}></div>
-      <div className="absolute top-40 right-40 w-20 h-20 bg-white/5 rounded-full animate-float" style={{ animationDelay: "0.5s" }}></div>
-      <div className="absolute bottom-20 left-1/3 w-24 h-24 bg-white/5 rounded-full animate-float" style={{ animationDelay: "1s" }}></div>
-      <div className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/5 rounded-full animate-float" style={{ animationDelay: "1.5s" }}></div>
-      
-      {/* Shimmering overlay */}
-      <div className="absolute inset-0 animate-shimmer opacity-30"></div>
-      
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div className="text-6xl text-[#E7E9E5]/30 mb-6 animate-fade-in-up animate-glow">
+        <div className="text-6xl text-[#E7E9E5]/30 mb-6 animate-fade-in-up">
           "
         </div>
         <blockquote className="text-xl md:text-2xl font-light italic mb-8 leading-relaxed text-[#E7E9E5]/90 animate-fade-in-up animate-delay-1">
@@ -634,11 +528,11 @@ const AboutUs = () => (
           true potential of the Maldives.
         </blockquote>
         <div className="flex items-center justify-center animate-fade-in-up animate-delay-2">
-          <div className="w-12 h-0.5 bg-[#E7E9E5]/50 mr-4 animate-pulse-slow"></div>
-          <cite className="font-semibold not-italic text-[#E7E9E5] shine-effect">
+          <div className="w-12 h-0.5 bg-[#E7E9E5]/50 mr-4"></div>
+          <cite className="font-semibold not-italic text-[#E7E9E5]">
             The IsleKey Holidays Team
           </cite>
-          <div className="w-12 h-0.5 bg-[#E7E9E5]/50 ml-4 animate-pulse-slow"></div>
+          <div className="w-12 h-0.5 bg-[#E7E9E5]/50 ml-4"></div>
         </div>
       </div>
     </section>
@@ -653,7 +547,7 @@ const AboutUs = () => (
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
             Numbers That{" "}
-            <span className="text-[#0A435C]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
               Matter
             </span>
           </h2>
@@ -747,7 +641,7 @@ const AboutUs = () => (
           ].map((stat, index) => (
             <div
               key={index}
-              className="group bg-gradient-to-br from-white to-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7]/30 overflow-hidden animate-fade-in-up shine-effect"
+              className="group bg-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7] overflow-hidden animate-fade-in-up"
               style={{ animationDelay: `${(index + 3) * 0.2}s` }}
             >
               <div
@@ -755,7 +649,7 @@ const AboutUs = () => (
               ></div>
               <div className="relative">
                 <div
-                  className={`bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 animate-glow`}
+                  className={`bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
                 >
                   {stat.icon}
                 </div>
@@ -767,7 +661,7 @@ const AboutUs = () => (
                 </div>
                 <div className="mt-4 pt-4 border-t border-[#B7C5C7]">
                   <div className="flex items-center text-sm text-[#005E84]">
-                    <div className="w-2 h-2 bg-[#005E84] rounded-full mr-2 animate-pulse-slow"></div>
+                    <div className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></div>
                     <span>Growing steadily</span>
                   </div>
                 </div>
@@ -780,15 +674,14 @@ const AboutUs = () => (
 
     {/* Call to Action Section */}
     <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/5 via-transparent to-[#005E84]/5 animate-shimmer"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-        <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium mb-8 animate-fade-in-up animate-glow shine-effect">
-          <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2 animate-pulse-slow"></span>
+        <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium mb-8 animate-fade-in-up">
+          <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></span>
           Get Started
         </div>
         <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
           Ready to Start Your{" "}
-          <span className="text-[#0A435C]">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-[#0A435C]">
             Journey?
           </span>
         </h2>
@@ -797,7 +690,7 @@ const AboutUs = () => (
           Maldives. Contact us today to begin your adventure.
         </p>
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animate-delay-3">
-          <button className="group bg-gradient-to-r from-[#005E84] to-[#0A435C] text-[#E7E9E5] font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 shine-effect animate-glow">
+          <button className="group bg-gradient-to-r from-[#005E84] to-[#0A435C] text-[#E7E9E5] font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105">
             <span className="flex items-center">
               Contact Us Today
               <svg
@@ -815,7 +708,7 @@ const AboutUs = () => (
               </svg>
             </span>
           </button>
-          <button className="group border-2 border-[#005E84] text-[#005E84] font-bold py-4 px-8 rounded-full hover:bg-[#005E84] hover:text-[#E7E9E5] transition-all transform hover:scale-105 shine-effect">
+          <button className="group border-2 border-[#005E84] text-[#005E84] font-bold py-4 px-8 rounded-full hover:bg-[#005E84] hover:text-[#E7E9E5] transition-all transform hover:scale-105">
             View Our Services
           </button>
         </div>

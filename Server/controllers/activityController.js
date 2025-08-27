@@ -1,5 +1,3 @@
-const Activity = require('../models/Activity');
-
 // @desc    Get activity title suggestions for search
 // @route   GET /api/activities/suggestions?search=xxx
 // @access  Public
@@ -22,6 +20,7 @@ exports.getActivitySuggestions = async (req, res) => {
     res.status(500).json({ success: false, error: 'Server Error' });
   }
 };
+const Activity = require('../models/Activity');
 
 // @desc    Get all activities with filtering options
 // @route   GET /api/v1/activities

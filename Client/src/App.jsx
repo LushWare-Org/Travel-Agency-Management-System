@@ -27,17 +27,12 @@ const Settings = lazy(() => import("./pages/Settings"));
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 const Tours = lazy(() => import("./pages/Tours"));
 const TourDetails = lazy(() => import("./pages/TourDetails"));
-const TourBooking = lazy(() => import("./pages/TourBooking"));
-const InquiryPage = lazy(() => import("./pages/InquiryPage"));
-const RoomInquiry = lazy(() => import("./pages/RoomInquiry"));
 const Activities = lazy(() => import("./pages/Activities"));
 const TravelServices = lazy(() => import("./pages/TravelServices"));
 const RealEstate = lazy(() => import("./pages/RealEstate"));
 const InvestmentSupport = lazy(() => import("./pages/InvestmentSupport"));
 const BrandRepresentation = lazy(() => import("./pages/BrandRepresentation"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
-const Hulhumeedhoo = lazy(() => import("./pages/Hulhumeedhoo"));
-const TokenProgram = lazy(() => import("./pages/TokenProgram"));
 const ActivityDetail = lazy(() => import("./pages/ActivityDetail"));
 const ActivityForm = lazy(() => import("./pages/admin/ActivityForm"));
 const AdminActivityDetail = lazy(() => import("./pages/admin/ActivityDetail"));
@@ -212,56 +207,6 @@ export default function App() {
               </>
             }
           />
-          <Route
-            path="/tours/:tourId/booking"
-            element={
-              <>
-                <TourBooking />
-                <Footer />
-              </>
-            }
-          />
-          {/* Test route for booking page */}
-          <Route
-            path="/test-booking"
-            element={
-              <>
-                <TourBooking />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/tours/:tourId/inquiry"
-            element={
-              <>
-                <InquiryPage />
-                <Footer />
-              </>
-            }
-          />
-
-          {/* Standalone inquiry route for testing */}
-          <Route
-            path="/inquiry"
-            element={
-              <>
-                <InquiryPage />
-                <Footer />
-              </>
-            }
-          />
-
-          {/* Room inquiry */}
-          <Route
-            path="/rooms/:roomId/inquiry"
-            element={
-              <>
-                <RoomInquiry />
-                <Footer />
-              </>
-            }
-          />
 
           {/* activities booking */}
           <Route
@@ -403,24 +348,6 @@ export default function App() {
             element={
               <>
                 <AboutUs />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/hulhumeedhoo"
-            element={
-              <>
-                <Hulhumeedhoo />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/token-program"
-            element={
-              <>
-                <TokenProgram />
                 <Footer />
               </>
             }

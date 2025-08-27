@@ -236,29 +236,6 @@ export default function EnhancedRoomProfile() {
     });
   };
 
-  const handleInquireNow = () => {
-    if (!roomData) return;
-
-    // Prepare inquiry data
-    const inquiryData = {
-      roomId: roomData._id,
-      hotelId: roomData.hotelId,
-      roomName: roomData.roomName,
-      hotelName: roomData.hotelName,
-      basePricePerNight: perNightPrice,
-      mealPlan: selectedMealPlan,
-      market: selectedMarketObj?.name || selectedMarket,
-      checkIn: bookingDates.checkIn?.toISOString(),
-      checkOut: bookingDates.checkOut?.toISOString(),
-      previousRoute: location.state?.previousRoute || '/search'
-    };
-
-    // Navigate to room inquiry page
-    navigate(`/rooms/${roomId}/inquiry`, {
-      state: inquiryData
-    });
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gradient-to-b from-gray-50 to-gray-100">
@@ -635,7 +612,7 @@ export default function EnhancedRoomProfile() {
               </div>
 
               <button
-                onClick={handleInquireNow}
+                onClick={() => alert('Inquiry form coming soon!')}
                 className="w-full mb-3 bg-lapis_lazuli hover:bg-[#005E84] text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform transform hover:scale-105"
               >
                 <FaCheckCircle className="text-lg" /> Inquire Now
@@ -651,7 +628,7 @@ export default function EnhancedRoomProfile() {
         </div>
       </main>
       
-      <style>{`
+      <style jsx global>{`
         .react-datepicker {
           font-family: 'Inter', sans-serif;
           border: 1px solid #e5e7eb;

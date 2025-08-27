@@ -34,7 +34,7 @@ router.post('/register', async (req, res) => {
     });
     await user.save();
 
-    res.status(201).json({ success: true });
+    res.status(201).json({ msg: 'User registered successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });
@@ -64,7 +64,7 @@ router.post('/login', async (req, res) => {
       maxAge: 3600000, // 1 hour
     });
     
-    res.json({ success: true }); // Simplified response for better UX
+    res.json({ msg: 'Logged in successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });

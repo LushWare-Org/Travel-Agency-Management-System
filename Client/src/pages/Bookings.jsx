@@ -15,7 +15,7 @@ import {
   Users
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import LandingHeader from '../Landing/LandingHeader';
+import { Navigation } from 'lucide-react';
 import Footer from '../Components/Footer';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, Alert } from '@mui/material';
 import { Dialog as MuiDialog, DialogTitle as MuiDialogTitle, DialogContent as MuiDialogContent, DialogActions as MuiDialogActions, TextField, CircularProgress } from '@mui/material';
@@ -309,7 +309,7 @@ const Bookings = ({ sidebarOpen }) => {
 
   return (
     <div className={`flex-1 min-h-screen bg-gradient-to-br from-blue-50 to-white transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-16'} ml-0`}>
-      <LandingHeader />
+      <Navigation isAuthenticated onLogout={() => navigate('/login')} />
       <main className="px-4 md:px-8 py-6 md:py-10 max-w-3xl md:max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-6 md:mb-8">
