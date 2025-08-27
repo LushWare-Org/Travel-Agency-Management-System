@@ -2,9 +2,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHotelSearch } from '../hooks/useHotelSearch';
-import SearchBanner from '../components/SearchBanner';
-import SearchForm from '../components/SearchForm';
-import SearchResultsList from '../components/SearchResultsList';
+import SearchBanner from '../Components/SearchBanner';
+import SearchForm from '../Components/SearchForm';
+import SearchResultsList from '../Components/SearchResultsList';
 
 const Search = () => {
   const location = useLocation();
