@@ -796,14 +796,6 @@ const TourDetails = ({ sidebarOpen }) => {
         </main>
       </div>
 
-      {/* Enhanced WhatsApp Floating Button */}
-      <button
-        onClick={handleWhatsAppClick}
-        className="fixed bottom-8 right-8 bg-gradient-to-r from-[#0A435C] to-[#005E84] hover:from-[#005E84] hover:to-[#075375] text-white p-4 rounded-full shadow-2xl hover:shadow-[#005E84]/25 transition-all duration-300 z-50 transform hover:scale-110 hover:-translate-y-1 group"
-      >
-        <WhatsAppIcon className="w-7 h-7 group-hover:rotate-12 transition-transform duration-300" />
-      </button>
-
       {/* Image Gallery Popups */}
       <ImageGalleryPopup
         images={tour?.destination_images}
