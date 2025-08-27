@@ -216,7 +216,7 @@ const Itinerary = ({selectedNightsKey}) => {
                     {/* Card content */}
                     <div className="flex flex-col lg:flex-row">
                       {/* Content section */}
-                      <div className="flex-1 p-6 lg:p-8">
+                      <div className={`${dayItem.images && dayItem.images.length > 0 ? 'flex-1' : 'w-full'} p-6 lg:p-8`}>
                         <div className="itinerary-desc">
                           {dayItem.details.length > 0 ? (
                             <div className="space-y-4">
@@ -243,9 +243,9 @@ const Itinerary = ({selectedNightsKey}) => {
                       </div>
 
                       {/* Image section with enhanced styling */}
-                      <div className="lg:w-80 xl:w-96 relative">
-                        {dayItem.images && dayItem.images.length > 0 ? (
-                          <div className="relative h-64 lg:h-full overflow-hidden">
+                      {dayItem.images && dayItem.images.length > 0 && (
+                        <div className="lg:w-80 xl:w-96 relative">
+                          <div className="relative h-64 lg:h-full lg:max-h-96 overflow-hidden">
                             <img
                               src={dayItem.images[imageIndices[index]]}
                               alt={`Day ${dayItem.day} image`}
@@ -308,19 +308,8 @@ const Itinerary = ({selectedNightsKey}) => {
                               </div>
                             )}
                           </div>
-                        ) : (
-                          <div className="h-64 lg:h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                            <div className="text-center">
-                              <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg className="w-8 h-8 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-                                </svg>
-                              </div>
-                              <p className="text-gray-500">No images available</p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
