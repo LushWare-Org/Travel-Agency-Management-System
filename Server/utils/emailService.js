@@ -90,7 +90,7 @@ const sendNewUserNotification = async (userData, agencyData) => {
         `<p><strong>Mobile:</strong> ${agencyData.mobilePhone || 'N/A'}</p>` +
         `<p><strong>Address:</strong> ${agencyData.address.street}, ${agencyData.address.city}, ${agencyData.address.country}</p>` +
         `<p><strong>Registration Time:</strong> ${new Date().toISOString()}</p>` +
-        `<p style="margin-top: 20px;"><a href="${process.env.ADMIN_URL || 'http://localhost:5001/admin'}" style="background-color: #4CAF50; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px;">Review in Admin Panel</a></p>`
+        `<p style="margin-top: 20px;"><a href="${process.env.ADMIN_URL || 'https://islekeyholidays.com/admin'}" style="background-color: #4CAF50; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px;">Review in Admin Panel</a></p>`
     });
   } catch (error) {
     console.error('Error sending new user notification email:', error);
