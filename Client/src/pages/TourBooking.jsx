@@ -287,19 +287,46 @@ Payment Method: ${bookingData.paymentMethod}
 
           {/* Progress Steps */}
           <div className="bg-white rounded-2xl shadow-lg mb-8 p-6">
-            <div className="flex items-center justify-between mb-6">
-              {steps.map((step, index) => (
-                <div key={step} className="flex flex-col items-center flex-1">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mb-2 ${
-                    activeStep >= index ? 'bg-[#005E84] text-white' : 'bg-gray-200 text-gray-600'
-                  }`}>
-                    {index + 1}
+            <div className="relative">
+              {/* Connecting Lines */}
+              <div className="absolute top-5 left-0 right-0 flex items-center justify-between px-5">
+                {steps.slice(0, -1).map((_, index) => (
+                  <div
+                    key={index}
+                    className={`flex-1 h-0.5 mx-2 ${
+                      activeStep > index ? 'bg-[#005E84]' : 'bg-gray-200'
+                    }`}
+                  />
+                ))}
+              </div>
+              
+              {/* Step Circles */}
+              <div className="relative flex items-center justify-between">
+                {steps.map((step, index) => (
+                  <div key={step} className="flex flex-col items-center flex-1 z-10">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mb-2 border-2 ${
+                      activeStep >= index 
+                        ? 'bg-[#005E84] text-white border-[#005E84]' 
+                        : activeStep === index - 1 
+                          ? 'bg-white text-[#005E84] border-[#005E84]' 
+                          : 'bg-gray-200 text-gray-600 border-gray-200'
+                    }`}>
+                      {activeStep > index ? (
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      ) : (
+                        index + 1
+                      )}
+                    </div>
+                    <span className={`text-xs text-center ${
+                      activeStep >= index ? 'text-[#005E84] font-semibold' : 'text-gray-500'
+                    }`}>
+                      {step}
+                    </span>
                   </div>
-                  <span className={`text-xs text-center ${activeStep >= index ? 'text-[#005E84] font-semibold' : 'text-gray-500'}`}>
-                    {step}
-                  </span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 
@@ -667,7 +694,7 @@ Payment Method: ${bookingData.paymentMethod}
         </div>
       </div>
       
-      <Footer />
+     
       
       {/* Snackbar for notifications */}
       <Snackbar 
