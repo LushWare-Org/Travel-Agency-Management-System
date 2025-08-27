@@ -75,7 +75,22 @@ export default {
           700: '#23ace7',
           800: '#6cc8ef',
           900: '#b6e3f7'
-        }
+        },
+        hover_dark_blue: '#0d4a60',
+        primary_blue: '#005E84',
+        dark_teal_blue: '#0A435C',
+        hover_blue: '#075375',
+        hover_dark_blue_alt: '#0d4a60',
+        gray: {
+          50: '#F9FAFB',
+          100: '#F3F4F6',
+          200: '#E5E7EB',
+          300: '#D1D5DB',
+          400: '#9CA3AF',
+          600: '#4B5563',
+          700: '#374151'
+        },
+        white: '#FFFFFF'
       },
     },
   },
