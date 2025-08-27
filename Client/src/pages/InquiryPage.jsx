@@ -8,11 +8,12 @@ import {
   IconButton,
   Divider,
   Button,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
-import Swal from 'sweetalert2';
 
 const foodCategoryMap = {
   0: 'Half Board',
@@ -159,6 +160,13 @@ const InquiryPage = () => {
   const [travellerCount, setTravellerCount] = useState('');
   const [message, setMessage] = useState('');
 
+  // Snackbar state for notifications
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
+
   // If no tour data, redirect back
   useEffect(() => {
     console.log('InquiryPage useEffect - selectedTour:', selectedTour);
@@ -206,12 +214,24 @@ const InquiryPage = () => {
       const response = await axios.post('/inquiries', payload);
       console.log('Inquiry response:', response);
 
-      // If we reach here without an error, treat it as success:
-      Swal.fire('Success!', 'Your inquiry has been submitted successfully.', 'success');
-      navigate(-1); // Go back after successful submission
+      // Show success notification
+      setSnackbar({
+        open: true,
+        message: 'Your inquiry has been submitted successfully! Our team will contact you within 24 hours.',
+        severity: 'success'
+      });
+      
+      // Navigate back after showing the notification
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
     } catch (error) {
       console.error('Error submitting inquiry:', error);
-      Swal.fire('Error!', 'Failed to submit inquiry. Please try again.', 'error');
+      setSnackbar({
+        open: true,
+        message: 'Failed to submit inquiry. Please try again.',
+        severity: 'error'
+      });
     }
   };
 
@@ -425,6 +445,22 @@ const InquiryPage = () => {
           </Box>
         </div>
       </div>
+
+      {/* Snackbar for notifications */}
+      <Snackbar 
+        open={snackbar.open} 
+        autoHideDuration={4000} 
+        onClose={() => setSnackbar(s => ({ ...s, open: false }))}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={() => setSnackbar(s => ({ ...s, open: false }))} 
+          severity={snackbar.severity} 
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

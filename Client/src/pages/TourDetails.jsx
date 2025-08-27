@@ -276,9 +276,20 @@ const TourDetails = ({ sidebarOpen }) => {
       // Clear the state to avoid reopening on subsequent visits
       navigate(location.pathname, { replace: true });
     } else if (location.state?.proceedToBooking) {
-      // For future booking implementation - for now just show an alert
-      alert('Booking form coming soon! You are now logged in.');
-      // Clear the state to avoid showing on subsequent visits
+      // Navigate to booking page after login
+      navigate(`/tours/${tourId}/booking`, {
+        state: {
+          selectedTour: tour,
+          selectedCurrency,
+          exchangeRates,
+          finalPrice: totalPrice,
+          finalOldPrice,
+          selectedNightsKey,
+          selectedNightsOption,
+          selectedFoodCategory,
+        }
+      });
+      // Clear the state to avoid reopening on subsequent visits
       navigate(location.pathname, { replace: true });
     }
   }, [location.state, navigate, tourId, tour, selectedCurrency, exchangeRates, totalPrice, finalOldPrice, selectedNightsKey, selectedNightsOption, selectedFoodCategory]);
@@ -401,8 +412,19 @@ const TourDetails = ({ sidebarOpen }) => {
       return; // User will be redirected to login
     }
 
-    // User is authenticated, proceed with booking (for future implementation)
-    alert('Booking form coming soon!');
+    // User is authenticated, navigate to booking page
+    navigate(`/tours/${tourId}/booking`, {
+      state: {
+        selectedTour: tour,
+        selectedCurrency,
+        exchangeRates,
+        finalPrice: totalPrice,
+        finalOldPrice,
+        selectedNightsKey,
+        selectedNightsOption,
+        selectedFoodCategory,
+      }
+    });
   };
 
   return (

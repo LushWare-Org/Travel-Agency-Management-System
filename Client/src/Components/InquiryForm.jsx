@@ -10,10 +10,11 @@ import {
   IconButton,
   Divider,
   Button,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
-import Swal from 'sweetalert2';
 
 const foodCategoryMap = {
   0: 'Half Board',
@@ -141,6 +142,13 @@ const EnquiryForm = ({
   const [travellerCount, setTravellerCount] = useState('');
   const [message, setMessage] = useState('');
 
+  // Snackbar state for notifications
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
+
   // If you want the form to prefill something, do it here
   useEffect(() => {
     // For now, we leave them blank
@@ -156,7 +164,6 @@ const EnquiryForm = ({
     setTravellerCount('');
     setMessage('');
     onClose();
-
   };
 
   const handleSubmitInquiry = async () => {
@@ -185,28 +192,41 @@ const EnquiryForm = ({
       const response = await axios.post('/inquiries', payload);
       console.log('Inquiry response:', response);
   
-      // If we reach here without an error, treat it as success:
-      Swal.fire('Success!', 'Your inquiry has been submitted successfully.', 'success');
-      handleClose();
+      // Show success notification
+      setSnackbar({
+        open: true,
+        message: 'Your inquiry has been submitted successfully! Our team will contact you within 24 hours.',
+        severity: 'success'
+      });
+      
+      // Close dialog after a short delay to show the notification
+      setTimeout(() => {
+        handleClose();
+      }, 2000);
     } catch (error) {
       console.error('Error submitting inquiry:', error);
-      Swal.fire('Error!', 'Failed to submit inquiry. Please try again.', 'error');
+      setSnackbar({
+        open: true,
+        message: 'Failed to submit inquiry. Please try again.',
+        severity: 'error'
+      });
     }
   };
   
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      PaperProps={{
-        sx: {
-          width: isMobile ? '95vw' : '35vw',
-          borderRadius: isMobile ? '10px' : '16px',
-          overflowX: 'hidden',
-        },
-      }}
-    >
+    <>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            width: isMobile ? '95vw' : '35vw',
+            borderRadius: isMobile ? '10px' : '16px',
+            overflowX: 'hidden',
+          },
+        }}
+      >
       {/* Header with tour image, title and base price (if any) */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '16px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -388,6 +408,23 @@ const EnquiryForm = ({
         </Button>
       </DialogActions>
     </Dialog>
+
+    {/* Snackbar for notifications */}
+    <Snackbar 
+      open={snackbar.open} 
+      autoHideDuration={4000} 
+      onClose={() => setSnackbar(s => ({ ...s, open: false }))}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+    >
+      <Alert 
+        onClose={() => setSnackbar(s => ({ ...s, open: false }))} 
+        severity={snackbar.severity} 
+        sx={{ width: '100%' }}
+      >
+        {snackbar.message}
+      </Alert>
+    </Snackbar>
+    </>
   );
 };
 
