@@ -1,7 +1,7 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
-const Inquiry = require('../models/inquirySubmission');
+const { Inquiry, TourInquiry, RoomInquiry } = require('../models/inquirySubmission');
 const User = require('../models/User');
 const router = express.Router();
 require('dotenv').config();
@@ -18,129 +18,8 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Function to send admin email
-const sendAdminInquiryEmail = async ({
-  name,
-  email,
-  phone_number,
-  travel_date,
-  traveller_count,
-  message,
-  tour,
-  final_price,
-  currency,
-  selected_nights_key,
-  selected_nights_option,
-  selected_food_category
-}) => {
-  const htmlContent = `
-      <h2>New Travel Inquiry</h2>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Phone:</strong> ${phone_number}</p>
-      <p><strong>Travel Date:</strong> ${travel_date}</p>
-      <p><strong>Traveller Count:</strong> ${traveller_count}</p>
-      ${tour ? `<p><strong>Tour ID:</strong> ${tour}</p>` : ''}
-      ${final_price ? `<p><strong>Final Price:</strong> ${final_price}</p>` : ''}
-      ${currency ? `<p><strong>Currency:</strong> ${currency}</p>` : ''}
-      ${selected_nights_key ? `<p><strong>Selected Nights:</strong> ${selected_nights_key}</p>` : ''}
-      ${selected_nights_option ? `<p><strong>Selected Nights Option:</strong> ${selected_nights_option}</p>` : ''}
-      ${selected_food_category ? `<p><strong>Selected Food Category:</strong> ${selected_food_category}</p>` : ''}
-      <p><strong>Message:</strong></p>
-      <p>${message}</p>
-    `;
-
-  const mailOptionsAdmin = {
-    from: 'shaliniavindya@gmail.com',
-    to: 'shaliniavindya@gmail.com',
-    subject: `New Inquiry from ${name}`,
-    html: htmlContent,
-  };
-
-  return transporter.sendMail(mailOptionsAdmin);
-};
-
-// Function to send user inquiry email
-const sendUserInquiryEmail = async ({
-  name,
-  email,
-  phone_number,
-  travel_date,
-  traveller_count,
-  message,
-  tour,
-  final_price,
-  currency,
-  selected_nights_key,
-  selected_nights_option,
-  selected_food_category
-}) => {
-  const htmlContent = `
-      <h2>New Travel Inquiry</h2>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Phone:</strong> ${phone_number}</p>
-      <p><strong>Travel Date:</strong> ${travel_date}</p>
-      <p><strong>Traveller Count:</strong> ${traveller_count}</p>
-      ${tour ? `<p><strong>Tour ID:</strong> ${tour}</p>` : ''}
-      ${final_price ? `<p><strong>Final Price:</strong> ${final_price}</p>` : ''}
-      ${currency ? `<p><strong>Currency:</strong> ${currency}</p>` : ''}
-      ${selected_nights_key ? `<p><strong>Selected Nights:</strong> ${selected_nights_key}</p>` : ''}
-      ${selected_nights_option ? `<p><strong>Selected Nights Option:</strong> ${selected_nights_option}</p>` : ''}
-      ${selected_food_category ? `<p><strong>Selected Food Category:</strong> ${selected_food_category}</p>` : ''}
-      <p><strong>Message:</strong></p>
-      <p>${message}</p>
-    `;
-
-  const mailOptionsUser = {
-    from: 'shaliniavindya@gmail.com',
-    to: email,
-    subject: 'Thank you for your inquiry!',
-    html: `
-      <h2>Thank you for your inquiry, ${name}!</h2>
-      <p>We have received your inquiry and will get back to you shortly.</p>
-      <p>Here are the details you provided:</p>
-      ${htmlContent}
-    `,
-  };
-
-  return transporter.sendMail(mailOptionsUser);
-};
-
-// Function to send confirmation email
-const sendConfirmationEmail = async ({
-  name,
-  email,
-  tour,
-  travel_date,
-  traveller_count,
-  final_price,
-  currency
-}) => {
-  const htmlContent = `
-      <h2>Tour Inquiry Confirmation</h2>
-      <p>Dear ${name},</p>
-      <p>Your tour inquiry has been confirmed!</p>
-      <p><strong>Tour:</strong> ${tour || 'N/A'}</p>
-      <p><strong>Travel Date:</strong> ${travel_date}</p>
-      <p><strong>Traveller Count:</strong> ${traveller_count}</p>
-      <p><strong>Final Price:</strong> ${final_price} ${currency}</p>
-      <p>We look forward to assisting you with your travel plans.</p>
-      <p>Best regards,<br>Travel Agency Team</p>
-    `;
-
-  const mailOptions = {
-    from: 'shaliniavindya@gmail.com',
-    to: email,
-    subject: `Tour Inquiry Confirmation for ${name}`,
-    html: htmlContent,
-  };
-
-  return transporter.sendMail(mailOptions);
-};
-
-// POST / - Save inquiry and send emails
-router.post('/', async (req, res) => {
+// Function to send admin email for tour inquiries
+const sendAdminTourInquiryEmail = async (inquiryData) => {
   const {
     name,
     email,
@@ -154,60 +33,390 @@ router.post('/', async (req, res) => {
     selected_nights_key,
     selected_nights_option,
     selected_food_category
+  } = inquiryData;
+
+  const htmlContent = `
+    <h2>New Travel Inquiry</h2>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Phone:</strong> ${phone_number}</p>
+    <p><strong>Travel Date:</strong> ${travel_date}</p>
+    <p><strong>Traveller Count:</strong> ${traveller_count}</p>
+    ${tour ? `<p><strong>Tour ID:</strong> ${tour}</p>` : ''}
+    ${final_price ? `<p><strong>Final Price:</strong> ${final_price}</p>` : ''}
+    ${currency ? `<p><strong>Currency:</strong> ${currency}</p>` : ''}
+    ${selected_nights_key ? `<p><strong>Selected Nights:</strong> ${selected_nights_key}</p>` : ''}
+    ${selected_nights_option ? `<p><strong>Selected Nights Option:</strong> ${selected_nights_option}</p>` : ''}
+    ${selected_food_category ? `<p><strong>Selected Food Category:</strong> ${selected_food_category}</p>` : ''}
+    <p><strong>Message:</strong></p>
+    <p>${message}</p>
+  `;
+
+  const mailOptionsAdmin = {
+    from: 'shaliniavindya@gmail.com',
+    to: 'shaliniavindya@gmail.com',
+    subject: `New Travel Inquiry from ${name}`,
+    html: htmlContent,
+  };
+
+  return transporter.sendMail(mailOptionsAdmin);
+};
+
+// Function to send admin email for room inquiries
+const sendAdminRoomInquiryEmail = async (inquiryData) => {
+  const {
+    name,
+    email,
+    phone_number,
+    guest_count,
+    message,
+    room_name,
+    hotel_name,
+    base_price_per_night,
+    meal_plan,
+    market,
+    check_in,
+    check_out
+  } = inquiryData;
+
+  const nights = check_in && check_out ?
+    Math.ceil((new Date(check_out) - new Date(check_in)) / (1000 * 60 * 60 * 24)) : 0;
+  const totalPrice = nights * (base_price_per_night || 0);
+
+  const htmlContent = `
+    <h2>New Room Inquiry</h2>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Phone:</strong> ${phone_number}</p>
+    <p><strong>Guest Count:</strong> ${guest_count}</p>
+    <p><strong>Room:</strong> ${room_name}</p>
+    <p><strong>Hotel:</strong> ${hotel_name}</p>
+    <p><strong>Check-in:</strong> ${check_in ? new Date(check_in).toLocaleDateString() : 'N/A'}</p>
+    <p><strong>Check-out:</strong> ${check_out ? new Date(check_out).toLocaleDateString() : 'N/A'}</p>
+    <p><strong>Nights:</strong> ${nights}</p>
+    <p><strong>Price per Night:</strong> $${base_price_per_night}</p>
+    <p><strong>Total Price:</strong> $${totalPrice}</p>
+    <p><strong>Meal Plan:</strong> ${meal_plan || 'Not selected'}</p>
+    <p><strong>Market:</strong> ${market || 'Not selected'}</p>
+    <p><strong>Message:</strong></p>
+    <p>${message}</p>
+  `;
+
+  const mailOptionsAdmin = {
+    from: 'shaliniavindya@gmail.com',
+    to: 'shaliniavindya@gmail.com',
+    subject: `New Room Inquiry from ${name}`,
+    html: htmlContent,
+  };
+
+  return transporter.sendMail(mailOptionsAdmin);
+};
+
+// Function to send user inquiry email for tour inquiries
+const sendUserTourInquiryEmail = async (inquiryData) => {
+  const {
+    name,
+    email,
+    phone_number,
+    travel_date,
+    traveller_count,
+    message,
+    tour,
+    final_price,
+    currency,
+    selected_nights_key,
+    selected_nights_option,
+    selected_food_category
+  } = inquiryData;
+
+  const htmlContent = `
+    <h2>New Travel Inquiry</h2>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Phone:</strong> ${phone_number}</p>
+    <p><strong>Travel Date:</strong> ${travel_date}</p>
+    <p><strong>Traveller Count:</strong> ${traveller_count}</p>
+    ${tour ? `<p><strong>Tour ID:</strong> ${tour}</p>` : ''}
+    ${final_price ? `<p><strong>Final Price:</strong> ${final_price}</p>` : ''}
+    ${currency ? `<p><strong>Currency:</strong> ${currency}</p>` : ''}
+    ${selected_nights_key ? `<p><strong>Selected Nights:</strong> ${selected_nights_key}</p>` : ''}
+    ${selected_nights_option ? `<p><strong>Selected Nights Option:</strong> ${selected_nights_option}</p>` : ''}
+    ${selected_food_category ? `<p><strong>Selected Food Category:</strong> ${selected_food_category}</p>` : ''}
+    <p><strong>Message:</strong></p>
+    <p>${message}</p>
+  `;
+
+  const mailOptionsUser = {
+    from: 'shaliniavindya@gmail.com',
+    to: email,
+    subject: 'Thank you for your inquiry!',
+    html: `
+      <h2>Thank you for your inquiry, ${name}!</h2>
+      <p>We have received your travel inquiry and will get back to you shortly.</p>
+      <p>Here are the details you provided:</p>
+      ${htmlContent}
+    `,
+  };
+
+  return transporter.sendMail(mailOptionsUser);
+};
+
+// Function to send user inquiry email for room inquiries
+const sendUserRoomInquiryEmail = async (inquiryData) => {
+  const {
+    name,
+    email,
+    phone_number,
+    guest_count,
+    message,
+    room_name,
+    hotel_name,
+    base_price_per_night,
+    meal_plan,
+    market,
+    check_in,
+    check_out
+  } = inquiryData;
+
+  const nights = check_in && check_out ?
+    Math.ceil((new Date(check_out) - new Date(check_in)) / (1000 * 60 * 60 * 24)) : 0;
+  const totalPrice = nights * (base_price_per_night || 0);
+
+  const htmlContent = `
+    <h2>New Room Inquiry</h2>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Phone:</strong> ${phone_number}</p>
+    <p><strong>Guest Count:</strong> ${guest_count}</p>
+    <p><strong>Room:</strong> ${room_name}</p>
+    <p><strong>Hotel:</strong> ${hotel_name}</p>
+    <p><strong>Check-in:</strong> ${check_in ? new Date(check_in).toLocaleDateString() : 'N/A'}</p>
+    <p><strong>Check-out:</strong> ${check_out ? new Date(check_out).toLocaleDateString() : 'N/A'}</p>
+    <p><strong>Nights:</strong> ${nights}</p>
+    <p><strong>Price per Night:</strong> $${base_price_per_night}</p>
+    <p><strong>Total Price:</strong> $${totalPrice}</p>
+    <p><strong>Meal Plan:</strong> ${meal_plan || 'Not selected'}</p>
+    <p><strong>Market:</strong> ${market || 'Not selected'}</p>
+    <p><strong>Message:</strong></p>
+    <p>${message}</p>
+  `;
+
+  const mailOptionsUser = {
+    from: 'shaliniavindya@gmail.com',
+    to: email,
+    subject: 'Thank you for your inquiry!',
+    html: `
+      <h2>Thank you for your inquiry, ${name}!</h2>
+      <p>We have received your room inquiry and will get back to you shortly.</p>
+      <p>Here are the details you provided:</p>
+      ${htmlContent}
+    `,
+  };
+
+  return transporter.sendMail(mailOptionsUser);
+};
+
+// Function to send confirmation email for tour inquiries
+const sendTourConfirmationEmail = async (inquiry) => {
+  const {
+    name,
+    email,
+    tour,
+    travel_date,
+    traveller_count,
+    final_price,
+    currency
+  } = inquiry;
+
+  const htmlContent = `
+    <h2>Tour Inquiry Confirmation</h2>
+    <p>Dear ${name},</p>
+    <p>Your tour inquiry has been confirmed!</p>
+    <p><strong>Tour:</strong> ${tour || 'N/A'}</p>
+    <p><strong>Travel Date:</strong> ${travel_date}</p>
+    <p><strong>Traveller Count:</strong> ${traveller_count}</p>
+    <p><strong>Final Price:</strong> ${final_price} ${currency}</p>
+    <p>We look forward to assisting you with your travel plans.</p>
+    <p>Best regards,<br>Travel Agency Team</p>
+  `;
+
+  const mailOptions = {
+    from: 'shaliniavindya@gmail.com',
+    to: email,
+    subject: `Tour Inquiry Confirmation for ${name}`,
+    html: htmlContent,
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+
+// Function to send confirmation email for room inquiries
+const sendRoomConfirmationEmail = async (inquiry) => {
+  const {
+    name,
+    email,
+    guest_count,
+    room_name,
+    hotel_name,
+    check_in,
+    check_out,
+    base_price_per_night
+  } = inquiry;
+
+  const nights = check_in && check_out ?
+    Math.ceil((new Date(check_out) - new Date(check_in)) / (1000 * 60 * 60 * 24)) : 0;
+  const totalPrice = nights * (base_price_per_night || 0);
+
+  const htmlContent = `
+    <h2>Room Inquiry Confirmation</h2>
+    <p>Dear ${name},</p>
+    <p>Your room inquiry has been confirmed!</p>
+    <p><strong>Room:</strong> ${room_name || 'N/A'}</p>
+    <p><strong>Hotel:</strong> ${hotel_name || 'N/A'}</p>
+    <p><strong>Check-in:</strong> ${check_in ? new Date(check_in).toLocaleDateString() : 'N/A'}</p>
+    <p><strong>Check-out:</strong> ${check_out ? new Date(check_out).toLocaleDateString() : 'N/A'}</p>
+    <p><strong>Nights:</strong> ${nights}</p>
+    <p><strong>Guest Count:</strong> ${guest_count}</p>
+    <p><strong>Price per Night:</strong> $${base_price_per_night}</p>
+    <p><strong>Total Price:</strong> $${totalPrice}</p>
+    <p>We look forward to assisting you with your accommodation plans.</p>
+    <p>Best regards,<br>Travel Agency Team</p>
+  `;
+
+  const mailOptions = {
+    from: 'shaliniavindya@gmail.com',
+    to: email,
+    subject: `Room Inquiry Confirmation for ${name}`,
+    html: htmlContent,
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+
+// POST / - Save inquiry and send emails
+router.post('/', async (req, res) => {
+  const {
+    name,
+    email,
+    phone_number,
+    message,
+    inquiry_type,
+    // Tour fields
+    travel_date,
+    traveller_count,
+    tour,
+    final_price,
+    currency,
+    selected_nights_key,
+    selected_nights_option,
+    selected_food_category,
+    // Room fields
+    guest_count,
+    room_id,
+    hotel_id,
+    room_name,
+    hotel_name,
+    base_price_per_night,
+    meal_plan,
+    market,
+    check_in,
+    check_out
   } = req.body;
 
-  if (!name || !email || !phone_number || !travel_date || !traveller_count) {
-    return res.status(400).json({ message: 'Missing required fields. Please fill them all.' });
+  // Validation based on inquiry type
+  if (!name || !email || !phone_number) {
+    return res.status(400).json({ message: 'Name, email, and phone number are required.' });
   }
 
+  let newInquiry;
+  let inquiryData;
+
   try {
-    const newInquiry = new Inquiry({
-      name,
-      email,
-      phone_number,
-      travel_date,
-      traveller_count,
-      message,
-      tour,
-      final_price,
-      currency,
-      selected_nights_key,
-      selected_nights_option,
-      selected_food_category,
-    });
+    if (inquiry_type === 'room') {
+      // Room inquiry validation
+      if (!guest_count || !room_id || !hotel_id || !check_in || !check_out) {
+        return res.status(400).json({ message: 'Guest count, room ID, hotel ID, check-in and check-out dates are required for room inquiries.' });
+      }
+
+      newInquiry = new RoomInquiry({
+        name,
+        email,
+        phone_number,
+        message,
+        guest_count,
+        room_id,
+        hotel_id,
+        room_name,
+        hotel_name,
+        base_price_per_night,
+        meal_plan,
+        market,
+        check_in: new Date(check_in),
+        check_out: new Date(check_out),
+      });
+
+      inquiryData = {
+        name,
+        email,
+        phone_number,
+        guest_count,
+        message,
+        room_name,
+        hotel_name,
+        base_price_per_night,
+        meal_plan,
+        market,
+        check_in,
+        check_out
+      };
+
+      await Promise.all([
+        sendAdminRoomInquiryEmail(inquiryData),
+        sendUserRoomInquiryEmail(inquiryData)
+      ]);
+    } else {
+      // Tour inquiry validation
+      if (!travel_date || !traveller_count || !tour) {
+        return res.status(400).json({ message: 'Travel date, traveller count, and tour are required for tour inquiries.' });
+      }
+
+      newInquiry = new TourInquiry({
+        name,
+        email,
+        phone_number,
+        message,
+        travel_date: new Date(travel_date),
+        traveller_count,
+        tour,
+        final_price,
+        currency,
+        selected_nights_key,
+        selected_nights_option,
+        selected_food_category,
+      });
+
+      inquiryData = {
+        name,
+        email,
+        phone_number,
+        travel_date,
+        traveller_count,
+        message,
+        tour,
+        final_price,
+        currency,
+        selected_nights_key,
+        selected_nights_option,
+        selected_food_category
+      };
+
+      await Promise.all([
+        sendAdminTourInquiryEmail(inquiryData),
+        sendUserTourInquiryEmail(inquiryData)
+      ]);
+    }
+
     await newInquiry.save();
-
-    await Promise.all([
-      sendAdminInquiryEmail({
-        name,
-        email,
-        phone_number,
-        travel_date,
-        traveller_count,
-        message,
-        tour,
-        final_price,
-        currency,
-        selected_nights_key,
-        selected_nights_option,
-        selected_food_category
-      }),
-      sendUserInquiryEmail({
-        name,
-        email,
-        phone_number,
-        travel_date,
-        traveller_count,
-        message,
-        tour,
-        final_price,
-        currency,
-        selected_nights_key,
-        selected_nights_option,
-        selected_food_category
-      })
-    ]);
-
     res.status(201).json({ message: 'Inquiry submitted successfully!', inquiry: newInquiry });
   } catch (error) {
     console.error('Error processing inquiry submission:', error);
@@ -215,12 +424,19 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET / - Fetch all inquiries
+// GET / - Fetch all inquiries or filter by type
 router.get('/', async (req, res) => {
   try {
-    const inquiries = await Inquiry.find({});
-    console.log('Fetched inquiries:', inquiries.map(i => ({ id: i._id, status: i.status })));
-    const validInquiries = inquiries.filter(inquiry => 
+    const { inquiry_type } = req.query;
+    let query = {};
+
+    if (inquiry_type) {
+      query.inquiry_type = inquiry_type;
+    }
+
+    const inquiries = await Inquiry.find(query);
+    console.log('Fetched inquiries:', inquiries.map(i => ({ id: i._id, status: i.status, type: i.inquiry_type })));
+    const validInquiries = inquiries.filter(inquiry =>
       ['Pending', 'Confirmed', 'Cancelled'].includes(inquiry.status)
     );
     res.json(validInquiries);
@@ -233,8 +449,15 @@ router.get('/', async (req, res) => {
 // GET /my - Fetch inquiries for the logged-in agent only
 router.get('/my', auth, async (req, res) => {
   try {
-    const inquiries = await Inquiry.find({ email: req.user.email });
-    const validInquiries = inquiries.filter(inquiry => 
+    const { inquiry_type } = req.query;
+    let query = { email: req.user.email };
+
+    if (inquiry_type) {
+      query.inquiry_type = inquiry_type;
+    }
+
+    const inquiries = await Inquiry.find(query);
+    const validInquiries = inquiries.filter(inquiry =>
       ['Pending', 'Confirmed', 'Cancelled'].includes(inquiry.status)
     );
     res.json(validInquiries);
@@ -278,15 +501,12 @@ router.put('/:id/confirm', async (req, res) => {
     inquiry.status = 'Confirmed';
     await inquiry.save();
 
-    await sendConfirmationEmail({
-      name: inquiry.name,
-      email: inquiry.email,
-      tour: inquiry.tour,
-      travel_date: inquiry.travel_date,
-      traveller_count: inquiry.traveller_count,
-      final_price: inquiry.final_price,
-      currency: inquiry.currency
-    });
+    // Send appropriate confirmation email based on inquiry type
+    if (inquiry.inquiry_type === 'room') {
+      await sendRoomConfirmationEmail(inquiry);
+    } else {
+      await sendTourConfirmationEmail(inquiry);
+    }
 
     res.json({ message: 'Inquiry confirmed successfully.', inquiry });
   } catch (error) {
@@ -322,15 +542,12 @@ router.put('/:id/reconfirm', async (req, res) => {
     inquiry.status = 'Confirmed';
     await inquiry.save();
 
-    await sendConfirmationEmail({
-      name: inquiry.name,
-      email: inquiry.email,
-      tour: inquiry.tour,
-      travel_date: inquiry.travel_date,
-      traveller_count: inquiry.traveller_count,
-      final_price: inquiry.final_price,
-      currency: inquiry.currency
-    });
+    // Send appropriate confirmation email based on inquiry type
+    if (inquiry.inquiry_type === 'room') {
+      await sendRoomConfirmationEmail(inquiry);
+    } else {
+      await sendTourConfirmationEmail(inquiry);
+    }
 
     res.json({ message: 'Inquiry reconfirmed successfully.', inquiry });
   } catch (error) {

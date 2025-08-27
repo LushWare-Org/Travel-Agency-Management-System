@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navigation from '../Components/Header';
+import LandingHeader from '../Landing/LandingHeader';
 import Footer from '../Components/Footer';
 import OfferCard from '../Components/OfferCard';
 import axios from 'axios';
@@ -96,7 +96,7 @@ const SpecialOffers = ({ sidebarOpen }) => {
 
   return (
     <div className={`flex-1 overflow-y-auto bg-gray-100 transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-16'} ml-0`}>
-      <Navigation isAuthenticated={true} isAdmin={false} onLogout={() => navigate('/login')} />
+      <LandingHeader />
       <main className="px-4 md:px-8 py-6 md:py-10 max-w-3xl md:max-w-7xl mx-auto">
         {/* Header */}
         <header className="mb-6 md:mb-10">

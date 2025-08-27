@@ -1565,7 +1565,7 @@ const handleChange = (e) => {
         </div>
       </div>
       
-      <style jsx>{`
+      <style>{`
         .scrollbar-hide::-webkit
         }
         .scrollbar-hide {
