@@ -240,51 +240,70 @@ const InquiryPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header with back button */}
-        <div className="flex items-center mb-6">
-          <IconButton onClick={handleClose} className="mr-4">
-            <ArrowBackIcon />
+        <div className="flex items-center mb-8">
+          <IconButton 
+            onClick={handleClose} 
+            className="mr-4"
+            sx={{
+              backgroundColor: '#F9FAFB',
+              border: '1px solid #E5E7EB',
+              '&:hover': {
+                backgroundColor: '#E5E7EB',
+              },
+            }}
+          >
+            <ArrowBackIcon sx={{ color: '#4B5563' }} />
           </IconButton>
-          <Typography variant="h4" component="h1" className="font-bold text-gray-800">
+          <Typography 
+            variant="h4" 
+            component="h1" 
+            sx={{ 
+              fontWeight: 700, 
+              color: '#374151',
+              letterSpacing: '-0.025em'
+            }}
+          >
             Get Custom Quote
           </Typography>
         </div>
 
         {/* Tour Summary Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-8">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden mb-8">
           <div className="bg-gradient-to-r from-[#005E84] to-[#075375] p-6">
             <h2 className="text-2xl font-bold text-white flex items-center">
               Tour Details
             </h2>
           </div>
 
-          <Box sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+          <Box sx={{ p: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
               {selectedTour?.tour_image && (
                 <img
                   src={selectedTour.tour_image}
                   alt={selectedTour.title}
                   style={{
-                    width: '80px',
-                    height: '80px',
+                    width: '90px',
+                    height: '90px',
                     objectFit: 'cover',
-                    borderRadius: '8px',
-                    marginRight: '16px',
+                    borderRadius: '12px',
+                    marginRight: '20px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                   }}
                 />
               )}
-              <Box>
-                <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: '#374151' }}>
                   {selectedTour?.title || 'Tour Title'}
                 </Typography>
                 {finalPrice && (
-                  <Box sx={{ display: 'flex', alignItems: 'center', mt: '8px' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
                     <Typography
                       sx={{
-                        color: '#333',
-                        fontSize: '1.25rem',
+                        color: '#005E84',
+                        fontSize: '1.5rem',
                         fontWeight: 700,
                       }}
                     >
@@ -293,10 +312,9 @@ const InquiryPage = () => {
                     {finalOldPrice && (
                       <Typography
                         sx={{
-                          ml: '12px',
-                          color: '#888',
+                          color: '#9CA3AF',
                           textDecoration: 'line-through',
-                          fontSize: '1rem',
+                          fontSize: '1.125rem',
                         }}
                       >
                         {selectedCurrency} {convertPrice(finalOldPrice || 0)}
@@ -305,12 +323,11 @@ const InquiryPage = () => {
                     {finalOldPrice && finalPrice && (
                       <Typography
                         sx={{
-                          ml: '12px',
-                          backgroundColor: 'green',
+                          backgroundColor: '#10B981',
                           color: 'white',
-                          padding: '4px 8px',
-                          borderRadius: '6px',
-                          fontSize: '0.8rem',
+                          padding: '6px 12px',
+                          borderRadius: '8px',
+                          fontSize: '0.875rem',
                           fontWeight: 'bold',
                         }}
                       >
@@ -322,36 +339,67 @@ const InquiryPage = () => {
               </Box>
             </Box>
 
-            <Divider sx={{ my: 3 }} />
+            <Divider sx={{ my: 4, borderColor: '#E5E7EB' }} />
 
             {/* Your Selections */}
-            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 3, color: '#374151' }}>
               Your Selections:
             </Typography>
-            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, mb: 3 }}>
-              <Typography variant="body1">
-                <strong>Nights:</strong> {selectedNightsKey || 'N/A'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Option:</strong> {selectedTour?.nights?.[selectedNightsKey]?.[selectedNightsOption]?.option || 'N/A'}
-              </Typography>
-              <Typography variant="body1" sx={{ gridColumn: 'span 2' }}>
-                <strong>Food Category:</strong> {foodCategoryMap[selectedFoodCategory] || 'N/A'}
-              </Typography>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 3 }}>
+              <Box sx={{ 
+                backgroundColor: '#F9FAFB', 
+                padding: '12px 16px', 
+                borderRadius: '8px',
+                border: '1px solid #E5E7EB'
+              }}>
+                <Typography variant="body2" sx={{ color: '#6B7280', fontWeight: 500 }}>
+                  Nights
+                </Typography>
+                <Typography variant="body1" sx={{ color: '#374151', fontWeight: 600 }}>
+                  {selectedNightsKey || 'N/A'}
+                </Typography>
+              </Box>
+              <Box sx={{ 
+                backgroundColor: '#F9FAFB', 
+                padding: '12px 16px', 
+                borderRadius: '8px',
+                border: '1px solid #E5E7EB'
+              }}>
+                <Typography variant="body2" sx={{ color: '#6B7280', fontWeight: 500 }}>
+                  Option
+                </Typography>
+                <Typography variant="body1" sx={{ color: '#374151', fontWeight: 600 }}>
+                  {selectedTour?.nights?.[selectedNightsKey]?.[selectedNightsOption]?.option || 'N/A'}
+                </Typography>
+              </Box>
+              <Box sx={{ 
+                backgroundColor: '#F9FAFB', 
+                padding: '12px 16px', 
+                borderRadius: '8px',
+                border: '1px solid #E5E7EB',
+                gridColumn: { xs: 'span 1', sm: 'span 2' }
+              }}>
+                <Typography variant="body2" sx={{ color: '#6B7280', fontWeight: 500 }}>
+                  Food Category
+                </Typography>
+                <Typography variant="body1" sx={{ color: '#374151', fontWeight: 600 }}>
+                  {foodCategoryMap[selectedFoodCategory] || 'N/A'}
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </div>
 
         {/* Inquiry Form */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-[#075375] to-[#0A435C] p-6">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+          <div className="bg-gradient-to-r from-[#005E84] to-[#0A435C] p-6">
             <h2 className="text-2xl font-bold text-white">
               Contact Information
             </h2>
             <p className="text-gray-100 mt-1">Fill in your details to connect with our travel experts</p>
           </div>
 
-          <Box sx={{ p: 3 }}>
+          <Box sx={{ p: 4 }}>
             <TextField
               required
               label="Full Name"
@@ -359,6 +407,25 @@ const InquiryPage = () => {
               margin="normal"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#E5E7EB',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#075375',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#005E84',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#4B5563',
+                  '&.Mui-focused': {
+                    color: '#005E84',
+                  },
+                },
+              }}
             />
             <TextField
               required
@@ -368,8 +435,27 @@ const InquiryPage = () => {
               margin="normal"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#E5E7EB',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#075375',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#005E84',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#4B5563',
+                  '&.Mui-focused': {
+                    color: '#005E84',
+                  },
+                },
+              }}
             />
-            <Box sx={{ display: 'flex', gap: '8px', mt: 2, mb: 1 }}>
+            <Box sx={{ display: 'flex', gap: '12px', mt: 3, mb: 1 }}>
               <Autocomplete
                 options={countryCodes}
                 getOptionLabel={(option) => `${option.label} ${option.code}`}
@@ -381,7 +467,26 @@ const InquiryPage = () => {
                 )}
                 renderInput={(params) => <TextField {...params} label="Country Code" />}
                 onChange={(event, newValue) => setPhoneNumber(newValue ? newValue.code : '')}
-                sx={{ width: '200px' }}
+                sx={{
+                  width: '200px',
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: '#E5E7EB',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#075375',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#005E84',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#4B5563',
+                    '&.Mui-focused': {
+                      color: '#005E84',
+                    },
+                  },
+                }}
               />
               <TextField
                 required
@@ -390,9 +495,28 @@ const InquiryPage = () => {
                 type="tel"
                 value={phoneNumber1}
                 onChange={(e) => setPhoneNumber1(e.target.value)}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: '#E5E7EB',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#075375',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#005E84',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#4B5563',
+                    '&.Mui-focused': {
+                      color: '#005E84',
+                    },
+                  },
+                }}
               />
             </Box>
-            <Box sx={{ display: 'flex', gap: '8px', mt: 2, mb: 1 }}>
+            <Box sx={{ display: 'flex', gap: '12px', mt: 3, mb: 1 }}>
               <TextField
                 required
                 label="Travel Date"
@@ -401,6 +525,25 @@ const InquiryPage = () => {
                 InputLabelProps={{ shrink: true }}
                 value={travelDate}
                 onChange={(e) => setTravelDate(e.target.value)}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: '#E5E7EB',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#075375',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#005E84',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#4B5563',
+                    '&.Mui-focused': {
+                      color: '#005E84',
+                    },
+                  },
+                }}
               />
               <TextField
                 required
@@ -410,6 +553,25 @@ const InquiryPage = () => {
                 InputProps={{ inputProps: { min: 1 } }}
                 value={travellerCount}
                 onChange={(e) => setTravellerCount(e.target.value)}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: '#E5E7EB',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#075375',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#005E84',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#4B5563',
+                    '&.Mui-focused': {
+                      color: '#005E84',
+                    },
+                  },
+                }}
               />
             </Box>
             <TextField
@@ -421,21 +583,47 @@ const InquiryPage = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Tell us about your specific requirements, preferences, or any questions you have..."
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#E5E7EB',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#075375',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#005E84',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#4B5563',
+                  '&.Mui-focused': {
+                    color: '#005E84',
+                  },
+                },
+              }}
             />
 
-            <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ mt: 5, display: 'flex', justifyContent: 'center' }}>
               <Button
                 variant="contained"
                 onClick={handleSubmitInquiry}
                 sx={{
-                  backgroundColor: '#016170',
-                  color: '#fff',
-                  padding: '12px 32px',
+                  backgroundColor: '#005E84',
+                  color: '#FFFFFF',
+                  padding: '14px 40px',
                   fontSize: '16px',
                   fontWeight: 'bold',
-                  borderRadius: '8px',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 12px rgba(0, 94, 132, 0.3)',
+                  transition: 'all 0.3s ease',
                   '&:hover': {
-                    backgroundColor: '#e65c00',
+                    backgroundColor: '#075375',
+                    boxShadow: '0 6px 16px rgba(7, 83, 117, 0.4)',
+                    transform: 'translateY(-2px)',
+                  },
+                  '&:active': {
+                    transform: 'translateY(0)',
                   },
                 }}
               >
