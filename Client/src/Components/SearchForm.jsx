@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import { countries } from '../assets/nationalities';
+import { motion } from 'framer-motion';
 
 const SearchForm = ({
   searchParams,
@@ -35,12 +36,17 @@ const SearchForm = ({
   calculatePriceRangeStyles,
 }) => {
   return (
-    <Box sx={{ 
-      mt: { xs: 2, sm: 3, lg: 4 }, // reduced top margin
-      mx: 'auto',
-      maxWidth: '100%',
-      width: '100%'
-    }}>
+    <motion.div 
+      sx={{ 
+        mt: { xs: 2, sm: 3, lg: 4 }, // reduced top margin
+        mx: 'auto',
+        maxWidth: '100%',
+        width: '100%'
+      }}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3, duration: 0.6 }}
+    >
       {/* Enhanced Filtering Section */}
       <div className="mt-3 mb-4 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"> {/* reduced vertical margin */}
         {/* Filter Header */}
@@ -668,7 +674,7 @@ const SearchForm = ({
         </CardContent>
       </Card>
       </div>
-    </Box>
+    </motion.div>
   );
 };
 
