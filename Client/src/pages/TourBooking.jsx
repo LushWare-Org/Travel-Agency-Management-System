@@ -163,26 +163,44 @@ const TourBooking = ({ sidebarOpen }) => {
       const numericNightsKey = selectedNightsKey ? parseInt(selectedNightsKey, 10) : 0;
 
       const payload = {
-        name: bookingData.clientName,
-        email: bookingData.clientEmail,
-        phone_number: `${bookingData.phoneCountryCode} ${bookingData.clientPhone}`,
-        travel_date: bookingData.travelDate,
-        traveller_count: bookingData.travellerCount,
-        message: `
-Special Requests: ${bookingData.specialRequests || 'None'}
-Emergency Contact: ${bookingData.emergencyContact || 'None'}
-Nationality: ${bookingData.nationality}
-Payment Method: ${bookingData.paymentMethod}
-        `.trim(),
-        tour: tour?.title || 'Tour Booking',
-        final_price: calculateTotal(),
+        // Customer Information
+        clientName: bookingData.clientName,
+        clientEmail: bookingData.clientEmail,
+        clientPhone: bookingData.clientPhone,
+        phoneCountryCode: bookingData.phoneCountryCode,
+        nationality: bookingData.nationality,
+        emergencyContact: bookingData.emergencyContact,
+        
+        // Travel Details
+        travelDate: bookingData.travelDate,
+        travellerCount: bookingData.travellerCount,
+        
+        // Tour Information
+        tourId: tour?._id || 'unknown',
+        tourTitle: tour?.title || 'Tour Booking',
+        selectedNightsKey: numericNightsKey,
+        selectedNightsOption: nightsOption,
+        selectedFoodCategory: foodCategoryLabel,
+        
+        // Pricing Information
+        finalPrice: calculateTotal(),
+        finalOldPrice: finalOldPrice || 0,
         currency: selectedCurrency || 'USD',
-        selected_nights_key: numericNightsKey,
-        selected_nights_option: nightsOption,
-        selected_food_category: foodCategoryLabel,
+        
+        // Additional Information
+        specialRequests: bookingData.specialRequests,
+        paymentMethod: bookingData.paymentMethod,
+        
+        // Tour Details for reference
+        tourImage: tour?.tour_image || '',
+        tourSummary: tour?.tour_summary || '',
+        personCount: tour?.person_count || bookingData.travellerCount,
+        country: tour?.country || '',
+        validFrom: tour?.valid_from ? new Date(tour.valid_from) : null,
+        validTo: tour?.valid_to ? new Date(tour.valid_to) : null,
       };
 
-      const response = await axios.post('/inquiries', payload);
+      const response = await axios.post('/tour-bookings', payload);
       
       setLoading(false);
       setShowConfirmation(true);
@@ -190,7 +208,7 @@ Payment Method: ${bookingData.paymentMethod}
       // Show success notification
       setSnackbar({
         open: true,
-        message: 'Your tour booking request has been submitted successfully! Our team will contact you within 24 hours.',
+        message: 'Your tour booking has been submitted successfully! Our team will contact you within 24 hours.',
         severity: 'success'
       });
       
