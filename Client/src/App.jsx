@@ -27,6 +27,7 @@ const Settings = lazy(() => import("./pages/Settings"));
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 const Tours = lazy(() => import("./pages/Tours"));
 const TourDetails = lazy(() => import("./pages/TourDetails"));
+const InquiryPage = lazy(() => import("./pages/InquiryPage"));
 const Activities = lazy(() => import("./pages/Activities"));
 const TravelServices = lazy(() => import("./pages/TravelServices"));
 const RealEstate = lazy(() => import("./pages/RealEstate"));
@@ -203,6 +204,26 @@ export default function App() {
             element={
               <>
                 <TourDetails />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/tours/:tourId/inquiry"
+            element={
+              <>
+                <InquiryPage />
+                <Footer />
+              </>
+            }
+          />
+
+          {/* Standalone inquiry route for testing */}
+          <Route
+            path="/inquiry"
+            element={
+              <>
+                <InquiryPage />
                 <Footer />
               </>
             }

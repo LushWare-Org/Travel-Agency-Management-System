@@ -6,7 +6,6 @@ import Itinerary from '../Components/Itinerary';
 import axios from 'axios';
 import SendIcon from '@mui/icons-material/Send';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import InquiryForm from '../Components/InquiryForm';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -258,13 +257,22 @@ const TourDetails = ({ sidebarOpen }) => {
     : 0;
   const finalOldPrice = oldBasePrice + nightsOldPrice + foodOldPrice;
 
-
-  const [openDialog, setOpenDialog] = useState(false);
-
   // Handle post-login auto-open inquiry form or proceed to booking
   useEffect(() => {
     if (location.state?.openInquiry) {
-      setOpenDialog(true);
+      // Navigate to inquiry page with current selections
+      navigate(`/tours/${tourId}/inquiry`, {
+        state: {
+          selectedTour: tour,
+          selectedCurrency,
+          exchangeRates,
+          finalPrice: totalPrice,
+          finalOldPrice,
+          selectedNightsKey,
+          selectedNightsOption,
+          selectedFoodCategory,
+        }
+      });
       // Clear the state to avoid reopening on subsequent visits
       navigate(location.pathname, { replace: true });
     } else if (location.state?.proceedToBooking) {
@@ -273,7 +281,7 @@ const TourDetails = ({ sidebarOpen }) => {
       // Clear the state to avoid showing on subsequent visits
       navigate(location.pathname, { replace: true });
     }
-  }, [location.state, navigate]);
+  }, [location.state, navigate, tourId, tour, selectedCurrency, exchangeRates, totalPrice, finalOldPrice, selectedNightsKey, selectedNightsOption, selectedFoodCategory]);
 
   if (loading) {
     return (
@@ -310,10 +318,69 @@ const TourDetails = ({ sidebarOpen }) => {
     );
   }
 
-  // Handler to open inquiry dialog - no authentication required
+  // Handler to open inquiry page - no authentication required
   const handleOpenDialog = () => {
-    // Open the inquiry form directly without authentication check
-    setOpenDialog(true);
+    console.log('handleOpenDialog called');
+    console.log('tourId:', tourId);
+    console.log('tour:', tour);
+    console.log('Navigation path:', `/tours/${tourId}/inquiry`);
+
+    if (!tourId) {
+      console.error('tourId is undefined! Trying alternative navigation.');
+      // Try navigating to standalone inquiry page
+      navigate('/inquiry', {
+        state: {
+          selectedTour: tour,
+          selectedCurrency,
+          exchangeRates,
+          finalPrice: totalPrice,
+          finalOldPrice,
+          selectedNightsKey,
+          selectedNightsOption,
+          selectedFoodCategory,
+        }
+      });
+      return;
+    }
+
+    if (!tour) {
+      console.error('tour is undefined! Cannot navigate to inquiry page.');
+      alert('Error: Cannot open inquiry page. Tour data is missing.');
+      return;
+    }
+
+    try {
+      // Navigate to inquiry page with current selections
+      navigate(`/tours/${tourId}/inquiry`, {
+        state: {
+          selectedTour: tour,
+          selectedCurrency,
+          exchangeRates,
+          finalPrice: totalPrice,
+          finalOldPrice,
+          selectedNightsKey,
+          selectedNightsOption,
+          selectedFoodCategory,
+        }
+      });
+      console.log('Navigation successful');
+    } catch (error) {
+      console.error('Navigation failed:', error);
+      // Try alternative navigation
+      console.log('Trying alternative navigation to /inquiry');
+      navigate('/inquiry', {
+        state: {
+          selectedTour: tour,
+          selectedCurrency,
+          exchangeRates,
+          finalPrice: totalPrice,
+          finalOldPrice,
+          selectedNightsKey,
+          selectedNightsOption,
+          selectedFoodCategory,
+        }
+      });
+    }
   };
 
   // Handler for "Book Now" button - requires authentication
@@ -775,7 +842,10 @@ const TourDetails = ({ sidebarOpen }) => {
 
                   {/* Secondary CTA - Inquire */}
                   <button
-                    onClick={handleOpenDialog}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleOpenDialog();
+                    }}
                     className="w-full bg-gradient-to-r from-[#005E84] via-[#075375] to-[#0A435C] hover:from-[#075375] hover:via-[#0A435C] hover:to-[#005E84] text-white font-semibold py-2 px-4 rounded-xl transition-all duration-300 flex items-center justify-center shadow-xl hover:shadow-[#075375]/25 transform hover:scale-[1.02] group"
                   >
                     <SendIcon className="w-3 h-3 mr-1 group-hover:translate-x-1 transition-transform duration-300" />
@@ -816,21 +886,6 @@ const TourDetails = ({ sidebarOpen }) => {
         title="Hotels"
         isOpen={hotelPopup}
         onClose={() => setHotelPopup(false)}
-      />
-
-      {/* Inquiry Form Dialog */}
-      <InquiryForm
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        selectedTour={tour}
-        selectedCurrency={selectedCurrency}
-        convertPrice={convertPrice}
-        isMobile={isMobile}
-        finalPrice={totalPrice}
-        finalOldPrice={finalOldPrice}
-        selectedNightsKey={selectedNightsKey}
-        selectedNightsOption={selectedNightsOption}
-        selectedFoodCategory={selectedFoodCategory}
       />
     </div>
   );
