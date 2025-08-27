@@ -40,7 +40,7 @@ export default function UserProfile() {
           axios.get('/payments/my'),
         ]);
         setUserData(u.data);
-        
+
         // Find the matching agency profile
         const my = a.data.find(a1 => {
           if (a1.user === u.data._id) return true;
@@ -54,7 +54,7 @@ export default function UserProfile() {
         } else {
           console.log('Found matching agency profile:', my);
         }
-        
+
         setAgencyData(my);
         setPayments(p.data);
       } catch (err) {
@@ -289,36 +289,35 @@ export default function UserProfile() {
               </div>
             </TabPanel>
           </div>
-        </div>
 
-        {/* Invoice Modal */}
-        {invoiceDialog && selectedInvoice && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 overflow-auto p-4 flex items-center justify-center">
-            <div className="bg-white p-4 md:p-6 rounded-xl shadow-xl w-full h-full md:w-full md:max-w-2xl mx-auto space-y-3 md:space-y-4">
-              <h4 className="font-semibold text-lg md:text-xl">Invoice #{selectedInvoice._id}</h4>
-              <p className="text-xs md:text-sm"><strong>Booking:</strong> {selectedInvoice.booking.bookingReference}</p>
-              <p className="text-xs md:text-sm"><strong>Amount:</strong> ${selectedInvoice.amount.toFixed(2)}</p>
-              <p className="text-xs md:text-sm"><strong>Date:</strong> {new Date(selectedInvoice.createdAt).toLocaleDateString()}</p>
-              <div className="flex flex-col md:flex-row md:justify-end space-y-2 md:space-y-0 md:space-x-2">
-                <button
-                  onClick={closeInvoice}
-                  className="w-full md:w-auto px-4 py-2 text-gray-600 text-xs md:text-sm rounded-md border border-gray-300"
-                >
-                  Close
-                </button>
-                <button
-                  onClick={() => downloadInvoice(selectedInvoice._id)}
-                  className="w-full md:w-auto px-4 py-2 bg-green-600 text-white rounded-md text-xs md:text-sm"
-                >
-                  Download PDF
-                </button>
+          {/* Invoice Modal */}
+          {invoiceDialog && selectedInvoice && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 overflow-auto p-4 flex items-center justify-center">
+              <div className="bg-white p-4 md:p-6 rounded-xl shadow-xl w-full h-full md:w-full md:max-w-2xl mx-auto space-y-3 md:space-y-4">
+                <h4 className="font-semibold text-lg md:text-xl">Invoice #{selectedInvoice._id}</h4>
+                <p className="text-xs md:text-sm"><strong>Booking:</strong> {selectedInvoice.booking.bookingReference}</p>
+                <p className="text-xs md:text-sm"><strong>Amount:</strong> ${selectedInvoice.amount.toFixed(2)}</p>
+                <p className="text-xs md:text-sm"><strong>Date:</strong> {new Date(selectedInvoice.createdAt).toLocaleDateString()}</p>
+                <div className="flex flex-col md:flex-row md:justify-end space-y-2 md:space-y-0 md:space-x-2">
+                  <button
+                    onClick={closeInvoice}
+                    className="w-full md:w-auto px-4 py-2 text-gray-600 text-xs md:text-sm rounded-md border border-gray-300"
+                  >
+                    Close
+                  </button>
+                  <button
+                    onClick={() => downloadInvoice(selectedInvoice._id)}
+                    className="w-full md:w-auto px-4 py-2 bg-green-600 text-white rounded-md text-xs md:text-sm"
+                  >
+                    Download PDF
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <Footer />
-      </div>
-    
+          <Footer />
+        </div>
+    </div>
   );
 }

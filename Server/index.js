@@ -7,10 +7,22 @@ const fileUpload = require('express-fileupload');
 const app = express();
 
 app.use(cors({
-  origin: ['https://islekeyholidays.com', 'https://www.islekeyholidays.com'],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Allow any localhost origin during development
+    if (origin.startsWith('http://localhost:')) {
+      return callback(null, true);
+    }
+    
+    // In production, you can add specific domains here
+    // For now, allowing all localhost ports for development
+    return callback(null, true);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-initial-auth-check']
 }));
 
 app.use(express.json());
@@ -59,6 +71,7 @@ app.use('/api/inquiries', require('./routes/inquiryRoutes'));
 app.use('/api/activities', require('./routes/activity.routes'));
 app.use('/api/activity-bookings', require('./routes/activityBookingRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
+app.use('/api/tour-bookings', require('./routes/tourBookingRoutes'));
 
 app.listen(process.env.PORT || 5001, () => {
   console.log(`Server running on port ${process.env.PORT || 5001}`);

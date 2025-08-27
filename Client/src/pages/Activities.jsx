@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import ActivityCard from '../Components/ActivityCard';
 // import ImageGallery from '../Components/ImageGallery';
 
@@ -151,25 +152,43 @@ const Activities = () => {
     <div className="min-h-screen bg-gray-100">
       <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
         {/* Header */}
-        <header
+        <motion.header
           className="bg-cover bg-center h-32 sm:h-40 lg:h-60 shadow-lg rounded-2xl overflow-hidden"
           style={{
             backgroundImage:
               "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920')",
           }}
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
           <div className="flex flex-col items-center justify-center h-full text-white text-center px-4">
-            <h1 className="text-lg sm:text-xl lg:text-3xl font-extrabold drop-shadow-md">
+            <motion.h1 
+              className="text-lg sm:text-xl lg:text-3xl font-extrabold drop-shadow-md"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
               Maldives Activities & Experiences
-            </h1>
-            <p className="text-xs sm:text-sm mt-2 drop-shadow-md max-w-md px-4">
+            </motion.h1>
+            <motion.p 
+              className="text-xs sm:text-sm mt-2 drop-shadow-md max-w-md px-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
               Book unique activities and adventures for your Maldives holiday
-            </p>
+            </motion.p>
           </div>
-        </header>
+        </motion.header>
 
         {/* Enhanced Filtering Section */}
-        <div className="mt-6 mb-8 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+        <motion.div 
+          className="mt-6 mb-8 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
           {/* Filter Header */}
           <div className="bg-gradient-to-r from-[#005E84] to-[#0A435C] px-6 py-4">
             <h2 className="text-white font-semibold text-lg flex items-center gap-2">
@@ -362,10 +381,15 @@ const Activities = () => {
               </div>
             )}
           </form>
-        </div>
+        </motion.div>
 
         {/* Activities List Section */}
-        <div className="mt-4 sm:mt-6 lg:mt-8 min-h-[300px]">
+        <motion.div 
+          className="mt-4 sm:mt-6 lg:mt-8 min-h-[300px]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
           {(loading || navigating) ? (
             <div className="flex justify-center items-center h-60">
               <div
@@ -384,17 +408,39 @@ const Activities = () => {
           ) : activities.length === 0 ? (
             <div className="text-center py-8 text-ash_gray-400">No activities found.</div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <motion.div 
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.1
+                  }
+                }
+              }}
+            >
               {activities.map(activity => (
-                <ActivityCard
+                <motion.div
                   key={activity._id}
-                  activity={activity}
-                  onClick={() => handleViewDetails(activity._id)}
-                />
+                  variants={{
+                    hidden: { opacity: 0, y: 50 },
+                    visible: { opacity: 1, y: 0 }
+                  }}
+                  transition={{ duration: 0.5 }}
+                  whileHover={{ y: -8 }}
+                  className="cursor-pointer"
+                >
+                  <ActivityCard
+                    activity={activity}
+                    onClick={() => handleViewDetails(activity._id)}
+                  />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       </main>
     </div>
   );

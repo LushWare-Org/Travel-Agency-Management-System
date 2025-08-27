@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Grid, Card, CardMedia, CardContent, Typography, Box, Button, CircularProgress } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import { Search, MapPin, Calendar, Users, Filter, DollarSign, RotateCcw, Clock, Star, Heart, Share2 } from 'lucide-react';
+import { Search, MapPin, Calendar, Users, Filter, DollarSign, RotateCcw, Clock, Star, Heart, Share2, ChevronDown } from 'lucide-react';
 
 function useDeviceType() {
   const [deviceType, setDeviceType] = useState({
@@ -218,23 +217,49 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-[#E7E9E5]">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#005E84] border-t-transparent"></div>
-          <p className="text-[#B7C5C7] font-medium">Loading amazing tours...</p>
-        </div>
+      <div className="flex justify-center items-center min-h-screen bg-platinum-500">
+        <motion.div 
+          className="flex flex-col items-center space-y-4"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div 
+            className="animate-spin rounded-full h-16 w-16 border-4 border-lapis_lazuli-500 border-t-transparent"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.p 
+            className="text-indigo_dye-400 font-medium text-lg"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            Loading amazing tours...
+          </motion.p>
+        </motion.div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-[#E7E9E5]">
-        <div className="text-center p-8 bg-[#E7E9E5] rounded-xl shadow-lg max-w-md">
-          <div className="text-red-500 text-5xl mb-4">⚠️</div>
-          <h3 className="text-xl font-semibold text-[#0A435C] mb-2">Oops! Something went wrong</h3>
-          <p className="text-[#B7C5C7]">{error}</p>
-        </div>
+      <div className="flex justify-center items-center min-h-screen bg-platinum-500">
+        <motion.div 
+          className="text-center p-8 bg-platinum-500 rounded-3xl shadow-xl max-w-md border border-platinum-400"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div 
+            className="text-5xl mb-4"
+            animate={{ rotate: [0, 10, -10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            ⚠️
+          </motion.div>
+          <h3 className="text-xl font-semibold text-indigo_dye-500 mb-2">Oops! Something went wrong</h3>
+          <p className="text-ash_gray-400">{error}</p>
+        </motion.div>
       </div>
     );
   }
@@ -245,23 +270,38 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
   };
 
   return (
-    <Box sx={{ width: '100%', minHeight: '65vh', padding: '20px 30px', backgroundColor: '#E7E9E5' }}>
+    <div className="min-h-screen bg-platinum-500 p-4 sm:p-6 lg:p-8">
       {/* Search Section */}
-      <div className="bg-[#E7E9E5] rounded-2xl shadow-xl p-6 sm:p-8 mb-6 sm:mb-8 md:mb-10 border border-[#B7C5C7]">
-        <div className="mb-6">
-          <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#005E84] to-[#075375] bg-clip-text text-transparent mb-2">
+      <motion.div 
+        className="bg-platinum-500 rounded-3xl shadow-xl p-6 sm:p-8 mb-8 border border-platinum-400"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <motion.div 
+          className="mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold text-indigo_dye-500 mb-2">
             Find Your Perfect Tour
           </h2>
-          <p className="text-[#B7C5C7] text-sm">Search and filter through our amazing tour packages</p>
-        </div>
+          <p className="text-ash_gray-400 text-sm sm:text-base">Search and filter through our amazing tour packages</p>
+        </motion.div>
 
         {/* Search Form */}
         <form onSubmit={handleSearchSubmit}>
-          <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-6 gap-4'} mb-6`}>
+          <motion.div 
+            className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-6 gap-4'} mb-6`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
             {/* Search Input with Dropdown */}
             <div className={`${isMobile ? 'col-span-1' : 'md:col-span-2'} relative`}>
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-ash_gray-400" />
               </div>
               <input
                 ref={searchInputRef}
@@ -273,410 +313,364 @@ const ImageGallery = ({ searchQuery = '', passedCountry = '' }) => {
                   setIsDropdownOpen(true);
                 }}
                 onFocus={() => setIsDropdownOpen(true)}
-                className="w-full pl-10 pr-4 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors"
+                className="w-full pl-12 pr-4 py-3 border border-platinum-400 rounded-xl focus:ring-2 focus:ring-lapis_lazuli-500 focus:border-lapis_lazuli-500 transition-all duration-300 bg-platinum-500"
               />
-              {isDropdownOpen && dropdownTours.length > 0 && (
-                <div
-                  ref={dropdownRef}
-                  className="absolute z-10 w-full mt-1 bg-white border border-[#B7C5C7] rounded-lg shadow-lg max-h-60 overflow-y-auto"
-                >
-                  <ul>
-                    {dropdownTours.map((tour) => (
-                      <li
-                        key={tour._id}
-                        className="px-4 py-2 text-sm hover:bg-[#E7E9E5] hover:text-[#005E84] cursor-pointer transition-colors"
-                        onClick={() => handleTourSelect(tour.title)}
-                      >
-                        {tour.title}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <AnimatePresence>
+                {isDropdownOpen && dropdownTours.length > 0 && (
+                  <motion.div
+                    ref={dropdownRef}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute z-20 w-full mt-2 bg-platinum-500 border border-platinum-400 rounded-xl shadow-xl max-h-60 overflow-y-auto"
+                  >
+                    <ul>
+                      {dropdownTours.map((tour, index) => (
+                        <motion.li
+                          key={tour._id}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05, duration: 0.2 }}
+                          className="px-4 py-3 text-sm hover:bg-ash_gray-500 hover:text-lapis_lazuli-500 cursor-pointer transition-all duration-200 border-b border-platinum-400 last:border-b-0"
+                          onClick={() => handleTourSelect(tour.title)}
+                        >
+                          {tour.title}
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Nights */}
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Calendar className="h-5 w-5 text-gray-400" />
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <Calendar className="h-5 w-5 text-ash_gray-400" />
               </div>
               <input
                 type="text"
                 placeholder="Nights"
                 value={searchNights}
                 onChange={(e) => setSearchNights(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors"
+                className="w-full pl-12 pr-4 py-3 border border-platinum-400 rounded-xl focus:ring-2 focus:ring-lapis_lazuli-500 focus:border-lapis_lazuli-500 transition-all duration-300 bg-platinum-500"
               />
             </div>
 
             {/* Country */}
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <MapPin className="h-5 w-5 text-gray-400" />
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <MapPin className="h-5 w-5 text-ash_gray-400" />
               </div>
               <input
                 type="text"
                 placeholder="Country of Travel"
                 value={searchCountry}
                 onChange={(e) => setSearchCountry(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors"
+                className="w-full pl-12 pr-4 py-3 border border-platinum-400 rounded-xl focus:ring-2 focus:ring-lapis_lazuli-500 focus:border-lapis_lazuli-500 transition-all duration-300 bg-platinum-500"
               />
             </div>
 
             {/* Market/Region */}
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Users className="h-5 w-5 text-gray-400" />
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <Users className="h-5 w-5 text-ash_gray-400" />
               </div>
               <select
                 value={searchMarket}
                 onChange={(e) => setSearchMarket(e.target.value)}
-                className="w-full pl-10 pr-8 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors appearance-none bg-white"
+                className="w-full pl-12 pr-10 py-3 border border-platinum-400 rounded-xl focus:ring-2 focus:ring-lapis_lazuli-500 focus:border-lapis_lazuli-500 transition-all duration-300 appearance-none bg-platinum-500"
               >
                 <option value="">Your Region</option>
                 {Object.entries(marketMapping).map(([key, value]) => (
                   <option key={key} value={key}>{value}</option>
                 ))}
               </select>
+              <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                <ChevronDown className="h-4 w-4 text-ash_gray-400" />
+              </div>
             </div>
 
             {/* Search Button */}
-            <button
+            <motion.button
               type="submit"
-              className="bg-gradient-to-r from-[#005E84] to-[#075375] text-white px-6 py-3 rounded-lg hover:from-[#005E84] hover:to-[#0A435C] transition-all font-semibold flex items-center justify-center space-x-2"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-gradient-to-r from-lapis_lazuli-500 to-indigo_dye-500 text-platinum-500 px-6 py-3 rounded-xl hover:from-lapis_lazuli-600 hover:to-indigo_dye-600 transition-all duration-300 font-semibold flex items-center justify-center space-x-2 shadow-lg"
             >
               <Search className="h-5 w-5" />
               <span>Search Tours</span>
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
           {/* Price Range Row */}
-          <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-4'} mb-6`}>
+          <motion.div 
+            className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-4'} mb-6`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
             {/* Min Price */}
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <DollarSign className="h-5 w-5 text-gray-400" />
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <DollarSign className="h-5 w-5 text-ash_gray-400" />
               </div>
               <input
                 type="text"
                 placeholder="Min Price"
                 value={searchMinPrice}
                 onChange={(e) => setSearchMinPrice(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors"
+                className="w-full pl-12 pr-4 py-3 border border-platinum-400 rounded-xl focus:ring-2 focus:ring-lapis_lazuli-500 focus:border-lapis_lazuli-500 transition-all duration-300 bg-platinum-500"
               />
             </div>
 
             {/* Max Price */}
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <DollarSign className="h-5 w-5 text-gray-400" />
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <DollarSign className="h-5 w-5 text-ash_gray-400" />
               </div>
               <input
                 type="text"
                 placeholder="Max Price"
                 value={searchMaxPrice}
                 onChange={(e) => setSearchMaxPrice(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-[#B7C5C7] rounded-lg focus:ring-[#005E84] focus:border-[#005E84] transition-colors"
+                className="w-full pl-12 pr-4 py-3 border border-platinum-400 rounded-xl focus:ring-2 focus:ring-lapis_lazuli-500 focus:border-lapis_lazuli-500 transition-all duration-300 bg-platinum-500"
               />
             </div>
 
             {/* Reset Button */}
-            <button
+            <motion.button
               type="button"
               onClick={handleReset}
-              className="bg-gradient-to-r from-[#B7C5C7] to-[#657d81] text-white px-6 py-3 rounded-lg hover:from-[#657d81] hover:to-[#657d81] transition-all font-semibold flex items-center justify-center space-x-2"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-gradient-to-r from-ash_gray-500 to-ash_gray-600 text-platinum-500 px-6 py-3 rounded-xl hover:from-ash_gray-600 hover:to-ash_gray-700 transition-all duration-300 font-semibold flex items-center justify-center space-x-2 shadow-lg"
             >
               <RotateCcw className="h-5 w-5" />
               <span>Reset Filters</span>
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </form>
 
         {/* Quick Filters */}
-        <div className="flex flex-wrap gap-2">
-          <span className="text-sm text-[#B7C5C7] mr-2">Quick filters:</span>
-          {['Honeymoon', 'Family', 'Adventure', 'Luxury', 'Budget-Friendly'].map((filter) => (
-            <button
+        <motion.div 
+          className="flex flex-wrap gap-3"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          <span className="text-sm text-ash_gray-400 mr-2 self-center">Quick filters:</span>
+          {['Honeymoon', 'Family', 'Adventure', 'Luxury', 'Budget-Friendly'].map((filter, index) => (
+            <motion.button
               key={filter}
-              className="px-3 py-1 text-xs bg-[#E7E9E5] text-[#005E84] rounded-full hover:bg-[#B7C5C7] transition-colors border border-[#B7C5C7]"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6 + index * 0.1, duration: 0.3 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-4 py-2 text-sm bg-ash_gray-500 text-lapis_lazuli-500 rounded-full hover:bg-lapis_lazuli-500 hover:text-platinum-500 transition-all duration-300 border border-platinum-400 font-medium"
             >
               {filter}
-            </button>
+            </motion.button>
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      {/* Tours Grid Section - Original Container */}
-      <div ref={toursRef}>
-        {/* Section Header - Original Style */}
-        <Box sx={{ mb: 4 }}>
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              fontWeight: 700,
-              color: '#0A435C',
-              fontSize: '24px',
-              fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
-              mb: 1
-            }}
-          >
+      {/* Tours Grid Section */}
+      <motion.div 
+        ref={toursRef}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.7, duration: 0.6 }}
+      >
+        {/* Section Header */}
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold text-indigo_dye-500 mb-2">
             Available Tours ({filteredTours.length})
-          </Typography>
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              color: '#B7C5C7',
-              fontSize: '14px'
-            }}
-          >
+          </h2>
+          <p className="text-ash_gray-400 text-sm sm:text-base">
             Discover amazing destinations and experiences
-          </Typography>
-        </Box>
+          </p>
+        </motion.div>
         
-        {/* Tours Grid - Keep Original Layout */}
-        <Grid container spacing={5}>
-          {filteredTours.map((item) => (
-            <Grid item xs={12} sm={6} md={4} key={item._id}>
-              <div className="group">
-                <Card
-                  sx={{
-                    borderRadius: '20px',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    boxShadow: '0px 8px 25px rgba(0, 0, 0, 0.08)',
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    overflow: 'hidden',
-                    border: '1px solid rgba(0, 0, 0, 0.05)',
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: '0px 20px 40px rgba(0, 0, 0, 0.15)',
-                      borderColor: 'rgba(99, 102, 241, 0.2)',
-                    },
-                  }}
-                >
-                  <Box sx={{ position: 'relative' }}>
-                    <CardMedia
-                      component="div"
-                      sx={{
-                        width: '100%',
-                        paddingTop: '100%', 
-                        backgroundImage: `url(${item.tour_image})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          transform: 'scale(1.05)',
-                        },
-                      }}
-                      onClick={() => navigate(`/tours/${item._id}`)}
-                    />
-                    
-                    {/* Modern Duration Badge - Original Style */}
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        bottom: 0,
-                        width: '100%',
-                        background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%)',
-                        backdropFilter: 'blur(10px)',
-                        color: '#fff',
-                        padding: '12px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      <Typography 
-                        variant="body2" 
-                        sx={{ 
-                          fontWeight: 600,
-                          fontSize: '14px',
-                          textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-                        }}
-                      >
-                        {item.nights && typeof item.nights === 'object' && Object.keys(item.nights).length > 0
-                          ? `${Object.keys(item.nights)[0]} Days/${Object.keys(item.nights)[0]} Nights`
-                          : 'N/A'}
-                      </Typography>
-                    </Box>
-                  </Box>
-                  
-                  <CardContent sx={{ 
-                    backgroundColor: '#fff', 
-                    padding: '24px',
-                    background: 'linear-gradient(145deg, #E7E9E5 0%, #EDEEEB 100%)',
-                    flexGrow: 1,
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}>
-                    {/* Title with Modern Typography */}
-                    <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={3} sx={{ minHeight: '60px' }}>
-                      <Typography 
-                        variant="h6" 
-                        sx={{ 
-                          fontWeight: 700,
-                          fontSize: '20px',
-                          color: '#0A435C',
-                          lineHeight: 1.3,
-                          fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis'
-                        }}
-                      >
-                        {item.title}
-                      </Typography>
-                    </Box>
-                    
-                    {/* Price Section - Original Style with Modern Look */}
-                    <Box mb={3}>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          color: '#0A435C',
-                          fontWeight: 700,
-                          fontSize: '18px',
-                          fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif'
-                        }}
-                        gutterBottom
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                      >
-                        <span style={{ color: '#005E84' }}>
-                          {selectedCurrency} {item.price && !isNaN(item.price) ? convertPrice(item.price) : ''}
-                        </span>
-                        
-                        <Box display="flex" alignItems="center" gap={1}>
-                          {item.oldPrice && !isNaN(item.oldPrice) && (
-                            <Typography
-                              component="span"
-                              variant="body2"
-                              sx={{ 
-                                textDecoration: 'line-through', 
-                                color: '#B7C5C7',
-                                fontSize: '14px'
-                              }}
-                            >
-                              {selectedCurrency} {convertPrice(item.oldPrice)}
-                            </Typography>
-                          )}
-                          {item.oldPrice && !isNaN(item.oldPrice) && (
-                            <Typography 
-                              component="span" 
-                              variant="body2" 
-                              sx={{
-                                color: '#fff',
-                                background: 'linear-gradient(135deg, #075375 0%, #0A435C 100%)',
-                                padding: '4px 8px',
-                                borderRadius: '6px',
-                                fontSize: '11px',
-                                fontWeight: 600,
-                                textTransform: 'uppercase'
-                              }}
-                            >
-                              SAVE {selectedCurrency} {convertPrice(item.oldPrice - item.price)}
-                            </Typography>
-                          )}
-                        </Box>
-                      </Typography>
-                    </Box>
-                    
-                    {/* Action Buttons - Original Style with Modern Look */}
-                    <Box display="flex" gap={2} mt="auto" sx={{ pt: 2 }}>
-                      <Button
-                        variant="outlined"
-                        startIcon={<WhatsAppIcon />}
-                        sx={{
-                          borderColor: '#005E84',
-                          color: '#005E84',
-                          padding: '10px 20px',
-                          borderRadius: '12px',
-                          fontWeight: 600,
-                          textTransform: 'none',
-                          fontSize: '14px',
-                          border: '2px solid #005E84',
-                          '&:hover': {
-                            backgroundColor: '#005E84',
-                            color: '#fff',
-                            borderColor: '#005E84',
-                            transform: 'translateY(-2px)',
-                            boxShadow: '0 8px 16px rgba(0, 94, 132, 0.3)',
-                          },
-                          transition: 'all 0.2s ease'
-                        }}
-                        onClick={handleWhatsAppClick}
-                      >
-                        Chat
-                      </Button>
-                      <Button
-                        variant="contained"
-                        fullWidth
-                        sx={{
-                          background: 'linear-gradient(135deg, #005E84 0%, #075375 100%)',
-                          color: '#fff',
-                          padding: '10px 0',
-                          borderRadius: '12px',
-                          fontWeight: 600,
-                          textTransform: 'none',
-                          fontSize: '14px',
-                          boxShadow: '0 4px 12px rgba(0, 94, 132, 0.3)',
-                          '&:hover': {
-                            background: 'linear-gradient(135deg, #005E84 0%, #0A435C 100%)',
-                            transform: 'translateY(-2px)',
-                            boxShadow: '0 8px 20px rgba(0, 94, 132, 0.4)',
-                          },
-                          transition: 'all 0.2s ease'
-                        }}
-                        onClick={() => navigate(`/tours/${item._id}`)}
-                      >
-                        View Details
-                      </Button>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </div>
-            </Grid>
-          ))}
-        </Grid>
-
-        {/* Empty State - Original Style */}
-        {filteredTours.length === 0 && (
-          <Box 
-            display="flex" 
-            flexDirection="column" 
-            alignItems="center" 
-            justifyContent="center" 
-            py={8}
-            textAlign="center"
-          >
-            <Typography variant="h6" color="text.secondary" mb={2}>
-              No tours found matching your criteria
-            </Typography>
-            <Typography variant="body2" color="text.secondary" mb={3}>
-              Try adjusting your search filters
-            </Typography>
-            <Button
-              onClick={handleReset}
-              variant="contained"
-              sx={{
-                background: 'linear-gradient(135deg, #005E84 0%, #075375 100%)',
-                color: '#fff',
-                borderRadius: '12px',
-                fontWeight: 600,
-                textTransform: 'none',
-                px: 4,
-                py: 1.5
+        {/* Tours Grid - Activity Card Style */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
+        >
+          {filteredTours.map((tour, index) => (
+            <motion.div
+              key={tour._id}
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                visible: { opacity: 1, y: 0 }
               }}
+              transition={{ duration: 0.5 }}
+              whileHover={{ y: -8 }}
+              className="group cursor-pointer"
+              onClick={() => navigate(`/tours/${tour._id}`)}
+            >
+              <div className="rounded-3xl bg-platinum-500 shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl border border-platinum-400">
+                <div className="relative h-64 sm:h-72">
+                  <div className="absolute inset-0 bg-gradient-to-t from-indigo_dye-500/70 to-transparent z-10" />
+                  <motion.img
+                    src={tour.tour_image}
+                    alt={tour.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    whileHover={{ scale: 1.05 }}
+                  />
+                  
+                  {/* Featured Badge */}
+                  {tour.featured && (
+                    <motion.div 
+                      className="absolute top-3 left-3 bg-lapis_lazuli-500 text-platinum-500 px-3 py-1 text-sm font-medium rounded-full z-20"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.5, type: "spring" }}
+                    >
+                      Featured
+                    </motion.div>
+                  )}
+
+                  {/* Duration Badge */}
+                  <motion.div 
+                    className="absolute top-3 right-3 z-20"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.6, type: "spring" }}
+                  >
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-ash_gray-500/90 text-platinum-500 backdrop-blur-sm">
+                      <Clock className="h-4 w-4 mr-1" />
+                      {tour.nights && typeof tour.nights === 'object' && Object.keys(tour.nights).length > 0
+                        ? `${Object.keys(tour.nights)[0]} Days`
+                        : 'N/A'}
+                    </span>
+                  </motion.div>
+
+                  {/* Bottom Overlay Content */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
+                    <motion.h4 
+                      className="font-bold text-xl text-platinum-500 line-clamp-2 mb-2"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7, duration: 0.5 }}
+                    >
+                      {tour.title}
+                    </motion.h4>
+                    <motion.p 
+                      className="text-platinum-400 text-sm flex items-center"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8, duration: 0.5 }}
+                    >
+                      <MapPin className="h-4 w-4 mr-1 text-platinum-500" />
+                      {tour.country || 'Destination'}
+                    </motion.p>
+                  </div>
+                </div>
+
+                <motion.div 
+                  className="p-5"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.9, duration: 0.5 }}
+                >
+                  {/* Description */}
+                  <p className="text-indigo_dye-400 text-sm mb-4 line-clamp-2">
+                    {tour.short_description || tour.description || 'Discover amazing experiences and create unforgettable memories.'}
+                  </p>
+                  
+                  {/* Duration Info */}
+                  {tour.nights && typeof tour.nights === 'object' && Object.keys(tour.nights).length > 0 && (
+                    <div className="flex items-center mb-3 text-ash_gray-400 text-sm">
+                      <Calendar className="h-4 w-4 mr-1" />
+                      {Object.keys(tour.nights)[0]} Days / {Object.keys(tour.nights)[0]} Nights
+                    </div>
+                  )}
+
+                  {/* Price and Action */}
+                  <div className="flex items-center justify-between pt-3 border-t border-platinum-400">
+                    <div className="flex flex-col">
+                      <div className="flex items-center mb-1">
+                        <span className="text-xl font-bold text-lapis_lazuli-500">
+                          {selectedCurrency} {tour.price && !isNaN(tour.price) ? convertPrice(tour.price) : '0.00'}
+                        </span>
+                        <span className="text-sm text-ash_gray-400 ml-1">/person</span>
+                      </div>
+                      {tour.oldPrice && !isNaN(tour.oldPrice) && (
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm text-ash_gray-400 line-through">
+                            {selectedCurrency} {convertPrice(tour.oldPrice)}
+                          </span>
+                          <span className="text-xs bg-lapis_lazuli-500 text-platinum-500 px-2 py-1 rounded-full font-medium">
+                            SAVE {selectedCurrency} {convertPrice(tour.oldPrice - tour.price)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <motion.div 
+                      className="bg-lapis_lazuli-500 hover:bg-lapis_lazuli-600 rounded-full px-4 py-2 transition-colors duration-300 flex items-center"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <span className="text-platinum-500 font-medium text-sm">View Details</span>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Empty State */}
+        {filteredTours.length === 0 && (
+          <motion.div 
+            className="flex flex-col items-center justify-center py-16 text-center"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <motion.div
+              className="text-6xl mb-4"
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              🏝️
+            </motion.div>
+            <h3 className="text-xl font-semibold text-indigo_dye-500 mb-2">
+              No tours found matching your criteria
+            </h3>
+            <p className="text-ash_gray-400 mb-6">
+              Try adjusting your search filters to discover more amazing destinations
+            </p>
+            <motion.button
+              onClick={handleReset}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-gradient-to-r from-lapis_lazuli-500 to-indigo_dye-500 text-platinum-500 px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg"
             >
               Clear all filters
-            </Button>
-          </Box>
+            </motion.button>
+          </motion.div>
         )}
-      </div>
-    </Box>
+      </motion.div>
+    </div>
   );
 };
 

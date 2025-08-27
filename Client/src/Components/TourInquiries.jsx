@@ -349,7 +349,6 @@ const TourInquiries = () => {
 
   return (
     <div>
-      <h2 className="text-5xl font-bold text-center mb-8">Tour Inquiries</h2>
       <Button
         type="primary"
         onClick={fetchInquiries}
