@@ -174,7 +174,7 @@ const Register = () => {
           <h2 className="text-2xl font-bold mb-4">Registration Successful!</h2>
           <p className="text-white/80">Welcome to IsleKey Holidays! Redirecting to login page...</p>
         </div>
-        <style jsx>{`
+        <style>{`
           @keyframes success-pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -187,7 +187,7 @@ const Register = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Enhanced Custom CSS Animations (matching Login page) */}
-      <style jsx>{`
+      <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }

@@ -628,7 +628,7 @@ export default function EnhancedRoomProfile() {
         </div>
       </main>
       
-      <style jsx global>{`
+      <style>{`
         .react-datepicker {
           font-family: 'Inter', sans-serif;
           border: 1px solid #e5e7eb;

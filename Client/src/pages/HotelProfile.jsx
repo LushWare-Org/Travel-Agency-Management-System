@@ -108,17 +108,15 @@ function HotelProfile() {
         // Use the most recent applicable period price
         if (applicablePeriods.length > 0) {
           price = applicablePeriods[0].price;
-          console.log(`Using period price: $${price} for dates ${checkIn} to ${checkOut}`);
         }
       }
-    }    // If no period price is found, return 0
+    } // If no period price is found, return 0
     if (price === 0) {
-      console.log('No valid price period found for these dates');
+      // No valid price period found - this is expected behavior
     }
 
     // Apply nationality surcharge if any
     const surcharge = room.prices?.find((p) => p.country === nationality)?.price || 0;
-    console.log(`Applied nationality surcharge: $${surcharge} for ${nationality}`);
     
     return Number(price) + surcharge;
   };
@@ -141,9 +139,10 @@ function HotelProfile() {
         const checkIn = locationState.state?.checkIn || locationState.state?.checkInDate || ''
         const checkOut = locationState.state?.checkOut || locationState.state?.checkOutDate || locationState.state?.checkoutDate || ''
         
+        // Debug logging for date values
         console.log("Date values from location state:", { 
-          checkIn, 
-          checkOut,
+          checkIn: checkIn ? new Date(checkIn).toISOString() : null, 
+          checkOut: checkOut ? new Date(checkOut).toISOString() : null,
           rawCheckIn: locationState.state?.checkIn,
           rawCheckInDate: locationState.state?.checkInDate,
           rawCheckOut: locationState.state?.checkOut,
@@ -176,7 +175,10 @@ function HotelProfile() {
           checkIn: validCheckIn,
           checkOut: validCheckOut,
         })
-        console.log("Initialized dates:", { validCheckIn, validCheckOut })
+        console.log("Initialized dates:", { 
+          checkIn: validCheckIn ? validCheckIn.toISOString() : null, 
+          checkOut: validCheckOut ? validCheckOut.toISOString() : null 
+        })
       } catch (err) {
         console.error("Error loading data:", err)
         setError("Hotel not found")
@@ -266,7 +268,16 @@ function HotelProfile() {
       navigationState.checkOut = bookingData.checkOut.toISOString()
     }
 
-    console.log("Navigating to room details with state:", navigationState)
+    console.log("Navigating to room details with state:", {
+      hotelId: navigationState.hotelId,
+      hotelName: navigationState.hotelName,
+      roomId: navigationState.roomId,
+      roomName: navigationState.roomName,
+      basePricePerNight: navigationState.basePricePerNight,
+      checkIn: navigationState.checkIn,
+      checkOut: navigationState.checkOut,
+      selectedNationality: navigationState.selectedNationality
+    })
 
     navigate(`/hotels/${hotelId}/rooms/${roomId}`, {
       state: navigationState
@@ -843,7 +854,7 @@ function HotelProfile() {
 
      
 
-      <style jsx global>{`
+      <style>{`
         .react-datepicker {
           font-family: 'Inter', sans-serif;
           border: 1px solid #e2e8f0;

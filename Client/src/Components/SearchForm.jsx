@@ -252,7 +252,7 @@ const SearchForm = ({
             </Grid>
 
             {/* Custom calendar style*/}
-            <style jsx global>{`
+            <style>{`
               .react-datepicker {
                 font-family: 'Inter', sans-serif;
                 border: 1px solid #e5e7eb;
@@ -358,6 +358,7 @@ const SearchForm = ({
               }
               .scrollbar-hide {
                 -ms-overflow-style: none;
+                scrollbar-width: none;
                 scrollbar-width: none;
               }
             `}</style>
