@@ -220,6 +220,9 @@ const Login = ({ setIsAuthenticated }) => {
         .backdrop-blur-sm {
           backdrop-filter: blur(4px);
         }
+        /* Hide browser's password reveal button */
+        input[type="password"]::-ms-reveal { display: none; }
+        input[type="password"]::-webkit-credentials-auto-fill-button { display: none; }
       `}</style>
 
 
@@ -368,6 +371,7 @@ const Login = ({ setIsAuthenticated }) => {
                       onChange={handleChange}
                       onFocus={() => handleFocus('email')}
                       onBlur={handleBlur}
+                      autoComplete="username"
                       className={`w-full px-4 py-3 bg-white/10 border ${
                         errors.email 
                           ? 'border-red-400/50 focus:border-red-400' 
@@ -401,6 +405,7 @@ const Login = ({ setIsAuthenticated }) => {
                       onChange={handleChange}
                       onFocus={() => handleFocus('password')}
                       onBlur={handleBlur}
+                      autoComplete="current-password"
                       className={`w-full px-4 py-3 pr-12 bg-white/10 border ${
                         errors.password 
                           ? 'border-red-400/50 focus:border-red-400' 
