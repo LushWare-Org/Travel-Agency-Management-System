@@ -1,5 +1,6 @@
 // src/pages/Search.jsx
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { useHotelSearch } from '../hooks/useHotelSearch';
 import SearchBanner from '../Components/SearchBanner';
