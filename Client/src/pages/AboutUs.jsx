@@ -223,32 +223,24 @@ const animationStyles = `
 
 const team = [
   {
-    name: "Aminath Fathimath",
+    name: "Mr. Jaadhulla Jameel",
     role: "Founder & CEO",
-    img: "https://randomuser.me/api/portraits/women/68.jpg",
-    description:
-      "Visionary leader with 10+ years in Maldivian hospitality and investment sectors.",
+    img: "/ceo.jpeg",
   },
   {
-    name: "Mohamed Zahir",
-    role: "Head of Real Estate",
-    img: "https://randomuser.me/api/portraits/men/32.jpg",
-    description:
-      "Expert in luxury property development and foreign investment regulations.",
+    name: "Ms. Maryam Niuma",
+    role: "Brand Partnership",
+    img: "/brandps.jpeg",
   },
   {
-    name: "Sara Lee",
+    name: "Mr. Mohamed Navy",
+    role: "Real Estate",
+    img: "/avatar.webp", // avatar image
+  },
+  {
+    name: "Mr. Aminath Jeel",
     role: "Investment Specialist",
-    img: "https://randomuser.me/api/portraits/women/65.jpg",
-    description:
-      "Strategic advisor specializing in sustainable tourism investments.",
-  },
-  {
-    name: "Ivan Petrov",
-    role: "Brand Partnerships",
-    img: "https://randomuser.me/api/portraits/men/44.jpg",
-    description:
-      "Building bridges between international brands and Maldivian opportunities.",
+    img: "/avatar.webp", // avatar image
   },
 ];
 
@@ -378,12 +370,21 @@ const AboutUs = () => (
         className="absolute top-1/2 left-1/4 w-6 h-6 bg-white/40 rounded-full animate-float animate-glow"
         style={{ animationDelay: "1s" }}
       ></div>
-      
+
       {/* Animated particles */}
-      <div className="absolute top-40 right-40 w-16 h-16 bg-white/5 rounded-full animate-float" style={{ animationDelay: "0.5s" }}></div>
-      <div className="absolute bottom-40 left-1/3 w-20 h-20 bg-white/5 rounded-full animate-float" style={{ animationDelay: "1.2s" }}></div>
-      <div className="absolute top-1/3 right-1/4 w-12 h-12 bg-white/5 rounded-full animate-float" style={{ animationDelay: "1.8s" }}></div>
-      
+      <div
+        className="absolute top-40 right-40 w-16 h-16 bg-white/5 rounded-full animate-float"
+        style={{ animationDelay: "0.5s" }}
+      ></div>
+      <div
+        className="absolute bottom-40 left-1/3 w-20 h-20 bg-white/5 rounded-full animate-float"
+        style={{ animationDelay: "1.2s" }}
+      ></div>
+      <div
+        className="absolute top-1/3 right-1/4 w-12 h-12 bg-white/5 rounded-full animate-float"
+        style={{ animationDelay: "1.8s" }}
+      ></div>
+
       {/* Shimmering overlay */}
       <div className="absolute inset-0 animate-shimmer opacity-20"></div>
 
@@ -393,10 +394,7 @@ const AboutUs = () => (
           About Us
         </div>
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-[#E7E9E5] mb-8 tracking-tight leading-tight animate-fade-in-up animate-delay-1">
-          About IsleKey{" "}
-          <span className="text-[#B7C5C7]">
-            Holidays
-          </span>
+          About IsleKey <span className="text-[#B7C5C7]">Holidays</span>
         </h1>
         <p className="text-xl md:text-2xl text-[#E7E9E5]/90 mb-12 max-w-4xl mx-auto font-light animate-fade-in-up animate-delay-2">
           Your trusted gateway to the Maldives. We bridge travel, investment,
@@ -430,10 +428,7 @@ const AboutUs = () => (
               Our Mission
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-[#075375]">
-              To be the premier{" "}
-              <span className="text-[#0A435C]">
-                bridge
-              </span>
+              To be the premier <span className="text-[#0A435C]">bridge</span>
             </h2>
             <p className="text-xl text-[#075375] leading-relaxed">
               Between international opportunities and the Maldivian paradise,
@@ -480,10 +475,7 @@ const AboutUs = () => (
             Our Values
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-            Our Core{" "}
-            <span className="text-[#0A435C]">
-              Values
-            </span>
+            Our Core <span className="text-[#0A435C]">Values</span>
           </h2>
           <p className="text-xl text-[#075375] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
             The principles that guide everything we do
@@ -524,10 +516,7 @@ const AboutUs = () => (
             Our Team
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-            Meet Our{" "}
-            <span className="text-[#0A435C]">
-              Experts
-            </span>
+            Meet Our <span className="text-[#0A435C]">Experts</span>
           </h2>
           <p className="text-xl text-[#075375] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
             The passionate professionals behind our success
@@ -591,8 +580,11 @@ const AboutUs = () => (
           <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#005E84] to-[#0A435C] animate-pulse-slow"></div>
 
           {journey.map((item, index) => (
-            <div key={index} className="relative flex items-start mb-12 group animate-fade-in-left" 
-                 style={{ animationDelay: `${index * 0.2}s` }}>
+            <div
+              key={index}
+              className="relative flex items-start mb-12 group animate-fade-in-left"
+              style={{ animationDelay: `${index * 0.2}s` }}
+            >
               <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-full flex items-center justify-center text-[#E7E9E5] font-bold text-sm shadow-md group-hover:scale-110 transition-transform duration-300 relative z-10 animate-glow">
                 {item.year}
               </div>
@@ -614,16 +606,28 @@ const AboutUs = () => (
     <section className="py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] relative overflow-hidden animate-gradient-flow">
       <div className="absolute inset-0 bg-black/10"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
-      
+
       {/* Animated particles */}
-      <div className="absolute top-20 left-20 w-32 h-32 bg-white/5 rounded-full animate-float" style={{ animationDelay: "0s" }}></div>
-      <div className="absolute top-40 right-40 w-20 h-20 bg-white/5 rounded-full animate-float" style={{ animationDelay: "0.5s" }}></div>
-      <div className="absolute bottom-20 left-1/3 w-24 h-24 bg-white/5 rounded-full animate-float" style={{ animationDelay: "1s" }}></div>
-      <div className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/5 rounded-full animate-float" style={{ animationDelay: "1.5s" }}></div>
-      
+      <div
+        className="absolute top-20 left-20 w-32 h-32 bg-white/5 rounded-full animate-float"
+        style={{ animationDelay: "0s" }}
+      ></div>
+      <div
+        className="absolute top-40 right-40 w-20 h-20 bg-white/5 rounded-full animate-float"
+        style={{ animationDelay: "0.5s" }}
+      ></div>
+      <div
+        className="absolute bottom-20 left-1/3 w-24 h-24 bg-white/5 rounded-full animate-float"
+        style={{ animationDelay: "1s" }}
+      ></div>
+      <div
+        className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/5 rounded-full animate-float"
+        style={{ animationDelay: "1.5s" }}
+      ></div>
+
       {/* Shimmering overlay */}
       <div className="absolute inset-0 animate-shimmer opacity-30"></div>
-      
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div className="text-6xl text-[#E7E9E5]/30 mb-6 animate-fade-in-up animate-glow">
           "
@@ -652,10 +656,7 @@ const AboutUs = () => (
             Our Impact
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-            Numbers That{" "}
-            <span className="text-[#0A435C]">
-              Matter
-            </span>
+            Numbers That <span className="text-[#0A435C]">Matter</span>
           </h2>
           <p className="text-xl text-[#075375] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
             Our achievements and impact in the Maldives market
@@ -787,10 +788,7 @@ const AboutUs = () => (
           Get Started
         </div>
         <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-          Ready to Start Your{" "}
-          <span className="text-[#0A435C]">
-            Journey?
-          </span>
+          Ready to Start Your <span className="text-[#0A435C]">Journey?</span>
         </h2>
         <p className="text-xl text-[#075375] mb-12 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
           Let us help you discover the endless possibilities that await in the
