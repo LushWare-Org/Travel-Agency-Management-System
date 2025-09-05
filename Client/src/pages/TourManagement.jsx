@@ -48,6 +48,17 @@ const TourManagement = () => {
             <h1 className="text-2xl font-bold text-gray-800">Tour Management</h1>
             <p className="mt-1 text-sm text-gray-600">Manage your tours, add new destinations, and handle inquiries</p>
           </div>
+          <div className="mt-3 sm:mt-0 sm:ml-4">
+            <button
+              onClick={() => handleTabChange('add-tour')}
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <svg className="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Add New Tour
+            </button>
+          </div>
         </div>
 
         {/* Tab Navigation */}
@@ -62,16 +73,6 @@ const TourManagement = () => {
               }`}
             >
               All Tours
-            </button>
-            <button
-              onClick={() => handleTabChange('add-tour')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                activeTab === 'add-tour'
-                  ? 'border-blue-500 text-blue-600' 
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Add New Tour
             </button>
             <button
               onClick={() => handleTabChange('booking-management')}
