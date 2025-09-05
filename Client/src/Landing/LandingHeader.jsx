@@ -78,70 +78,66 @@ const LandingHeader = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ease-out ${
         scrolled
-          ? "bg-[#B7C5C7] shadow-lg"
-          : "bg-gradient-to-r from-[#E7E9E5]/80 via-[#B7C5C7]/60 to-[#E7E9E5]/80 backdrop-blur-md"
+          ? "bg-white/95 backdrop-blur-lg shadow-xl border-b border-white/20"
+          : "bg-gradient-to-r from-[#E7E9E5]/90 via-[#B7C5C7]/70 to-[#E7E9E5]/90 backdrop-blur-md shadow-lg"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
+          <div className="flex items-center space-x-4">
+            <div className="flex-shrink-0 relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#005E84] to-[#075375] rounded-full opacity-20 blur-sm group-hover:opacity-30 transition-opacity duration-300"></div>
               <img
-                className="h-16 w-auto mb-1"
+                className="relative h-14 w-14 rounded-full shadow-lg ring-2 ring-white/30 hover:ring-white/50 transition-all duration-300 transform hover:scale-105"
                 src="/IsleKey Logo.jpg"
-                alt="Logo"
+                alt="IsleKey Holidays Logo"
               />
             </div>
-            <div className="ml-4">
+            <div className="flex flex-col space-y-1">
               <h1
-                className="text-2xl font-bold"
-                style={{ color: palette.lapis_lazuli }}
+                className="text-2xl font-bold bg-gradient-to-r from-[#005E84] to-[#075375] bg-clip-text text-transparent hover:from-[#075375] hover:to-[#0A435C] transition-all duration-300"
               >
                 IsleKey Holidays
               </h1>
               <p
-                className="text-base font-medium mt-1"
+                className="text-sm font-medium tracking-wide transition-colors duration-300"
                 style={{ color: palette.indigo_dye }}
               >
                 Your Gateway to Paradise
               </p>
             </div>
           </div>
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-1">
             {/* New navigation items */}
             <Link
               to="/"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg hover:bg-white/20 group ${
                 isActive("/")
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold"
-                  : ""
+                  ? "text-[#005E84] font-semibold"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isActive("/")
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={scrollToTop}
             >
-              Home
+              <span className="relative z-10">Home</span>
+              <span className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-[#005E84] to-[#075375] transition-all duration-300 ease-out ${
+                isActive("/") ? "w-8" : "w-0 group-hover:w-8"
+              }`} />
             </Link>
             <Link
               to="/about-us"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg hover:bg-white/20 group ${
                 isActive("/about-us")
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold"
-                  : ""
+                  ? "text-[#005E84] font-semibold"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isActive("/about-us")
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={scrollToTop}
             >
-              About Us
+              <span className="relative z-10">About Us</span>
+              <span className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-[#005E84] to-[#075375] transition-all duration-300 ease-out ${
+                isActive("/about-us") ? "w-8" : "w-0 group-hover:w-8"
+              }`} />
             </Link>
             <div
               className="relative"
@@ -159,21 +155,16 @@ const LandingHeader = () => {
               }}
             >
               <button
-                className={`font-medium transition-colors hover:underline hover:brightness-125 flex items-center ${
+                className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg hover:bg-white/20 group flex items-center ${
                   isInServicesSection()
-                    ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold"
-                    : ""
+                    ? "text-[#005E84] font-semibold"
+                    : "text-[#0A435C] hover:text-[#005E84]"
                 }`}
-                style={{
-                  color: isInServicesSection()
-                    ? palette.lapis_lazuli
-                    : palette.indigo_dye2,
-                }}
                 type="button"
               >
-                Our Services
+                <span className="relative z-10">Our Services</span>
                 <svg
-                  className="ml-1 h-4 w-4"
+                  className={`ml-2 h-4 w-4 transition-transform duration-300 ${servicesDropdown ? 'rotate-180' : ''}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -185,10 +176,16 @@ const LandingHeader = () => {
                     d="M19 9l-7 7-7-7"
                   />
                 </svg>
+                <span className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-[#005E84] to-[#075375] transition-all duration-300 ease-out ${
+                  isInServicesSection() ? "w-8" : "w-0 group-hover:w-8"
+                }`} />
               </button>
               {servicesDropdown && (
                 <div
-                  className="absolute left-0 mt-2 w-56 bg-white rounded shadow-lg z-10"
+                  className="absolute left-0 mt-3 w-64 bg-white/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 overflow-hidden animate-slideUp"
+                  style={{
+                    animation: 'slideUp 0.3s ease-out'
+                  }}
                   onMouseEnter={() => {
                     if (servicesDropdownTimeout.current) {
                       clearTimeout(servicesDropdownTimeout.current);
@@ -202,163 +199,177 @@ const LandingHeader = () => {
                     }, 150);
                   }}
                 >
-                  <Link
-                    to="/travel-services"
-                    className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${
-                      isActive("/travel-services")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
-                    }`}
-                    onClick={scrollToTop}
-                  >
-                    Travel Services
-                  </Link>
-                  <Link
-                    to="/real-estate"
-                    className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${
-                      isActive("/real-estate")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
-                    }`}
-                    onClick={scrollToTop}
-                  >
-                    Real Estate
-                  </Link>
-                  <Link
-                    to="/investment-support"
-                    className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${
-                      isActive("/investment-support")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
-                    }`}
-                    onClick={scrollToTop}
-                  >
-                    Investment Support
-                  </Link>
-                  <Link
-                    to="/brand-representation"
-                    className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${
-                      isActive("/brand-representation")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
-                    }`}
-                    onClick={scrollToTop}
-                  >
-                    Brand Representation
-                  </Link>
-                  <Link
-                    to="/hulhumeedhoo"
-                    className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${
-                      isActive("/hulhumeedhoo")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
-                    }`}
-                    onClick={scrollToTop}
-                  >
-                    Hulhumeedhoo Island
-                  </Link>
-                  <Link
-                    to="/token-program"
-                    className={`block px-4 py-2 text-sm hover:bg-gray-100 transition-colors ${
-                      isActive("/token-program")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
-                    }`}
-                    onClick={scrollToTop}
-                  >
-                    Token Program
-                  </Link>
+                  <div className="py-2">
+                    <Link
+                      to="/travel-services"
+                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
+                        isActive("/travel-services")
+                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
+                          : ""
+                      }`}
+                      onClick={scrollToTop}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <span className="text-lg">✈️</span>
+                        <span>Travel Services</span>
+                      </div>
+                    </Link>
+                    <Link
+                      to="/real-estate"
+                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
+                        isActive("/real-estate")
+                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
+                          : ""
+                      }`}
+                      onClick={scrollToTop}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <span className="text-lg">🏡</span>
+                        <span>Real Estate</span>
+                      </div>
+                    </Link>
+                    <Link
+                      to="/investment-support"
+                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
+                        isActive("/investment-support")
+                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
+                          : ""
+                      }`}
+                      onClick={scrollToTop}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <span className="text-lg">💼</span>
+                        <span>Investment Support</span>
+                      </div>
+                    </Link>
+                    <Link
+                      to="/brand-representation"
+                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
+                        isActive("/brand-representation")
+                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
+                          : ""
+                      }`}
+                      onClick={scrollToTop}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <span className="text-lg">🏢</span>
+                        <span>Brand Representation</span>
+                      </div>
+                    </Link>
+                    <Link
+                      to="/hulhumeedhoo"
+                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
+                        isActive("/hulhumeedhoo")
+                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
+                          : ""
+                      }`}
+                      onClick={scrollToTop}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <span className="text-lg">🏝️</span>
+                        <span>Hulhumeedhoo Island</span>
+                      </div>
+                    </Link>
+                    <Link
+                      to="/token-program"
+                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
+                        isActive("/token-program")
+                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
+                          : ""
+                      }`}
+                      onClick={scrollToTop}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <span className="text-lg">🪙</span>
+                        <span>Token Program</span>
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
             <Link
               to="/search"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg hover:bg-white/20 group ${
                 isInResortsSection()
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold"
-                  : ""
+                  ? "text-[#005E84] font-semibold"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isInResortsSection()
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={scrollToTop}
             >
-              Resorts
+              <span className="relative z-10">Resorts</span>
+              <span className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-[#005E84] to-[#075375] transition-all duration-300 ease-out ${
+                isInResortsSection() ? "w-8" : "w-0 group-hover:w-8"
+              }`} />
             </Link>
             <Link
               to="/tours"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg hover:bg-white/20 group ${
                 isActive("/tours")
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold"
-                  : ""
+                  ? "text-[#005E84] font-semibold"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isActive("/tours")
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={scrollToTop}
             >
-              Tours
+              <span className="relative z-10">Tours</span>
+              <span className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-[#005E84] to-[#075375] transition-all duration-300 ease-out ${
+                isActive("/tours") ? "w-8" : "w-0 group-hover:w-8"
+              }`} />
             </Link>
             <Link
               to="/activities"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg hover:bg-white/20 group ${
                 isActive("/activities")
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold"
-                  : ""
+                  ? "text-[#005E84] font-semibold"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isActive("/activities")
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={scrollToTop}
             >
-              Activities
+              <span className="relative z-10">Activities</span>
+              <span className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-[#005E84] to-[#075375] transition-all duration-300 ease-out ${
+                isActive("/activities") ? "w-8" : "w-0 group-hover:w-8"
+              }`} />
             </Link>
             <Link
               to="/contact"
-              className={`font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg hover:bg-white/20 group ${
                 isActive("/contact")
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold"
-                  : ""
+                  ? "text-[#005E84] font-semibold"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isActive("/contact")
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={scrollToTop}
             >
-              Contact
+              <span className="relative z-10">Contact</span>
+              <span className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-[#005E84] to-[#075375] transition-all duration-300 ease-out ${
+                isActive("/contact") ? "w-8" : "w-0 group-hover:w-8"
+              }`} />
             </Link>
             {/* Auth links */}
             {!user ? (
               <>
                 <Link
                   to="/login"
-                  className={`font-medium transition-colors hover:underline hover:brightness-125 ${
+                  className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg hover:bg-white/20 group ${
                     isActive("/login")
-                      ? "border-b-2 border-[#005E84] text-[#005E84]"
-                      : ""
+                      ? "text-[#005E84] font-semibold"
+                      : "text-[#005E84] hover:text-[#075375]"
                   }`}
-                  style={{ color: palette.lapis_lazuli }}
                   onClick={scrollToTop}
                 >
-                  Login
+                  <span className="relative z-10">Login</span>
+                  <span className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-[#005E84] to-[#075375] transition-all duration-300 ease-out ${
+                    isActive("/login") ? "w-8" : "w-0 group-hover:w-8"
+                  }`} />
                 </Link>
                 <Link
                   to="/register"
-                  className={`px-6 py-2 rounded-full font-medium shadow-md transition-all duration-300 ${
+                  className={`px-6 py-3 rounded-full font-medium shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${
                     scrolled
-                      ? "bg-[#E7E9E5] hover:bg-[#B7C5C7] text-[#005E84]"
-                      : "bg-white/30 backdrop-blur-sm hover:bg-white/50 text-[#005E84] border border-white/30"
-                  } hover:brightness-110 ${
+                      ? "bg-gradient-to-r from-[#005E84] to-[#075375] hover:from-[#075375] hover:to-[#0A435C] text-white"
+                      : "bg-white/90 backdrop-blur-sm hover:bg-white text-[#005E84] border border-white/50 hover:border-white"
+                  } ${
                     isActive("/register")
-                      ? "border-b-2 border-[#005E84] text-[#005E84]"
+                      ? "ring-2 ring-[#005E84] ring-opacity-50"
                       : ""
                   }`}
                   onClick={scrollToTop}
@@ -369,29 +380,17 @@ const LandingHeader = () => {
             ) : (
               <div className="relative" ref={accountRef}>
                 <button
-                  className={`flex items-center space-x-2 font-medium transition-colors hover:underline hover:brightness-125 ${
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 hover:shadow-lg ${
                     isActive("/account")
-                      ? "border-b-2 border-[#005E84] text-[#005E84]"
+                      ? "ring-2 ring-[#005E84] ring-opacity-50"
                       : ""
                   }`}
-                  style={{ color: palette.lapis_lazuli }}
                   onClick={() => setAccountDropdown((v) => !v)}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 mr-1 text-[#005E84]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-                    />
-                  </svg>
-                  <span>
+                  <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#005E84] to-[#075375] flex items-center justify-center text-white font-semibold shadow-md">
+                    {user?.firstName?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                  </div>
+                  <span className="text-[#0A435C] hidden sm:block">
                     {user
                       ? `${user.firstName || ""} ${
                           user.lastName || ""
@@ -399,7 +398,7 @@ const LandingHeader = () => {
                       : "Account"}
                   </span>
                   <svg
-                    className="ml-1 h-4 w-4"
+                    className={`h-4 w-4 text-[#0A435C] transition-transform duration-300 ${accountDropdown ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -413,23 +412,31 @@ const LandingHeader = () => {
                   </svg>
                 </button>
                 {accountDropdown && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white rounded shadow-lg z-20">
-                    <Link
-                      to="/account"
-                      className="block px-4 py-2 text-sm hover:bg-gray-100"
-                      onClick={() => {
-                        setAccountDropdown(false);
-                        scrollToTop();
-                      }}
-                    >
-                      My Account
-                    </Link>
-                    <button
-                      className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600"
-                      onClick={handleSignOut}
-                    >
-                      Sign Out
-                    </button>
+                  <div className="absolute right-0 mt-3 w-48 bg-white/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 overflow-hidden animate-slideUp z-20">
+                    <div className="py-2">
+                      <Link
+                        to="/account"
+                        className="flex items-center space-x-3 px-4 py-3 text-sm font-medium hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] transition-all duration-200 transform hover:translate-x-1"
+                        onClick={() => {
+                          setAccountDropdown(false);
+                          scrollToTop();
+                        }}
+                      >
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span>My Account</span>
+                      </Link>
+                      <button
+                        className="flex items-center space-x-3 w-full text-left px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-all duration-200 transform hover:translate-x-1"
+                        onClick={handleSignOut}
+                      >
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -438,51 +445,29 @@ const LandingHeader = () => {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-blue-100 hover:text-white hover:bg-indigo-700 focus:outline-none"
+              className="relative p-3 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all duration-300 transform hover:scale-105 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label="Toggle navigation menu"
             >
-              <svg
-                className="h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {isMenuOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
+              <div className="w-6 h-6 flex flex-col justify-center items-center">
+                <span className={`block h-0.5 w-6 bg-[#0A435C] transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
+                <span className={`block h-0.5 w-6 bg-[#0A435C] transition-all duration-300 mt-1.5 ${isMenuOpen ? 'opacity-0' : ''}`} />
+                <span className={`block h-0.5 w-6 bg-[#0A435C] transition-all duration-300 mt-1.5 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
+              </div>
             </button>
           </div>
         </div>
       </div>
       {isMenuOpen && (
-        <div className="md:hidden bg-[#B7C5C7] bg-opacity-95 backdrop-blur-sm">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="md:hidden bg-white/95 backdrop-blur-lg border-t border-white/20 shadow-xl">
+          <div className="px-4 pt-4 pb-6 space-y-2">
             {/* Mobile menu items */}
             <Link
               to="/"
-              className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`px-4 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:shadow-md transform hover:translate-x-1 min-h-[44px] flex items-center ${
                 isActive("/")
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]"
-                  : ""
+                  ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isActive("/")
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={() => {
                 scrollToTop();
                 setIsMenuOpen(false);
@@ -492,16 +477,11 @@ const LandingHeader = () => {
             </Link>
             <Link
               to="/about-us"
-              className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`px-4 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:shadow-md transform hover:translate-x-1 min-h-[44px] flex items-center ${
                 isActive("/about-us")
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]"
-                  : ""
+                  ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isActive("/about-us")
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={() => {
                 scrollToTop();
                 setIsMenuOpen(false);
@@ -512,21 +492,16 @@ const LandingHeader = () => {
             {/* Services dropdown for mobile */}
             <div>
               <button
-                className={`flex w-full text-left px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 items-center ${
+                className={`flex w-full items-center justify-between px-4 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
                   isInServicesSection()
-                    ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]"
-                    : ""
+                    ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                    : "text-[#0A435C] hover:text-[#005E84]"
                 }`}
-                style={{
-                  color: isInServicesSection()
-                    ? palette.lapis_lazuli
-                    : palette.indigo_dye2,
-                }}
                 onClick={() => setServicesDropdown(!servicesDropdown)}
               >
-                Our Services
+                <span>Our Services</span>
                 <svg
-                  className="ml-1 h-4 w-4"
+                  className={`h-5 w-5 transition-transform duration-300 ${servicesDropdown ? 'rotate-180' : ''}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -540,13 +515,13 @@ const LandingHeader = () => {
                 </svg>
               </button>
               {servicesDropdown && (
-                <div className="ml-4">
+                <div className="mt-2 ml-4 space-y-2">
                   <Link
                     to="/travel-services"
-                    className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
                       isActive("/travel-services")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
+                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                        : "text-[#0A435C]"
                     }`}
                     onClick={() => {
                       scrollToTop();
@@ -554,14 +529,15 @@ const LandingHeader = () => {
                       setServicesDropdown(false);
                     }}
                   >
-                    Travel Services
+                    <span className="text-lg">✈️</span>
+                    <span>Travel Services</span>
                   </Link>
                   <Link
                     to="/real-estate"
-                    className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
                       isActive("/real-estate")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
+                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                        : "text-[#0A435C]"
                     }`}
                     onClick={() => {
                       scrollToTop();
@@ -569,14 +545,15 @@ const LandingHeader = () => {
                       setServicesDropdown(false);
                     }}
                   >
-                    Real Estate
+                    <span className="text-lg">🏡</span>
+                    <span>Real Estate</span>
                   </Link>
                   <Link
                     to="/investment-support"
-                    className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
                       isActive("/investment-support")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
+                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                        : "text-[#0A435C]"
                     }`}
                     onClick={() => {
                       scrollToTop();
@@ -584,14 +561,15 @@ const LandingHeader = () => {
                       setServicesDropdown(false);
                     }}
                   >
-                    Investment Support
+                    <span className="text-lg">💼</span>
+                    <span>Investment Support</span>
                   </Link>
                   <Link
                     to="/brand-representation"
-                    className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
                       isActive("/brand-representation")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
+                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                        : "text-[#0A435C]"
                     }`}
                     onClick={() => {
                       scrollToTop();
@@ -599,14 +577,15 @@ const LandingHeader = () => {
                       setServicesDropdown(false);
                     }}
                   >
-                    Brand Representation
+                    <span className="text-lg">🏢</span>
+                    <span>Brand Representation</span>
                   </Link>
                   <Link
                     to="/hulhumeedhoo"
-                    className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
                       isActive("/hulhumeedhoo")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
+                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                        : "text-[#0A435C]"
                     }`}
                     onClick={() => {
                       scrollToTop();
@@ -614,14 +593,15 @@ const LandingHeader = () => {
                       setServicesDropdown(false);
                     }}
                   >
-                    Hulhumeedhoo Island
+                    <span className="text-lg">🏝️</span>
+                    <span>Hulhumeedhoo Island</span>
                   </Link>
                   <Link
                     to="/token-program"
-                    className={`block px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
                       isActive("/token-program")
-                        ? "bg-[#E7E9E5] text-[#005E84] font-semibold"
-                        : ""
+                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                        : "text-[#0A435C]"
                     }`}
                     onClick={() => {
                       scrollToTop();
@@ -629,23 +609,19 @@ const LandingHeader = () => {
                       setServicesDropdown(false);
                     }}
                   >
-                    Token Program
+                    <span className="text-lg">🪙</span>
+                    <span>Token Program</span>
                   </Link>
                 </div>
               )}
             </div>
             <Link
               to="/search"
-              className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`px-4 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:shadow-md transform hover:translate-x-1 min-h-[44px] flex items-center ${
                 isInResortsSection()
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]"
-                  : ""
+                  ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isInResortsSection()
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={() => {
                 scrollToTop();
                 setIsMenuOpen(false);
@@ -655,16 +631,11 @@ const LandingHeader = () => {
             </Link>
             <Link
               to="/tours"
-              className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`px-4 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:shadow-md transform hover:translate-x-1 min-h-[44px] flex items-center ${
                 isActive("/tours")
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]"
-                  : ""
+                  ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isActive("/tours")
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={() => {
                 scrollToTop();
                 setIsMenuOpen(false);
@@ -674,16 +645,11 @@ const LandingHeader = () => {
             </Link>
             <Link
               to="/activities"
-              className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`px-4 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:shadow-md transform hover:translate-x-1 min-h-[44px] flex items-center ${
                 isActive("/activities")
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]"
-                  : ""
+                  ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isActive("/activities")
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={() => {
                 scrollToTop();
                 setIsMenuOpen(false);
@@ -693,16 +659,11 @@ const LandingHeader = () => {
             </Link>
             <Link
               to="/contact"
-              className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 ${
+              className={`px-4 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:shadow-md transform hover:translate-x-1 min-h-[44px] flex items-center ${
                 isActive("/contact")
-                  ? "border-b-2 border-[#005E84] text-[#005E84] font-semibold bg-[#E7E9E5]"
-                  : ""
+                  ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                  : "text-[#0A435C] hover:text-[#005E84]"
               }`}
-              style={{
-                color: isActive("/contact")
-                  ? palette.lapis_lazuli
-                  : palette.indigo_dye2,
-              }}
               onClick={() => {
                 scrollToTop();
                 setIsMenuOpen(false);
@@ -715,12 +676,11 @@ const LandingHeader = () => {
               <>
                 <Link
                   to="/login"
-                  className={`block px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 hover:bg-[#E7E9E5] ${
+                  className={`px-4 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:shadow-md transform hover:translate-x-1 min-h-[44px] flex items-center mt-2 ${
                     isActive("/login")
-                      ? "border-b-2 border-[#005E84] text-[#005E84]"
-                      : ""
+                      ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                      : "text-[#005E84] hover:text-[#075375]"
                   }`}
-                  style={{ color: palette.lapis_lazuli }}
                   onClick={() => {
                     scrollToTop();
                     setIsMenuOpen(false);
@@ -730,9 +690,9 @@ const LandingHeader = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className={`bg-[#E7E9E5] text-[#005E84] block px-3 py-2 rounded-md font-medium hover:bg-[#B7C5C7] mt-4 hover:brightness-110 ${
+                  className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg mt-4 min-h-[44px] flex items-center justify-center bg-gradient-to-r from-[#005E84] to-[#075375] hover:from-[#075375] hover:to-[#0A435C] text-white shadow-lg ${
                     isActive("/register")
-                      ? "border-b-2 border-[#005E84] text-[#005E84]"
+                      ? "ring-2 ring-[#005E84] ring-opacity-50"
                       : ""
                   }`}
                   onClick={() => {
@@ -744,31 +704,19 @@ const LandingHeader = () => {
                 </Link>
               </>
             ) : (
-              <div className="relative" ref={accountRef}>
+              <div className="relative mt-2" ref={accountRef}>
                 <button
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md font-medium transition-colors hover:underline hover:brightness-125 hover:bg-[#E7E9E5] ${
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 hover:shadow-lg w-full min-h-[44px] ${
                     isActive("/account")
-                      ? "border-b-2 border-[#005E84] text-[#005E84]"
+                      ? "ring-2 ring-[#005E84] ring-opacity-50"
                       : ""
                   }`}
-                  style={{ color: palette.lapis_lazuli }}
                   onClick={() => setAccountDropdown((v) => !v)}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 mr-1 text-[#005E84]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-                    />
-                  </svg>
-                  <span>
+                  <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#005E84] to-[#075375] flex items-center justify-center text-white font-semibold shadow-md">
+                    {user?.firstName?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                  </div>
+                  <span className="text-[#0A435C] flex-1 text-left">
                     {user
                       ? `${user.firstName || ""} ${
                           user.lastName || ""
@@ -776,7 +724,7 @@ const LandingHeader = () => {
                       : "Account"}
                   </span>
                   <svg
-                    className="ml-1 h-4 w-4"
+                    className={`h-4 w-4 text-[#0A435C] transition-transform duration-300 ${accountDropdown ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -790,24 +738,32 @@ const LandingHeader = () => {
                   </svg>
                 </button>
                 {accountDropdown && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white rounded shadow-lg z-20">
-                    <Link
-                      to="/account"
-                      className="block px-4 py-2 text-sm hover:bg-gray-100"
-                      onClick={() => {
-                        setAccountDropdown(false);
-                        scrollToTop();
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      My Account
-                    </Link>
-                    <button
-                      className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600"
-                      onClick={handleSignOut}
-                    >
-                      Sign Out
-                    </button>
+                  <div className="mt-3 w-full bg-white/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 overflow-hidden animate-slideUp">
+                    <div className="py-2">
+                      <Link
+                        to="/account"
+                        className="flex items-center space-x-3 px-4 py-3 text-sm font-medium hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] transition-all duration-200 transform hover:translate-x-1 min-h-[44px]"
+                        onClick={() => {
+                          setAccountDropdown(false);
+                          scrollToTop();
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span>My Account</span>
+                      </Link>
+                      <button
+                        className="flex items-center space-x-3 w-full text-left px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-all duration-200 transform hover:translate-x-1 min-h-[44px]"
+                        onClick={handleSignOut}
+                      >
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
