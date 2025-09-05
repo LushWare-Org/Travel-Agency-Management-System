@@ -80,7 +80,7 @@ const LandingHeader = () => {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-500 ease-out ${
         scrolled
-          ? "bg-white/95 backdrop-blur-lg shadow-xl border-b border-white/20"
+          ? "bg-gradient-to-r from-[#B7C5C7]/95 via-[#E7E9E5]/95 to-[#B7C5C7]/95 backdrop-blur-lg shadow-xl border-b border-[#005E84]/20"
           : "bg-gradient-to-r from-[#E7E9E5]/90 via-[#B7C5C7]/70 to-[#E7E9E5]/90 backdrop-blur-md shadow-lg"
       }`}
     >
@@ -182,7 +182,7 @@ const LandingHeader = () => {
               </button>
               {servicesDropdown && (
                 <div
-                  className="absolute left-0 mt-3 w-64 bg-white/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 overflow-hidden animate-slideUp"
+                  className="absolute left-0 mt-3 w-64 bg-gradient-to-br from-[#E7E9E5]/95 via-white/95 to-[#B7C5C7]/95 backdrop-blur-lg rounded-xl shadow-xl border border-[#005E84]/20 overflow-hidden animate-slideUp"
                   style={{
                     animation: 'slideUp 0.3s ease-out'
                   }}
@@ -412,7 +412,7 @@ const LandingHeader = () => {
                   </svg>
                 </button>
                 {accountDropdown && (
-                  <div className="absolute right-0 mt-3 w-48 bg-white/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 overflow-hidden animate-slideUp z-20">
+                  <div className="absolute right-0 mt-3 w-48 bg-gradient-to-br from-[#E7E9E5]/95 via-white/95 to-[#B7C5C7]/95 backdrop-blur-lg rounded-xl shadow-xl border border-[#005E84]/20 overflow-hidden animate-slideUp z-20">
                     <div className="py-2">
                       <Link
                         to="/account"
@@ -458,7 +458,7 @@ const LandingHeader = () => {
         </div>
       </div>
       {isMenuOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-lg border-t border-white/20 shadow-xl">
+        <div className="md:hidden bg-gradient-to-r from-[#B7C5C7]/95 via-[#E7E9E5]/95 to-[#B7C5C7]/95 backdrop-blur-lg border-t border-[#005E84]/20 shadow-xl">
           <div className="px-4 pt-4 pb-6 space-y-2">
             {/* Mobile menu items */}
             <Link
@@ -738,7 +738,7 @@ const LandingHeader = () => {
                   </svg>
                 </button>
                 {accountDropdown && (
-                  <div className="mt-3 w-full bg-white/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/20 overflow-hidden animate-slideUp">
+                  <div className="mt-3 w-full bg-gradient-to-br from-[#E7E9E5]/95 via-white/95 to-[#B7C5C7]/95 backdrop-blur-lg rounded-xl shadow-xl border border-[#005E84]/20 overflow-hidden animate-slideUp">
                     <div className="py-2">
                       <Link
                         to="/account"
