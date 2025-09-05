@@ -1,6 +1,6 @@
 import React from 'react';
 
-const whatsappNumber = 'YOUR_WHATSAPP_NUMBER'; // e.g. '94771234567'
+const whatsappNumber = '9607781048'; // Maldives number
 
 export default function WhatsappIcon() {
   return (
