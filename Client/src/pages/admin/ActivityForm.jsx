@@ -535,6 +535,7 @@ const ActivityForm = () => {
                           <option value="adventure">Adventure</option>
                           <option value="cultural">Cultural</option>
                           <option value="wellness">Wellness</option>
+                          <option value="renewal-wedding">Renewal Wedding</option>
                         </Field>
                         <ErrorMessage name="type" component="div" className="mt-1 text-sm text-red-600" />
                       </div>

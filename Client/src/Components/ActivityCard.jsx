@@ -50,10 +50,11 @@ const ActivityCard = ({ activity, onClick }) => (
             ${activity.type === 'cultural' ? 'bg-purple-100/90 text-purple-800 border border-purple-200' : ''}
             ${activity.type === 'adventure' ? 'bg-orange-100/90 text-orange-800 border border-orange-200' : ''}
             ${activity.type === 'wellness' ? 'bg-pink-100/90 text-pink-800 border border-pink-200' : ''}
+            ${activity.type === 'renewal-wedding' ? 'bg-rose-100/90 text-rose-800 border border-rose-200' : ''}
             ${activity.type === 'water' ? 'bg-blue-100/90 text-blue-800 border border-blue-200' : ''}
             ${activity.type === 'excursion' ? 'bg-green-100/90 text-green-800 border border-green-200' : ''}
             ${activity.type === 'dining' ? 'bg-purple-100/90 text-purple-800 border border-purple-200' : ''}
-            ${!['water-sports', 'cruises', 'island-tours', 'diving', 'cultural', 'adventure', 'wellness', 'water', 'excursion', 'dining'].includes(activity.type) ? 'bg-gray-100/90 text-gray-800 border border-gray-200' : ''}
+            ${!['water-sports', 'cruises', 'island-tours', 'diving', 'cultural', 'adventure', 'wellness', 'renewal-wedding', 'water', 'excursion', 'dining'].includes(activity.type) ? 'bg-gray-100/90 text-gray-800 border border-gray-200' : ''}
           `}>
             {activity.type.replace('-', ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
           </span>
