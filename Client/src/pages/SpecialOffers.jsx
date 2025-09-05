@@ -1,39 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LandingHeader from '../Landing/LandingHeader';
 import Footer from '../Components/Footer';
 import OfferCard from '../Components/OfferCard';
+import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 
 const SpecialOffers = ({ sidebarOpen }) => {
   const [loading, setLoading] = useState(true);
   const [offers, setOffers] = useState([]);
   const [userBookings, setUserBookings] = useState([]);
-  const [user, setUser] = useState(null);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch all required data in parallel
-        const [offersRes, bookingsRes, userRes] = await Promise.all([
-          axios.get('/discounts'),
-          axios.get('/bookings/my'),
-          axios.get('/users/me')
-        ]);
-
+        // Always fetch offers
+        const offersRes = await axios.get('/discounts');
         setOffers(offersRes.data);
-        setUserBookings(bookingsRes.data);
-        setUser(userRes.data);
+
+        // Try to fetch user bookings if user is logged in
+        if (user) {
+          try {
+            const bookingsRes = await axios.get('/bookings/my');
+            setUserBookings(bookingsRes.data);
+          } catch (authError) {
+            console.log('Error fetching user bookings:', authError);
+            setUserBookings([]);
+          }
+        } else {
+          setUserBookings([]);
+        }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching offers:', error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [user]);
 
   // Filter and sort offers based on type and conditions
   const getApplicableOffers = () => {
