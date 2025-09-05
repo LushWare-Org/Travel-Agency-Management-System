@@ -229,17 +229,17 @@ const team = [
   },
   {
     name: "Ms. Maryam Niuma",
-    role: "Brand Partnership",
-    img: "/brandps.jpeg",
+    role: "Investment Specialist",
+    img: "/investmentspec.jpeg",
+  },
+  {
+    name: "Ms. Mina Pham",
+    role: "Brand Partnerships",
+    img: "/brandps.jpeg", // avatar image
   },
   {
     name: "Mr. Mohamed Navy",
     role: "Real Estate",
-    img: "/avatar.webp", // avatar image
-  },
-  {
-    name: "Mr. Aminath Jeel",
-    role: "Investment Specialist",
     img: "/avatar.webp", // avatar image
   },
 ];
