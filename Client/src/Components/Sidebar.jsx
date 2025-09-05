@@ -41,7 +41,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const navItems = [
     { icon: <SearchIcon />, text: 'Search Properties', path: '/search' },
     { icon: <ToursIcon />, text: 'Tours', path: '/tours' },
-    { icon: <BookingsIcon />, text: 'Bookings', path: '/bookings' },
     { icon: <OfferIcon />, text: 'Special Offers', path: '/special-offers' },
     { icon: <ProfileIcon />, text: 'My Profile', path: '/profile' },
   ];

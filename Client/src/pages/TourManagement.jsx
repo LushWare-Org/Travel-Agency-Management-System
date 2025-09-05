@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AllTours from '../Components/AllTours';
 import AddTour from '../Components/AddTour';
 import TourInquiries from '../Components/TourInquiries';
+import TourBookingManagement from './TourBookingManagement';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
@@ -73,6 +74,16 @@ const TourManagement = () => {
               Add New Tour
             </button>
             <button
+              onClick={() => handleTabChange('booking-management')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                activeTab === 'booking-management'
+                  ? 'border-blue-500 text-blue-600' 
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Tour Bookings
+            </button>
+            <button
               onClick={() => handleTabChange('inquiries')}
               className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'inquiries'
@@ -90,6 +101,7 @@ const TourManagement = () => {
           <div className="px-4 py-5 sm:p-6">
             {activeTab === 'all-tours' && <AllTours />}
             {activeTab === 'add-tour' && <AddTour />}
+            {activeTab === 'booking-management' && <TourBookingManagement />}
             {activeTab === 'inquiries' && <TourInquiries />}
           </div>
         </div>
