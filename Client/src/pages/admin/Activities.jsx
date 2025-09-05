@@ -165,6 +165,7 @@ const AdminActivities = () => {
                 <option value="cultural">Cultural</option>
                 <option value="adventure">Adventure</option>
                 <option value="wellness">Wellness</option>
+                <option value="renewal-wedding">Renewal Wedding</option>
               </select>
             </div>
           </div>
@@ -245,6 +246,7 @@ const AdminActivities = () => {
                           ${activity.type === 'cultural' ? 'bg-purple-100 text-purple-800 border border-purple-200' : ''}
                           ${activity.type === 'adventure' ? 'bg-orange-100 text-orange-800 border border-orange-200' : ''}
                           ${activity.type === 'wellness' ? 'bg-pink-100 text-pink-800 border border-pink-200' : ''}
+                          ${activity.type === 'renewal-wedding' ? 'bg-rose-100 text-rose-800 border border-rose-200' : ''}
                         `}>
                           {activity.type.replace('-', ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
                         </span>

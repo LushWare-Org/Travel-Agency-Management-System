@@ -281,6 +281,7 @@ const Activities = () => {
                   <option value="adventure">⛰️ Adventure</option>
                   <option value="cultural">🏛️ Cultural</option>
                   <option value="wellness">🧘 Wellness & Spa</option>
+                  <option value="renewal-wedding">💒 Renewal Wedding</option>
                 </select>
               </div>
 

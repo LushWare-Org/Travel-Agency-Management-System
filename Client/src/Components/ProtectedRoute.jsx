@@ -1,26 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import axios from 'axios';
 import { CircularProgress, Box, Typography } from '@mui/material';
 
 export default function ProtectedRoute({ children, requireAdmin = false }) {
-  const { user, setUser, loading } = useContext(AuthContext);
+  const { user, loading, checkAuthStatus } = useContext(AuthContext);
   const location = useLocation();
 
-  // ➡️ on every mount, re‑check session
+  // ➡️ on every mount, re‑check session using context method
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data } = await axios.get('/users/me', { withCredentials: true });
-        setUser(data);
-      } catch (err) {
-        console.error('Auth check failed:', err);
-        setUser(null);
-      }
-    };
-    checkAuth();
-  }, [setUser, location.pathname]);
+    if (!user && !loading) {
+      checkAuthStatus();
+    }
+  }, [user, loading, checkAuthStatus, location.pathname]);
 
   if (loading) {
     return (

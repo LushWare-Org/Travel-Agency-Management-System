@@ -36,7 +36,7 @@ const ActivitySchema = new mongoose.Schema({
   type: {
     type: String,
     required: [true, 'Please add an activity type'],
-    enum: ['cruises', 'diving', 'island-tours', 'water-sports', 'adventure', 'cultural', 'wellness']
+    enum: ['cruises', 'diving', 'island-tours', 'water-sports', 'adventure', 'cultural', 'wellness', 'renewal-wedding']
   },
   location: {
     type: String,

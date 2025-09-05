@@ -2,6 +2,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { hasAuthCookies } from '../utils/authUtils';
 
 export const AuthContext = createContext();
 
@@ -56,20 +57,21 @@ export const AuthProvider = ({ children }) => {
                                      originalReq.url.includes('/profile') ||
                                      originalReq.url.includes('/admin') ||
                                      originalReq.url.includes('/settings') ||
+                                     originalReq.url.includes('/users/me') ||
                                      (originalReq.url.includes('/auth/') && !originalReq.url.includes('/auth/login') && !originalReq.url.includes('/auth/register'));
 
           // If this is a refresh token call that failed, logout immediately
           if (originalReq.url.includes('/auth/refresh-token')) {
             setUser(null);
-            // Only navigate to login if not already there
-            if (!window.location.pathname.includes('/login')) {
+            // Only navigate to login if not already there and user was previously logged in
+            if (!window.location.pathname.includes('/login') && user) {
               navigate('/login', { replace: true });
             }
             return Promise.reject(err);
           }
 
-          // Only attempt token refresh for protected endpoints
-          if (isProtectedEndpoint) {
+          // Only attempt token refresh for protected endpoints and if user was previously logged in
+          if (isProtectedEndpoint && user) {
             originalReq._retry = true;
             try {
               const success = await refreshToken();
@@ -92,39 +94,59 @@ export const AuthProvider = ({ children }) => {
       }
     );
     return () => axios.interceptors.response.eject(id);
-  }, [navigate]);
+  }, [navigate, user]);
 
-  // Initial whoami
+  // Function to silently check authentication status
+  const checkAuthStatus = async () => {
+    try {
+      // Use a direct axios call without interceptor interference for initial check
+      const { data } = await axios.get('/users/me', { 
+        withCredentials: true,
+        // Add a custom header to identify this as an initial auth check
+        headers: { 'X-Initial-Auth-Check': 'true' }
+      });
+      setUser(data);
+      return true;
+    } catch (err) {
+      if (err.response?.status === 401) {
+        // Try to refresh token silently, but don't redirect on failure
+        try {
+          await axios.post('/auth/refresh-token', {}, { 
+            withCredentials: true,
+            headers: { 'X-Initial-Auth-Check': 'true' }
+          });
+          const userData = await axios.get('/users/me', { 
+            withCredentials: true,
+            headers: { 'X-Initial-Auth-Check': 'true' }
+          });
+          setUser(userData.data);
+          return true;
+        } catch (refreshError) {
+          // Silent failure - user is just not logged in
+          setUser(null);
+          return false;
+        }
+      } else {
+        setUser(null);
+        return false;
+      }
+    }
+  };
+
+  // Initial auth check - only check if there might be an existing session
   useEffect(() => {
     (async () => {
       try {
-        // Use a direct axios call without interceptor interference for initial check
-        const { data } = await axios.get('/users/me', { 
-          withCredentials: true,
-          // Add a custom header to identify this as an initial auth check
-          headers: { 'X-Initial-Auth-Check': 'true' }
-        });
-        setUser(data);
-      } catch (err) {
-        if (err.response?.status === 401) {
-          // Try to refresh token silently, but don't redirect on failure
-          try {
-            await axios.post('/auth/refresh-token', {}, { 
-              withCredentials: true,
-              headers: { 'X-Initial-Auth-Check': 'true' }
-            });
-            const userData = await axios.get('/users/me', { 
-              withCredentials: true,
-              headers: { 'X-Initial-Auth-Check': 'true' }
-            });
-            setUser(userData.data);
-          } catch (refreshError) {
-            // Silent failure - user is just not logged in
-            setUser(null);
-          }
+        // Check if there's any indication of an existing session
+        // Only make the auth check if there's a reasonable chance the user is logged in
+        if (hasAuthCookies()) {
+          await checkAuthStatus();
         } else {
+          // No auth cookie found, user is likely not logged in
           setUser(null);
         }
+      } catch (err) {
+        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -167,7 +189,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser, loading, login, logout, checkAuthStatus }}>
       {children}
     </AuthContext.Provider>
   );
