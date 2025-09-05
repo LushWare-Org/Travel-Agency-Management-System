@@ -7,7 +7,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: 'https://api.islekeyholidays.com',
+        target: 'http://localhost:5001',
         changeOrigin: true
       },
     },

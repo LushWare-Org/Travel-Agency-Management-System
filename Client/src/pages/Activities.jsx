@@ -56,7 +56,7 @@ const Activities = () => {
       try {
         const params = new URLSearchParams();
         params.append('search', searchQuery);
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://api.islekeyholidays.com'}/api/activities/suggestions?${params.toString()}`);
+        const res = await fetch(`/api/activities/suggestions?${params.toString()}`);
         const data = await res.json();
         if (data.success && Array.isArray(data.suggestions)) {
           setSuggestions(data.suggestions);
@@ -88,7 +88,7 @@ const Activities = () => {
       // if (date) params.append('date', date);
       if (guests && guests !== '') params.append('guests', guests);
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL || 'https://api.islekeyholidays.com'}/api/activities?${params.toString()}`,
+        `${import.meta.env.VITE_API_URL || '/api'}/api/activities?${params.toString()}`,
         {
           credentials: 'include',
         }
