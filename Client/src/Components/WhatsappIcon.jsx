@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const whatsappNumber = '9607781048'; // Maldives number
 
@@ -9,9 +9,9 @@ export default function WhatsappIcon() {
       target="_blank"
       rel="noopener noreferrer"
       style={{
-        position: 'fixed',
-        bottom: '24px',
-        right: '24px',
+        position: "fixed",
+        bottom: "24px",
+        right: "24px",
         zIndex: 1000,
         background: 'linear-gradient(135deg, #005E84 0%, #075375 50%, #0A435C 100%)',
         borderRadius: '50%',
