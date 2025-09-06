@@ -46,7 +46,13 @@ const AdminActivities = lazy(() => import("./pages/admin/Activities"));
 const ActivityBookings = lazy(() => import("./pages/admin/ActivityBookings"));
 
 // point axios at your API & send cookies by default
-axios.defaults.baseURL = "https://api.islekeyholidays.com/api";
+// Use environment variable if available, otherwise fallback based on mode
+const baseURL = import.meta.env.VITE_API_BASE_URL || 
+  (import.meta.env.MODE === 'production' 
+    ? 'https://api.islekeyholidays.com/api'
+    : '/api');
+
+axios.defaults.baseURL = baseURL;
 axios.defaults.withCredentials = true;
 
 export default function App() {
