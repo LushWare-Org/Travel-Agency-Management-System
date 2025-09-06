@@ -140,7 +140,6 @@ export default function AdminPanel() {
     { id: 'bookings', text: 'Booking Oversight', icon: <BookingIcon /> },
     { id: 'discounts', text: 'Discount Management', icon: <DiscountIcon /> },
     { id: 'tours', text: 'Tour Management', icon: <TourOutlined/> },
-    { id: 'tour-bookings', text: 'Tour Bookings', icon: <BookingIcon /> },
     { id: 'contacts', text: 'Contact Submissions', icon: <EmailIcon /> },
   ];
 
@@ -236,7 +235,6 @@ export default function AdminPanel() {
       case 'bookings': return <BookingManagement />;
       case 'discounts': return <DiscountManagement />;
       case 'tours': return <TourManagement />;
-      case 'tour-bookings': return <TourBookingManagement />;
       case 'contacts': return <ContactManagement />;
       default: return <Dashboard />;
     }
