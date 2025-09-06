@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import axios from '../axios';
 import ActivityCard from '../Components/ActivityCard';
 // import ImageGallery from '../Components/ImageGallery';
 
@@ -54,10 +55,10 @@ const Activities = () => {
     setSuggestionLoading(true);
     const handler = setTimeout(async () => {
       try {
-        const params = new URLSearchParams();
-        params.append('search', searchQuery);
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://api.islekeyholidays.com'}/api/activities/suggestions?${params.toString()}`);
-        const data = await res.json();
+        const response = await axios.get('/activities/suggestions', {
+          params: { search: searchQuery }
+        });
+        const data = response.data;
         if (data.success && Array.isArray(data.suggestions)) {
           setSuggestions(data.suggestions);
           setShowSuggestions(true);
@@ -81,25 +82,22 @@ const Activities = () => {
     setError(null);
     try {
       // Build query params
-      const params = new URLSearchParams();
-      if (searchQuery) params.append('search', searchQuery);
+      const params = {};
+      if (searchQuery) params.search = searchQuery;
       // Only append type if not empty
-      if (activityType && activityType !== '') params.append('type', activityType);
-      // if (date) params.append('date', date);
-      if (guests && guests !== '') params.append('guests', guests);
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL || 'https://api.islekeyholidays.com'}/api/activities?${params.toString()}`,
-        {
-          credentials: 'include',
-        }
-      );
-      const data = await res.json();
+      if (activityType && activityType !== '') params.type = activityType;
+      // if (date) params.date = date;
+      if (guests && guests !== '') params.guests = guests;
+      
+      const response = await axios.get('/activities', { params });
+      const data = response.data;
       if (data.success) {
         setActivities(data.data);
       } else {
         setError(data.error || 'Failed to fetch activities');
       }
     } catch (err) {
+      console.error('Error fetching activities:', err);
       setError('Failed to fetch activities');
     } finally {
       setLoading(false);
