@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Tabs } from 'antd';
 import AllTours from '../Components/AllTours';
 import AddTour from '../Components/AddTour';
 import TourInquiries from '../Components/TourInquiries';
+import TourBookingManagement from './TourBookingManagement';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
@@ -31,181 +31,83 @@ function useDeviceType() {
 }
 
 const TourManagement = () => {
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState('all-tours');
   const navigate = useNavigate();
   const { isMobile, isTablet, isDesktop } = useDeviceType();
 
-  const handleTabChange = (key) => {
-    setActiveTab(key);
+  const handleTabChange = (tabKey) => {
+    setActiveTab(tabKey);
   };
-
-  const containerStyle = {
-    minHeight: '100vh',
-    background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-    padding: isMobile ? '16px' : isTablet ? '24px' : '32px',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-  };
-
-  const contentWrapperStyle = {
-    maxWidth: '1400px',
-    margin: '0 auto',
-    width: '100%',
-  };
-
-  const headerStyle = {
-    marginBottom: isMobile ? '20px' : '32px',
-    textAlign: 'center',
-  };
-
-  const titleStyle = {
-    fontSize: isMobile ? '24px' : isTablet ? '28px' : '32px',
-    fontWeight: '700',
-    color: '#1e293b',
-    margin: '0 0 8px 0',
-    letterSpacing: '-0.025em',
-  };
-
-  const subtitleStyle = {
-    fontSize: isMobile ? '14px' : '16px',
-    color: '#64748b',
-    fontWeight: '400',
-    margin: '0',
-  };
-
-  const tabContainerStyle = {
-    background: '#ffffff',
-    borderRadius: isMobile ? '12px' : '16px',
-    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-    border: '1px solid #e2e8f0',
-    overflow: 'hidden',
-  };
-
-  const customTabBarStyle = {
-    margin: '0',
-    padding: isMobile ? '16px 16px 0 16px' : '24px 24px 0 24px',
-    background: '#ffffff',
-    borderBottom: 'none',
-    display: 'flex',
-    justifyContent: 'center',
-  };
-
-  const tabPaneStyle = {
-    padding: isMobile ? '20px 16px' : isTablet ? '24px' : '32px 24px',
-    minHeight: '60vh',
-    background: '#ffffff',
-  };
-
-  const customStyles = `
-    .modern-tabs .ant-tabs-nav {
-      display: flex !important;
-      justify-content: center !important;
-    }
-
-    .modern-tabs .ant-tabs-nav-list {
-      display: flex !important;
-      justify-content: center !important;
-    }
-
-    .modern-tabs .ant-tabs-tab {
-      position: relative;
-      padding: ${isMobile ? '12px 24px' : '14px 32px'} !important;
-      margin: 0 6px !important;
-      border: 2px solid #B7C5C7 !important;
-      border-radius: 10px !important;
-      background: #ffffff !important;
-      transition: all 0.3s ease !important;
-      font-weight: 600 !important;
-      font-size: ${isMobile ? '14px' : '16px'} !important;
-      color: #475569 !important;
-      min-width: ${isMobile ? '100px' : '140px'} !important;
-      text-align: center !important;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .modern-tabs .ant-tabs-tab:hover {
-      background: #f8fafc !important;
-      border-color: #005E84 !important;
-      color: #1e293b !important;
-      transform: translateY(-1px) !important;
-      box-shadow: 0 4px 12px rgba(0, 94, 132, 0.15) !important;
-    }
-
-    .modern-tabs .ant-tabs-tab-active {
-      background: #005E84 !important;
-      border-color: #005E84 !important;
-      color: #ffffff !important;
-      transform: translateY(-1px) !important;
-      box-shadow: 0 4px 12px rgba(0, 94, 132, 0.3) !important;
-    }
-
-    .modern-tabs .ant-tabs-tab-active:hover {
-      background: #075375 !important;
-      border-color: #075375 !important;
-      color: #ffffff !important;
-    }
-
-    .modern-tabs .ant-tabs-tab .ant-tabs-tab-btn {
-      color: inherit !important;
-    }
-
-    .modern-tabs .ant-tabs-ink-bar {
-      display: none !important;
-    }
-
-    .modern-tabs .ant-tabs-content-holder {
-      border-top: 1px solid #B7C5C7;
-    }
-
-    .modern-tabs .ant-tabs-tabpane {
-      outline: none !important;
-    }
-
-    .modern-tabs .ant-tabs-nav::before {
-      display: none !important;
-    }
-  `;
 
   return (
-    <>
-      <style>{customStyles}</style>
-      <div style={containerStyle}>
-        <div style={contentWrapperStyle}>
-          <div style={headerStyle}>
-            <h1 style={titleStyle}>Tour Management</h1>
-            <p style={subtitleStyle}>Manage your tours, add new destinations, and handle inquiries</p>
+    <div className="min-h-screen bg-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Tour Management</h1>
+            <p className="mt-1 text-sm text-gray-600">Manage your tours, add new destinations, and handle inquiries</p>
           </div>
-          
-          <div style={tabContainerStyle}>
-            <Tabs
-              activeKey={activeTab}
-              onChange={handleTabChange}
-              tabBarStyle={customTabBarStyle}
-              size="large"
-              className="modern-tabs"
-              tabBarGutter={12}
-              centered
-              items={[
-                {
-                  key: '1',
-                  label: 'All Tours',
-                  children: <div style={tabPaneStyle}><AllTours /></div>,
-                },
-                {
-                  key: '2',
-                  label: 'Add New Tour',
-                  children: <div style={tabPaneStyle}><AddTour /></div>,
-                },
-                {
-                  key: '4',
-                  label: 'Tour Inquiries',
-                  children: <div style={tabPaneStyle}><TourInquiries /></div>,
-                },
-              ]}
-            />
+          <div className="mt-3 sm:mt-0 sm:ml-4">
+            <button
+              onClick={() => handleTabChange('add-tour')}
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <svg className="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Add New Tour
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="border-b border-gray-200 mb-6">
+          <nav className="-mb-px flex space-x-8">
+            <button
+              onClick={() => handleTabChange('all-tours')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                activeTab === 'all-tours'
+                  ? 'border-blue-500 text-blue-600' 
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              All Tours
+            </button>
+            <button
+              onClick={() => handleTabChange('booking-management')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                activeTab === 'booking-management'
+                  ? 'border-blue-500 text-blue-600' 
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Tour Bookings
+            </button>
+            <button
+              onClick={() => handleTabChange('inquiries')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+                activeTab === 'inquiries'
+                  ? 'border-blue-500 text-blue-600' 
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Tour Inquiries
+            </button>
+          </nav>
+        </div>
+
+        {/* Tab Content */}
+        <div className="bg-white shadow rounded-lg">
+          <div className="px-4 py-5 sm:p-6">
+            {activeTab === 'all-tours' && <AllTours />}
+            {activeTab === 'add-tour' && <AddTour />}
+            {activeTab === 'booking-management' && <TourBookingManagement />}
+            {activeTab === 'inquiries' && <TourInquiries />}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
