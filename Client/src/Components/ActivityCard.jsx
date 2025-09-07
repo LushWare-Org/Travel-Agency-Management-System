@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const ActivityCard = ({ activity, onClick }) => (
   <motion.div
-    className="rounded-3xl bg-white shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl cursor-pointer border border-gray-100"
+    className="rounded-3xl bg-gradient-to-b from-white to-[#E7E9E5]/20 shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl cursor-pointer border border-[#B7C5C7]/30"
     onClick={onClick}
     whileHover={{ y: -8 }}
     initial={{ opacity: 0, y: 50 }}
@@ -93,13 +93,13 @@ const ActivityCard = ({ activity, onClick }) => (
       transition={{ delay: 0.7, duration: 0.5 }}
     >
       {/* Description */}
-      <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
+      <p className="text-[#0A435C] text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
         {activity.shortDescription || activity.description}
       </p>
       
       {/* Duration Info */}
       {activity.duration && (
-        <div className="flex items-center mb-2 sm:mb-3 text-gray-500 text-xs sm:text-sm">
+        <div className="flex items-center mb-2 sm:mb-3 text-[#075375] text-xs sm:text-sm">
           <svg className="h-3 sm:h-4 w-3 sm:w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -108,18 +108,18 @@ const ActivityCard = ({ activity, onClick }) => (
       )}
 
       {/* Price and Action */}
-      <div className="flex items-center justify-between pt-2 sm:pt-3 border-t border-gray-100">
+      <div className="flex items-center justify-between pt-2 sm:pt-3 border-t border-[#B7C5C7]/30">
         <div className="flex flex-col">
           <div className="flex items-center mb-1">
             <span className="text-lg sm:text-xl font-bold text-[#005E84]">
               ${activity.price?.toFixed(2) || '0.00'}
             </span>
-            <span className="text-xs sm:text-sm text-gray-500 ml-1">/person</span>
+            <span className="text-xs sm:text-sm text-[#075375] ml-1">/person</span>
           </div>
         </div>
         
         <motion.div 
-          className="bg-[#005E84] hover:bg-[#0A435C] rounded-full px-3 sm:px-4 py-2 transition-colors duration-300 flex items-center"
+          className="bg-gradient-to-r from-[#005E84] to-[#0A435C] hover:from-[#075375] hover:to-[#0A435C] rounded-full px-3 sm:px-4 py-2 transition-all duration-300 flex items-center shadow-md hover:shadow-lg"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
