@@ -44,6 +44,7 @@ export const useBookingState = () => {
   const [mealPlans, setMealPlans] = useState([])
   const [passengerDetails, setPassengerDetails] = useState([])
   const [marketSurcharge, setMarketSurcharge] = useState(0)
+  const [roomConfigs, setRoomConfigs] = useState([{ adults: 2, children: 0, childrenAges: [] }])
 
   return {
     activeStep,
@@ -74,6 +75,8 @@ export const useBookingState = () => {
     setPassengerDetails,
     marketSurcharge,
     setMarketSurcharge,
+    roomConfigs,
+    setRoomConfigs,
     locationState: {
       roomId,
       hotelId,

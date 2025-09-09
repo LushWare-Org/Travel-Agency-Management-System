@@ -22,7 +22,9 @@ export const useBookingHandlers = ({
   marketSurcharge,
   hotelId,
   roomId,
-  navigate
+  navigate,
+  roomConfigs,
+  setRoomConfigs
 }) => {
 
   const handleNext = () => {
@@ -49,7 +51,7 @@ export const useBookingHandlers = ({
       ) {
         errs.checkOut = "Check-out must be after check-in"
       }
-      if (bookingData.children > 0 && bookingData.childrenAges.some((age) => age === 0)) {
+      if (bookingData.children > 0 && roomConfigs.some(config => config.childrenAges.some((age) => age === 0))) {
         errs.childrenAges = "Please select an age for each child"
       }
       if (!bookingData.selectedMealPlan) errs.mealPlan = "Please select a meal plan"
@@ -84,25 +86,46 @@ export const useBookingHandlers = ({
     })
   }
 
-  const handleChildrenChange = (value) => {
-    const count = Number.parseInt(value, 10)
-    setBookingData((prev) => ({
-      ...prev,
-      children: count,
-      childrenAges: count > 0 ? Array(count).fill(0) : [],
-    }))
+  const handleRoomConfigChange = (roomIdx, field, value) => {
+    setRoomConfigs((prev) => {
+      const newConfigs = [...prev]
+      if (field === 'adults' || field === 'children') {
+        newConfigs[roomIdx] = { ...newConfigs[roomIdx], [field]: Number.parseInt(value, 10) }
+        if (field === 'children') {
+          const count = Number.parseInt(value, 10)
+          newConfigs[roomIdx].childrenAges = count > 0 ? Array(count).fill(0) : []
+        }
+      }
+      return newConfigs
+    })
     if (errors.childrenAges) setErrors((prev) => ({ ...prev, childrenAges: null }))
   }
 
-  const handleChildAgeChange = (idx, value) => {
-    const ages = [...bookingData.childrenAges]
-    ages[idx] = Number.parseInt(value, 10)
-    setBookingData((prev) => ({ ...prev, childrenAges: ages }))
+  const handleChildAgeChange = (roomIdx, childIdx, value) => {
+    setRoomConfigs((prev) => {
+      const newConfigs = [...prev]
+      newConfigs[roomIdx].childrenAges[childIdx] = Number.parseInt(value, 10)
+      return newConfigs
+    })
     if (errors.childrenAges) setErrors((prev) => ({ ...prev, childrenAges: null }))
   }
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
+    if (name === 'rooms') {
+      const numRooms = Number.parseInt(value, 10)
+      setRoomConfigs((prev) => {
+        const newConfigs = [...prev]
+        if (newConfigs.length < numRooms) {
+          for (let i = newConfigs.length; i < numRooms; i++) {
+            newConfigs.push({ adults: 2, children: 0, childrenAges: [] })
+          }
+        } else if (newConfigs.length > numRooms) {
+          newConfigs.length = numRooms
+        }
+        return newConfigs
+      })
+    }
     setBookingData((prev) => ({
       ...prev,
       [name]:
@@ -239,7 +262,7 @@ export const useBookingHandlers = ({
     validateStep,
     handlePassengerChange,
     handleChildPassengerChange,
-    handleChildrenChange,
+    handleRoomConfigChange,
     handleChildAgeChange,
     handleChange,
     handleConfirmSubmit,

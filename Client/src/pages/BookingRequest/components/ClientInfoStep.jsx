@@ -7,7 +7,7 @@ const ClientInfoStep = ({
   passengerDetails,
   handlePassengerChange,
   handleChildPassengerChange,
-  bookingData: { adults, children, childrenAges, rooms }
+  roomConfigs
 }) => {
   return (
     <div className="space-y-6">
@@ -203,17 +203,11 @@ const ClientInfoStep = ({
               <div className="mb-6">
                 <h5 className="font-medium text-[#0A435C] mb-3">Child Guests ({room.children.length})</h5>
                 {room.children.map((_, childIdx) => {
-                  // Calculate global child index for ages
-                  let globalChildIdx = 0
-                  for (let r = 0; r < roomIdx; r++) {
-                    globalChildIdx += passengerDetails[r]?.children?.length || 0
-                  }
-                  globalChildIdx += childIdx
                   return (
                     <div key={`child-${roomIdx}-${childIdx}`} className="mb-8 p-4 border border-gray-200 rounded-lg bg-indigo-50">
                       <h5 className="font-medium text-gray-700 mb-2 flex items-center">Child {childIdx + 1}
                         <span className="ml-3 text-xs font-semibold text-indigo-700 bg-indigo-100 px-2 py-1 rounded-full">
-                          Age: {childrenAges?.[globalChildIdx] ? `${childrenAges[globalChildIdx]} ${childrenAges[globalChildIdx] === 1 ? 'year' : 'years'}` : 'N/A'}
+                          Age: {roomConfigs[roomIdx]?.childrenAges[childIdx] ? `${roomConfigs[roomIdx].childrenAges[childIdx]} ${roomConfigs[roomIdx].childrenAges[childIdx] === 1 ? 'year' : 'years'}` : 'N/A'}
                         </span>
                       </h5>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -45,6 +45,8 @@ const BookingRequest = ({ sidebarOpen }) => {
     setPassengerDetails,
     marketSurcharge,
     setMarketSurcharge,
+    roomConfigs,
+    setRoomConfigs,
     locationState
   } = state
 
@@ -82,7 +84,9 @@ const BookingRequest = ({ sidebarOpen }) => {
     basePricePerNight,
     hotelId,
     roomId,
-    navigate
+    navigate,
+    roomConfigs,
+    setRoomConfigs
   })
 
   // Handlers hook
@@ -106,7 +110,9 @@ const BookingRequest = ({ sidebarOpen }) => {
     marketSurcharge,
     hotelId,
     roomId,
-    navigate
+    navigate,
+    roomConfigs,
+    setRoomConfigs
   })
 
   const {
@@ -115,7 +121,7 @@ const BookingRequest = ({ sidebarOpen }) => {
     validateStep,
     handlePassengerChange,
     handleChildPassengerChange,
-    handleChildrenChange,
+    handleRoomConfigChange,
     handleChildAgeChange,
     handleChange,
     handleConfirmSubmit,
@@ -188,7 +194,6 @@ const BookingRequest = ({ sidebarOpen }) => {
                       room={room}
                       bookingData={bookingData}
                       handleChange={handleChange}
-                      handleChildrenChange={handleChildrenChange}
                       handleChildAgeChange={handleChildAgeChange}
                       errors={errors}
                       offers={offers}
@@ -199,6 +204,8 @@ const BookingRequest = ({ sidebarOpen }) => {
                       basePricePerNight={basePricePerNight}
                       hotelName={hotelName}
                       roomName={roomName}
+                      roomConfigs={roomConfigs}
+                      handleRoomConfigChange={handleRoomConfigChange}
                     />
                   )}
 
@@ -210,6 +217,7 @@ const BookingRequest = ({ sidebarOpen }) => {
                       passengerDetails={passengerDetails}
                       handlePassengerChange={handlePassengerChange}
                       handleChildPassengerChange={handleChildPassengerChange}
+                      roomConfigs={roomConfigs}
                     />
                   )}
 
