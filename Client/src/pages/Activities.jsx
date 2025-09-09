@@ -154,7 +154,7 @@ const Activities = () => {
           className="bg-cover bg-center h-32 sm:h-40 lg:h-60 shadow-lg rounded-2xl overflow-hidden"
           style={{
             backgroundImage:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920')",
+              "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/travel-services/cmophoto-net-EmVKKf3wUZQ-unsplash.jpg')",
           }}
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}

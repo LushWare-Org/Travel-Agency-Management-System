@@ -8,7 +8,7 @@ const SearchBanner = () => {
       className="bg-cover bg-center h-32 sm:h-40 lg:h-60 shadow-lg rounded-2xl overflow-hidden"
       style={{
         backgroundImage:
-          "linear-gradient(to bottom, rgba(10,67,92,0.5), rgba(10,67,92,0.5)), url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1920')"
+          "linear-gradient(to bottom, rgba(10,67,92,0.5), rgba(10,67,92,0.5)), url('/travel-services/mike-swigunski-k9Zeq6EH_bk-unsplash.jpg')"
       }}
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
@@ -21,7 +21,7 @@ const SearchBanner = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          Maldives Tour Packages
+          Maldives Luxury Resorts
         </motion.h1>
         <motion.p 
           className="text-xs sm:text-sm mt-2 drop-shadow-md max-w-md px-4"
@@ -29,7 +29,7 @@ const SearchBanner = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          Discover paradise with our exclusive tour packages and unforgettable experiences
+          Indulge in world-class luxury resorts offering unparalleled comfort and breathtaking island views
         </motion.p>
       </div>
     </motion.header>

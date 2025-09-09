@@ -243,10 +243,10 @@ const Tours = () => {
       <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
         {/* Header */}
         <motion.header
-          className="bg-cover bg-center h-32 sm:h-40 lg:h-60 shadow-lg rounded-2xl overflow-hidden"
+          className="bg-cover bg-bottom h-32 sm:h-40 lg:h-60 shadow-lg rounded-2xl overflow-hidden"
           style={{
             backgroundImage:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920')",
+              "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/travel-services/husen-siraaj-fsNMGdyQTUY-unsplash.jpg')",
           }}
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
