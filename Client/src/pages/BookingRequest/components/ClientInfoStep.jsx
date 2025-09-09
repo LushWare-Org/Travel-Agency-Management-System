@@ -6,9 +6,8 @@ const ClientInfoStep = ({
   errors,
   passengerDetails,
   handlePassengerChange,
-  childPassengerDetails,
   handleChildPassengerChange,
-  bookingData: { adults, children, childrenAges }
+  bookingData: { adults, children, childrenAges, rooms }
 }) => {
   return (
     <div className="space-y-6">
@@ -95,211 +94,225 @@ const ClientInfoStep = ({
       <div className="mt-8">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">Guests Details</h3>
 
-        {/* Adult Guests */}
-        <div className="mb-6">
-          <h4 className="font-medium text-[#0A435C] mb-3">Adult Guests</h4>
-          {[...Array(adults)].map((_, idx) => (
-            <div key={`adult-${idx}`} className="mb-8 p-4 border border-gray-200 rounded-lg bg-[#E7E9E5]">
-              <h4 className="font-medium text-gray-700 mb-2">Adult {idx + 1}</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={passengerDetails[idx]?.name || ''}
-                    onChange={e => handlePassengerChange(idx, "name", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Passport Number <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={passengerDetails[idx]?.passport || ''}
-                    onChange={e => handlePassengerChange(idx, "passport", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Country <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={passengerDetails[idx]?.country || ''}
-                    onChange={e => handlePassengerChange(idx, "country", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                    required
-                  >
-                    <option value="">Select country</option>
-                    {countries.map((c, i) => (
-                      <option key={i} value={c.name}>{c.flag} {c.name}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Arrival Flight Number <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={passengerDetails[idx]?.arrivalFlightNumber || ''}
-                    onChange={e => handlePassengerChange(idx, "arrivalFlightNumber", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Arrival Time <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="time"
-                    value={passengerDetails[idx]?.arrivalTime || ''}
-                    onChange={e => handlePassengerChange(idx, "arrivalTime", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Departure Flight Number <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={passengerDetails[idx]?.departureFlightNumber || ''}
-                    onChange={e => handlePassengerChange(idx, "departureFlightNumber", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Departure Time <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="time"
-                    value={passengerDetails[idx]?.departureTime || ''}
-                    onChange={e => handlePassengerChange(idx, "departureTime", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {passengerDetails.map((room, roomIdx) => (
+          <div key={`room-${roomIdx}`} className="mb-8 p-6 border border-gray-200 rounded-lg bg-gray-50">
+            <h4 className="text-xl font-semibold text-[#0A435C] mb-4">Room {room.roomNumber}</h4>
 
-        {/* Child Guests */}
-        {children > 0 && (
-          <div className="mb-6">
-            <h4 className="font-medium text-[#0A435C] mb-3">Child Guests</h4>
-            {[...Array(children)].map((_, idx) => (
-              <div key={`child-${idx}`} className="mb-8 p-4 border border-gray-200 rounded-lg bg-indigo-50">
-                <h4 className="font-medium text-gray-700 mb-2 flex items-center">Child {idx + 1}
-                  <span className="ml-3 text-xs font-semibold text-indigo-700 bg-indigo-100 px-2 py-1 rounded-full">
-                    Age: {childrenAges?.[idx] ? `${childrenAges[idx]} ${childrenAges[idx] === 1 ? 'year' : 'years'}` : 'N/A'}
-                  </span>
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={childPassengerDetails[idx]?.name || ''}
-                      onChange={e => handleChildPassengerChange(idx, "name", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Passport Number <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={childPassengerDetails[idx]?.passport || ''}
-                      onChange={e => handleChildPassengerChange(idx, "passport", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Country <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      value={childPassengerDetails[idx]?.country || ''}
-                      onChange={e => handleChildPassengerChange(idx, "country", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      required
-                    >
-                      <option value="">Select country</option>
-                      {countries.map((c, i) => (
-                        <option key={i} value={c.name}>{c.flag} {c.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Arrival Flight Number <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={childPassengerDetails[idx]?.arrivalFlightNumber || ''}
-                      onChange={e => handleChildPassengerChange(idx, "arrivalFlightNumber", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Arrival Time <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="time"
-                      value={childPassengerDetails[idx]?.arrivalTime || ''}
-                      onChange={e => handleChildPassengerChange(idx, "arrivalTime", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Departure Flight Number <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={childPassengerDetails[idx]?.departureFlightNumber || ''}
-                      onChange={e => handleChildPassengerChange(idx, "departureFlightNumber", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Departure Time <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="time"
-                      value={childPassengerDetails[idx]?.departureTime || ''}
-                      onChange={e => handleChildPassengerChange(idx, "departureTime", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      required
-                    />
+            {/* Adult Guests for this room */}
+            <div className="mb-6">
+              <h5 className="font-medium text-[#0A435C] mb-3">Adult Guests ({room.adults.length})</h5>
+              {room.adults.map((_, adultIdx) => (
+                <div key={`adult-${roomIdx}-${adultIdx}`} className="mb-8 p-4 border border-gray-200 rounded-lg bg-white">
+                  <h5 className="font-medium text-gray-700 mb-2">Adult {adultIdx + 1}</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={passengerDetails[roomIdx]?.adults[adultIdx]?.name || ''}
+                        onChange={e => handlePassengerChange(roomIdx, adultIdx, "name", e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Passport Number <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={passengerDetails[roomIdx]?.adults[adultIdx]?.passport || ''}
+                        onChange={e => handlePassengerChange(roomIdx, adultIdx, "passport", e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Country <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        value={passengerDetails[roomIdx]?.adults[adultIdx]?.country || ''}
+                        onChange={e => handlePassengerChange(roomIdx, adultIdx, "country", e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        required
+                      >
+                        <option value="">Select country</option>
+                        {countries.map((c, i) => (
+                          <option key={i} value={c.name}>{c.flag} {c.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Arrival Flight Number <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={passengerDetails[roomIdx]?.adults[adultIdx]?.arrivalFlightNumber || ''}
+                        onChange={e => handlePassengerChange(roomIdx, adultIdx, "arrivalFlightNumber", e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Arrival Time <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="time"
+                        value={passengerDetails[roomIdx]?.adults[adultIdx]?.arrivalTime || ''}
+                        onChange={e => handlePassengerChange(roomIdx, adultIdx, "arrivalTime", e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Departure Flight Number <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={passengerDetails[roomIdx]?.adults[adultIdx]?.departureFlightNumber || ''}
+                        onChange={e => handlePassengerChange(roomIdx, adultIdx, "departureFlightNumber", e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Departure Time <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="time"
+                        value={passengerDetails[roomIdx]?.adults[adultIdx]?.departureTime || ''}
+                        onChange={e => handlePassengerChange(roomIdx, adultIdx, "departureTime", e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
+              ))}
+            </div>
+
+            {/* Child Guests for this room */}
+            {room.children.length > 0 && (
+              <div className="mb-6">
+                <h5 className="font-medium text-[#0A435C] mb-3">Child Guests ({room.children.length})</h5>
+                {room.children.map((_, childIdx) => {
+                  // Calculate global child index for ages
+                  let globalChildIdx = 0
+                  for (let r = 0; r < roomIdx; r++) {
+                    globalChildIdx += passengerDetails[r]?.children?.length || 0
+                  }
+                  globalChildIdx += childIdx
+                  return (
+                    <div key={`child-${roomIdx}-${childIdx}`} className="mb-8 p-4 border border-gray-200 rounded-lg bg-indigo-50">
+                      <h5 className="font-medium text-gray-700 mb-2 flex items-center">Child {childIdx + 1}
+                        <span className="ml-3 text-xs font-semibold text-indigo-700 bg-indigo-100 px-2 py-1 rounded-full">
+                          Age: {childrenAges?.[globalChildIdx] ? `${childrenAges[globalChildIdx]} ${childrenAges[globalChildIdx] === 1 ? 'year' : 'years'}` : 'N/A'}
+                        </span>
+                      </h5>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Name <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={passengerDetails[roomIdx]?.children[childIdx]?.name || ''}
+                            onChange={e => handleChildPassengerChange(roomIdx, childIdx, "name", e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Passport Number <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={passengerDetails[roomIdx]?.children[childIdx]?.passport || ''}
+                            onChange={e => handleChildPassengerChange(roomIdx, childIdx, "passport", e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Country <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            value={passengerDetails[roomIdx]?.children[childIdx]?.country || ''}
+                            onChange={e => handleChildPassengerChange(roomIdx, childIdx, "country", e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                            required
+                          >
+                            <option value="">Select country</option>
+                            {countries.map((c, i) => (
+                              <option key={i} value={c.name}>{c.flag} {c.name}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Arrival Flight Number <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={passengerDetails[roomIdx]?.children[childIdx]?.arrivalFlightNumber || ''}
+                            onChange={e => handleChildPassengerChange(roomIdx, childIdx, "arrivalFlightNumber", e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Arrival Time <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="time"
+                            value={passengerDetails[roomIdx]?.children[childIdx]?.arrivalTime || ''}
+                            onChange={e => handleChildPassengerChange(roomIdx, childIdx, "arrivalTime", e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Departure Flight Number <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={passengerDetails[roomIdx]?.children[childIdx]?.departureFlightNumber || ''}
+                            onChange={e => handleChildPassengerChange(roomIdx, childIdx, "departureFlightNumber", e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Departure Time <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="time"
+                            value={passengerDetails[roomIdx]?.children[childIdx]?.departureTime || ''}
+                            onChange={e => handleChildPassengerChange(roomIdx, childIdx, "departureTime", e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
-            ))}
+            )}
           </div>
-        )}
+        ))}
       </div>
     </div>
   )

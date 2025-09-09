@@ -16,7 +16,6 @@ export const useBookingData = ({
   setSelectedOffer,
   setMarketSurcharge,
   setPassengerDetails,
-  setChildPassengerDetails,
   room,
   market,
   basePricePerNight,
@@ -233,52 +232,92 @@ export const useBookingData = ({
     }
   }, [bookingData.checkIn, bookingData.checkOut, hotelId, setOffers, setAutoAppliedOffers, setSelectedOffer])
 
-  // Only consider adults for passenger details
+  // Initialize passenger details per room
   useEffect(() => {
-    const totalGuests = bookingData.adults
+    const totalRooms = bookingData.rooms
     setPassengerDetails((prev) => {
-      if (totalGuests === 0) return []
+      if (totalRooms === 0) return []
       const arr = [...prev]
-      if (arr.length < totalGuests) {
-        for (let i = arr.length; i < totalGuests; i++) {
+      if (arr.length < totalRooms) {
+        for (let i = arr.length; i < totalRooms; i++) {
           arr.push({
-            name: "",
-            passport: "",
-            country: "",
-            arrivalFlightNumber: "",
-            arrivalTime: "",
-            departureFlightNumber: "",
-            departureTime: "",
+            roomNumber: i + 1,
+            adults: [],
+            children: []
           })
         }
-      } else if (arr.length > totalGuests) {
-        arr.length = totalGuests
+      } else if (arr.length > totalRooms) {
+        arr.length = totalRooms
       }
       return arr
     })
-  }, [bookingData.adults])
+  }, [bookingData.rooms])
 
+  // Update adults per room when adults change
+  useEffect(() => {
+    const totalAdults = bookingData.adults
+    const totalRooms = bookingData.rooms
+    if (totalRooms === 0) return
+    setPassengerDetails((prev) => {
+      const arr = [...prev]
+      // Distribute adults evenly across rooms
+      const adultsPerRoom = Math.floor(totalAdults / totalRooms)
+      const extraAdults = totalAdults % totalRooms
+      for (let i = 0; i < totalRooms; i++) {
+        const roomAdults = adultsPerRoom + (i < extraAdults ? 1 : 0)
+        const currentAdults = arr[i]?.adults || []
+        if (currentAdults.length < roomAdults) {
+          for (let j = currentAdults.length; j < roomAdults; j++) {
+            currentAdults.push({
+              name: "",
+              passport: "",
+              country: "",
+              arrivalFlightNumber: "",
+              arrivalTime: "",
+              departureFlightNumber: "",
+              departureTime: "",
+            })
+          }
+        } else if (currentAdults.length > roomAdults) {
+          currentAdults.length = roomAdults
+        }
+        arr[i] = { ...arr[i], adults: currentAdults }
+      }
+      return arr
+    })
+  }, [bookingData.adults, bookingData.rooms])
+
+  // Update children per room when children change
   useEffect(() => {
     const totalChildren = bookingData.children
-    setChildPassengerDetails((prev) => {
-      if (totalChildren === 0) return []
+    const totalRooms = bookingData.rooms
+    if (totalRooms === 0) return
+    setPassengerDetails((prev) => {
       const arr = [...prev]
-      if (arr.length < totalChildren) {
-        for (let i = arr.length; i < totalChildren; i++) {
-          arr.push({
-            name: "",
-            passport: "",
-            country: "",
-            arrivalFlightNumber: "",
-            arrivalTime: "",
-            departureFlightNumber: "",
-            departureTime: "",
-          })
+      // Distribute children evenly across rooms
+      const childrenPerRoom = Math.floor(totalChildren / totalRooms)
+      const extraChildren = totalChildren % totalRooms
+      for (let i = 0; i < totalRooms; i++) {
+        const roomChildren = childrenPerRoom + (i < extraChildren ? 1 : 0)
+        const currentChildren = arr[i]?.children || []
+        if (currentChildren.length < roomChildren) {
+          for (let j = currentChildren.length; j < roomChildren; j++) {
+            currentChildren.push({
+              name: "",
+              passport: "",
+              country: "",
+              arrivalFlightNumber: "",
+              arrivalTime: "",
+              departureFlightNumber: "",
+              departureTime: "",
+            })
+          }
+        } else if (currentChildren.length > roomChildren) {
+          currentChildren.length = roomChildren
         }
-      } else if (arr.length > totalChildren) {
-        arr.length = totalChildren
+        arr[i] = { ...arr[i], children: currentChildren }
       }
       return arr
     })
-  }, [bookingData.children])
+  }, [bookingData.children, bookingData.rooms])
 }

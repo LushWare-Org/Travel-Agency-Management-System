@@ -29,7 +29,8 @@ const BookingSchema = new Schema(
         arrivalTime: { type: String },
         departureFlightNumber: { type: String },
         departureTime: { type: String },
-        type: { type: String, enum: ['adult', 'child'], default: 'adult' }
+        type: { type: String, enum: ['adult', 'child'], default: 'adult' },
+        roomNumber: { type: Number }
       }
     ],
     additionalServices: [String],

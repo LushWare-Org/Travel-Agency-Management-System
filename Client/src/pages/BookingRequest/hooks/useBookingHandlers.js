@@ -14,8 +14,6 @@ export const useBookingHandlers = ({
   setShowConfirmation,
   passengerDetails,
   setPassengerDetails,
-  childPassengerDetails,
-  setChildPassengerDetails,
   selectedOffer,
   autoAppliedOffers,
   room,
@@ -66,18 +64,22 @@ export const useBookingHandlers = ({
     return Object.keys(errs).length === 0
   }
 
-  const handlePassengerChange = (idx, field, value) => {
+  const handlePassengerChange = (roomIdx, adultIdx, field, value) => {
     setPassengerDetails((prev) => {
       const arr = [...prev]
-      arr[idx] = { ...arr[idx], [field]: value }
+      if (arr[roomIdx] && arr[roomIdx].adults) {
+        arr[roomIdx].adults[adultIdx] = { ...arr[roomIdx].adults[adultIdx], [field]: value }
+      }
       return arr
     })
   }
 
-  const handleChildPassengerChange = (idx, field, value) => {
-    setChildPassengerDetails((prev) => {
+  const handleChildPassengerChange = (roomIdx, childIdx, field, value) => {
+    setPassengerDetails((prev) => {
       const arr = [...prev]
-      arr[idx] = { ...arr[idx], [field]: value }
+      if (arr[roomIdx] && arr[roomIdx].children) {
+        arr[roomIdx].children[childIdx] = { ...arr[roomIdx].children[childIdx], [field]: value }
+      }
       return arr
     })
   }
@@ -169,11 +171,16 @@ export const useBookingHandlers = ({
         market
       )
 
-      // Combine adult and child passenger details
-      const allPassengerDetails = [
-        ...passengerDetails.map(p => ({ ...p, type: 'adult' })),
-        ...childPassengerDetails.map(p => ({ ...p, type: 'child' }))
-      ]
+      // Combine adult and child passenger details from all rooms
+      const allPassengerDetails = []
+      passengerDetails.forEach((room, roomIdx) => {
+        room.adults.forEach(adult => {
+          allPassengerDetails.push({ ...adult, type: 'adult', roomNumber: roomIdx + 1 })
+        })
+        room.children.forEach(child => {
+          allPassengerDetails.push({ ...child, type: 'child', roomNumber: roomIdx + 1 })
+        })
+      })
 
       const payload = {
         hotel: hotelId,

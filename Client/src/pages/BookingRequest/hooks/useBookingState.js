@@ -43,7 +43,6 @@ export const useBookingState = () => {
   const [autoAppliedOffers, setAutoAppliedOffers] = useState([])
   const [mealPlans, setMealPlans] = useState([])
   const [passengerDetails, setPassengerDetails] = useState([])
-  const [childPassengerDetails, setChildPassengerDetails] = useState([])
   const [marketSurcharge, setMarketSurcharge] = useState(0)
 
   return {
@@ -73,8 +72,6 @@ export const useBookingState = () => {
     setMealPlans,
     passengerDetails,
     setPassengerDetails,
-    childPassengerDetails,
-    setChildPassengerDetails,
     marketSurcharge,
     setMarketSurcharge,
     locationState: {

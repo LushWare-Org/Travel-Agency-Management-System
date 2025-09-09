@@ -43,8 +43,6 @@ const BookingRequest = ({ sidebarOpen }) => {
     setMealPlans,
     passengerDetails,
     setPassengerDetails,
-    childPassengerDetails,
-    setChildPassengerDetails,
     marketSurcharge,
     setMarketSurcharge,
     locationState
@@ -79,7 +77,6 @@ const BookingRequest = ({ sidebarOpen }) => {
     setSelectedOffer,
     setMarketSurcharge,
     setPassengerDetails,
-    setChildPassengerDetails,
     room,
     market,
     basePricePerNight,
@@ -101,8 +98,6 @@ const BookingRequest = ({ sidebarOpen }) => {
     setShowConfirmation,
     passengerDetails,
     setPassengerDetails,
-    childPassengerDetails,
-    setChildPassengerDetails,
     selectedOffer,
     autoAppliedOffers,
     room,
@@ -214,7 +209,6 @@ const BookingRequest = ({ sidebarOpen }) => {
                       errors={errors}
                       passengerDetails={passengerDetails}
                       handlePassengerChange={handlePassengerChange}
-                      childPassengerDetails={childPassengerDetails}
                       handleChildPassengerChange={handleChildPassengerChange}
                     />
                   )}
