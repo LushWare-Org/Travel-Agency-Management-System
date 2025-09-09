@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import {
   Paper, Typography, Box, IconButton, Chip, Button, Grid, Card, CardContent,
-  Divider, Stack, Tooltip, Collapse, useTheme, useMediaQuery, Badge
+  Divider, Stack, Tooltip, Collapse, useTheme, useMediaQuery, Badge,
+  ToggleButton, ToggleButtonGroup, Table, TableBody, TableCell, TableHead, 
+  TableRow, TableContainer
 } from '@mui/material';
 import {
   CheckCircle as CheckCircleIcon,
@@ -14,13 +16,15 @@ import {
   Schedule as ScheduleIcon,
   Payment as PaymentIcon,
   ExpandMore as ExpandMoreIcon,
-  ExpandLess as ExpandLessIcon,
   DateRange as DateRangeIcon,
-  Group as GroupIcon
+  Group as GroupIcon,
+  ViewModule as ViewModuleIcon,
+  TableChart as TableChartIcon
 } from '@mui/icons-material';
 
-const RoomBookingsTable = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm, onCancel, onMarkPaid }) => {
+const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm, onCancel, onMarkPaid }) => {
   const [expandedCard, setExpandedCard] = useState(null);
+  const [viewMode, setViewMode] = useState('cards');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -41,10 +45,24 @@ const RoomBookingsTable = ({ bookings, onViewDetails, onEdit, onDelete, onConfir
     });
   };
 
+  const formatDateShort = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'numeric',
+      day: 'numeric'
+    });
+  };
+
   const toggleExpand = (bookingId) => {
     setExpandedCard(expandedCard === bookingId ? null : bookingId);
   };
 
+  const handleViewChange = (event, newView) => {
+    if (newView !== null) {
+      setViewMode(newView);
+    }
+  };
+
+  // Card View Component
   const BookingCard = ({ booking }) => {
     const isExpanded = expandedCard === booking._id;
     
@@ -282,21 +300,156 @@ const RoomBookingsTable = ({ bookings, onViewDetails, onEdit, onDelete, onConfir
     );
   };
 
+  // Compact Table View Component
+  const CompactTable = () => (
+    <TableContainer component={Paper} sx={{ maxHeight: 600 }}>
+      <Table stickyHeader size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ fontWeight: 600 }}>Reference</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>Guest</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>Hotel</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>Dates</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>Guests</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>Status</TableCell>
+            <TableCell sx={{ fontWeight: 600 }} align="center">Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {bookings.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
+                <Typography color="text.secondary">No room bookings found</Typography>
+              </TableCell>
+            </TableRow>
+          ) : (
+            bookings.map(booking => (
+              <TableRow 
+                key={booking._id}
+                sx={{ 
+                  '&:hover': { bgcolor: 'grey.50' },
+                  borderLeft: `3px solid ${theme.palette[statusColor(booking.status)].main}`
+                }}
+              >
+                <TableCell>
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                    {booking.bookingReference}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="body2" noWrap>
+                    {booking.clientDetails?.name || 'N/A'}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Box>
+                    <Typography variant="body2" noWrap sx={{ fontWeight: 500 }}>
+                      {booking.hotel?.name || 'Unknown Hotel'}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary" noWrap>
+                      {booking.room?.roomName || 'Unknown Room'}
+                    </Typography>
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Box>
+                    <Typography variant="body2">
+                      {formatDateShort(booking.checkIn)} - {formatDateShort(booking.checkOut)}
+                    </Typography>
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="body2">
+                    {booking.adults}A
+                    {booking.children?.length > 0 && `, ${booking.children.length}C`}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Chip
+                    label={booking.status}
+                    color={statusColor(booking.status)}
+                    variant={booking.status === 'Pending' ? 'outlined' : 'filled'}
+                    size="small"
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <Stack direction="row" spacing={0.5} justifyContent="center">
+                    <Tooltip title="View Details">
+                      <IconButton
+                        size="small"
+                        onClick={() => onViewDetails(booking)}
+                        color="primary"
+                      >
+                        <PersonIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    {booking.status === 'Pending' && (
+                      <Tooltip title="Confirm">
+                        <IconButton
+                          size="small"
+                          color="success"
+                          onClick={() => onConfirm(booking._id)}
+                        >
+                          <CheckCircleIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                    <Tooltip title="Edit">
+                      <IconButton
+                        size="small"
+                        color="info"
+                        onClick={() => onEdit(booking)}
+                      >
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </Stack>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+
   return (
     <Paper sx={{ p: 2 }}>
       {/* Header */}
-      <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>
-          Room Bookings
-        </Typography>
-        <Badge badgeContent={bookings.length} color="primary">
-          <Typography variant="body2" color="text.secondary">
-            Total Bookings
+      <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            Room Bookings
           </Typography>
-        </Badge>
+          <Badge badgeContent={bookings.length} color="primary">
+            <Box sx={{ width: 20, height: 20 }} />
+          </Badge>
+        </Box>
+        
+        {/* View Toggle */}
+        <ToggleButtonGroup
+          value={viewMode}
+          exclusive
+          onChange={handleViewChange}
+          size="small"
+          aria-label="view mode"
+        >
+          <ToggleButton value="cards" aria-label="card view">
+            <ViewModuleIcon fontSize="small" />
+            <Typography variant="body2" sx={{ ml: 1, display: { xs: 'none', sm: 'inline' } }}>
+              Cards
+            </Typography>
+          </ToggleButton>
+          <ToggleButton value="table" aria-label="table view">
+            <TableChartIcon fontSize="small" />
+            <Typography variant="body2" sx={{ ml: 1, display: { xs: 'none', sm: 'inline' } }}>
+              Table
+            </Typography>
+          </ToggleButton>
+        </ToggleButtonGroup>
       </Box>
 
-      {/* Bookings List */}
+      {/* Content */}
       {bookings.length === 0 ? (
         <Box 
           sx={{ 
@@ -316,14 +469,20 @@ const RoomBookingsTable = ({ bookings, onViewDetails, onEdit, onDelete, onConfir
           </Typography>
         </Box>
       ) : (
-        <Box>
-          {bookings.map(booking => (
-            <BookingCard key={booking._id} booking={booking} />
-          ))}
-        </Box>
+        <>
+          {viewMode === 'cards' ? (
+            <Box>
+              {bookings.map(booking => (
+                <BookingCard key={booking._id} booking={booking} />
+              ))}
+            </Box>
+          ) : (
+            <CompactTable />
+          )}
+        </>
       )}
     </Paper>
   );
 };
 
-export default RoomBookingsTable;
+export default RoomBookingsView;

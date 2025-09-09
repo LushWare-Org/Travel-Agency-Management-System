@@ -10,7 +10,7 @@ import { Add as AddIcon } from '@mui/icons-material';
 import TabPanel from './components/TabPanel';
 import RoomsTable from './components/RoomsTable';
 import RoomInquiriesTable from './components/RoomInquiriesTable';
-import RoomBookingsTable from './components/RoomBookingsTable';
+import RoomBookingsView from './components/RoomBookingsView';
 import BookingDetailsDialog from './components/BookingDetailsDialog';
 import RoomProfileDialog from './components/RoomProfileDialog';
 import RoomFormDialog from './components/RoomFormDialog';
@@ -351,7 +351,7 @@ const RoomManagement = () => {
               <CircularProgress />
             </Box>
           ) : (
-            <RoomBookingsTable
+            <RoomBookingsView
               bookings={roomBookings}
               onViewDetails={handleViewBookingDetails}
               onEdit={handleEditBooking}
