@@ -358,7 +358,7 @@ const BookingDetailsDialog = ({ open, onClose, booking }) => {
                   {booking.passengerDetails.map((passenger, index) => (
                     <Box key={index} sx={{ mb: 3, p: 2, border: '1px solid #e0e0e0', borderRadius: 1 }}>
                       <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 2 }}>
-                        Passenger {index + 1} (Adult)
+                        Passenger {index + 1} ({passenger.type === 'child' ? 'Child' : 'Adult'})
                       </Typography>
                       <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
