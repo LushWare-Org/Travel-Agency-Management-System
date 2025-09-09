@@ -33,6 +33,18 @@ const RoomBookingsTable = ({ bookings, onViewDetails, onEdit, onDelete, onConfir
     Paid: 'primary'
   }[status] || 'default');
 
+  const getStatusColor = (status) => {
+    const colorMap = {
+      Pending: theme.palette.warning?.main || '#ff9800',
+      Confirmed: theme.palette.success?.main || '#4caf50',
+      Cancelled: theme.palette.error?.main || '#f44336',
+      Modified: theme.palette.info?.main || '#2196f3',
+      Completed: theme.palette.grey?.[500] || '#9e9e9e',
+      Paid: theme.palette.primary?.main || '#1976d2'
+    };
+    return colorMap[status] || theme.palette.grey?.[500] || '#9e9e9e';
+  };
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
@@ -58,7 +70,7 @@ const RoomBookingsTable = ({ bookings, onViewDetails, onEdit, onDelete, onConfir
             transform: 'translateY(-2px)'
           },
           border: `1px solid ${theme.palette.divider}`,
-          borderLeft: `4px solid ${theme.palette[statusColor(booking.status)].main}`
+          borderLeft: `4px solid ${getStatusColor(booking.status)}`
         }}
       >
         <CardContent sx={{ p: 2 }}>

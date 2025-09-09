@@ -8,43 +8,38 @@ import {
 import {
   CheckCircle as CheckCircleIcon,
   Cancel as CancelIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon,
+  Email as EmailIcon,
+  Phone as PhoneIcon,
   Person as PersonIcon,
   Hotel as HotelIcon,
   KingBed as KingBedIcon,
   Schedule as ScheduleIcon,
-  Payment as PaymentIcon,
   ExpandMore as ExpandMoreIcon,
   DateRange as DateRangeIcon,
   Group as GroupIcon,
   ViewModule as ViewModuleIcon,
-  TableChart as TableChartIcon
+  TableChart as TableChartIcon,
+  ContactMail as ContactMailIcon,
+  QuestionAnswer as QuestionAnswerIcon
 } from '@mui/icons-material';
 
-const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm, onCancel, onMarkPaid }) => {
+const RoomInquiriesView = ({ inquiries, onAction }) => {
   const [expandedCard, setExpandedCard] = useState(null);
   const [viewMode, setViewMode] = useState('cards');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const statusColor = (status) => ({
-    Pending: 'warning',
-    Confirmed: 'success',
-    Cancelled: 'error',
-    Modified: 'info',
-    Completed: 'default',
-    Paid: 'primary'
+    pending: 'warning',
+    confirmed: 'success',
+    cancelled: 'error'
   }[status] || 'default');
 
   const getStatusColor = (status) => {
     const colorMap = {
-      Pending: theme.palette.warning?.main || '#ff9800',
-      Confirmed: theme.palette.success?.main || '#4caf50',
-      Cancelled: theme.palette.error?.main || '#f44336',
-      Modified: theme.palette.info?.main || '#2196f3',
-      Completed: theme.palette.grey?.[500] || '#9e9e9e',
-      Paid: theme.palette.primary?.main || '#1976d2'
+      pending: theme.palette.warning?.main || '#ff9800',
+      confirmed: theme.palette.success?.main || '#4caf50',
+      cancelled: theme.palette.error?.main || '#f44336'
     };
     return colorMap[status] || theme.palette.grey?.[500] || '#9e9e9e';
   };
@@ -64,8 +59,8 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
     });
   };
 
-  const toggleExpand = (bookingId) => {
-    setExpandedCard(expandedCard === bookingId ? null : bookingId);
+  const toggleExpand = (inquiryId) => {
+    setExpandedCard(expandedCard === inquiryId ? null : inquiryId);
   };
 
   const handleViewChange = (event, newView) => {
@@ -75,8 +70,8 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
   };
 
   // Card View Component
-  const BookingCard = ({ booking }) => {
-    const isExpanded = expandedCard === booking._id;
+  const InquiryCard = ({ inquiry }) => {
+    const isExpanded = expandedCard === inquiry._id;
     
     return (
       <Card 
@@ -88,38 +83,38 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
             transform: 'translateY(-2px)'
           },
           border: `1px solid ${theme.palette.divider}`,
-          borderLeft: `4px solid ${getStatusColor(booking.status)}`
+          borderLeft: `4px solid ${getStatusColor(inquiry.status)}`
         }}
       >
         <CardContent sx={{ p: 2 }}>
           {/* Header Row - Always Visible */}
           <Grid container spacing={2} alignItems="center">
-            {/* Booking Reference & Status */}
+            {/* Guest Name & Status */}
             <Grid item xs={12} sm={6} md={3}>
               <Box>
                 <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1rem' }}>
-                  {booking.bookingReference}
+                  {inquiry.guestName}
                 </Typography>
                 <Chip
-                  label={booking.status}
-                  color={statusColor(booking.status)}
-                  variant={booking.status === 'Pending' ? 'outlined' : 'filled'}
+                  label={inquiry.status}
+                  color={statusColor(inquiry.status)}
+                  variant={inquiry.status === 'pending' ? 'outlined' : 'filled'}
                   size="small"
                   sx={{ mt: 0.5 }}
                 />
               </Box>
             </Grid>
 
-            {/* Guest Info */}
+            {/* Primary Contact */}
             <Grid item xs={12} sm={6} md={3}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <PersonIcon color="action" fontSize="small" />
-                <Box>
-                  <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                    {booking.clientDetails?.name || 'N/A'}
+                <EmailIcon color="action" fontSize="small" />
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 500 }} noWrap>
+                    {inquiry.email}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    Guest
+                    Primary Contact
                   </Typography>
                 </Box>
               </Box>
@@ -131,10 +126,10 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
                 <HotelIcon color="action" fontSize="small" />
                 <Box sx={{ minWidth: 0 }}>
                   <Typography variant="body2" sx={{ fontWeight: 500 }} noWrap>
-                    {booking.hotel?.name || 'Unknown Hotel'}
+                    {inquiry.hotel_name || 'Unknown Hotel'}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" noWrap>
-                    {booking.room?.roomName || 'Unknown Room'}
+                    {inquiry.room_name || 'Unknown Room'}
                   </Typography>
                 </Box>
               </Box>
@@ -143,29 +138,45 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
             {/* Quick Actions */}
             <Grid item xs={12} sm={6} md={2}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, alignItems: 'center' }}>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  onClick={() => onViewDetails(booking)}
-                  sx={{ minWidth: 'auto' }}
-                >
-                  Details
-                </Button>
-                {booking.status === 'Pending' && (
-                  <Button
+                {inquiry.status === 'pending' ? (
+                  <Stack direction="row" spacing={0.5}>
+                    <Tooltip title="Confirm Inquiry">
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="success"
+                        onClick={() => onAction(inquiry._id, 'confirmed')}
+                        startIcon={<CheckCircleIcon />}
+                        sx={{ minWidth: 'auto', px: 1 }}
+                      >
+                        Confirm
+                      </Button>
+                    </Tooltip>
+                    <Tooltip title="Cancel Inquiry">
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="error"
+                        onClick={() => onAction(inquiry._id, 'cancelled')}
+                        startIcon={<CancelIcon />}
+                        sx={{ minWidth: 'auto', px: 1 }}
+                      >
+                        Cancel
+                      </Button>
+                    </Tooltip>
+                  </Stack>
+                ) : (
+                  <Chip
+                    label={inquiry.status.toUpperCase()}
+                    color={statusColor(inquiry.status)}
+                    variant="filled"
                     size="small"
-                    variant="contained"
-                    color="success"
-                    onClick={() => onConfirm(booking._id)}
-                    startIcon={<CheckCircleIcon />}
-                    sx={{ minWidth: 'auto', px: 1 }}
-                  >
-                    Confirm
-                  </Button>
+                    sx={{ fontWeight: 600 }}
+                  />
                 )}
                 <IconButton
                   size="small"
-                  onClick={() => toggleExpand(booking._id)}
+                  onClick={() => toggleExpand(inquiry._id)}
                   sx={{ 
                     transition: 'transform 0.3s ease',
                     transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -183,140 +194,102 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
           <Collapse in={isExpanded} timeout="auto" unmountOnExit>
             <Divider sx={{ my: 2 }} />
             <Grid container spacing={3}>
-              {/* Dates Section */}
+              {/* Contact Information */}
+              <Grid item xs={12} sm={6} md={4}>
+                <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+                  <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <ContactMailIcon fontSize="small" />
+                    Contact Details
+                  </Typography>
+                  <Stack spacing={1}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <EmailIcon fontSize="small" color="action" />
+                      <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
+                        {inquiry.email}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <PhoneIcon fontSize="small" color="action" />
+                      <Typography variant="body2">
+                        {inquiry.phone || 'Not provided'}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Box>
+              </Grid>
+
+              {/* Stay Details */}
               <Grid item xs={12} sm={6} md={4}>
                 <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
                   <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
                     <DateRangeIcon fontSize="small" />
-                    Stay Duration
+                    Stay Information
                   </Typography>
                   <Stack spacing={1}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Typography variant="body2" color="text.secondary">Check-in:</Typography>
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                        {formatDate(booking.checkIn)}
+                        {formatDate(inquiry.check_in)}
                       </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Typography variant="body2" color="text.secondary">Check-out:</Typography>
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                        {formatDate(booking.checkOut)}
+                        {formatDate(inquiry.check_out)}
                       </Typography>
                     </Box>
-                  </Stack>
-                </Box>
-              </Grid>
-
-              {/* Guest Count Section */}
-              <Grid item xs={12} sm={6} md={4}>
-                <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
-                  <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <GroupIcon fontSize="small" />
-                    Guest Information
-                  </Typography>
-                  <Stack spacing={1}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography variant="body2" color="text.secondary">Adults:</Typography>
+                      <Typography variant="body2" color="text.secondary">Guests:</Typography>
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                        {booking.adults}
+                        {inquiry.guest_count}
                       </Typography>
                     </Box>
-                    {booking.children?.length > 0 && (
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography variant="body2" color="text.secondary">Children:</Typography>
-                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                          {booking.children.length}
-                        </Typography>
-                      </Box>
-                    )}
                   </Stack>
                 </Box>
               </Grid>
 
-              {/* Actions Section */}
+              {/* Inquiry Actions */}
               <Grid item xs={12} sm={12} md={4}>
                 <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
                   <Typography variant="subtitle2" sx={{ mb: 2 }}>
-                    Quick Actions
+                    Available Actions
                   </Typography>
-                  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                    {booking.status === 'Pending' && (
-                      <Tooltip title="Confirm Booking">
-                        <IconButton
-                          color="success"
-                          onClick={() => onConfirm(booking._id)}
-                          size="small"
-                          sx={{ 
-                            bgcolor: 'success.light',
-                            color: 'success.contrastText',
-                            '&:hover': { bgcolor: 'success.main' }
-                          }}
-                        >
-                          <CheckCircleIcon />
-                        </IconButton>
-                      </Tooltip>
-                    )}
-                    {booking.status !== 'Cancelled' && booking.status !== 'Completed' && (
-                      <Tooltip title="Cancel Booking">
-                        <IconButton
-                          color="error"
-                          onClick={() => onCancel(booking._id)}
-                          size="small"
-                          sx={{ 
-                            bgcolor: 'error.light',
-                            color: 'error.contrastText',
-                            '&:hover': { bgcolor: 'error.main' }
-                          }}
-                        >
-                          <CancelIcon />
-                        </IconButton>
-                      </Tooltip>
-                    )}
-                    {booking.status !== 'Paid' && booking.status !== 'Cancelled' && (
-                      <Tooltip title="Mark as Paid">
-                        <IconButton
-                          color="primary"
-                          onClick={() => onMarkPaid(booking._id)}
-                          size="small"
-                          sx={{ 
-                            bgcolor: 'primary.light',
-                            color: 'primary.contrastText',
-                            '&:hover': { bgcolor: 'primary.main' }
-                          }}
-                        >
-                          <PaymentIcon />
-                        </IconButton>
-                      </Tooltip>
-                    )}
-                    <Tooltip title="Edit Booking">
-                      <IconButton
-                        color="info"
-                        onClick={() => onEdit(booking)}
+                  {inquiry.status === 'pending' ? (
+                    <Stack spacing={1}>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        startIcon={<CheckCircleIcon />}
+                        onClick={() => onAction(inquiry._id, 'confirmed')}
+                        fullWidth
                         size="small"
-                        sx={{ 
-                          bgcolor: 'info.light',
-                          color: 'info.contrastText',
-                          '&:hover': { bgcolor: 'info.main' }
-                        }}
                       >
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete Booking">
-                      <IconButton
+                        Confirm Inquiry
+                      </Button>
+                      <Button
+                        variant="outlined"
                         color="error"
-                        onClick={() => onDelete(booking._id)}
+                        startIcon={<CancelIcon />}
+                        onClick={() => onAction(inquiry._id, 'cancelled')}
+                        fullWidth
                         size="small"
-                        sx={{ 
-                          bgcolor: 'error.light',
-                          color: 'error.contrastText',
-                          '&:hover': { bgcolor: 'error.main' }
-                        }}
                       >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Stack>
+                        Cancel Inquiry
+                      </Button>
+                    </Stack>
+                  ) : (
+                    <Box sx={{ textAlign: 'center', py: 2 }}>
+                      <Typography variant="body2" color="text.secondary">
+                        Inquiry has been {inquiry.status}
+                      </Typography>
+                      <Chip
+                        label={inquiry.status.toUpperCase()}
+                        color={statusColor(inquiry.status)}
+                        size="small"
+                        sx={{ mt: 1 }}
+                      />
+                    </Box>
+                  )}
                 </Box>
               </Grid>
             </Grid>
@@ -332,8 +305,8 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
       <Table stickyHeader size="small">
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 600 }}>Reference</TableCell>
             <TableCell sx={{ fontWeight: 600 }}>Guest</TableCell>
+            <TableCell sx={{ fontWeight: 600 }}>Contact</TableCell>
             <TableCell sx={{ fontWeight: 600 }}>Hotel</TableCell>
             <TableCell sx={{ fontWeight: 600 }}>Dates</TableCell>
             <TableCell sx={{ fontWeight: 600 }}>Guests</TableCell>
@@ -342,99 +315,97 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
           </TableRow>
         </TableHead>
         <TableBody>
-          {bookings.length === 0 ? (
+          {inquiries.length === 0 ? (
             <TableRow>
               <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
-                <Typography color="text.secondary">No room bookings found</Typography>
+                <Typography color="text.secondary">No room inquiries found</Typography>
               </TableCell>
             </TableRow>
           ) : (
-            bookings.map(booking => (
+            inquiries.map(inquiry => (
               <TableRow 
-                key={booking._id}
+                key={inquiry._id}
                 sx={{ 
                   '&:hover': { bgcolor: 'grey.50' },
-                  borderLeft: `3px solid ${getStatusColor(booking.status)}`
+                  borderLeft: `3px solid ${getStatusColor(inquiry.status)}`
                 }}
               >
                 <TableCell>
                   <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                    {booking.bookingReference}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="body2" noWrap>
-                    {booking.clientDetails?.name || 'N/A'}
+                    {inquiry.guestName}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Box>
                     <Typography variant="body2" noWrap sx={{ fontWeight: 500 }}>
-                      {booking.hotel?.name || 'Unknown Hotel'}
+                      {inquiry.email}
                     </Typography>
                     <Typography variant="caption" color="text.secondary" noWrap>
-                      {booking.room?.roomName || 'Unknown Room'}
+                      {inquiry.phone || 'No phone'}
                     </Typography>
                   </Box>
                 </TableCell>
                 <TableCell>
                   <Box>
-                    <Typography variant="body2">
-                      {formatDateShort(booking.checkIn)} - {formatDateShort(booking.checkOut)}
+                    <Typography variant="body2" noWrap sx={{ fontWeight: 500 }}>
+                      {inquiry.hotel_name || 'Unknown Hotel'}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary" noWrap>
+                      {inquiry.room_name || 'Unknown Room'}
                     </Typography>
                   </Box>
                 </TableCell>
                 <TableCell>
                   <Typography variant="body2">
-                    {booking.adults}A
-                    {booking.children?.length > 0 && `, ${booking.children.length}C`}
+                    {formatDateShort(inquiry.check_in)} - {formatDateShort(inquiry.check_out)}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="body2">
+                    {inquiry.guest_count}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Chip
-                    label={booking.status}
-                    color={statusColor(booking.status)}
-                    variant={booking.status === 'Pending' ? 'outlined' : 'filled'}
+                    label={inquiry.status}
+                    color={statusColor(inquiry.status)}
+                    variant={inquiry.status === 'pending' ? 'outlined' : 'filled'}
                     size="small"
                   />
                 </TableCell>
                 <TableCell align="center">
-                  <Stack direction="row" spacing={1} justifyContent="center">
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      onClick={() => onViewDetails(booking)}
-                      sx={{ minWidth: 70 }}
-                    >
-                      Details
-                    </Button>
-                    {booking.status === 'Pending' && (
+                  {inquiry.status === 'pending' ? (
+                    <Stack direction="row" spacing={1} justifyContent="center">
                       <Button
                         size="small"
                         variant="contained"
                         color="success"
-                        onClick={() => onConfirm(booking._id)}
+                        onClick={() => onAction(inquiry._id, 'confirmed')}
                         startIcon={<CheckCircleIcon />}
                         sx={{ minWidth: 80 }}
                       >
                         Confirm
                       </Button>
-                    )}
-                    <Tooltip title="Edit">
-                      <IconButton
+                      <Button
                         size="small"
-                        color="info"
-                        onClick={() => onEdit(booking)}
-                        sx={{
-                          bgcolor: 'info.light',
-                          color: 'info.contrastText',
-                          '&:hover': { bgcolor: 'info.main' }
-                        }}
+                        variant="outlined"
+                        color="error"
+                        onClick={() => onAction(inquiry._id, 'cancelled')}
+                        startIcon={<CancelIcon />}
+                        sx={{ minWidth: 80 }}
                       >
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  </Stack>
+                        Cancel
+                      </Button>
+                    </Stack>
+                  ) : (
+                    <Chip
+                      label={inquiry.status.toUpperCase()}
+                      color={statusColor(inquiry.status)}
+                      variant="filled"
+                      size="small"
+                      sx={{ fontWeight: 600 }}
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             ))
@@ -450,10 +421,17 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Room Bookings
+            Room Inquiries
           </Typography>
-          <Badge badgeContent={bookings.length} color="primary">
-            <Box sx={{ width: 20, height: 20 }} />
+          <Badge badgeContent={inquiries.filter(i => i.status === 'pending').length} color="warning">
+            <Typography variant="body2" color="text.secondary">
+              Pending
+            </Typography>
+          </Badge>
+          <Badge badgeContent={inquiries.length} color="primary">
+            <Typography variant="body2" color="text.secondary">
+              Total
+            </Typography>
           </Badge>
         </Box>
         
@@ -481,7 +459,7 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
       </Box>
 
       {/* Content */}
-      {bookings.length === 0 ? (
+      {inquiries.length === 0 ? (
         <Box 
           sx={{ 
             textAlign: 'center', 
@@ -491,20 +469,20 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
             border: `2px dashed ${theme.palette.grey[300]}`
           }}
         >
-          <HotelIcon sx={{ fontSize: 48, color: 'grey.400', mb: 2 }} />
+          <QuestionAnswerIcon sx={{ fontSize: 48, color: 'grey.400', mb: 2 }} />
           <Typography variant="h6" color="text.secondary" gutterBottom>
-            No room bookings found
+            No room inquiries found
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Bookings will appear here once they are created
+            Customer inquiries will appear here when submitted
           </Typography>
         </Box>
       ) : (
         <>
           {viewMode === 'cards' ? (
             <Box>
-              {bookings.map(booking => (
-                <BookingCard key={booking._id} booking={booking} />
+              {inquiries.map(inquiry => (
+                <InquiryCard key={inquiry._id} inquiry={inquiry} />
               ))}
             </Box>
           ) : (
@@ -516,4 +494,4 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
   );
 };
 
-export default RoomBookingsView;
+export default RoomInquiriesView;
