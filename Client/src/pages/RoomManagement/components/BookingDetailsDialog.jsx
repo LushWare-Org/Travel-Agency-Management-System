@@ -355,69 +355,88 @@ const BookingDetailsDialog = ({ open, onClose, booking }) => {
                   Passenger Details
                 </Typography>
                 <Box sx={{ pl: 4 }}>
-                  {booking.passengerDetails.map((passenger, index) => (
-                    <Box key={index} sx={{ mb: 3, p: 2, border: '1px solid #e0e0e0', borderRadius: 1 }}>
-                      <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 2 }}>
-                        Passenger {index + 1} ({passenger.type === 'child' ? 'Child' : 'Adult'})
-                      </Typography>
-                      <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                          <Typography variant="body2" color="text.secondary">Name</Typography>
-                          <Typography variant="body1" fontWeight="medium">
-                            {passenger.name || 'N/A'}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <PassportIcon fontSize="small" />
-                            Passport
-                          </Typography>
-                          <Typography variant="body1" fontWeight="medium">
-                            {passenger.passport || 'N/A'}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <CountryIcon fontSize="small" />
-                            Country
-                          </Typography>
-                          <Typography variant="body1" fontWeight="medium">
-                            {passenger.country || 'N/A'}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <FlightIcon fontSize="small" />
-                            Arrival Flight
-                          </Typography>
-                          <Typography variant="body1" fontWeight="medium">
-                            {passenger.arrivalFlightNumber || 'N/A'}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography variant="body2" color="text.secondary">Arrival Time</Typography>
-                          <Typography variant="body1" fontWeight="medium">
-                            {passenger.arrivalTime || 'N/A'}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <FlightIcon fontSize="small" />
-                            Departure Flight
-                          </Typography>
-                          <Typography variant="body1" fontWeight="medium">
-                            {passenger.departureFlightNumber || 'N/A'}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography variant="body2" color="text.secondary">Departure Time</Typography>
-                          <Typography variant="body1" fontWeight="medium">
-                            {passenger.departureTime || 'N/A'}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  ))}
+                  {/* Group passengers by room */}
+                  {(() => {
+                    const passengersByRoom = booking.passengerDetails.reduce((acc, passenger, index) => {
+                      const roomNumber = passenger.roomNumber || 1;
+                      if (!acc[roomNumber]) {
+                        acc[roomNumber] = [];
+                      }
+                      acc[roomNumber].push({ ...passenger, originalIndex: index });
+                      return acc;
+                    }, {});
+
+                    return Object.entries(passengersByRoom).map(([roomNumber, passengers]) => (
+                      <Box key={`room-${roomNumber}`} sx={{ mb: 4 }}>
+                        <Typography variant="h6" sx={{ mb: 2, color: 'primary.main', fontWeight: 'bold' }}>
+                          Room {roomNumber}
+                        </Typography>
+                        {passengers.map((passenger, passengerIndex) => (
+                          <Box key={passenger.originalIndex} sx={{ mb: 3, p: 2, border: '1px solid #e0e0e0', borderRadius: 1 }}>
+                            <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 2 }}>
+                              Passenger {passengerIndex + 1} ({passenger.type === 'child' ? 'Child' : 'Adult'})
+                            </Typography>
+                            <Grid container spacing={2}>
+                              <Grid item xs={12} sm={6}>
+                                <Typography variant="body2" color="text.secondary">Name</Typography>
+                                <Typography variant="body1" fontWeight="medium">
+                                  {passenger.name || 'N/A'}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12} sm={6}>
+                                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                  <PassportIcon fontSize="small" />
+                                  Passport
+                                </Typography>
+                                <Typography variant="body1" fontWeight="medium">
+                                  {passenger.passport || 'N/A'}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12} sm={6}>
+                                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                  <CountryIcon fontSize="small" />
+                                  Country
+                                </Typography>
+                                <Typography variant="body1" fontWeight="medium">
+                                  {passenger.country || 'N/A'}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12} sm={6}>
+                                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                  <FlightIcon fontSize="small" />
+                                  Arrival Flight
+                                </Typography>
+                                <Typography variant="body1" fontWeight="medium">
+                                  {passenger.arrivalFlightNumber || 'N/A'}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12} sm={6}>
+                                <Typography variant="body2" color="text.secondary">Arrival Time</Typography>
+                                <Typography variant="body1" fontWeight="medium">
+                                  {passenger.arrivalTime ? formatTime(passenger.arrivalTime) : 'N/A'}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12} sm={6}>
+                                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                  <FlightIcon fontSize="small" />
+                                  Departure Flight
+                                </Typography>
+                                <Typography variant="body1" fontWeight="medium">
+                                  {passenger.departureFlightNumber || 'N/A'}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12} sm={6}>
+                                <Typography variant="body2" color="text.secondary">Departure Time</Typography>
+                                <Typography variant="body1" fontWeight="medium">
+                                  {passenger.departureTime ? formatTime(passenger.departureTime) : 'N/A'}
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        ))}
+                      </Box>
+                    ));
+                  })()}
                 </Box>
               </Grid>
             </>

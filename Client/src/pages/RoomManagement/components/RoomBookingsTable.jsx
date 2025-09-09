@@ -197,6 +197,23 @@ const RoomBookingsTable = ({ bookings, onViewDetails, onEdit, onDelete, onConfir
                         </Typography>
                       </Box>
                     )}
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" color="text.secondary">Rooms:</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {booking.rooms || 1}
+                      </Typography>
+                    </Box>
+                    {(booking.rooms || 1) > 1 && (
+                      <Box sx={{ mt: 1, p: 1, bgcolor: 'white', borderRadius: 1, border: '1px solid #e0e0e0' }}>
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
+                          Room Distribution:
+                        </Typography>
+                        <Typography variant="caption" sx={{ fontWeight: 500 }}>
+                          ~{Math.floor(booking.adults / (booking.rooms || 1))} adults/room
+                          {booking.children?.length > 0 && `, ~${Math.floor(booking.children.length / (booking.rooms || 1))} children/room`}
+                        </Typography>
+                      </Box>
+                    )}
                   </Stack>
                 </Box>
               </Grid>
