@@ -200,9 +200,11 @@ const RoomManagement = () => {
 
   const handleInquiryAction = async (inquiryId, action) => {
     try {
-      await axios.put(`/api/inquiries/${inquiryId}`, { status: action }, { withCredentials: true });
+      const endpoint = action === 'confirmed' ? 'confirm' : 'cancel';
+      await axios.put(`/inquiries/${inquiryId}/${endpoint}`, {}, { withCredentials: true });
+      const newStatus = action === 'confirmed' ? 'Confirmed' : 'Cancelled';
       setRoomInquiries(prev => prev.map(inquiry =>
-        inquiry._id === inquiryId ? { ...inquiry, status: action } : inquiry
+        inquiry._id === inquiryId ? { ...inquiry, status: newStatus } : inquiry
       ));
       setSnackbar({ open: true, message: `Inquiry ${action} successfully`, severity: 'success' });
     } catch (err) {

@@ -30,16 +30,16 @@ const RoomInquiriesView = ({ inquiries, onAction }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const statusColor = (status) => ({
-    pending: 'warning',
-    confirmed: 'success',
-    cancelled: 'error'
+    Pending: 'warning',
+    Confirmed: 'success',
+    Cancelled: 'error'
   }[status] || 'default');
 
   const getStatusColor = (status) => {
     const colorMap = {
-      pending: theme.palette.warning?.main || '#ff9800',
-      confirmed: theme.palette.success?.main || '#4caf50',
-      cancelled: theme.palette.error?.main || '#f44336'
+      Pending: theme.palette.warning?.main || '#ff9800',
+      Confirmed: theme.palette.success?.main || '#4caf50',
+      Cancelled: theme.palette.error?.main || '#f44336'
     };
     return colorMap[status] || theme.palette.grey?.[500] || '#9e9e9e';
   };
@@ -138,7 +138,7 @@ const RoomInquiriesView = ({ inquiries, onAction }) => {
             {/* Quick Actions */}
             <Grid item xs={12} sm={6} md={2}>
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, alignItems: 'center' }}>
-                {inquiry.status === 'pending' ? (
+                {inquiry.status === 'pending' || inquiry.status === 'Pending' ? (
                   <Stack direction="row" spacing={0.5}>
                     <Tooltip title="Confirm Inquiry">
                       <Button
@@ -167,7 +167,7 @@ const RoomInquiriesView = ({ inquiries, onAction }) => {
                   </Stack>
                 ) : (
                   <Chip
-                    label={inquiry.status.toUpperCase()}
+                    label={inquiry.status ? inquiry.status.toUpperCase() : 'UNKNOWN'}
                     color={statusColor(inquiry.status)}
                     variant="filled"
                     size="small"
@@ -374,7 +374,7 @@ const RoomInquiriesView = ({ inquiries, onAction }) => {
                   />
                 </TableCell>
                 <TableCell align="center">
-                  {inquiry.status === 'pending' ? (
+                  {(inquiry.status === 'Pending' || showDebugActions) ? (
                     <Stack direction="row" spacing={1} justifyContent="center">
                       <Button
                         size="small"
@@ -398,13 +398,19 @@ const RoomInquiriesView = ({ inquiries, onAction }) => {
                       </Button>
                     </Stack>
                   ) : (
-                    <Chip
-                      label={inquiry.status.toUpperCase()}
-                      color={statusColor(inquiry.status)}
-                      variant="filled"
-                      size="small"
-                      sx={{ fontWeight: 600 }}
-                    />
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
+                      <Chip
+                        label={inquiry.status ? inquiry.status.toUpperCase() : 'UNKNOWN'}
+                        color={statusColor(inquiry.status)}
+                        variant="filled"
+                        size="small"
+                        sx={{ fontWeight: 600 }}
+                      />
+                      {/* Debug info - remove this after testing */}
+                      <Typography variant="caption" color="text.secondary">
+                        Status: "{inquiry.status}"
+                      </Typography>
+                    </Box>
                   )}
                 </TableCell>
               </TableRow>
@@ -423,7 +429,7 @@ const RoomInquiriesView = ({ inquiries, onAction }) => {
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
             Room Inquiries
           </Typography>
-          <Badge badgeContent={inquiries.filter(i => i.status === 'pending').length} color="warning">
+          <Badge badgeContent={inquiries.filter(i => i.status === 'Pending').length} color="warning">
             <Typography variant="body2" color="text.secondary">
               Pending
             </Typography>

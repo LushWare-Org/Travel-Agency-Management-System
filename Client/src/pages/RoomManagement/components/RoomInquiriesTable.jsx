@@ -94,13 +94,13 @@ const RoomInquiriesTable = ({ inquiries, onAction }) => {
                 <TableCell>
                   <Chip
                     label={inquiry.status}
-                    color={inquiry.status === 'confirmed' ? 'success' : inquiry.status === 'cancelled' ? 'error' : 'warning'}
-                    variant={inquiry.status === 'pending' ? 'outlined' : 'filled'}
+                    color={inquiry.status === 'Confirmed' ? 'success' : inquiry.status === 'Cancelled' ? 'error' : 'warning'}
+                    variant={inquiry.status === 'Pending' ? 'outlined' : 'filled'}
                   />
                 </TableCell>
                 <TableCell>
                   <Box sx={{ display: 'flex', gap: 1 }}>
-                    {inquiry.status === 'pending' && (
+                    {inquiry.status === 'Pending' && (
                       <>
                         <IconButton
                           color="success"
