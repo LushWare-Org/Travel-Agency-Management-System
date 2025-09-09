@@ -41,7 +41,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import HotelManagement from './HotelManagement';
-import RoomManagement from './RoomManagement';
+import RoomManagement from './RoomManagement/index';
 import BookingManagement from './BookingManagement';
 import DiscountManagement from './DiscountManagement';
 import TourManagement from './TourManagement';

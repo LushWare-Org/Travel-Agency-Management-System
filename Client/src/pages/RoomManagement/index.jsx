@@ -10,6 +10,8 @@ import { Add as AddIcon } from '@mui/icons-material';
 import TabPanel from './components/TabPanel';
 import RoomsTable from './components/RoomsTable';
 import RoomInquiriesTable from './components/RoomInquiriesTable';
+import RoomBookingsTable from './components/RoomBookingsTable';
+import BookingDetailsDialog from './components/BookingDetailsDialog';
 import RoomProfileDialog from './components/RoomProfileDialog';
 import RoomFormDialog from './components/RoomFormDialog';
 
@@ -37,6 +39,10 @@ const RoomManagement = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [roomInquiries, setRoomInquiries] = useState([]);
   const [inquiriesLoading, setInquiriesLoading] = useState(false);
+  const [roomBookings, setRoomBookings] = useState([]);
+  const [bookingsLoading, setBookingsLoading] = useState(false);
+  const [bookingDetailsOpen, setBookingDetailsOpen] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   // Custom hooks
   const roomForm = useRoomForm(customMarkets, setCustomMarkets);
@@ -86,9 +92,24 @@ const RoomManagement = () => {
     }
   };
 
+  const fetchRoomBookings = async () => {
+    try {
+      setBookingsLoading(true);
+      const response = await axios.get('/bookings', { withCredentials: true });
+      setRoomBookings(response.data);
+    } catch (err) {
+      console.error('Error fetching room bookings:', err);
+      setSnackbar({ open: true, message: 'Failed to load room bookings', severity: 'error' });
+    } finally {
+      setBookingsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === 1) {
       fetchRoomInquiries();
+    } else if (activeTab === 2) {
+      fetchRoomBookings();
     }
   }, [activeTab]);
 
@@ -190,6 +211,75 @@ const RoomManagement = () => {
     }
   };
 
+  const handleViewBookingDetails = (booking) => {
+    setSelectedBooking(booking);
+    setBookingDetailsOpen(true);
+  };
+
+  const handleCloseBookingDetails = () => {
+    setBookingDetailsOpen(false);
+    setSelectedBooking(null);
+  };
+
+  const handleEditBooking = (booking) => {
+    // For now, just show an alert. You can implement edit functionality later
+    alert(`Edit booking: ${booking.bookingReference}\nThis feature can be implemented with a booking edit dialog.`);
+  };
+
+  const handleDeleteBooking = async (bookingId) => {
+    if (!window.confirm('Delete this booking permanently?')) return;
+    try {
+      await axios.delete(`/bookings/${bookingId}`, { withCredentials: true });
+      setRoomBookings(prev => prev.filter(booking => booking._id !== bookingId));
+      setSnackbar({ open: true, message: 'Booking deleted successfully', severity: 'success' });
+    } catch (err) {
+      console.error('Error deleting booking:', err);
+      setSnackbar({ open: true, message: 'Failed to delete booking', severity: 'error' });
+    }
+  };
+
+  const handleConfirmBooking = async (bookingId) => {
+    if (!window.confirm('Confirm this booking?')) return;
+    try {
+      const { data } = await axios.put(`/bookings/${bookingId}`, { status: 'Confirmed' }, { withCredentials: true });
+      setRoomBookings(prev => prev.map(booking =>
+        booking._id === bookingId ? data : booking
+      ));
+      setSnackbar({ open: true, message: 'Booking confirmed successfully', severity: 'success' });
+    } catch (err) {
+      console.error('Error confirming booking:', err);
+      setSnackbar({ open: true, message: 'Failed to confirm booking', severity: 'error' });
+    }
+  };
+
+  const handleCancelBooking = async (bookingId) => {
+    if (!window.confirm('Cancel this booking?')) return;
+    try {
+      const { data } = await axios.put(`/bookings/${bookingId}`, { status: 'Cancelled' }, { withCredentials: true });
+      setRoomBookings(prev => prev.map(booking =>
+        booking._id === bookingId ? data : booking
+      ));
+      setSnackbar({ open: true, message: 'Booking cancelled successfully', severity: 'success' });
+    } catch (err) {
+      console.error('Error cancelling booking:', err);
+      setSnackbar({ open: true, message: 'Failed to cancel booking', severity: 'error' });
+    }
+  };
+
+  const handleMarkBookingPaid = async (bookingId) => {
+    if (!window.confirm('Mark this booking as paid?')) return;
+    try {
+      const { data } = await axios.put(`/bookings/${bookingId}`, { status: 'Paid' }, { withCredentials: true });
+      setRoomBookings(prev => prev.map(booking =>
+        booking._id === bookingId ? data : booking
+      ));
+      setSnackbar({ open: true, message: 'Booking marked as paid successfully', severity: 'success' });
+    } catch (err) {
+      console.error('Error marking booking as paid:', err);
+      setSnackbar({ open: true, message: 'Failed to mark booking as paid', severity: 'error' });
+    }
+  };
+
   if (loading) {
     return (
       <Box textAlign="center" p={4}>
@@ -220,6 +310,7 @@ const RoomManagement = () => {
               </Badge>
             }
           />
+          <Tab label="Room Bookings" />
         </Tabs>
       </Box>
 
@@ -248,6 +339,26 @@ const RoomManagement = () => {
             <RoomInquiriesTable
               inquiries={roomInquiries}
               onAction={handleInquiryAction}
+            />
+          )}
+        </Box>
+      </TabPanel>
+
+      <TabPanel value={activeTab} index={2}>
+        <Box sx={{ mt: 3 }}>
+          {bookingsLoading ? (
+            <Box textAlign="center" p={4}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <RoomBookingsTable
+              bookings={roomBookings}
+              onViewDetails={handleViewBookingDetails}
+              onEdit={handleEditBooking}
+              onDelete={handleDeleteBooking}
+              onConfirm={handleConfirmBooking}
+              onCancel={handleCancelBooking}
+              onMarkPaid={handleMarkBookingPaid}
             />
           )}
         </Box>
@@ -283,6 +394,12 @@ const RoomManagement = () => {
         open={openProfile}
         onClose={closeRoomProfile}
         selectedRoom={selectedRoom}
+      />
+
+      <BookingDetailsDialog
+        open={bookingDetailsOpen}
+        onClose={handleCloseBookingDetails}
+        booking={selectedBooking}
       />
 
       <Snackbar
