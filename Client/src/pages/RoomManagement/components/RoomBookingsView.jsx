@@ -116,10 +116,14 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
                 <PersonIcon color="action" fontSize="small" />
                 <Box>
                   <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                    {booking.clientDetails?.name || 'N/A'}
+                    {booking.adults} adult{booking.adults !== 1 ? 's' : ''}
+                    {booking.children?.length > 0 && `, ${booking.children.length} child${booking.children.length !== 1 ? 'ren' : ''}`}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    Guest
+                    {booking.rooms || 1} room{booking.rooms !== 1 ? 's' : ''}
+                    {(booking.rooms || 1) > 1 && booking.passengerDetails && booking.passengerDetails.length > 0 && (
+                      <span> • Per room config</span>
+                    )}
                   </Typography>
                 </Box>
               </Box>
@@ -216,17 +220,54 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
                   </Typography>
                   <Stack spacing={1}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography variant="body2" color="text.secondary">Adults:</Typography>
+                      <Typography variant="body2" color="text.secondary">Total Adults:</Typography>
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>
                         {booking.adults}
                       </Typography>
                     </Box>
                     {booking.children?.length > 0 && (
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography variant="body2" color="text.secondary">Children:</Typography>
+                        <Typography variant="body2" color="text.secondary">Total Children:</Typography>
                         <Typography variant="body2" sx={{ fontWeight: 500 }}>
                           {booking.children.length}
                         </Typography>
+                      </Box>
+                    )}
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" color="text.secondary">Rooms:</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {booking.rooms || 1}
+                      </Typography>
+                    </Box>
+                    
+                    {/* Per-Room Breakdown */}
+                    {(booking.rooms || 1) > 1 && booking.passengerDetails && booking.passengerDetails.length > 0 && (
+                      <Box sx={{ mt: 2, p: 2, bgcolor: 'white', borderRadius: 1, border: '1px solid #e0e0e0' }}>
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1, fontWeight: 500 }}>
+                          Room Distribution:
+                        </Typography>
+                        {(() => {
+                          // Group passengers by room number
+                          const roomGroups = booking.passengerDetails.reduce((acc, passenger) => {
+                            const roomNum = passenger.roomNumber || 1;
+                            if (!acc[roomNum]) {
+                              acc[roomNum] = { adults: 0, children: 0 };
+                            }
+                            if (passenger.type === 'adult') {
+                              acc[roomNum].adults++;
+                            } else {
+                              acc[roomNum].children++;
+                            }
+                            return acc;
+                          }, {});
+
+                          return Object.entries(roomGroups).map(([roomNum, counts]) => (
+                            <Typography key={roomNum} variant="caption" sx={{ display: 'block', mb: 0.5 }}>
+                              Room {roomNum}: {counts.adults} adult{counts.adults !== 1 ? 's' : ''}
+                              {counts.children > 0 && `, ${counts.children} child${counts.children !== 1 ? 'ren' : ''}`}
+                            </Typography>
+                          ));
+                        })()}
                       </Box>
                     )}
                   </Stack>
@@ -388,6 +429,11 @@ const RoomBookingsView = ({ bookings, onViewDetails, onEdit, onDelete, onConfirm
                   <Typography variant="body2">
                     {booking.adults}A
                     {booking.children?.length > 0 && `, ${booking.children.length}C`}
+                    {booking.rooms > 1 && (
+                      <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+                        {booking.rooms} rooms
+                      </Typography>
+                    )}
                   </Typography>
                 </TableCell>
                 <TableCell>
