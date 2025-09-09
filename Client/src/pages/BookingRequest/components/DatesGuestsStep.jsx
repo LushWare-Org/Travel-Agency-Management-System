@@ -182,6 +182,31 @@ const DatesGuestsStep = ({
                 </select>
               </div>
             </div>
+            {bookingData.children > 0 && (
+              <div className="mt-4 p-4 bg-gradient-to-br from-[#E7E9E5] to-[#B7C5C7] rounded-lg border border-[#B7C5C7]">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Children Ages</label>
+                <div className="grid grid-cols-2 gap-4">
+                  {bookingData.childrenAges.map((age, index) => (
+                    <select
+                      key={index}
+                      value={age}
+                      onChange={(e) => handleChildAgeChange(index, e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                    >
+                      <option value={0}>Select age</option>
+                      {[...Array(18).keys()].map((num) => (
+                        <option key={num} value={num}>
+                          {num} {num === 1 ? "year" : "years"}
+                        </option>
+                      ))}
+                    </select>
+                  ))}
+                </div>
+                {errors.childrenAges && (
+                  <p className="mt-1 text-xs text-red-600">{errors.childrenAges}</p>
+                )}
+              </div>
+            )}
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">Selected Meal Plan</label>
               <div className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700 text-sm flex items-center">
@@ -213,31 +238,6 @@ const DatesGuestsStep = ({
                     </li>
                   ))}
                 </ul>
-              </div>
-            )}
-            {bookingData.children > 0 && (
-              <div className="mt-4 p-4 bg-indigo-50 rounded-lg">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Children Ages</label>
-                <div className="grid grid-cols-2 gap-4">
-                  {bookingData.childrenAges.map((age, index) => (
-                    <select
-                      key={index}
-                      value={age}
-                      onChange={(e) => handleChildAgeChange(index, e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                    >
-                      <option value={0}>Select age</option>
-                      {[...Array(18).keys()].map((num) => (
-                        <option key={num} value={num}>
-                          {num} {num === 1 ? "year" : "years"}
-                        </option>
-                      ))}
-                    </select>
-                  ))}
-                </div>
-                {errors.childrenAges && (
-                  <p className="mt-1 text-xs text-red-600">{errors.childrenAges}</p>
-                )}
               </div>
             )}
             {/* Only display 'Choose an Exclusive Offer' if hotelName exists and there are eligible offers */}
