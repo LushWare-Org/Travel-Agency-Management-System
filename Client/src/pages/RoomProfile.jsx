@@ -38,7 +38,7 @@ export default function EnhancedRoomProfile() {
   const { requireAuthForBooking } = useAuthCheck();
 
   const previousRoute = location.state?.previousRoute || '/search';
-  const selectedMarket = location.state?.selectedMarket || '';
+  const [selectedMarket, setSelectedMarket] = useState(location.state?.selectedMarket || '');
   
   // Initialize dates from location state if available
   useEffect(() => {
@@ -596,8 +596,6 @@ export default function EnhancedRoomProfile() {
                       name: "preventOverflow",
                       options: {
                         rootBoundary: "viewport",
-                        tether: true,
-                        altAxis: true,
                         padding: 8,
                       },
                     },

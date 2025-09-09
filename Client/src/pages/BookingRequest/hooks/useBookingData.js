@@ -256,7 +256,7 @@ export const useBookingData = ({
       }
       return arr
     })
-  }, [bookingData.adults, setPassengerDetails])
+  }, [bookingData.adults])
 
   useEffect(() => {
     const totalChildren = bookingData.children
@@ -280,5 +280,5 @@ export const useBookingData = ({
       }
       return arr
     })
-  }, [bookingData.children, setChildPassengerDetails])
+  }, [bookingData.children])
 }
