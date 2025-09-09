@@ -585,21 +585,6 @@ export default function EnhancedRoomProfile() {
                   minDate={new Date()}
                   dateFormat="MMMM d, yyyy"
                   popperPlacement="bottom-start"
-                  popperModifiers={[
-                    {
-                      name: "offset",
-                      options: {
-                        offset: [0, 8],
-                      },
-                    },
-                    {
-                      name: "preventOverflow",
-                      options: {
-                        rootBoundary: "viewport",
-                        padding: 8,
-                      },
-                    },
-                  ]}
                   ref={datePickerRef}
                   className="absolute opacity-0 pointer-events-none"
                 />
