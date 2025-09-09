@@ -212,13 +212,13 @@ const BookingDetailsDialog = ({ open, onClose, booking }) => {
             <Box sx={{ pl: 4 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" color="text.secondary">Adults</Typography>
+                  <Typography variant="body2" color="text.secondary">Total Adults</Typography>
                   <Typography variant="body1" fontWeight="medium">
                     {booking.adults} adult{booking.adults !== 1 ? 's' : ''}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" color="text.secondary">Children</Typography>
+                  <Typography variant="body2" color="text.secondary">Total Children</Typography>
                   <Typography variant="body1" fontWeight="medium">
                     {booking.children?.length || 0} child{booking.children?.length !== 1 ? 'ren' : ''}
                     {booking.children?.length > 0 && (
@@ -240,6 +240,54 @@ const BookingDetailsDialog = ({ open, onClose, booking }) => {
                     {booking.rooms || 1} room{booking.rooms !== 1 ? 's' : ''}
                   </Typography>
                 </Grid>
+                
+                {/* Per-Room Breakdown */}
+                {(booking.rooms || 1) > 1 && booking.passengerDetails && booking.passengerDetails.length > 0 && (
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 2, mb: 1, fontWeight: 500 }}>
+                      Room Distribution:
+                    </Typography>
+                    <Box sx={{ pl: 2, borderLeft: '2px solid #e0e0e0' }}>
+                      {(() => {
+                        // Group passengers by room number
+                        const roomGroups = booking.passengerDetails.reduce((acc, passenger) => {
+                          const roomNum = passenger.roomNumber || 1;
+                          if (!acc[roomNum]) {
+                            acc[roomNum] = { adults: [], children: [] };
+                          }
+                          if (passenger.type === 'adult') {
+                            acc[roomNum].adults.push(passenger);
+                          } else {
+                            acc[roomNum].children.push(passenger);
+                          }
+                          return acc;
+                        }, {});
+
+                        return Object.entries(roomGroups).map(([roomNum, passengers]) => (
+                          <Box key={roomNum} sx={{ mb: 2, p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+                            <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                              Room {roomNum}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              {passengers.adults.length} adult{passengers.adults.length !== 1 ? 's' : ''}
+                              {passengers.children.length > 0 && `, ${passengers.children.length} child${passengers.children.length !== 1 ? 'ren' : ''}`}
+                            </Typography>
+                            {passengers.children.length > 0 && (
+                              <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                                Children ages: {passengers.children.map(child => {
+                                  // Find the corresponding child age from booking.children
+                                  const childIndex = booking.passengerDetails.indexOf(child);
+                                  const globalChildIndex = booking.passengerDetails.slice(0, childIndex).filter(p => p.type === 'child').length;
+                                  return booking.children?.[globalChildIndex]?.age || 'N/A';
+                                }).join(', ')}
+                              </Typography>
+                            )}
+                          </Box>
+                        ));
+                      })()}
+                    </Box>
+                  </Grid>
+                )}
               </Grid>
             </Box>
           </Grid>
@@ -368,13 +416,33 @@ const BookingDetailsDialog = ({ open, onClose, booking }) => {
 
                     return Object.entries(passengersByRoom).map(([roomNumber, passengers]) => (
                       <Box key={`room-${roomNumber}`} sx={{ mb: 4 }}>
-                        <Typography variant="h6" sx={{ mb: 2, color: 'primary.main', fontWeight: 'bold' }}>
+                        <Typography variant="h6" sx={{ mb: 2, color: 'primary.main', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <HotelIcon fontSize="small" />
                           Room {roomNumber}
                         </Typography>
+                        
+                        {/* Room Summary */}
+                        <Box sx={{ mb: 2, p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {passengers.filter(p => p.type === 'adult').length} Adult{passengers.filter(p => p.type === 'adult').length !== 1 ? 's' : ''}, 
+                            {passengers.filter(p => p.type === 'child').length} Child{passengers.filter(p => p.type === 'child').length !== 1 ? 'ren' : ''}
+                          </Typography>
+                        </Box>
+
+                        {/* Individual Passengers */}
                         {passengers.map((passenger, passengerIndex) => (
-                          <Box key={passenger.originalIndex} sx={{ mb: 3, p: 2, border: '1px solid #e0e0e0', borderRadius: 1 }}>
-                            <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 2 }}>
+                          <Box key={passenger.originalIndex} sx={{ mb: 3, p: 3, border: '1px solid #e0e0e0', borderRadius: 2, bgcolor: passenger.type === 'child' ? '#f8f9fa' : 'white' }}>
+                            <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <PersonIcon fontSize="small" />
                               Passenger {passengerIndex + 1} ({passenger.type === 'child' ? 'Child' : 'Adult'})
+                              {passenger.type === 'child' && (() => {
+                                // Find the corresponding child age
+                                const childPassengers = passengers.filter(p => p.type === 'child');
+                                const childIndex = childPassengers.indexOf(passenger);
+                                const globalChildIndex = booking.passengerDetails.slice(0, passenger.originalIndex).filter(p => p.type === 'child').length;
+                                const age = booking.children?.[globalChildIndex]?.age;
+                                return age ? ` - Age ${age}` : '';
+                              })()}
                             </Typography>
                             <Grid container spacing={2}>
                               <Grid item xs={12} sm={6}>
@@ -442,8 +510,8 @@ const BookingDetailsDialog = ({ open, onClose, booking }) => {
             </>
           )}
 
-          {/* Children Details */}
-          {booking.children && booking.children.length > 0 && (
+          {/* Children Details - Only show if no passenger details available */}
+          {(!booking.passengerDetails || booking.passengerDetails.length === 0) && booking.children && booking.children.length > 0 && (
             <>
               <Grid item xs={12}>
                 <Divider />

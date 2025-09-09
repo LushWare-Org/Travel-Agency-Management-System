@@ -21,7 +21,9 @@ export const useBookingData = ({
   basePricePerNight,
   hotelId,
   roomId,
-  navigate
+  navigate,
+  roomConfigs,
+  setRoomConfigs
 }) => {
   const {
     roomId: locRoomId,
@@ -117,16 +119,15 @@ export const useBookingData = ({
         setHotel(hRes.data)
         setRoom(rRes.data)
         setMealPlans(hRes.data.mealPlans || [])
-        // Set default adults/children from maxOccupancy if available
+        // Set default roomConfigs from maxOccupancy if available
         if (rRes.data?.maxOccupancy) {
-          setBookingData((prev) => ({
-            ...prev,
-            adults: rRes.data.maxOccupancy.adults || 1,
+          setRoomConfigs([{ 
+            adults: rRes.data.maxOccupancy.adults || 1, 
             children: rRes.data.maxOccupancy.children || 0,
             childrenAges: (rRes.data.maxOccupancy.children && rRes.data.maxOccupancy.children > 0)
               ? Array(rRes.data.maxOccupancy.children).fill(0)
-              : [],
-          }))
+              : []
+          }])
         }
       } catch (err) {
         console.error("Failed to load hotel or room", err)
@@ -135,7 +136,20 @@ export const useBookingData = ({
         setLoadingData(false)
       }
     })()
-  }, [hotelId, roomId, navigate, setHotel, setRoom, setMealPlans, setBookingData, setLoadingData, setErrors])
+  }, [hotelId, roomId, navigate, setHotel, setRoom, setMealPlans, setRoomConfigs, setLoadingData, setErrors])
+
+  // Update bookingData totals based on roomConfigs
+  useEffect(() => {
+    const totalAdults = roomConfigs.reduce((sum, config) => sum + config.adults, 0)
+    const totalChildren = roomConfigs.reduce((sum, config) => sum + config.children, 0)
+    const allChildrenAges = roomConfigs.flatMap(config => config.childrenAges)
+    setBookingData((prev) => ({
+      ...prev,
+      adults: totalAdults,
+      children: totalChildren,
+      childrenAges: allChildrenAges,
+    }))
+  }, [roomConfigs, setBookingData])
 
   // Fetch applicable offers
   useEffect(() => {
@@ -232,92 +246,36 @@ export const useBookingData = ({
     }
   }, [bookingData.checkIn, bookingData.checkOut, hotelId, setOffers, setAutoAppliedOffers, setSelectedOffer])
 
-  // Initialize passenger details per room
+  // Initialize passenger details per room based on roomConfigs
   useEffect(() => {
-    const totalRooms = bookingData.rooms
     setPassengerDetails((prev) => {
-      if (totalRooms === 0) return []
-      const arr = [...prev]
-      if (arr.length < totalRooms) {
-        for (let i = arr.length; i < totalRooms; i++) {
-          arr.push({
-            roomNumber: i + 1,
-            adults: [],
-            children: []
-          })
-        }
-      } else if (arr.length > totalRooms) {
-        arr.length = totalRooms
-      }
+      const arr = []
+      roomConfigs.forEach((config, i) => {
+        const adults = Array.from({ length: config.adults }, () => ({
+          name: "",
+          passport: "",
+          country: "",
+          arrivalFlightNumber: "",
+          arrivalTime: "",
+          departureFlightNumber: "",
+          departureTime: "",
+        }))
+        const children = Array.from({ length: config.children }, () => ({
+          name: "",
+          passport: "",
+          country: "",
+          arrivalFlightNumber: "",
+          arrivalTime: "",
+          departureFlightNumber: "",
+          departureTime: "",
+        }))
+        arr.push({
+          roomNumber: i + 1,
+          adults,
+          children
+        })
+      })
       return arr
     })
-  }, [bookingData.rooms])
-
-  // Update adults per room when adults change
-  useEffect(() => {
-    const totalAdults = bookingData.adults
-    const totalRooms = bookingData.rooms
-    if (totalRooms === 0) return
-    setPassengerDetails((prev) => {
-      const arr = [...prev]
-      // Distribute adults evenly across rooms
-      const adultsPerRoom = Math.floor(totalAdults / totalRooms)
-      const extraAdults = totalAdults % totalRooms
-      for (let i = 0; i < totalRooms; i++) {
-        const roomAdults = adultsPerRoom + (i < extraAdults ? 1 : 0)
-        const currentAdults = arr[i]?.adults || []
-        if (currentAdults.length < roomAdults) {
-          for (let j = currentAdults.length; j < roomAdults; j++) {
-            currentAdults.push({
-              name: "",
-              passport: "",
-              country: "",
-              arrivalFlightNumber: "",
-              arrivalTime: "",
-              departureFlightNumber: "",
-              departureTime: "",
-            })
-          }
-        } else if (currentAdults.length > roomAdults) {
-          currentAdults.length = roomAdults
-        }
-        arr[i] = { ...arr[i], adults: currentAdults }
-      }
-      return arr
-    })
-  }, [bookingData.adults, bookingData.rooms])
-
-  // Update children per room when children change
-  useEffect(() => {
-    const totalChildren = bookingData.children
-    const totalRooms = bookingData.rooms
-    if (totalRooms === 0) return
-    setPassengerDetails((prev) => {
-      const arr = [...prev]
-      // Distribute children evenly across rooms
-      const childrenPerRoom = Math.floor(totalChildren / totalRooms)
-      const extraChildren = totalChildren % totalRooms
-      for (let i = 0; i < totalRooms; i++) {
-        const roomChildren = childrenPerRoom + (i < extraChildren ? 1 : 0)
-        const currentChildren = arr[i]?.children || []
-        if (currentChildren.length < roomChildren) {
-          for (let j = currentChildren.length; j < roomChildren; j++) {
-            currentChildren.push({
-              name: "",
-              passport: "",
-              country: "",
-              arrivalFlightNumber: "",
-              arrivalTime: "",
-              departureFlightNumber: "",
-              departureTime: "",
-            })
-          }
-        } else if (currentChildren.length > roomChildren) {
-          currentChildren.length = roomChildren
-        }
-        arr[i] = { ...arr[i], children: currentChildren }
-      }
-      return arr
-    })
-  }, [bookingData.children, bookingData.rooms])
+  }, [roomConfigs])
 }
