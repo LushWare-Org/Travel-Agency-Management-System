@@ -1,25 +1,25 @@
 import React from 'react';
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, Grid,
-  Button, Select, MenuItem, InputLabel, FormControl, Chip, ImageList, ImageListItem,
-  Typography, IconButton, Autocomplete
+  Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid,
+  Typography, Box, TextField, Autocomplete, FormControl, InputLabel,
+  Select, MenuItem, Chip, ImageList, ImageListItem, IconButton,
+  CircularProgress
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Close as CloseIcon, ErrorOutline as ErrorIcon } from '@mui/icons-material';
-import UploadProgress from '../../Components/UploadProgress';
-import { transportationOptions } from './constants';
+import UploadProgress from '../../../Components/UploadProgress';
 
-const RoomDialog = ({
+const RoomFormDialog = ({
   open,
   onClose,
   editing,
   form,
   setForm,
   hotels,
-  customMarkets,
   markets,
+  transportationOptions,
   uploadStatuses,
   setUploadStatuses,
   uploadProgress,
@@ -33,7 +33,8 @@ const RoomDialog = ({
   onRemoveTransportation,
   onAddCustomMarket,
   onRemoveCustomMarket,
-  onImageSelect
+  onImageSelect,
+  onChange
 }) => {
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
@@ -44,7 +45,7 @@ const RoomDialog = ({
             <Autocomplete
               value={hotels.find(h => h._id === form.hotelId) || null}
               onChange={(event, newValue) => {
-                setForm(f => ({ ...f, hotelId: newValue?._id || '' }));
+                onChange('hotelId', newValue?._id || '');
               }}
               options={hotels}
               getOptionLabel={option => option.name || ''}
@@ -59,7 +60,7 @@ const RoomDialog = ({
               label="Room Name"
               fullWidth
               value={form.roomName}
-              onChange={e => setForm(f => ({ ...f, roomName: e.target.value }))}
+              onChange={e => onChange('roomName', e.target.value)}
             />
           </Grid>
           <Grid item xs={6}>
@@ -67,7 +68,7 @@ const RoomDialog = ({
               label="Room Type"
               fullWidth
               value={form.roomType}
-              onChange={e => setForm(f => ({ ...f, roomType: e.target.value }))}
+              onChange={e => onChange('roomType', e.target.value)}
             />
           </Grid>
           <Grid item xs={6}>
@@ -77,7 +78,7 @@ const RoomDialog = ({
               multiline
               rows={2}
               value={form.description}
-              onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+              onChange={e => onChange('description', e.target.value)}
             />
           </Grid>
           <Grid item xs={4}>
@@ -86,7 +87,7 @@ const RoomDialog = ({
               type="number"
               fullWidth
               value={form.size}
-              onChange={e => setForm(f => ({ ...f, size: e.target.value }))}
+              onChange={e => onChange('size', e.target.value)}
             />
           </Grid>
           <Grid item xs={4}>
@@ -94,7 +95,7 @@ const RoomDialog = ({
               label="Bed Type"
               fullWidth
               value={form.bedType}
-              onChange={e => setForm(f => ({ ...f, bedType: e.target.value }))}
+              onChange={e => onChange('bedType', e.target.value)}
             />
           </Grid>
           <Grid item xs={2}>
@@ -103,7 +104,7 @@ const RoomDialog = ({
               type="number"
               fullWidth
               value={form.maxAdults}
-              onChange={e => setForm(f => ({ ...f, maxAdults: e.target.value }))}
+              onChange={e => onChange('maxAdults', e.target.value)}
             />
           </Grid>
           <Grid item xs={2}>
@@ -112,7 +113,7 @@ const RoomDialog = ({
               type="number"
               fullWidth
               value={form.maxChildren}
-              onChange={e => setForm(f => ({ ...f, maxChildren: e.target.value }))}
+              onChange={e => onChange('maxChildren', e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -129,7 +130,7 @@ const RoomDialog = ({
                 size="small"
                 placeholder="Add amenity"
                 value={form.amenityInput}
-                onChange={e => setForm(f => ({ ...f, amenityInput: e.target.value }))}
+                onChange={e => onChange('amenityInput', e.target.value)}
                 onKeyDown={e => {
                   if (e.key === 'Enter' && form.amenityInput.trim()) {
                     setForm(f => ({
@@ -149,7 +150,7 @@ const RoomDialog = ({
                 size="small"
                 placeholder="New market name"
                 value={form.newMarketInput}
-                onChange={e => setForm(f => ({ ...f, newMarketInput: e.target.value }))}
+                onChange={e => onChange('newMarketInput', e.target.value)}
                 sx={{ width: 200 }}
               />
               <Button variant="outlined" onClick={onAddCustomMarket}>
@@ -157,7 +158,7 @@ const RoomDialog = ({
               </Button>
             </Box>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1 }}>
-              {customMarkets.map((m, i) => (
+              {markets.slice(7).map((m, i) => (
                 <Chip
                   key={i}
                   label={m}
@@ -181,7 +182,7 @@ const RoomDialog = ({
                 <Select
                   value={form.priceMarketInput}
                   label="Market"
-                  onChange={e => setForm(f => ({ ...f, priceMarketInput: e.target.value }))}
+                  onChange={e => onChange('priceMarketInput', e.target.value)}
                 >
                   {markets.map(m => (
                     <MenuItem key={m} value={m}>
@@ -195,7 +196,7 @@ const RoomDialog = ({
                 type="number"
                 placeholder="Price"
                 value={form.priceValueInput}
-                onChange={e => setForm(f => ({ ...f, priceValueInput: e.target.value }))}
+                onChange={e => onChange('priceValueInput', e.target.value)}
                 sx={{ width: 80 }}
               />
               <Button variant="outlined" onClick={onAddPriceEntry}>
@@ -219,16 +220,26 @@ const RoomDialog = ({
                     <DatePicker
                       label="Period Start"
                       value={form.pricePeriodStart}
-                      onChange={date => setForm(f => ({ ...f, pricePeriodStart: date }))}
-                      renderInput={params => <TextField {...params} fullWidth />}
+                      onChange={(date) => onChange('pricePeriodStart', date)}
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          size: 'small'
+                        }
+                      }}
                     />
                   </Grid>
                   <Grid item xs={4}>
                     <DatePicker
                       label="Period End"
                       value={form.pricePeriodEnd}
-                      onChange={date => setForm(f => ({ ...f, pricePeriodEnd: date }))}
-                      renderInput={params => <TextField {...params} fullWidth />}
+                      onChange={(date) => onChange('pricePeriodEnd', date)}
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          size: 'small'
+                        }
+                      }}
                     />
                   </Grid>
                   <Grid item xs={2}>
@@ -237,7 +248,7 @@ const RoomDialog = ({
                       type="number"
                       fullWidth
                       value={form.pricePeriodValue}
-                      onChange={e => setForm(f => ({ ...f, pricePeriodValue: e.target.value }))}
+                      onChange={e => onChange('pricePeriodValue', e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={2}>
@@ -255,16 +266,26 @@ const RoomDialog = ({
                   <DatePicker
                     label="Start"
                     value={form.availStart}
-                    onChange={date => setForm(f => ({ ...f, availStart: date }))}
-                    renderInput={params => <TextField {...params} fullWidth />}
+                    onChange={(date) => onChange('availStart', date)}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        size: 'small'
+                      }
+                    }}
                   />
                 </Grid>
                 <Grid item xs={5}>
                   <DatePicker
                     label="End"
                     value={form.availEnd}
-                    onChange={date => setForm(f => ({ ...f, availEnd: date }))}
-                    renderInput={params => <TextField {...params} fullWidth />}
+                    onChange={(date) => onChange('availEnd', date)}
+                    slotProps={{
+                      textField: {
+                        fullWidth: true,
+                        size: 'small'
+                      }
+                    }}
                   />
                 </Grid>
                 <Grid item xs={2}>
@@ -303,7 +324,10 @@ const RoomDialog = ({
                   <Select
                     value={form.newTransportType}
                     label="Transport Type"
-                    onChange={e => setForm(f => ({ ...f, newTransportType: e.target.value, newTransportMethod: '' }))}
+                    onChange={e => {
+                      onChange('newTransportType', e.target.value);
+                      onChange('newTransportMethod', '');
+                    }}
                   >
                     <MenuItem value="arrival">Arrival Transfer</MenuItem>
                     <MenuItem value="departure">Departure Transfer</MenuItem>
@@ -316,7 +340,7 @@ const RoomDialog = ({
                   <Select
                     value={form.newTransportMethod}
                     label="Transportation Method"
-                    onChange={e => setForm(f => ({ ...f, newTransportMethod: e.target.value }))}
+                    onChange={e => onChange('newTransportMethod', e.target.value)}
                     disabled={!form.newTransportType}
                   >
                     {form.newTransportType ? (
@@ -446,4 +470,4 @@ const RoomDialog = ({
   );
 };
 
-export default RoomDialog;
+export default RoomFormDialog;
