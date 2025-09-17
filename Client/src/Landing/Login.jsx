@@ -127,6 +127,13 @@ const Login = ({ setIsAuthenticated }) => {
           const bookingIntent = location.state?.bookingIntent;
           const from = location.state?.from;
 
+          // Check if user is admin and redirect accordingly
+          if (userResponse.data.role === 'admin') {
+            console.log('Admin user detected, redirecting to /admin');
+            navigate('/admin');
+            return;
+          }
+
           if (bookingIntent) {
             // Redirect to the booking page with the saved data
             switch (bookingIntent.type) {

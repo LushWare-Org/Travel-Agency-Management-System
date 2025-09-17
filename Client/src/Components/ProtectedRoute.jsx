@@ -41,6 +41,12 @@ export default function ProtectedRoute({ children, requireAdmin = false }) {
     );
   }
 
+  // If user is admin redirect to admin panel
+  if (user.role === 'admin' && !requireAdmin && location.pathname !== '/admin') {
+    console.log('🔄 REDIRECTING ADMIN TO /admin');
+    return <Navigate to="/admin" replace />;
+  }
+
   if (requireAdmin && user.role !== 'admin') {
     return (
       <Box sx={{ 
