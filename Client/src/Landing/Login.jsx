@@ -127,10 +127,16 @@ const Login = ({ setIsAuthenticated }) => {
           const bookingIntent = location.state?.bookingIntent;
           const from = location.state?.from;
 
-          // Check if user is admin and redirect accordingly
+          // Check if user is admin or staff and redirect accordingly
           if (userResponse.data.role === 'admin') {
             console.log('Admin user detected, redirecting to /admin');
             navigate('/admin');
+            return;
+          }
+          
+          if (userResponse.data.role === 'staff') {
+            console.log('Staff user detected, redirecting to /staff');
+            navigate('/staff');
             return;
           }
 
