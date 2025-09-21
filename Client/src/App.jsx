@@ -44,6 +44,8 @@ const AdminActivityDetail = lazy(() => import("./pages/admin/ActivityDetail"));
 const AdminActivityView = lazy(() => import("./pages/admin/AdminActivityView"));
 const AdminActivities = lazy(() => import("./pages/admin/Activities"));
 const ActivityBookings = lazy(() => import("./pages/admin/ActivityBookings"));
+const StaffDashboard = lazy(() => import("./pages/staff/StaffDashboard"));
+const StaffActivityBookings = lazy(() => import("./pages/staff/StaffActivityBookings"));
 
 // point axios at your API & send cookies by default
 // Use environment variable if available, otherwise fallback based on mode
@@ -58,10 +60,12 @@ axios.defaults.withCredentials = true;
 export default function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const isStaffRoute = location.pathname.startsWith("/staff");
+  const isLayoutRoute = isAdminRoute || isStaffRoute;
 
   // Add/remove admin-layout class based on route
   useEffect(() => {
-    if (isAdminRoute) {
+    if (isLayoutRoute) {
       document.body.classList.add("admin-layout");
     } else {
       document.body.classList.remove("admin-layout");
@@ -71,13 +75,13 @@ export default function App() {
     return () => {
       document.body.classList.remove("admin-layout");
     };
-  }, [isAdminRoute]);
+  }, [isLayoutRoute]);
 
   return (
     <Suspense fallback={<div className="text-center py-10">Loading…</div>}>
-      {/* Only show LandingHeader if not on admin route */}
-      {!isAdminRoute && <LandingHeader />}
-      <div style={{ paddingTop: !isAdminRoute ? "80px" : "0px" }}>
+      {/* Only show LandingHeader if not on admin or staff route */}
+      {!isLayoutRoute && <LandingHeader />}
+      <div style={{ paddingTop: !isLayoutRoute ? "80px" : "0px" }}>
         <Routes>
           {/* public */}
           <Route
@@ -363,6 +367,24 @@ export default function App() {
             element={
               <ProtectedRoute requireAdmin={true}>
                 <AdminActivityDetail />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* staff only routes */}
+          <Route
+            path="/staff"
+            element={
+              <ProtectedRoute requireStaff={true}>
+                <StaffDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/staff/activities/bookings"
+            element={
+              <ProtectedRoute requireStaff={true}>
+                <StaffActivityBookings />
               </ProtectedRoute>
             }
           />

@@ -169,6 +169,7 @@ const ActivityBookings = () => {
       case 'Confirmed': return 'success';
       case 'Cancelled': return 'error';
       case 'Completed': return 'info';
+      case 'Waiting List': return 'secondary';
       default: return 'default';
     }
   };
@@ -320,6 +321,7 @@ const ActivityBookings = () => {
             <MenuItem value="Confirmed">Confirmed</MenuItem>
             <MenuItem value="Cancelled">Cancelled</MenuItem>
             <MenuItem value="Completed">Completed</MenuItem>
+            <MenuItem value="Waiting List">Waiting List</MenuItem>
           </Select>
         </FormControl>
         <FormControl size="small" sx={{ minWidth: 140 }}>
@@ -578,6 +580,7 @@ const ActivityBookings = () => {
                 <MenuItem value="Confirmed">Confirmed</MenuItem>
                 <MenuItem value="Cancelled">Cancelled</MenuItem>
                 <MenuItem value="Completed">Completed</MenuItem>
+                <MenuItem value="Waiting List">Waiting List</MenuItem>
               </Select>
             </FormControl>
             

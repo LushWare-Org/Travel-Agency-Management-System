@@ -122,7 +122,7 @@ router.put('/:userId/role', auth, async (req, res) => {
     }
     
     // Validate role
-    if (!['agent', 'admin', 'pending'].includes(role)) {
+    if (!['agent', 'admin', 'pending', 'staff'].includes(role)) {
       return res.status(400).json({ msg: 'Invalid role' });
     }
 
