@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   AppBar, 
@@ -28,7 +28,6 @@ import {
   LocalActivity as LocalActivityIcon,
   Menu as MenuIcon
 } from '@mui/icons-material';
-import axios from 'axios';
 import { useAdminLayout } from '../hooks/useAdminLayout';
 import { AuthContext } from '../context/AuthContext';
 
@@ -36,7 +35,7 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
-  const { logout, setUser } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   
   const {
     isMobile,
@@ -52,10 +51,8 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
     if (item.id === 'activities') {
       navigate('/admin/activities');
     } else {
-      // For all other sections, go to main admin panel
       navigate('/admin');
     }
-    // Close mobile drawer after navigation
     if (isMobile) {
       handleDrawerToggle();
     }
@@ -64,26 +61,7 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
   const openProfileMenu = (e) => setAnchorEl(e.currentTarget);
   const closeProfileMenu = () => setAnchorEl(null);
   const goTo = (path) => { navigate(path); closeProfileMenu(); };
-  const handleLogout = async () => {
-    console.log('🔵 ADMIN LOGOUT CLICKED');
-    
-    // Clear user state immediately
-    setUser(null);
-    
-    try {
-      // Call logout API
-      await axios.post('/auth/logout', {}, { withCredentials: true });
-    } catch (err) {
-      console.error('Admin logout error:', err);
-    }
-    
-    // Clear all storage
-    localStorage.clear();
-    sessionStorage.clear();
-    
-    // Force complete page reload with cache busting
-    window.location.href = '/login?t=' + Date.now();
-  };
+  const handleLogout = () => logout();
 
   const menuItems = [
     { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },
@@ -171,7 +149,7 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
+          keepMounted: true,
         }}
         sx={{
           display: { xs: 'block', md: 'none' },

@@ -2,6 +2,8 @@ import React, { lazy, Suspense, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import axios from "axios";
 import LandingHeader from "./Landing/LandingHeader";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
 import Footer from "./Components/Footer";
 import WhatsappIcon from "./Components/WhatsappIcon";
 
@@ -58,6 +60,7 @@ axios.defaults.baseURL = baseURL;
 axios.defaults.withCredentials = true;
 
 export default function App() {
+  const { authVersion } = useContext(AuthContext) || { authVersion: 0 };
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isStaffRoute = location.pathname.startsWith("/staff");
@@ -79,8 +82,8 @@ export default function App() {
 
   return (
     <Suspense fallback={<div className="text-center py-10">Loading…</div>}>
-      {/* Only show LandingHeader if not on admin or staff route */}
-      {!isLayoutRoute && <LandingHeader />}
+  {/* Only show LandingHeader if not on admin or staff route. Key forces remount on auth changes */}
+  {!isLayoutRoute && <LandingHeader key={`lh-${authVersion}`} />}
       <div style={{ paddingTop: !isLayoutRoute ? "80px" : "0px" }}>
         <Routes>
           {/* public */}

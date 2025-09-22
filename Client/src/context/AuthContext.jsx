@@ -8,6 +8,8 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  // Incrementing value to force subscribers to re-render on auth boundary changes
+  const [authVersion, setAuthVersion] = useState(0);
   const navigate = useNavigate();
 
   // Simple function to check authentication status
@@ -16,7 +18,9 @@ export const AuthProvider = ({ children }) => {
       const { data } = await axios.get('/users/me', { 
         withCredentials: true 
       });
-      setUser(data);
+  setUser(data);
+  // bump version when we become authenticated
+  setAuthVersion((v) => v + 1);
       return true;
     } catch (err) {
       // If 401, try refresh token once
@@ -30,13 +34,15 @@ export const AuthProvider = ({ children }) => {
             withCredentials: true 
           });
           setUser(userData.data);
+          setAuthVersion((v) => v + 1);
           return true;
         } catch (refreshError) {
           setUser(null);
           return false;
         }
       }
-      setUser(null);
+  setUser(null);
+  setAuthVersion((v) => v + 1);
       return false;
     }
   };
@@ -100,9 +106,10 @@ export const AuthProvider = ({ children }) => {
   // Login function
   const login = async (email, password) => {
     try {
-      await axios.post('/auth/login', { email, password }, { withCredentials: true });
-      const { data } = await axios.get('/users/me', { withCredentials: true });
-      setUser(data);
+  await axios.post('/auth/login', { email, password }, { withCredentials: true });
+  const { data } = await axios.get('/users/me', { withCredentials: true });
+  setUser(data);
+  setAuthVersion((v) => v + 1);
       return { success: true };
     } catch (err) {
       setUser(null);
@@ -114,8 +121,9 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     console.log('🔴 LOGOUT CALLED - User role:', user?.role);
     
-    // Clear user state immediately to prevent race conditions
-    setUser(null);
+  // Clear user state immediately to prevent race conditions
+  setUser(null);
+  setAuthVersion((v) => v + 1);
     console.log('🔴 User state cleared');
     
     try {
@@ -135,7 +143,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, login, logout, checkAuthStatus }}>
+    <AuthContext.Provider value={{ user, setUser, loading, login, logout, checkAuthStatus, authVersion }}>
       {children}
     </AuthContext.Provider>
   );
