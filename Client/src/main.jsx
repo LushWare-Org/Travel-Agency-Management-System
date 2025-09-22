@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import './index.css';
+// Ensure axios global defaults (baseURL, withCredentials) are applied app-wide
+import './axios';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter

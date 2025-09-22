@@ -41,14 +41,20 @@ export default function ProtectedRoute({ children, requireAdmin = false, require
     );
   }
 
-  // If user is admin redirect to admin panel (unless they're accessing admin routes)
-  if (user.role === 'admin' && !requireAdmin && !location.pathname.startsWith('/admin')) {
+  // If user is admin redirect to admin panel (unless they're accessing admin routes or auth pages)
+  if (user.role === 'admin' && !requireAdmin && 
+      !location.pathname.startsWith('/admin') && 
+      !location.pathname.startsWith('/login') && 
+      !location.pathname.startsWith('/register')) {
     console.log('🔄 REDIRECTING ADMIN TO /admin');
     return <Navigate to="/admin" replace />;
   }
 
-  // If user is staff redirect to staff panel (unless they're accessing staff routes)
-  if (user.role === 'staff' && !requireStaff && !location.pathname.startsWith('/staff')) {
+  // If user is staff redirect to staff panel (unless they're accessing staff routes or auth pages)
+  if (user.role === 'staff' && !requireStaff && 
+      !location.pathname.startsWith('/staff') && 
+      !location.pathname.startsWith('/login') && 
+      !location.pathname.startsWith('/register')) {
     console.log('🔄 REDIRECTING STAFF TO /staff');
     return <Navigate to="/staff" replace />;
   }

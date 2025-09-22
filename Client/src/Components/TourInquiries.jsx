@@ -50,7 +50,7 @@ const TourInquiries = () => {
   const fetchExchangeRates = async () => {
     try {
       // Corrected URL (remove double /api/api/)
-      const response = await axios.get('/api/exchange-rates', { withCredentials: false });
+  const response = await axios.get('/exchange-rates', { withCredentials: false });
       setExchangeRates(response.data.rates || {});
     } catch (error) {
       console.error('Error fetching exchange rates:', error);

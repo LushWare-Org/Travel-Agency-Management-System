@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   AppBar, 
@@ -30,11 +30,13 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 import { useAdminLayout } from '../hooks/useAdminLayout';
+import { AuthContext } from '../context/AuthContext';
 
 const AdminLayout = ({ children, title = 'Admin Management' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
+  const { logout, setUser } = useContext(AuthContext);
   
   const {
     isMobile,
@@ -62,7 +64,26 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
   const openProfileMenu = (e) => setAnchorEl(e.currentTarget);
   const closeProfileMenu = () => setAnchorEl(null);
   const goTo = (path) => { navigate(path); closeProfileMenu(); };
-  const handleLogout = () => axios.post('/api/auth/logout', {}, { withCredentials: true }).finally(() => goTo('/login'));
+  const handleLogout = async () => {
+    console.log('🔵 ADMIN LOGOUT CLICKED');
+    
+    // Clear user state immediately
+    setUser(null);
+    
+    try {
+      // Call logout API
+      await axios.post('/auth/logout', {}, { withCredentials: true });
+    } catch (err) {
+      console.error('Admin logout error:', err);
+    }
+    
+    // Clear all storage
+    localStorage.clear();
+    sessionStorage.clear();
+    
+    // Force complete page reload with cache busting
+    window.location.href = '/login?t=' + Date.now();
+  };
 
   const menuItems = [
     { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },

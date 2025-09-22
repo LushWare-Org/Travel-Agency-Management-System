@@ -112,13 +112,25 @@ export const AuthProvider = ({ children }) => {
 
   // Logout function
   const logout = async () => {
+    console.log('🔴 LOGOUT CALLED - User role:', user?.role);
+    
+    // Clear user state immediately to prevent race conditions
+    setUser(null);
+    console.log('🔴 User state cleared');
+    
     try {
       await axios.post('/auth/logout', {}, { withCredentials: true });
+      console.log('🔴 Logout API call successful');
     } catch (err) {
       console.error('Logout error:', err);
     } finally {
-      setUser(null);
-      navigate('/login', { replace: true });
+      // Clear any stored data
+      localStorage.clear();
+      sessionStorage.clear();
+      console.log('🔴 Storage cleared, redirecting to login...');
+      
+      // Force a complete page reload to ensure all state is cleared
+      window.location.href = '/login';
     }
   };
 
