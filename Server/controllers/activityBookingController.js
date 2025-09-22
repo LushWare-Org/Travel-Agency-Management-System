@@ -341,6 +341,14 @@ exports.updateActivityBooking = async (req, res) => {
       });
     }
 
+    // Special validation for moving to waiting list
+    if (status === 'Waiting List' && booking.status !== 'Pending') {
+      return res.status(400).json({
+        success: false,
+        error: 'Only pending bookings can be added to the waiting list'
+      });
+    }
+
     // Update fields if provided
     if (status) booking.status = status;
     if (paymentStatus) booking.paymentStatus = paymentStatus;

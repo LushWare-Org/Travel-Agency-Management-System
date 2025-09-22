@@ -99,6 +99,19 @@ const StaffActivityBookings = () => {
 
   const handleAddToWaitingList = async (bookingId) => {
     try {
+      // Find the booking to check its status
+      const booking = bookings.find(b => b._id === bookingId);
+      if (!booking) {
+        alert('Booking not found');
+        return;
+      }
+
+      // Only allow pending bookings to be added to waiting list
+      if (booking.status !== 'Pending') {
+        alert('Only pending bookings can be added to the waiting list');
+        return;
+      }
+
       const response = await axios.put(`/activity-bookings/${bookingId}`, {
         status: 'Waiting List'
       }, {
@@ -379,12 +392,12 @@ const StaffActivityBookings = () => {
                               <ViewIcon />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title="Add to Waiting List">
+                          <Tooltip title={booking.status === 'Pending' ? "Add to Waiting List" : "Only pending bookings can be added to waiting list"}>
                             <IconButton
                               size="small"
                               color="primary"
                               onClick={() => handleAddToWaitingList(booking._id)}
-                              disabled={booking.status === 'Waiting List'}
+                              disabled={booking.status !== 'Pending'}
                             >
                               <WaitingListIcon />
                             </IconButton>
