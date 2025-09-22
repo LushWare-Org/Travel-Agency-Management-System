@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   AppBar, 
@@ -22,13 +22,14 @@ import {
   Menu as MenuIcon,
   Person as PersonIcon
 } from '@mui/icons-material';
-import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 import { useAdminLayout } from '../hooks/useAdminLayout';
 
 const StaffLayout = ({ children, title = 'Staff Dashboard' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
+  const { logout } = useContext(AuthContext);
   
   const {
     isMobile,
@@ -56,7 +57,7 @@ const StaffLayout = ({ children, title = 'Staff Dashboard' }) => {
   const openProfileMenu = (e) => setAnchorEl(e.currentTarget);
   const closeProfileMenu = () => setAnchorEl(null);
   const goTo = (path) => { navigate(path); closeProfileMenu(); };
-  const handleLogout = () => axios.post('/api/auth/logout', {}, { withCredentials: true }).finally(() => goTo('/login'));
+  const handleLogout = () => logout();
 
   const menuItems = [
     { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon />, path: '/staff' },

@@ -30,8 +30,12 @@ export const AuthProvider = ({ children }) => {
       console.error("Token refresh failed:", error);
       setUser(null);
 
-      // Only navigate to login if not already on login page
-      if (!window.location.pathname.includes('/login')) {
+      // Only navigate to login if not already on login page and user was on a protected route
+      const isProtectedRoute = window.location.pathname.includes('/staff') || 
+                              window.location.pathname.includes('/admin') || 
+                              window.location.pathname.includes('/profile');
+      
+      if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register') && isProtectedRoute) {
         navigate('/login', { replace: true });
       }
 
@@ -64,7 +68,7 @@ export const AuthProvider = ({ children }) => {
           if (originalReq.url.includes('/auth/refresh-token')) {
             setUser(null);
             // Only navigate to login if not already there and user was previously logged in
-            if (!window.location.pathname.includes('/login') && user) {
+            if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register') && user) {
               navigate('/login', { replace: true });
             }
             return Promise.reject(err);
@@ -82,8 +86,10 @@ export const AuthProvider = ({ children }) => {
               }
             } catch (error) {
               setUser(null);
-              // Only navigate to login if not already there
-              if (!window.location.pathname.includes('/login')) {
+              // Only navigate to login if not already there and this was from a staff/admin page
+              if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register') && 
+                  (window.location.pathname.includes('/staff') || window.location.pathname.includes('/admin') || 
+                   window.location.pathname.includes('/profile'))) {
                 navigate('/login', { replace: true });
               }
               return Promise.reject(err);
@@ -137,15 +143,17 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       try {
-        // Check if there's any indication of an existing session
-        // Only make the auth check if there's a reasonable chance the user is logged in
-        if (hasAuthCookies()) {
+        // Always try to check auth status if there are any cookies
+        // This is more reliable than trying to detect specific cookie names
+        if (hasAuthCookies() || document.cookie.length > 0) {
+          console.log('🔍 Checking auth status on page load...');
           await checkAuthStatus();
         } else {
-          // No auth cookie found, user is likely not logged in
+          console.log('❌ No auth cookies found, skipping auth check');
           setUser(null);
         }
       } catch (err) {
+        console.error('❌ Initial auth check failed:', err);
         setUser(null);
       } finally {
         setLoading(false);

@@ -6,7 +6,15 @@
  */
 export const hasAuthCookies = () => {
   const cookies = document.cookie;
-  return cookies.includes('token=') || cookies.includes('auth') || cookies.includes('session');
+  // Check for any potential auth cookies including httpOnly cookies that might be present
+  return cookies.length > 0 && (
+    cookies.includes('token=') || 
+    cookies.includes('auth') || 
+    cookies.includes('session') ||
+    cookies.includes('jwt') ||
+    cookies.includes('access') ||
+    cookies.includes('refresh')
+  );
 };
 
 /**
@@ -18,7 +26,8 @@ export const isProtectedRoute = (pathname) => {
     '/settings', 
     '/bookings',
     '/bookingRequest',
-    '/admin'
+    '/admin',
+    '/staff'
   ];
   
   return protectedPaths.some(path => pathname.startsWith(path));
@@ -29,4 +38,11 @@ export const isProtectedRoute = (pathname) => {
  */
 export const isAdminRoute = (pathname) => {
   return pathname.startsWith('/admin');
+};
+
+/**
+ * Check if the current route is a staff route
+ */
+export const isStaffRoute = (pathname) => {
+  return pathname.startsWith('/staff');
 };
