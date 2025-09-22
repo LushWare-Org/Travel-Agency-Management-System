@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import {
   LocalActivity as ActivityIcon,
-  Visibility as ViewIcon,
+  PlaylistAdd as WaitingListIcon,
   TrendingUp as TrendingUpIcon,
   Assignment as AssignmentIcon
 } from '@mui/icons-material';
@@ -132,13 +132,13 @@ const StaffDashboard = () => {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <ViewIcon sx={{ fontSize: 40, color: 'info.main', mr: 2 }} />
+                  <WaitingListIcon sx={{ fontSize: 40, color: 'secondary.main', mr: 2 }} />
                   <Box>
                     <Typography color="textSecondary" gutterBottom>
-                      Inquiries
+                      Waiting List
                     </Typography>
                     <Typography variant="h4">
-                      {stats.inquiries || 0}
+                      {stats.waitingListBookings || 0}
                     </Typography>
                   </Box>
                 </Box>
