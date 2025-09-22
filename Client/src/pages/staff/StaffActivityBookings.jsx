@@ -171,7 +171,7 @@ const StaffActivityBookings = () => {
     <StaffLayout>
       <Box>
         <Typography variant="h4" gutterBottom>
-          Activity Bookings & Inquiries Management
+          Activity Bookings & Waiting List Management
         </Typography>
 
         {/* Statistics Cards */}
@@ -215,11 +215,11 @@ const StaffActivityBookings = () => {
           <Grid item xs={12} sm={6} md={3}>
             <Card>
               <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h4" color="info.main">
-                  {stats.inquiries || 0}
+                <Typography variant="h4" color="secondary.main">
+                  {stats.waitingListBookings || 0}
                 </Typography>
                 <Typography color="textSecondary">
-                  Inquiries
+                  Waiting List
                 </Typography>
               </CardContent>
             </Card>
