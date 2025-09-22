@@ -20,8 +20,7 @@ import {
   Dashboard as DashboardIcon,
   LocalActivity as LocalActivityIcon,
   Menu as MenuIcon,
-  Person as PersonIcon,
-  Visibility as ViewIcon
+  Person as PersonIcon
 } from '@mui/icons-material';
 import axios from 'axios';
 import { useAdminLayout } from '../hooks/useAdminLayout';
@@ -62,7 +61,6 @@ const StaffLayout = ({ children, title = 'Staff Dashboard' }) => {
   const menuItems = [
     { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon />, path: '/staff' },
     { id: 'activities', text: 'Activity Bookings', icon: <LocalActivityIcon />, path: '/staff/activities/bookings' },
-    { id: 'view-only', text: 'View Only Access', icon: <ViewIcon />, section: 'readonly' },
   ];
 
   const isActiveItem = (item) => {
