@@ -543,6 +543,7 @@ exports.getActivityBookingStats = async (req, res) => {
     const confirmedBookings = await ActivityBooking.countDocuments({ status: 'Confirmed' });
     const cancelledBookings = await ActivityBooking.countDocuments({ status: 'Cancelled' });
     const completedBookings = await ActivityBooking.countDocuments({ status: 'Completed' });
+    const waitingListBookings = await ActivityBooking.countDocuments({ status: 'Waiting List' });
 
     // Calculate total revenue from confirmed and completed bookings
     const revenueBookings = await ActivityBooking.find({ 
@@ -580,6 +581,7 @@ exports.getActivityBookingStats = async (req, res) => {
         confirmedBookings,
         cancelledBookings,
         completedBookings,
+        waitingListBookings,
         totalRevenue,
         bookingsByActivity
       }
