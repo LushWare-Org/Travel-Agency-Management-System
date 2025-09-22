@@ -2,7 +2,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { hasAuthCookies } from '../utils/authUtils';
 
 export const AuthContext = createContext();
 
@@ -11,168 +10,97 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Function to handle token refreshing
-  const refreshToken = async () => {
-    try {
-      // Make sure credentials are included
-      await axios.post('/auth/refresh-token', {}, {
-        withCredentials: true
-      });
-
-      // If token refresh was successful, get user data
-      const userData = await axios.get('/users/me', {
-        withCredentials: true
-      });
-
-      setUser(userData.data);
-      return true; // Return success
-    } catch (error) {
-      console.error("Token refresh failed:", error);
-      setUser(null);
-
-      // Only navigate to login if not already on login page and user was on a protected route
-      const isProtectedRoute = window.location.pathname.includes('/staff') || 
-                              window.location.pathname.includes('/admin') || 
-                              window.location.pathname.includes('/profile');
-      
-      if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register') && isProtectedRoute) {
-        navigate('/login', { replace: true });
-      }
-
-      return false; // Return failure
-    }
-  };
-
-  // Axios interceptor for 401 errors
-  useEffect(() => {
-    const id = axios.interceptors.response.use(
-      res => res,
-      async err => {
-        const originalReq = err.config;
-
-        if (err.response?.status === 401 && !originalReq._retry) {
-          // Skip interceptor for initial auth checks
-          if (originalReq.headers && originalReq.headers['X-Initial-Auth-Check']) {
-            return Promise.reject(err);
-          }
-
-          // Only handle authentication-related 401s for specific protected endpoints
-          const isProtectedEndpoint = originalReq.url.includes('/bookings') ||
-                                     originalReq.url.includes('/profile') ||
-                                     originalReq.url.includes('/admin') ||
-                                     originalReq.url.includes('/settings') ||
-                                     originalReq.url.includes('/users/me') ||
-                                     (originalReq.url.includes('/auth/') && !originalReq.url.includes('/auth/login') && !originalReq.url.includes('/auth/register'));
-
-          // If this is a refresh token call that failed, logout immediately
-          if (originalReq.url.includes('/auth/refresh-token')) {
-            setUser(null);
-            // Only navigate to login if not already there and user was previously logged in
-            if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register') && user) {
-              navigate('/login', { replace: true });
-            }
-            return Promise.reject(err);
-          }
-
-          // Only attempt token refresh for protected endpoints and if user was previously logged in
-          if (isProtectedEndpoint && user) {
-            originalReq._retry = true;
-            try {
-              const success = await refreshToken();
-              if (success) {
-                return axios(originalReq);
-              } else {
-                return Promise.reject(err);
-              }
-            } catch (error) {
-              setUser(null);
-              // Only navigate to login if not already there and this was from a staff/admin page
-              if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register') && 
-                  (window.location.pathname.includes('/staff') || window.location.pathname.includes('/admin') || 
-                   window.location.pathname.includes('/profile'))) {
-                navigate('/login', { replace: true });
-              }
-              return Promise.reject(err);
-            }
-          }
-        }
-        return Promise.reject(err);
-      }
-    );
-    return () => axios.interceptors.response.eject(id);
-  }, [navigate, user]);
-
-  // Function to silently check authentication status
+  // Simple function to check authentication status
   const checkAuthStatus = async () => {
     try {
-      // Use a direct axios call without interceptor interference for initial check
       const { data } = await axios.get('/users/me', { 
-        withCredentials: true,
-        // Add a custom header to identify this as an initial auth check
-        headers: { 'X-Initial-Auth-Check': 'true' }
+        withCredentials: true 
       });
       setUser(data);
       return true;
     } catch (err) {
+      // If 401, try refresh token once
       if (err.response?.status === 401) {
-        // Try to refresh token silently, but don't redirect on failure
         try {
           await axios.post('/auth/refresh-token', {}, { 
-            withCredentials: true,
-            headers: { 'X-Initial-Auth-Check': 'true' }
+            withCredentials: true 
           });
+          // If refresh succeeds, try getting user data again
           const userData = await axios.get('/users/me', { 
-            withCredentials: true,
-            headers: { 'X-Initial-Auth-Check': 'true' }
+            withCredentials: true 
           });
           setUser(userData.data);
           return true;
         } catch (refreshError) {
-          // Silent failure - user is just not logged in
           setUser(null);
           return false;
         }
-      } else {
-        setUser(null);
-        return false;
       }
+      setUser(null);
+      return false;
     }
   };
 
-  // Initial auth check - only check if there might be an existing session
+  // Initial auth check on app load
   useEffect(() => {
-    (async () => {
+    const initAuth = async () => {
       try {
-        // Always try to check auth status if there are any cookies
-        // This is more reliable than trying to detect specific cookie names
-        if (hasAuthCookies() || document.cookie.length > 0) {
-          console.log('🔍 Checking auth status on page load...');
-          await checkAuthStatus();
-        } else {
-          console.log('❌ No auth cookies found, skipping auth check');
-          setUser(null);
-        }
-      } catch (err) {
-        console.error('❌ Initial auth check failed:', err);
+        await checkAuthStatus();
+      } catch (error) {
+        console.error('Initial auth check failed:', error);
         setUser(null);
       } finally {
         setLoading(false);
       }
-    })();
+    };
+
+    initAuth();
   }, []);
 
-  // Set up token refresh interval (every 45 minutes)
+  // Simple axios interceptor that only handles 401s for protected endpoints
   useEffect(() => {
-    const interval = setInterval(refreshToken, 24 * 60 * 60 * 1000); // 24 hours
-    return () => clearInterval(interval);
-  }, []);
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config;
+        
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+          
+          // Only try refresh for protected endpoints
+          const isProtectedEndpoint = originalRequest.url.includes('/users/me') ||
+                                     originalRequest.url.includes('/bookings') ||
+                                     originalRequest.url.includes('/admin') ||
+                                     originalRequest.url.includes('/staff');
+          
+          if (isProtectedEndpoint) {
+            try {
+              await axios.post('/auth/refresh-token', {}, { withCredentials: true });
+              return axios(originalRequest);
+            } catch (refreshError) {
+              setUser(null);
+              // Only redirect if on protected routes
+              const currentPath = window.location.pathname;
+              if (currentPath.includes('/staff') || currentPath.includes('/admin') || currentPath.includes('/profile')) {
+                navigate('/login', { replace: true });
+              }
+            }
+          }
+        }
+        
+        return Promise.reject(error);
+      }
+    );
 
-  // Login function for use after registration
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
+  }, [navigate]);
+
+  // Login function
   const login = async (email, password) => {
     try {
-      // Post to login endpoint
       await axios.post('/auth/login', { email, password }, { withCredentials: true });
-      // Fetch user info
       const { data } = await axios.get('/users/me', { withCredentials: true });
       setUser(data);
       return { success: true };
@@ -186,13 +114,11 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await axios.post('/auth/logout', {}, { withCredentials: true });
-      setUser(null);
-      navigate('/');
     } catch (err) {
       console.error('Logout error:', err);
-      // Even if logout fails on server, clear user locally
+    } finally {
       setUser(null);
-      navigate('/');
+      navigate('/login', { replace: true });
     }
   };
 
