@@ -5,7 +5,6 @@ import LandingHeader from "./Landing/LandingHeader";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import Footer from "./Components/Footer";
-import WhatsappIcon from "./Components/WhatsappIcon";
 
 // AUTHENTICATION RE-ENABLED - ProtectedRoute import added back
 import ProtectedRoute from "./Components/ProtectedRoute";
@@ -33,13 +32,6 @@ const TourBooking = lazy(() => import("./pages/TourBooking"));
 const InquiryPage = lazy(() => import("./pages/InquiryPage"));
 const RoomInquiry = lazy(() => import("./pages/RoomInquiry"));
 const Activities = lazy(() => import("./pages/Activities"));
-const TravelServices = lazy(() => import("./pages/TravelServices"));
-const RealEstate = lazy(() => import("./pages/RealEstate"));
-const InvestmentSupport = lazy(() => import("./pages/InvestmentSupport"));
-const BrandRepresentation = lazy(() => import("./pages/BrandRepresentation"));
-const AboutUs = lazy(() => import("./pages/AboutUs"));
-const Hulhumeedhoo = lazy(() => import("./pages/Hulhumeedhoo"));
-const TokenProgram = lazy(() => import("./pages/TokenProgram"));
 const ActivityDetail = lazy(() => import("./pages/ActivityDetail"));
 const ActivityForm = lazy(() => import("./pages/admin/ActivityForm"));
 const AdminActivityDetail = lazy(() => import("./pages/admin/ActivityDetail"));
@@ -374,95 +366,10 @@ export default function App() {
             }
           />
 
-          {/* staff only routes */}
-          <Route
-            path="/staff"
-            element={
-              <ProtectedRoute requireStaff={true}>
-                <StaffDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/staff/activities/bookings"
-            element={
-              <ProtectedRoute requireStaff={true}>
-                <StaffActivityBookings />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* static informational pages */}
-          <Route
-            path="/travel-services"
-            element={
-              <>
-                <TravelServices />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/real-estate"
-            element={
-              <>
-                <RealEstate />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/investment-support"
-            element={
-              <>
-                <InvestmentSupport />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/brand-representation"
-            element={
-              <>
-                <BrandRepresentation />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/about-us"
-            element={
-              <>
-                <AboutUs />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/hulhumeedhoo"
-            element={
-              <>
-                <Hulhumeedhoo />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/token-program"
-            element={
-              <>
-                <TokenProgram />
-                <Footer />
-              </>
-            }
-          />
-
           {/* catch‑all */}
           <Route path="*" element={<Home />} />
         </Routes>
       </div>
-      {/* Only show WhatsApp icon if not on admin route */}
-      {!isAdminRoute && <WhatsappIcon />}
     </Suspense>
   );
 }

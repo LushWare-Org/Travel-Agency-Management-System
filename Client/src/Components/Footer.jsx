@@ -31,17 +31,12 @@ const Footer = () => {
           <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-4">
               <div className="flex flex-row items-start gap-4">
-                <img
-                  className="h-20 w-auto"
-                  src="/IsleKey Logo.jpg"
-                  alt="Logo"
-                />
                 <div className="mt-4">
                   <h1
                     className="text-2xl font-bold"
                     style={{ color: palette.lapis_lazuli }}
                   >
-                    IsleKey Holidays
+                    Travel Maldives
                   </h1>
                   <p className="text-sm" style={{ color: palette.indigo_dye2 }}>
                     Your Gateway to Paradise
@@ -49,7 +44,7 @@ const Footer = () => {
                 </div>
               </div>
               <p className="ml-[6px]" style={{ color: palette.indigo_dye }}>
-                Discover the best destinations with us. (Dummy tagline)
+                Discover the best destinations with us.
               </p>
             </div>
           </div>
@@ -122,7 +117,7 @@ const Footer = () => {
                 >
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                 </svg>
-                <span> +960 778-1048</span>
+                <span> +960 123-4567</span>
               </li>
             </ul>
             <div className="mt-4 flex space-x-4">
@@ -202,7 +197,7 @@ const Footer = () => {
           }}
         >
           <p className="text-sm">
-            © 2025 IsleKey Holidays | Developed by{" "}
+            © 2025 - Travel Agency Management System | Developed by{" "}
             <a
               href="https://lushware.org/"
               target="_blank"

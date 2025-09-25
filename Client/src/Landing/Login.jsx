@@ -281,16 +281,6 @@ const Login = ({ setIsAuthenticated }) => {
         {/* Left Side - Branding & Information */}
         <div className="hidden lg:flex lg:w-1/2 items-center justify-center p-12">
           <div className="max-w-md text-center text-white">
-            <div className={`mb-8 ${animations.float}`}>
-              <img
-                src="/IsleKey Logo.jpg"
-                alt="IsleKey Holidays"
-                className="h-24 w-auto mx-auto mb-6 rounded-2xl shadow-2xl"
-                onError={(e) => {
-                  e.target.src = "/Logo.png";
-                }}
-              />
-            </div>
             <h1 className={`text-4xl font-bold mb-6 ${animations.fadeIn}`}>
               Welcome Back
             </h1>
