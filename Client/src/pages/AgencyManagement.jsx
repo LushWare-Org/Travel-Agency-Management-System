@@ -153,6 +153,7 @@ const AgencyManagement = () => {
       case 'admin': return '#1976d2';
       case 'pending': return '#2e7d32';
       case 'agent': return '#ed6c02';
+      case 'staff': return '#9c27b0';
       default: return '#757575';
     }
   };
@@ -249,6 +250,7 @@ const AgencyManagement = () => {
                                         <MenuItem value="agent">Agent</MenuItem>
                                         <MenuItem value="pending">Pending</MenuItem>
                                         <MenuItem value="admin">Admin</MenuItem>
+                                        <MenuItem value="staff">Staff</MenuItem>
                                       </Select>
                                       <IconButton 
                                         color="error" 

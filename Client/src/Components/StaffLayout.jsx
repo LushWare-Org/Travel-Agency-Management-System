@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   AppBar, 
@@ -18,20 +18,14 @@ import {
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
-  Hotel as HotelIcon,
-  KingBed as RoomIcon,
-  Bookmark as BookingIcon,
-  LocalOffer as DiscountIcon,
-  Email as EmailIcon,
-  Person as PersonIcon,
-  TourOutlined,
   LocalActivity as LocalActivityIcon,
-  Menu as MenuIcon
+  Menu as MenuIcon,
+  Person as PersonIcon
 } from '@mui/icons-material';
-import { useAdminLayout } from '../hooks/useAdminLayout';
 import { AuthContext } from '../context/AuthContext';
+import { useAdminLayout } from '../hooks/useAdminLayout';
 
-const AdminLayout = ({ children, title = 'Admin Management' }) => {
+const StaffLayout = ({ children, title = 'Staff Dashboard' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -49,10 +43,12 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
 
   const handleNavigation = (item) => {
     if (item.id === 'activities') {
-      navigate('/admin/activities');
+      navigate('/staff/activities/bookings');
     } else {
-      navigate('/admin');
+      // For all other sections, go to main staff dashboard
+      navigate('/staff');
     }
+    // Close mobile drawer after navigation
     if (isMobile) {
       handleDrawerToggle();
     }
@@ -64,22 +60,16 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
   const handleLogout = () => logout();
 
   const menuItems = [
-    { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },
-    { id: 'hotels', text: 'Hotel Management', icon: <HotelIcon />, section: 'hotels' },
-    { id: 'rooms', text: 'Room Management', icon: <RoomIcon />, section: 'rooms' },
-    { id: 'activities', text: 'Activity Management', icon: <LocalActivityIcon />, path: '/admin/activities' },
-    { id: 'bookings', text: 'Booking Oversight', icon: <BookingIcon />, section: 'bookings' },
-    { id: 'discounts', text: 'Discount Management', icon: <DiscountIcon />, section: 'discounts' },
-    { id: 'tours', text: 'Tour Management', icon: <TourOutlined/>, section: 'tours' },
-    { id: 'contacts', text: 'Contact Submissions', icon: <EmailIcon />, section: 'contacts' },
+    { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon />, path: '/staff' },
+    { id: 'activities', text: 'Activity Bookings', icon: <LocalActivityIcon />, path: '/staff/activities/bookings' },
   ];
 
   const isActiveItem = (item) => {
     if (item.id === 'activities') {
-      return location.pathname.startsWith('/admin/activities');
+      return location.pathname.startsWith('/staff/activities');
     }
     if (item.id === 'dashboard') {
-      return location.pathname === '/admin';
+      return location.pathname === '/staff';
     }
     return false;
   };
@@ -149,7 +139,7 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{
-          keepMounted: true,
+          keepMounted: true, // Better open performance on mobile.
         }}
         sx={{
           display: { xs: 'block', md: 'none' },
@@ -189,4 +179,4 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
   );
 };
 
-export default AdminLayout;
+export default StaffLayout;

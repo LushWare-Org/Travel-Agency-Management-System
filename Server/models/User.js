@@ -9,7 +9,7 @@ const UserSchema = new Schema({
   country:      { type: String, required: true },
   phoneNumber:  { type: String, required: true },
   password:     { type: String, required: true },
-  role:         { type: String, enum: ['user','agent','admin','pending'], default: 'user' },
+  role:         { type: String, enum: ['user','agent','admin','pending','staff'], default: 'user' },
   agencyProfile: { type: Schema.Types.ObjectId, ref: 'AgencyProfile' },
 }, { timestamps: true });
 

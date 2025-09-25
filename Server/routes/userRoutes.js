@@ -10,6 +10,14 @@ const { sendEmail } = require('../utils/emailService');
 
 router.get('/me', auth, async (req, res) => {
   try {
+    // Prevent caching of sensitive user info
+    res.set({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+      'Surrogate-Control': 'no-store',
+      'Vary': 'Cookie'
+    });
     console.log('DEBUG - Fetching user with ID:', req.user.userId);
     
     const user = await User.findById(req.user.userId)
@@ -122,7 +130,7 @@ router.put('/:userId/role', auth, async (req, res) => {
     }
     
     // Validate role
-    if (!['agent', 'admin', 'pending'].includes(role)) {
+    if (!['agent', 'admin', 'pending', 'staff'].includes(role)) {
       return res.status(400).json({ msg: 'Invalid role' });
     }
 

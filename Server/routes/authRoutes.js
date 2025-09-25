@@ -72,10 +72,12 @@ router.post('/login', async (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
+  // Clear the auth cookie; include path so it matches the cookie that was set
   res.clearCookie("token", {
     httpOnly: true,
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    secure: process.env.NODE_ENV === 'production' ? true : false
+    secure: process.env.NODE_ENV === 'production' ? true : false,
+    path: '/',
   });
   res.json({ message: "Logged out successfully" });
 });

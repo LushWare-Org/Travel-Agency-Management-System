@@ -341,6 +341,14 @@ exports.updateActivityBooking = async (req, res) => {
       });
     }
 
+    // Special validation for moving to waiting list
+    if (status === 'Waiting List' && booking.status !== 'Pending') {
+      return res.status(400).json({
+        success: false,
+        error: 'Only pending bookings can be added to the waiting list'
+      });
+    }
+
     // Update fields if provided
     if (status) booking.status = status;
     if (paymentStatus) booking.paymentStatus = paymentStatus;
@@ -543,6 +551,7 @@ exports.getActivityBookingStats = async (req, res) => {
     const confirmedBookings = await ActivityBooking.countDocuments({ status: 'Confirmed' });
     const cancelledBookings = await ActivityBooking.countDocuments({ status: 'Cancelled' });
     const completedBookings = await ActivityBooking.countDocuments({ status: 'Completed' });
+    const waitingListBookings = await ActivityBooking.countDocuments({ status: 'Waiting List' });
 
     // Calculate total revenue from confirmed and completed bookings
     const revenueBookings = await ActivityBooking.find({ 
@@ -580,6 +589,7 @@ exports.getActivityBookingStats = async (req, res) => {
         confirmedBookings,
         cancelledBookings,
         completedBookings,
+        waitingListBookings,
         totalRevenue,
         bookingsByActivity
       }
