@@ -223,15 +223,10 @@ const Register = () => {
             <div className={`flex items-center space-x-4 ${animations.fadeIn}`}>
               <div className="flex-shrink-0 relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/20 to-[#0A435C]/20 rounded-full blur-xl"></div>
-                <img 
-                  className="h-16 w-auto mb-1 relative z-10 drop-shadow-lg transition-transform duration-300 hover:scale-105" 
-                  src="./IsleKey Logo.jpg" 
-                  alt="IsleKey Holidays Logo" 
-                />
               </div>
               <div className="ml-2">
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-[#005E84] to-[#0A435C] bg-clip-text text-transparent">
-                  IsleKey Holidays
+                  Travel Maldives
                 </h1>
                 <p className="text-sm font-medium" style={{ color: palette.ash_gray }}>
                   Maldives Wholesale Experts
@@ -474,7 +469,7 @@ const Register = () => {
               </div>
               
               <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-[#005E84] to-[#0A435C] bg-clip-text text-transparent">
-                Join IsleKey Holidays
+                Join Travel Maldives
               </h2>
               <p className="text-lg font-medium" style={{ color: palette.ash_gray }}>
                 Create your travel agent account today

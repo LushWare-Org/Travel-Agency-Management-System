@@ -162,7 +162,7 @@ const Register = () => {
             </svg>
           </div>
           <h2 className="text-2xl font-bold mb-4">Registration Successful!</h2>
-          <p className="text-white/80">Welcome to IsleKey Holidays! Redirecting to login page...</p>
+          <p className="text-white/80">Welcome to Travel Maldives! Redirecting to login page...</p>
         </div>
         <style>{`
           @keyframes success-pulse {
@@ -237,18 +237,8 @@ const Register = () => {
         {/* Left Side - Branding & Information */}
         <div className="hidden lg:flex lg:w-1/2 items-center justify-center p-12">
           <div className="max-w-md text-center text-white">
-            <div className={`mb-8 ${animations.float}`}>
-              <img
-                src="/IsleKey Logo.jpg"
-                alt="IsleKey Holidays"
-                className="h-24 w-auto mx-auto mb-6 rounded-2xl shadow-2xl"
-                onError={(e) => {
-                  e.target.src = "/Logo.png";
-                }}
-              />
-            </div>
             <h1 className={`text-4xl font-bold mb-6 ${animations.fadeIn}`}>
-              Join IsleKey Holidays
+              Join Travel Maldives
             </h1>
             <p className={`text-xl text-blue-100 mb-8 leading-relaxed ${animations.slideUp}`}>
               Create your account and start planning your dream vacation to the Maldives. 

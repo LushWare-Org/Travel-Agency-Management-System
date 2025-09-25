@@ -89,17 +89,12 @@ const LandingHeader = () => {
           <div className="flex items-center space-x-4">
             <div className="flex-shrink-0 relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-[#005E84] to-[#075375] rounded-full opacity-20 blur-sm group-hover:opacity-30 transition-opacity duration-300"></div>
-              <img
-                className="relative h-14 w-14 rounded-full shadow-lg ring-2 ring-white/30 hover:ring-white/50 transition-all duration-300 transform hover:scale-105"
-                src="/IsleKey Logo.jpg"
-                alt="IsleKey Holidays Logo"
-              />
             </div>
             <div className="flex flex-col space-y-1">
               <h1
                 className="text-2xl font-bold bg-gradient-to-r from-[#005E84] to-[#075375] bg-clip-text text-transparent hover:from-[#075375] hover:to-[#0A435C] transition-all duration-300"
               >
-                IsleKey Holidays
+                Travel Maldives
               </h1>
               <p
                 className="text-sm font-medium tracking-wide transition-colors duration-300"
@@ -125,169 +120,7 @@ const LandingHeader = () => {
                 isActive("/") ? "w-8" : "w-0 group-hover:w-8"
               }`} />
             </Link>
-            <Link
-              to="/about-us"
-              className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg hover:bg-white/20 group ${
-                isActive("/about-us")
-                  ? "text-[#005E84] font-semibold"
-                  : "text-[#0A435C] hover:text-[#005E84]"
-              }`}
-              onClick={scrollToTop}
-            >
-              <span className="relative z-10">About Us</span>
-              <span className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-[#005E84] to-[#075375] transition-all duration-300 ease-out ${
-                isActive("/about-us") ? "w-8" : "w-0 group-hover:w-8"
-              }`} />
-            </Link>
-            <div
-              className="relative"
-              onMouseEnter={() => {
-                if (servicesDropdownTimeout.current) {
-                  clearTimeout(servicesDropdownTimeout.current);
-                  servicesDropdownTimeout.current = null;
-                }
-                setServicesDropdown(true);
-              }}
-              onMouseLeave={() => {
-                servicesDropdownTimeout.current = setTimeout(() => {
-                  setServicesDropdown(false);
-                }, 150);
-              }}
-            >
-              <button
-                className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg hover:bg-white/20 group flex items-center ${
-                  isInServicesSection()
-                    ? "text-[#005E84] font-semibold"
-                    : "text-[#0A435C] hover:text-[#005E84]"
-                }`}
-                type="button"
-              >
-                <span className="relative z-10">Our Services</span>
-                <svg
-                  className={`ml-2 h-4 w-4 transition-transform duration-300 ${servicesDropdown ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-                <span className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-[#005E84] to-[#075375] transition-all duration-300 ease-out ${
-                  isInServicesSection() ? "w-8" : "w-0 group-hover:w-8"
-                }`} />
-              </button>
-              {servicesDropdown && (
-                <div
-                  className="absolute left-0 mt-3 w-64 bg-gradient-to-br from-[#E7E9E5]/95 via-white/95 to-[#B7C5C7]/95 backdrop-blur-lg rounded-xl shadow-xl border border-[#005E84]/20 overflow-hidden animate-slideUp"
-                  style={{
-                    animation: 'slideUp 0.3s ease-out'
-                  }}
-                  onMouseEnter={() => {
-                    if (servicesDropdownTimeout.current) {
-                      clearTimeout(servicesDropdownTimeout.current);
-                      servicesDropdownTimeout.current = null;
-                    }
-                    setServicesDropdown(true);
-                  }}
-                  onMouseLeave={() => {
-                    servicesDropdownTimeout.current = setTimeout(() => {
-                      setServicesDropdown(false);
-                    }, 150);
-                  }}
-                >
-                  <div className="py-2">
-                    <Link
-                      to="/travel-services"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
-                        isActive("/travel-services")
-                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
-                          : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <span className="text-lg">✈️</span>
-                        <span>Travel Services</span>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/real-estate"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
-                        isActive("/real-estate")
-                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
-                          : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <span className="text-lg">🏡</span>
-                        <span>Real Estate</span>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/investment-support"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
-                        isActive("/investment-support")
-                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
-                          : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <span className="text-lg">💼</span>
-                        <span>Investment Support</span>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/brand-representation"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
-                        isActive("/brand-representation")
-                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
-                          : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <span className="text-lg">🏢</span>
-                        <span>Brand Representation</span>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/hulhumeedhoo"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
-                        isActive("/hulhumeedhoo")
-                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
-                          : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <span className="text-lg">🏝️</span>
-                        <span>Hulhumeedhoo Island</span>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/token-program"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] border-l-4 border-transparent hover:border-[#005E84] transform hover:translate-x-1 ${
-                        isActive("/token-program")
-                          ? "bg-[#E1F5FE] text-[#005E84] border-[#005E84]"
-                          : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <span className="text-lg">🪙</span>
-                        <span>Token Program</span>
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
+
             <Link
               to="/search"
               className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg hover:bg-white/20 group ${
