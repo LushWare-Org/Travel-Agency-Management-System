@@ -36,14 +36,18 @@ import {
   Payment as PaymentIcon
 } from '@mui/icons-material';
 import { AuthContext } from '../context/AuthContext';
+import CancellationDialog from '../Components/CancellationDialog';
+import bookingsAPI from '../services/bookingsAPI';
 
 export default function BookingManagement() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [cancellationDialogOpen, setCancellationDialogOpen] = useState(false);
   const [selected, setSelected] = useState(null);
   const [editForm, setEditForm] = useState({});
+  const [cancellationLoading, setCancellationLoading] = useState(false);
   const { user } = useContext(AuthContext);
   const isAdmin = user?.role === 'admin';
 
@@ -52,7 +56,7 @@ export default function BookingManagement() {
   }, []);
   async function fetchBookings() {
     try {
-      const { data } = await axios.get('/bookings', { withCredentials: true });
+      const data = await bookingsAPI.getAll();
       console.log('Fetched bookings:', data);
       setBookings(data);
     } catch (err) {
@@ -138,11 +142,7 @@ export default function BookingManagement() {
     const ok = window.confirm(`Mark booking as "${newStatus}"?`);
     if (!ok) return;
     try {
-      const { data } = await axios.put(
-        `/bookings/${selected._id}`,
-        { status: newStatus },
-        { withCredentials: true }
-      );
+      const data = await bookingsAPI.update(selected._id, { status: newStatus });
       setBookings(bs => bs.map(b => b._id === data._id ? data : b));
       setSelected(data);
     } catch (err) {
@@ -150,6 +150,33 @@ export default function BookingManagement() {
       alert('Failed to update status. Please try again.');
     }
   }
+
+  const openCancellationDialog = () => {
+    if (!selected || !isAdmin) return;
+    setCancellationDialogOpen(true);
+  };
+
+  const closeCancellationDialog = () => {
+    setCancellationDialogOpen(false);
+  };
+
+  const handleCancellation = async (cancellationData) => {
+    if (!selected || !isAdmin) return;
+    
+    try {
+      setCancellationLoading(true);
+      const data = await bookingsAPI.cancel(selected._id, cancellationData);
+      setBookings(bs => bs.map(b => b._id === data._id ? data : b));
+      setSelected(data);
+      setCancellationDialogOpen(false);
+      alert('Booking cancelled successfully');
+    } catch (err) {
+      console.error('Error cancelling booking:', err);
+      alert('Failed to cancel booking. Please try again.');
+    } finally {
+      setCancellationLoading(false);
+    }
+  };
 
   async function markAsPaid() {
     if (!selected || !isAdmin) return;
@@ -488,7 +515,7 @@ export default function BookingManagement() {
             </Button>
           )}
           {isAdmin && selected && selected.status !== 'Cancelled' && (
-            <IconButton color="warning" onClick={() => updateStatus('Cancelled')} title="Cancel">
+            <IconButton color="error" onClick={openCancellationDialog} title="Cancel">
               <CancelIcon />
             </IconButton>
           )}
@@ -730,6 +757,15 @@ export default function BookingManagement() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Cancellation Dialog */}
+      <CancellationDialog
+        open={cancellationDialogOpen}
+        onClose={closeCancellationDialog}
+        onConfirm={handleCancellation}
+        booking={selected}
+        loading={cancellationLoading}
+      />
     </Paper>
   );
 }

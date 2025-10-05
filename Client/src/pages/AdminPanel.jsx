@@ -37,6 +37,8 @@ import {
   Person as PersonIcon,
   TourOutlined,
   LocalActivity as LocalActivityIcon,
+  Group as GroupIcon,
+  PlaylistAdd as BulkBookingIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,6 +49,9 @@ import DiscountManagement from './DiscountManagement';
 import TourManagement from './TourManagement';
 import ContactManagement from './ContactManagement';
 import TourBookingManagement from './TourBookingManagement';
+import BulkBooking from '../Components/BulkBooking';
+import BulkBookingsView from '../Components/BulkBookingsView';
+import ViewListIcon from '@mui/icons-material/ViewList';
 
 const drawerWidth = 240;
 
@@ -139,6 +144,8 @@ export default function AdminPanel() {
     { id: 'rooms', text: 'Room Management', icon: <RoomIcon /> },
     { id: 'activities', text: 'Activity Management', icon: <LocalActivityIcon />, path: '/admin/activities' },
     { id: 'bookings', text: 'Booking Oversight', icon: <BookingIcon /> },
+    { id: 'bulk-booking', text: 'Bulk Booking', icon: <BulkBookingIcon /> },
+    { id: 'bulk-bookings-view', text: 'View Bulk Bookings', icon: <ViewListIcon /> },
     { id: 'discounts', text: 'Discount Management', icon: <DiscountIcon /> },
     { id: 'tours', text: 'Tour Management', icon: <TourOutlined/> },
     { id: 'contacts', text: 'Contact Submissions', icon: <EmailIcon /> },
@@ -234,6 +241,8 @@ export default function AdminPanel() {
       case 'hotels': return <HotelManagement />;
       case 'rooms': return <RoomManagement />;
       case 'bookings': return <BookingManagement />;
+      case 'bulk-booking': return <BulkBooking />;
+      case 'bulk-bookings-view': return <BulkBookingsView />;
       case 'discounts': return <DiscountManagement />;
       case 'tours': return <TourManagement />;
       case 'contacts': return <ContactManagement />;

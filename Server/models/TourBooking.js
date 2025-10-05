@@ -46,6 +46,24 @@ const tourBookingSchema = new mongoose.Schema({
   country: { type: String },
   validFrom: { type: Date },
   validTo: { type: Date },
+
+  // Cancellation Details
+  cancellationDetails: {
+    cancelledBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    cancelledAt: { type: Date },
+    cancellationReason: { 
+      type: String,
+      enum: ['Customer Request', 'No Show', 'Payment Failed', 'Tour Issue', 'Weather', 'Force Majeure', 'Other']
+    },
+    refundAmount: { type: Number, default: 0 },
+    refundMethod: { 
+      type: String,
+      enum: ['Bank Transfer', 'Credit Card', 'Cash', 'No Refund']
+    },
+    refundProcessedAt: { type: Date },
+    cancellationNotes: { type: String },
+    cancellationFee: { type: Number, default: 0 }
+  }
 }, { timestamps: true });
 
 // Generate booking reference before saving
