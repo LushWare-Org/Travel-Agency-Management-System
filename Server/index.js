@@ -72,6 +72,7 @@ app.use('/api/activities', require('./routes/activity.routes'));
 app.use('/api/activity-bookings', require('./routes/activityBookingRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 app.use('/api/tour-bookings', require('./routes/tourBookingRoutes'));
+app.use('/api/bulk-bookings', require('./routes/bulkBookingRoutes'));
 
 app.listen(process.env.PORT || 5001, () => {
   console.log(`Server running on port ${process.env.PORT || 5001}`);

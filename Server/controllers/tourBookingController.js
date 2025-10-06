@@ -238,3 +238,41 @@ exports.getBookingsByStatus = async (req, res) => {
     });
   }
 };
+
+// Cancel a tour booking with detailed cancellation info
+exports.cancelTourBooking = async (req, res) => {
+  try {
+    const { cancellationReason, cancellationNotes, refundAmount, refundMethod, cancellationFee } = req.body;
+
+    const booking = await TourBooking.findById(req.params.id);
+    if (!booking) return res.status(404).json({ msg: 'Tour booking not found' });
+
+    if (booking.status === 'Cancelled') {
+      return res.status(400).json({ msg: 'Tour booking is already cancelled' });
+    }
+
+    // Update cancellation details
+    booking.status = 'Cancelled';
+    booking.cancellationDetails = {
+      cancelledBy: req.user.userId,
+      cancelledAt: new Date(),
+      cancellationReason,
+      cancellationNotes,
+      refundAmount: refundAmount || 0,
+      refundMethod,
+      cancellationFee: cancellationFee || 0
+    };
+
+    await booking.save();
+
+    // Populate and return updated booking
+    const updatedBooking = await TourBooking.findById(booking._id)
+      .populate('tour', 'title')
+      .populate('cancellationDetails.cancelledBy', 'firstName lastName email');
+
+    res.json(updatedBooking);
+  } catch (err) {
+    console.error('Error cancelling tour booking:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};

@@ -72,7 +72,25 @@ const BookingSchema = new Schema(
     rooms: { type: Number, required: true },
     nights: { type: Number, required: true },
     amountPaid: { type: Number, default: 0 },
-    paidAt: { type: Date }
+    paidAt: { type: Date },
+    
+    // Cancellation Details
+    cancellationDetails: {
+      cancelledBy: { type: Schema.Types.ObjectId, ref: 'User' },
+      cancelledAt: { type: Date },
+      cancellationReason: { 
+        type: String,
+        enum: ['Customer Request', 'No Show', 'Payment Failed', 'Hotel Issue', 'Weather', 'Force Majeure', 'Other']
+      },
+      refundAmount: { type: Number, default: 0 },
+      refundMethod: { 
+        type: String,
+        enum: ['Bank Transfer', 'Credit Card', 'Cash', 'No Refund']
+      },
+      refundProcessedAt: { type: Date },
+      cancellationNotes: { type: String },
+      cancellationFee: { type: Number, default: 0 }
+    }
   },
   { timestamps: true }
 );

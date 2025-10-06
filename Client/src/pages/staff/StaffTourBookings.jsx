@@ -39,7 +39,7 @@ import { AuthContext } from '../../context/AuthContext';
 import CancellationDialog from '../../Components/CancellationDialog';
 import StaffLayout from '../../Components/StaffLayout';
 
-export default function StaffActivityBookings() {
+export default function StaffTourBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -57,10 +57,10 @@ export default function StaffActivityBookings() {
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/activity-bookings', { withCredentials: true });
-      setBookings(response.data.data || []);
+      const response = await axios.get('/tour-bookings', { withCredentials: true });
+      setBookings(response.data || []);
     } catch (error) {
-      console.error('Error fetching activity bookings:', error);
+      console.error('Error fetching tour bookings:', error);
     } finally {
       setLoading(false);
     }
@@ -104,7 +104,7 @@ export default function StaffActivityBookings() {
     if (!selectedBooking) return;
 
     try {
-      await axios.put(`/activity-bookings/${selectedBooking._id}`, editForm, { withCredentials: true });
+      await axios.put(`/tour-bookings/${selectedBooking._id}/status`, editForm, { withCredentials: true });
       closeEditDialog();
       fetchBookings();
       alert('Booking updated successfully');
@@ -118,7 +118,7 @@ export default function StaffActivityBookings() {
     if (!selectedBooking) return;
 
     try {
-      await axios.put(`/activity-bookings/${selectedBooking._id}/cancel`, cancellationData, { withCredentials: true });
+      await axios.put(`/tour-bookings/${selectedBooking._id}/cancel`, cancellationData, { withCredentials: true });
       closeCancellationDialog();
       fetchBookings();
       alert('Booking cancelled successfully');
@@ -160,14 +160,14 @@ export default function StaffActivityBookings() {
   }
 
   return (
-    <StaffLayout title="Activity Bookings Management">
+    <StaffLayout title="Tour Bookings Management">
       <Box sx={{ p: 3 }}>
         <Typography variant="h4" gutterBottom>
-          Activity Bookings Management
+          Tour Bookings Management
         </Typography>
         
         <Typography variant="subtitle1" color="textSecondary" sx={{ mb: 3 }}>
-          Manage activity bookings and reservations
+          Manage tour bookings and reservations
         </Typography>
 
       {/* Stats Cards */}
@@ -217,7 +217,7 @@ export default function StaffActivityBookings() {
       {/* Filter and Table */}
       <Paper sx={{ p: 3 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-          <Typography variant="h6">Activity Bookings</Typography>
+          <Typography variant="h6">Tour Bookings</Typography>
           <FormControl size="small" sx={{ minWidth: 120 }}>
             <InputLabel>Filter</InputLabel>
             <Select
@@ -240,7 +240,7 @@ export default function StaffActivityBookings() {
               <TableHead>
                 <TableRow>
                   <TableCell>Reference</TableCell>
-                  <TableCell>Activity</TableCell>
+                  <TableCell>Tour</TableCell>
                   <TableCell>Customer</TableCell>
                   <TableCell>Date</TableCell>
                   <TableCell>Participants</TableCell>
@@ -253,9 +253,9 @@ export default function StaffActivityBookings() {
                 {filteredBookings.map((booking) => (
                   <TableRow key={booking._id} hover>
                     <TableCell>{booking.bookingReference}</TableCell>
-                    <TableCell>{booking.activity?.name || 'N/A'}</TableCell>
+                    <TableCell>{booking.tour?.title || 'N/A'}</TableCell>
                     <TableCell>{booking.customerDetails?.fullName || 'N/A'}</TableCell>
-                    <TableCell>{new Date(booking.activityDate).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(booking.tourDate).toLocaleDateString()}</TableCell>
                     <TableCell>{booking.participants}</TableCell>
                     <TableCell>
                       <Chip 
@@ -292,7 +292,7 @@ export default function StaffActivityBookings() {
 
       {/* Booking Detail Dialog */}
       <Dialog open={detailDialogOpen} onClose={closeDetailDialog} maxWidth="md" fullWidth>
-        <DialogTitle>Activity Booking Details</DialogTitle>
+        <DialogTitle>Tour Booking Details</DialogTitle>
         <DialogContent>
           {selectedBooking && (
             <Box>
@@ -306,10 +306,10 @@ export default function StaffActivityBookings() {
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography><strong>Activity:</strong> {selectedBooking.activity?.name || 'N/A'}</Typography>
+                  <Typography><strong>Tour:</strong> {selectedBooking.tour?.title || 'N/A'}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography><strong>Date:</strong> {new Date(selectedBooking.activityDate).toLocaleDateString()}</Typography>
+                  <Typography><strong>Date:</strong> {new Date(selectedBooking.tourDate).toLocaleDateString()}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography><strong>Participants:</strong> {selectedBooking.participants}</Typography>

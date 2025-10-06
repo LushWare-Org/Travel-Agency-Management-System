@@ -33,13 +33,15 @@ import {
   Edit as EditIcon,
   Visibility as ViewIcon,
   Cancel as CancelIcon,
+  Check as CheckIcon,
   FilterList as FilterIcon
 } from '@mui/icons-material';
 import { AuthContext } from '../../context/AuthContext';
+import bookingsAPI from '../../services/bookingsAPI';
 import CancellationDialog from '../../Components/CancellationDialog';
 import StaffLayout from '../../Components/StaffLayout';
 
-export default function StaffActivityBookings() {
+export default function StaffHotelBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -57,10 +59,10 @@ export default function StaffActivityBookings() {
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/activity-bookings', { withCredentials: true });
-      setBookings(response.data.data || []);
+      const response = await bookingsAPI.getAll();
+      setBookings(response.data || []);
     } catch (error) {
-      console.error('Error fetching activity bookings:', error);
+      console.error('Error fetching bookings:', error);
     } finally {
       setLoading(false);
     }
@@ -104,7 +106,7 @@ export default function StaffActivityBookings() {
     if (!selectedBooking) return;
 
     try {
-      await axios.put(`/activity-bookings/${selectedBooking._id}`, editForm, { withCredentials: true });
+      await bookingsAPI.update(selectedBooking._id, editForm);
       closeEditDialog();
       fetchBookings();
       alert('Booking updated successfully');
@@ -118,7 +120,7 @@ export default function StaffActivityBookings() {
     if (!selectedBooking) return;
 
     try {
-      await axios.put(`/activity-bookings/${selectedBooking._id}/cancel`, cancellationData, { withCredentials: true });
+      await bookingsAPI.cancel(selectedBooking._id, cancellationData);
       closeCancellationDialog();
       fetchBookings();
       alert('Booking cancelled successfully');
@@ -160,14 +162,14 @@ export default function StaffActivityBookings() {
   }
 
   return (
-    <StaffLayout title="Activity Bookings Management">
+    <StaffLayout title="Hotel Bookings Management">
       <Box sx={{ p: 3 }}>
         <Typography variant="h4" gutterBottom>
-          Activity Bookings Management
+          Hotel Bookings Management
         </Typography>
         
         <Typography variant="subtitle1" color="textSecondary" sx={{ mb: 3 }}>
-          Manage activity bookings and reservations
+          Manage hotel bookings and reservations
         </Typography>
 
       {/* Stats Cards */}
@@ -217,7 +219,7 @@ export default function StaffActivityBookings() {
       {/* Filter and Table */}
       <Paper sx={{ p: 3 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-          <Typography variant="h6">Activity Bookings</Typography>
+          <Typography variant="h6">Hotel Bookings</Typography>
           <FormControl size="small" sx={{ minWidth: 120 }}>
             <InputLabel>Filter</InputLabel>
             <Select
@@ -240,10 +242,11 @@ export default function StaffActivityBookings() {
               <TableHead>
                 <TableRow>
                   <TableCell>Reference</TableCell>
-                  <TableCell>Activity</TableCell>
+                  <TableCell>Hotel</TableCell>
                   <TableCell>Customer</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Participants</TableCell>
+                  <TableCell>Check-in</TableCell>
+                  <TableCell>Check-out</TableCell>
+                  <TableCell>Guests</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Total</TableCell>
                   <TableCell>Actions</TableCell>
@@ -253,10 +256,11 @@ export default function StaffActivityBookings() {
                 {filteredBookings.map((booking) => (
                   <TableRow key={booking._id} hover>
                     <TableCell>{booking.bookingReference}</TableCell>
-                    <TableCell>{booking.activity?.name || 'N/A'}</TableCell>
-                    <TableCell>{booking.customerDetails?.fullName || 'N/A'}</TableCell>
-                    <TableCell>{new Date(booking.activityDate).toLocaleDateString()}</TableCell>
-                    <TableCell>{booking.participants}</TableCell>
+                    <TableCell>{booking.hotel?.name || 'N/A'}</TableCell>
+                    <TableCell>{booking.clientDetails?.name || 'N/A'}</TableCell>
+                    <TableCell>{new Date(booking.checkIn).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(booking.checkOut).toLocaleDateString()}</TableCell>
+                    <TableCell>{booking.guests}</TableCell>
                     <TableCell>
                       <Chip 
                         label={booking.status} 
@@ -292,7 +296,7 @@ export default function StaffActivityBookings() {
 
       {/* Booking Detail Dialog */}
       <Dialog open={detailDialogOpen} onClose={closeDetailDialog} maxWidth="md" fullWidth>
-        <DialogTitle>Activity Booking Details</DialogTitle>
+        <DialogTitle>Booking Details</DialogTitle>
         <DialogContent>
           {selectedBooking && (
             <Box>
@@ -306,25 +310,31 @@ export default function StaffActivityBookings() {
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography><strong>Activity:</strong> {selectedBooking.activity?.name || 'N/A'}</Typography>
+                  <Typography><strong>Hotel:</strong> {selectedBooking.hotel?.name || 'N/A'}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography><strong>Date:</strong> {new Date(selectedBooking.activityDate).toLocaleDateString()}</Typography>
+                  <Typography><strong>Room:</strong> {selectedBooking.room?.roomName || 'N/A'}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography><strong>Participants:</strong> {selectedBooking.participants}</Typography>
+                  <Typography><strong>Check-in:</strong> {new Date(selectedBooking.checkIn).toLocaleDateString()}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography><strong>Check-out:</strong> {new Date(selectedBooking.checkOut).toLocaleDateString()}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography><strong>Guests:</strong> {selectedBooking.guests}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography><strong>Total Amount:</strong> ${selectedBooking.totalAmount}</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography><strong>Customer:</strong> {selectedBooking.customerDetails?.fullName || 'N/A'}</Typography>
+                  <Typography><strong>Customer:</strong> {selectedBooking.clientDetails?.name || 'N/A'}</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography><strong>Email:</strong> {selectedBooking.customerDetails?.email || 'N/A'}</Typography>
+                  <Typography><strong>Email:</strong> {selectedBooking.clientDetails?.email || 'N/A'}</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography><strong>Phone:</strong> {selectedBooking.customerDetails?.phone || 'N/A'}</Typography>
+                  <Typography><strong>Phone:</strong> {selectedBooking.clientDetails?.phone || 'N/A'}</Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography><strong>Created:</strong> {new Date(selectedBooking.createdAt).toLocaleString()}</Typography>

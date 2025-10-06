@@ -26,7 +26,9 @@ import {
   Person as PersonIcon,
   TourOutlined,
   LocalActivity as LocalActivityIcon,
-  Menu as MenuIcon
+  Menu as MenuIcon,
+  Group as GroupIcon,
+  PlaylistAdd as BulkBookingIcon
 } from '@mui/icons-material';
 import { useAdminLayout } from '../hooks/useAdminLayout';
 import { AuthContext } from '../context/AuthContext';
@@ -69,6 +71,7 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
     { id: 'rooms', text: 'Room Management', icon: <RoomIcon />, section: 'rooms' },
     { id: 'activities', text: 'Activity Management', icon: <LocalActivityIcon />, path: '/admin/activities' },
     { id: 'bookings', text: 'Booking Oversight', icon: <BookingIcon />, section: 'bookings' },
+    { id: 'bulk-booking', text: 'Bulk Booking', icon: <BulkBookingIcon />, section: 'bulk-booking' },
     { id: 'discounts', text: 'Discount Management', icon: <DiscountIcon />, section: 'discounts' },
     { id: 'tours', text: 'Tour Management', icon: <TourOutlined/>, section: 'tours' },
     { id: 'contacts', text: 'Contact Submissions', icon: <EmailIcon />, section: 'contacts' },

@@ -15,6 +15,9 @@ router.get('/:id', auth, tourBookingController.getTourBookingById);
 // Update booking status (admin only)
 router.put('/:id/status', auth, tourBookingController.updateBookingStatus);
 
+// Cancel a tour booking with detailed cancellation info
+router.put('/:id/cancel', auth, tourBookingController.cancelTourBooking);
+
 // Delete a tour booking (admin only)
 router.delete('/:id', auth, tourBookingController.deleteTourBooking);
 

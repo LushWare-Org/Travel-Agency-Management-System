@@ -38,8 +38,11 @@ const AdminActivityDetail = lazy(() => import("./pages/admin/ActivityDetail"));
 const AdminActivityView = lazy(() => import("./pages/admin/AdminActivityView"));
 const AdminActivities = lazy(() => import("./pages/admin/Activities"));
 const ActivityBookings = lazy(() => import("./pages/admin/ActivityBookings"));
-const StaffDashboard = lazy(() => import("./pages/staff/StaffDashboard"));
+const StaffDashboard = lazy(() => import("./pages/StaffDashboard"));
+const StaffHotelBookings = lazy(() => import("./pages/staff/StaffHotelBookings"));
+const StaffTourBookings = lazy(() => import("./pages/staff/StaffTourBookings"));
 const StaffActivityBookings = lazy(() => import("./pages/staff/StaffActivityBookings"));
+
 
 // point axios at your API & send cookies by default
 // Use environment variable if available, otherwise fallback based on mode
@@ -365,6 +368,42 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* staff routes - AUTHENTICATION RE-ENABLED */}
+          <Route
+            path="/staff"
+            element={
+              <ProtectedRoute requireStaff={true}>
+                <StaffDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/staff/hotels"
+            element={
+              <ProtectedRoute requireStaff={true}>
+                <StaffHotelBookings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/staff/tours"
+            element={
+              <ProtectedRoute requireStaff={true}>
+                <StaffTourBookings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/staff/activities"
+            element={
+              <ProtectedRoute requireStaff={true}>
+                <StaffActivityBookings />
+              </ProtectedRoute>
+            }
+          />
+
+          
 
           {/* catch‑all */}
           <Route path="*" element={<Home />} />

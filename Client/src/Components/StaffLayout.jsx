@@ -20,7 +20,10 @@ import {
   Dashboard as DashboardIcon,
   LocalActivity as LocalActivityIcon,
   Menu as MenuIcon,
-  Person as PersonIcon
+  Person as PersonIcon,
+  Hotel as HotelIcon,
+  Tour as TourIcon,
+  Group as GroupIcon
 } from '@mui/icons-material';
 import { AuthContext } from '../context/AuthContext';
 import { useAdminLayout } from '../hooks/useAdminLayout';
@@ -42,8 +45,8 @@ const StaffLayout = ({ children, title = 'Staff Dashboard' }) => {
   } = useAdminLayout();
 
   const handleNavigation = (item) => {
-    if (item.id === 'activities') {
-      navigate('/staff/activities/bookings');
+    if (item.path) {
+      navigate(item.path);
     } else {
       // For all other sections, go to main staff dashboard
       navigate('/staff');
@@ -61,17 +64,13 @@ const StaffLayout = ({ children, title = 'Staff Dashboard' }) => {
 
   const menuItems = [
     { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon />, path: '/staff' },
-    { id: 'activities', text: 'Activity Bookings', icon: <LocalActivityIcon />, path: '/staff/activities/bookings' },
+    { id: 'hotels', text: 'Hotel Bookings', icon: <HotelIcon />, path: '/staff/hotels' },
+    { id: 'tours', text: 'Tour Bookings', icon: <TourIcon />, path: '/staff/tours' },
+    { id: 'activities', text: 'Activity Bookings', icon: <LocalActivityIcon />, path: '/staff/activities' },
   ];
 
   const isActiveItem = (item) => {
-    if (item.id === 'activities') {
-      return location.pathname.startsWith('/staff/activities');
-    }
-    if (item.id === 'dashboard') {
-      return location.pathname === '/staff';
-    }
-    return false;
+    return location.pathname === item.path;
   };
 
   const drawer = (
